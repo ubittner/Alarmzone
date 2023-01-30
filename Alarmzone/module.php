@@ -30,7 +30,7 @@ class Alarmzone extends IPSModule
     //Constants
     private const MODULE_NAME = 'Alarmzone';
     private const MODULE_PREFIX = 'AZ';
-    private const MODULE_VERSION = '7.0-1, 08.09.2022';
+    private const MODULE_VERSION = '7.0-2, 30.01.2023';
     private const ALARMPROTOCOL_MODULE_GUID = '{66BDB59B-E80F-E837-6640-005C32D5FC24}';
     private const NOTIFICATION_MODULE_GUID = '{BDAB70AA-B45D-4CB4-3D65-509CFF0969F9}';
     private const HOMEMATIC_DEVICE_GUID = '{EE4A81C6-5C90-4DB7-AD2F-F6BBD521412E}';

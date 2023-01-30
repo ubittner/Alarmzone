@@ -602,7 +602,7 @@ trait AZ_Config
                             [
                                 'caption' => 'Mehrfachauslösung',
                                 'name'    => 'UseMultipleAlerts',
-                                'width'   => '200px',
+                                'width'   => '180px',
                                 'add'     => false,
                                 'edit'    => [
                                     'type' => 'CheckBox'
@@ -674,9 +674,9 @@ trait AZ_Config
                             [
                                 'caption' => 'Vollschutz',
                                 'name'    => 'FullProtectionModeActive',
-                                'width'   => '200px',
+                                'width'   => '110px',
                                 'add'     => true,
-                                'visible' => false,
+                                'visible' => true,
                                 'edit'    => [
                                     'type' => 'CheckBox'
                                 ]
@@ -684,9 +684,9 @@ trait AZ_Config
                             [
                                 'caption' => 'Hüllschutz',
                                 'name'    => 'HullProtectionModeActive',
-                                'width'   => '200px',
+                                'width'   => '110px',
                                 'add'     => false,
-                                'visible' => false,
+                                'visible' => true,
                                 'edit'    => [
                                     'type' => 'CheckBox'
                                 ]
@@ -694,9 +694,9 @@ trait AZ_Config
                             [
                                 'caption' => 'Teilschutz',
                                 'name'    => 'PartialProtectionModeActive',
-                                'width'   => '200px',
+                                'width'   => '110px',
                                 'add'     => false,
-                                'visible' => false,
+                                'visible' => true,
                                 'edit'    => [
                                     'type' => 'CheckBox'
                                 ]
@@ -817,9 +817,9 @@ trait AZ_Config
                             [
                                 'caption' => 'Alarmsirene',
                                 'name'    => 'UseAlarmSiren',
-                                'width'   => '200px',
+                                'width'   => '120px',
                                 'add'     => true,
-                                'visible' => false,
+                                'visible' => true,
                                 'edit'    => [
                                     'type' => 'CheckBox'
                                 ]
@@ -827,9 +827,9 @@ trait AZ_Config
                             [
                                 'caption' => 'Alarmbeleuchtung',
                                 'name'    => 'UseAlarmLight',
-                                'width'   => '200px',
+                                'width'   => '170px',
                                 'add'     => false,
-                                'visible' => false,
+                                'visible' => true,
                                 'edit'    => [
                                     'type' => 'CheckBox'
                                 ]
@@ -837,9 +837,9 @@ trait AZ_Config
                             [
                                 'caption' => 'Alarmanruf',
                                 'name'    => 'UseAlarmCall',
-                                'width'   => '200px',
+                                'width'   => '120px',
                                 'add'     => false,
-                                'visible' => false,
+                                'visible' => true,
                                 'edit'    => [
                                     'type' => 'CheckBox'
                                 ]
@@ -1135,7 +1135,7 @@ trait AZ_Config
                             [
                                 'caption' => 'Mehrfachauslösung',
                                 'name'    => 'UseMultipleAlerts',
-                                'width'   => '200px',
+                                'width'   => '180px',
                                 'add'     => false,
                                 'edit'    => [
                                     'type' => 'CheckBox'
@@ -1207,9 +1207,9 @@ trait AZ_Config
                             [
                                 'caption' => 'Vollschutz',
                                 'name'    => 'FullProtectionModeActive',
-                                'width'   => '200px',
+                                'width'   => '110px',
                                 'add'     => true,
-                                'visible' => false,
+                                'visible' => true,
                                 'edit'    => [
                                     'type' => 'CheckBox'
                                 ]
@@ -1217,9 +1217,9 @@ trait AZ_Config
                             [
                                 'caption' => 'Hüllschutz',
                                 'name'    => 'HullProtectionModeActive',
-                                'width'   => '200px',
+                                'width'   => '110px',
                                 'add'     => false,
-                                'visible' => false,
+                                'visible' => true,
                                 'edit'    => [
                                     'type' => 'CheckBox'
                                 ]
@@ -1227,9 +1227,9 @@ trait AZ_Config
                             [
                                 'caption' => 'Teilschutz',
                                 'name'    => 'PartialProtectionModeActive',
-                                'width'   => '200px',
+                                'width'   => '110px',
                                 'add'     => false,
-                                'visible' => false,
+                                'visible' => true,
                                 'edit'    => [
                                     'type' => 'CheckBox'
                                 ]
@@ -1299,9 +1299,9 @@ trait AZ_Config
                             [
                                 'caption' => 'Alarmsirene',
                                 'name'    => 'UseAlarmSiren',
-                                'width'   => '200px',
+                                'width'   => '120px',
                                 'add'     => true,
-                                'visible' => false,
+                                'visible' => true,
                                 'edit'    => [
                                     'type' => 'CheckBox'
                                 ]
@@ -1309,9 +1309,9 @@ trait AZ_Config
                             [
                                 'caption' => 'Alarmbeleuchtung',
                                 'name'    => 'UseAlarmLight',
-                                'width'   => '200px',
+                                'width'   => '170px',
                                 'add'     => false,
-                                'visible' => false,
+                                'visible' => true,
                                 'edit'    => [
                                     'type' => 'CheckBox'
                                 ]
@@ -1319,9 +1319,9 @@ trait AZ_Config
                             [
                                 'caption' => 'Alarmanruf',
                                 'name'    => 'UseAlarmCall',
-                                'width'   => '200px',
+                                'width'   => '120px',
                                 'add'     => false,
-                                'visible' => false,
+                                'visible' => true,
                                 'edit'    => [
                                     'type' => 'CheckBox'
                                 ]
