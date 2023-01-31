@@ -165,6 +165,10 @@ trait AZST_Config
                 ],
                 [
                     'type'    => 'Label',
+                    'caption' => ' '
+                ],
+                [
+                    'type'    => 'Label',
                     'caption' => 'Modus',
                     'bold'    => true,
                     'italic'  => true,
