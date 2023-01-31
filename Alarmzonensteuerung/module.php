@@ -26,7 +26,7 @@ class Alarmzonensteuerung extends IPSModule
     //Constants
     private const MODULE_NAME = 'Alarmzonensteuerung';
     private const MODULE_PREFIX = 'AZST';
-    private const MODULE_VERSION = '7.0-2, 30.01.2023';
+    private const MODULE_VERSION = '7.0-3, 31.01.2023';
     private const ALARMZONE_MODULE_GUID = '{127AB08D-CD10-801D-D419-442CDE6E5C61}';
 
     public function Create()
@@ -45,6 +45,10 @@ class Alarmzonensteuerung extends IPSModule
         //Functions
         $this->RegisterPropertyBoolean('EnableActive', false);
         $this->RegisterPropertyBoolean('EnableLocation', true);
+        $this->RegisterPropertyBoolean('EnableFullProtectionControlSwitch', true);
+        $this->RegisterPropertyBoolean('EnableHullProtectionControlSwitch', true);
+        $this->RegisterPropertyBoolean('EnablePartialProtectionControlSwitch', true);
+        $this->RegisterPropertyBoolean('EnableIndividualProtectionControlSwitch', true);
         $this->RegisterPropertyBoolean('EnableMode', true);
         $this->RegisterPropertyString('DisarmedName', 'Unscharf');
         $this->RegisterPropertyString('DisarmedIcon', 'Warning');
@@ -106,6 +110,42 @@ class Alarmzonensteuerung extends IPSModule
         $this->SetValue('Location', $this->ReadPropertyString('Location'));
         if (!$id) {
             IPS_SetIcon($this->GetIDForIdent('Location'), 'IPS');
+        }
+
+        //Full protection control switch
+        $id = @$this->GetIDForIdent('FullProtectionControlSwitch');
+        $name = $this->ReadPropertyString('FullProtectionName');
+        $this->RegisterVariableBoolean('FullProtectionControlSwitch', $name, '~Switch', 26);
+        $this->EnableAction('FullProtectionControlSwitch');
+        if (!$id) {
+            IPS_SetIcon($this->GetIDForIdent('FullProtectionControlSwitch'), 'Basement');
+        }
+
+        //Hull protection control switch
+        $id = @$this->GetIDForIdent('HullProtectionControlSwitch');
+        $name = $this->ReadPropertyString('HullProtectionName');
+        $this->RegisterVariableBoolean('HullProtectionControlSwitch', $name, '~Switch', 27);
+        $this->EnableAction('HullProtectionControlSwitch');
+        if (!$id) {
+            IPS_SetIcon($this->GetIDForIdent('HullProtectionControlSwitch'), 'GroundFloor');
+        }
+
+        //Partial protection control switch
+        $id = @$this->GetIDForIdent('PartialProtectionControlSwitch');
+        $name = $this->ReadPropertyString('PartialProtectionName');
+        $this->RegisterVariableBoolean('PartialProtectionControlSwitch', $name, '~Switch', 28);
+        $this->EnableAction('PartialProtectionControlSwitch');
+        if (!$id) {
+            IPS_SetIcon($this->GetIDForIdent('PartialProtectionControlSwitch'), 'Moon');
+        }
+
+        //Individual protection control switch
+        $id = @$this->GetIDForIdent('IndividualProtectionControlSwitch');
+        $name = $this->ReadPropertyString('IndividualProtectionName');
+        $this->RegisterVariableBoolean('IndividualProtectionControlSwitch', $name, '~Switch', 29);
+        $this->EnableAction('IndividualProtectionControlSwitch');
+        if (!$id) {
+            IPS_SetIcon($this->GetIDForIdent('IndividualProtectionControlSwitch'), 'IPS');
         }
 
         //System state
@@ -241,8 +281,8 @@ class Alarmzonensteuerung extends IPSModule
         if ($this->ReadPropertyBoolean('UseIndividualProtectionMode')) {
             IPS_SetVariableProfileAssociation($profile, 4, $this->ReadPropertyString('IndividualProtectionName'), $this->ReadPropertyString('IndividualProtectionIcon'), $this->ReadPropertyInteger('IndividualProtectionColor'));
         }
-        $this->RegisterVariableInteger('Mode', 'Modus', $profile, 40);
-        $this->MaintainVariable('Mode', 'Modus', 1, $profile, 40, true);
+        $this->RegisterVariableInteger('Mode', 'Modus', $profile, 30);
+        $this->MaintainVariable('Mode', 'Modus', 1, $profile, 30, true);
         $this->EnableAction('Mode');
 
         ########## Options
@@ -253,6 +293,12 @@ class Alarmzonensteuerung extends IPSModule
         //Location
         $this->SetValue('Location', $this->ReadPropertyString('Location'));
         IPS_SetHidden($this->GetIDForIdent('Location'), !$this->ReadPropertyBoolean('EnableLocation'));
+
+        //Control switches
+        IPS_SetHidden($this->GetIDForIdent('FullProtectionControlSwitch'), !$this->ReadPropertyBoolean('EnableFullProtectionControlSwitch'));
+        IPS_SetHidden($this->GetIDForIdent('HullProtectionControlSwitch'), !$this->ReadPropertyBoolean('EnableHullProtectionControlSwitch'));
+        IPS_SetHidden($this->GetIDForIdent('PartialProtectionControlSwitch'), !$this->ReadPropertyBoolean('EnablePartialProtectionControlSwitch'));
+        IPS_SetHidden($this->GetIDForIdent('IndividualProtectionControlSwitch'), !$this->ReadPropertyBoolean('EnableIndividualProtectionControlSwitch'));
 
         //Mode
         IPS_SetHidden($this->GetIDForIdent('Mode'), !$this->ReadPropertyBoolean('EnableMode'));
@@ -423,6 +469,42 @@ class Alarmzonensteuerung extends IPSModule
 
             case 'Active':
                 $this->SetValue($Ident, $Value);
+                break;
+
+            case 'FullProtectionControlSwitch':
+                $mode = 0; //disarm
+                if ($Value) {
+                    $mode = 1; //full protection
+                }
+                $id = $this->GetIDForIdent('FullProtectionControlSwitch');
+                $this->SelectProtectionMode($mode, (string) $id);
+                break;
+
+            case 'HullProtectionControlSwitch':
+                $mode = 0; //disarm
+                if ($Value) {
+                    $mode = 2; //hull protection
+                }
+                $id = $this->GetIDForIdent('HullProtectionControlSwitch');
+                $this->SelectProtectionMode($mode, (string) $id);
+                break;
+
+            case 'PartialProtectionControlSwitch':
+                $mode = 0; //disarm
+                if ($Value) {
+                    $mode = 3; //partial protection
+                }
+                $id = $this->GetIDForIdent('PartialProtectionControlSwitch');
+                $this->SelectProtectionMode($mode, (string) $id);
+                break;
+
+            case 'IndividualProtectionControlSwitch':
+                $mode = 0; //disarm
+                if ($Value) {
+                    $mode = 4; //partial protection
+                }
+                $id = $this->GetIDForIdent('IndividualProtectionControlSwitch');
+                $this->SelectProtectionMode($mode, (string) $id);
                 break;
 
             case 'Mode':

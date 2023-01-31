@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @project       _Alarmzone/Alarmzonensteuerung
+ * @project       Alarmzone/Alarmzonensteuerung
  * @file          AZST_Config.php
  * @author        Ulrich Bittner
  * @copyright     2022 Ulrich Bittner
@@ -136,6 +136,32 @@ trait AZST_Config
                 [
                     'type'    => 'Label',
                     'caption' => ' '
+                ],
+                [
+                    'type'    => 'Label',
+                    'caption' => 'Kontrollschalter',
+                    'bold'    => true,
+                    'italic'  => true,
+                ],
+                [
+                    'type'    => 'CheckBox',
+                    'name'    => 'EnableFullProtectionControlSwitch',
+                    'caption' => 'Vollschutz'
+                ],
+                [
+                    'type'    => 'CheckBox',
+                    'name'    => 'EnableHullProtectionControlSwitch',
+                    'caption' => 'Hüllschutz'
+                ],
+                [
+                    'type'    => 'CheckBox',
+                    'name'    => 'EnablePartialProtectionControlSwitch',
+                    'caption' => 'Teilschutz'
+                ],
+                [
+                    'type'    => 'CheckBox',
+                    'name'    => 'EnableIndividualProtectionControlSwitch',
+                    'caption' => 'Individualschutz'
                 ],
                 [
                     'type'    => 'Label',

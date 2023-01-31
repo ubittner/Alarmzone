@@ -130,6 +130,45 @@ trait AZST_States
                 $mode = 3;
                 $stateText = 'Teilschutz aller Alarmzonen';
             }
+            //Control switches
+            switch ($mode) {
+                case 0: //disarmed
+                    $this->SetValue('FullProtectionControlSwitch', false);
+                    $this->SetValue('HullProtectionControlSwitch', false);
+                    $this->SetValue('PartialProtectionControlSwitch', false);
+                    $this->SetValue('IndividualProtectionControlSwitch', false);
+                    break;
+
+                case 1: //full protection
+                    $this->SetValue('FullProtectionControlSwitch', true);
+                    $this->SetValue('HullProtectionControlSwitch', false);
+                    $this->SetValue('PartialProtectionControlSwitch', false);
+                    $this->SetValue('IndividualProtectionControlSwitch', false);
+                    break;
+
+                case 2: //hull protection
+                    $this->SetValue('FullProtectionControlSwitch', false);
+                    $this->SetValue('HullProtectionControlSwitch', true);
+                    $this->SetValue('PartialProtectionControlSwitch', false);
+                    $this->SetValue('IndividualProtectionControlSwitch', false);
+                    break;
+
+                case 3: //partial protection
+                    $this->SetValue('FullProtectionControlSwitch', false);
+                    $this->SetValue('HullProtectionControlSwitch', false);
+                    $this->SetValue('PartialProtectionControlSwitch', true);
+                    $this->SetValue('IndividualProtectionControlSwitch', false);
+                    break;
+
+                case 4: //individual protection
+                    $this->SetValue('FullProtectionControlSwitch', false);
+                    $this->SetValue('HullProtectionControlSwitch', false);
+                    $this->SetValue('PartialProtectionControlSwitch', false);
+                    $this->SetValue('IndividualProtectionControlSwitch', true);
+                    break;
+
+            }
+            //Mode
             $this->SetValue('Mode', $mode);
             $this->SendDebug(__FUNCTION__, 'Modus: ' . $mode . ' = ' . $stateText, 0);
         }
