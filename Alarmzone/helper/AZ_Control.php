@@ -182,6 +182,9 @@ trait AZ_Control
 
             //Full protection mode
             case 1:
+                $fullProtectionControlSwitch = true;
+                $hullProtectionControlSwitch = false;
+                $partialProtectionControlSwitch = false;
                 $useProtectionModeName = 'UseFullProtectionMode';
                 $activationDelayName = 'FullProtectionModeActivationDelay';
                 $protectionModeName = 'FullProtectionName';
@@ -193,6 +196,9 @@ trait AZ_Control
 
             //Hull protection mode
             case 2:
+                $fullProtectionControlSwitch = false;
+                $hullProtectionControlSwitch = true;
+                $partialProtectionControlSwitch = false;
                 $useProtectionModeName = 'UseHullProtectionMode';
                 $activationDelayName = 'HullProtectionModeActivationDelay';
                 $protectionModeName = 'HullProtectionName';
@@ -204,6 +210,9 @@ trait AZ_Control
 
             //Partial protection mode
             case 3:
+                $fullProtectionControlSwitch = false;
+                $hullProtectionControlSwitch = false;
+                $partialProtectionControlSwitch = true;
                 $useProtectionModeName = 'UsePartialProtectionMode';
                 $activationDelayName = 'PartialProtectionModeActivationDelay';
                 $protectionModeName = 'PartialProtectionName';
@@ -223,6 +232,9 @@ trait AZ_Control
             return false;
         }
         $result = true;
+        $this->SetValue('FullProtectionControlSwitch', $fullProtectionControlSwitch);
+        $this->SetValue('HullProtectionControlSwitch', $hullProtectionControlSwitch);
+        $this->SetValue('PartialProtectionControlSwitch', $partialProtectionControlSwitch);
         $this->SetValue('Mode', $Mode);
         $this->SetValue('AlarmState', 0);
         $this->SetValue('AlertingSensor', '');
@@ -308,6 +320,9 @@ trait AZ_Control
     {
         $this->SendDebug(__FUNCTION__, 'wird ausgeführt', 0);
         $this->ResetBlacklist();
+        $this->SetValue('FullProtectionControlSwitch', false);
+        $this->SetValue('HullProtectionControlSwitch', false);
+        $this->SetValue('PartialProtectionControlSwitch', false);
         $this->SetValue('Mode', 0);
         $this->SetValue('AlarmZoneState', 0);
         $this->SetValue('AlarmZoneDetailedState', 0);

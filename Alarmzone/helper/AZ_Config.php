@@ -182,6 +182,31 @@ trait AZ_Config
                 ],
                 [
                     'type'    => 'Label',
+                    'caption' => 'Kontrollschalter',
+                    'bold'    => true,
+                    'italic'  => true,
+                ],
+                [
+                    'type'    => 'CheckBox',
+                    'name'    => 'EnableFullProtectionControlSwitch',
+                    'caption' => 'Vollschutz'
+                ],
+                [
+                    'type'    => 'CheckBox',
+                    'name'    => 'EnableHullProtectionControlSwitch',
+                    'caption' => 'Hüllschutz'
+                ],
+                [
+                    'type'    => 'CheckBox',
+                    'name'    => 'EnablePartialProtectionControlSwitch',
+                    'caption' => 'Teilschutz'
+                ],
+                [
+                    'type'    => 'Label',
+                    'caption' => ' '
+                ],
+                [
+                    'type'    => 'Label',
                     'caption' => 'Modus',
                     'bold'    => true,
                     'italic'  => true,
