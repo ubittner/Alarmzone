@@ -30,7 +30,7 @@ class Alarmzone extends IPSModule
     //Constants
     private const MODULE_NAME = 'Alarmzone';
     private const MODULE_PREFIX = 'AZ';
-    private const MODULE_VERSION = '7.0-4, 01.02.2023';
+    private const MODULE_VERSION = '7.0-5, 08.02.2023';
     private const ALARMPROTOCOL_MODULE_GUID = '{66BDB59B-E80F-E837-6640-005C32D5FC24}';
     private const NOTIFICATION_MODULE_GUID = '{BDAB70AA-B45D-4CB4-3D65-509CFF0969F9}';
     private const HOMEMATIC_DEVICE_GUID = '{EE4A81C6-5C90-4DB7-AD2F-F6BBD521412E}';
@@ -83,6 +83,8 @@ class Alarmzone extends IPSModule
         $this->RegisterPropertyBoolean('EnableAlarmSirenState', false);
         $this->RegisterPropertyBoolean('EnableAlarmLightState', false);
         $this->RegisterPropertyBoolean('EnableAlarmCallState', false);
+        $this->RegisterPropertyBoolean('VerifyOpenDoorWindowStatus', false);
+        $this->RegisterPropertyInteger('OpenDoorWindowStatusVerificationDelay', 3);
 
         //Activation check
         $this->RegisterPropertyBoolean('CheckFullProtectionModeActivation', false);

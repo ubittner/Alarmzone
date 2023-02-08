@@ -251,6 +251,18 @@ trait AZ_DoorWindowSensors
                                                 }
                                             }
                                             if ($alerting) { //always open
+                                                //Status verification
+                                                if ($this->ReadPropertyBoolean('VerifyOpenDoorWindowStatus')) {
+                                                    $this->SendDebug(__FUNCTION__, 'Statusverifizierung wird in ' . $this->ReadPropertyInteger('OpenDoorWindowStatusVerificationDelay') . ' Sekunden ausgeführt!', 0);
+                                                    if ($variable['UseAlarmProtocol']) {
+                                                        $text = ' wurde geöffnet und der Status wird erneut in ' . $this->ReadPropertyInteger('OpenDoorWindowStatusVerificationDelay') . ' Sekunden verifiziert. (ID ' . $SenderID . ')';
+                                                        $logText = date('d.m.Y, H:i:s') . ', ' . $this->ReadPropertyString('Location') . ', ' . $this->ReadPropertyString('AlarmZoneName') . ', ' . $variable['Designation'] . $text;
+                                                        $this->UpdateAlarmProtocol($logText, 0);
+                                                    }
+                                                    $scriptText = self::MODULE_PREFIX . '_VerifyOpenDoorWindowStatus(' . $this->InstanceID . ', ' . $SenderID . ');';
+                                                    @IPS_RunScriptText($scriptText);
+                                                    return false;
+                                                }
                                                 $result = true;
                                                 //Alarm state
                                                 $this->SetValue('AlarmState', 1);
@@ -319,6 +331,120 @@ trait AZ_DoorWindowSensors
             }
         }
         return $result;
+    }
+
+    /**
+     * Verifies the alerting.
+     *
+     * @param int $SenderID
+     * @return void
+     * @throws Exception
+     */
+    public function VerifyOpenDoorWindowStatus(int $SenderID): void
+    {
+        $this->SendDebug(__FUNCTION__, 'wird ausgeführt', 0);
+        $this->SendDebug(__FUNCTION__, 'Sender: ' . $SenderID, 0);
+        $delay = $this->ReadPropertyInteger('OpenDoorWindowStatusVerificationDelay') * 1000;
+        IPS_Sleep($delay);
+        $variables = json_decode($this->ReadPropertyString('DoorWindowSensors'), true);
+        foreach ($variables as $variable) {
+            if (array_key_exists('PrimaryCondition', $variable)) {
+                $primaryCondition = json_decode($variable['PrimaryCondition'], true);
+                if ($primaryCondition != '') {
+                    if (array_key_exists(0, $primaryCondition)) {
+                        if (array_key_exists(0, $primaryCondition[0]['rules']['variable'])) {
+                            $id = $primaryCondition[0]['rules']['variable'][0]['variableID'];
+                            if ($id == $SenderID) {
+                                if (!$variable['Use']) {
+                                    return;
+                                }
+                                $open = false;
+                                if (IPS_IsConditionPassing($variable['PrimaryCondition']) && IPS_IsConditionPassing($variable['SecondaryCondition'])) {
+                                    $this->SendDebug(__FUNCTION__, 'Der Status wurde verifiziert. Die Tür oder das Fenster ist geöffnet!', 0);
+                                    $open = true;
+                                }
+                                $mode = $this->GetValue('Mode');
+                                switch ($this->GetValue('AlarmZoneDetailedState')) {
+                                    case 1: //armed
+                                    case 3: //partial armed
+                                        $this->CheckDoorWindowState($mode, false, false, false);
+                                        //Variable is black listed
+                                        if (!$this->CheckSensorBlacklist($SenderID)) {
+                                            $alerting = false;
+                                            if ($open) {
+                                                switch ($mode) {
+                                                    //Check if sensor is activated for full protection mode
+                                                    case 1:
+                                                        if ($variable['FullProtectionModeActive']) {
+                                                            $alerting = true;
+                                                        }
+                                                        break;
+
+                                                    //Check if sensor is activated for hull protection mode
+                                                    case 2:
+                                                        if ($variable['HullProtectionModeActive']) {
+                                                            $alerting = true;
+                                                        }
+                                                        break;
+
+                                                    //Check if sensor is activated for partial protection mode
+                                                    case 3:
+                                                        if ($variable['PartialProtectionModeActive']) {
+                                                            $alerting = true;
+                                                        }
+                                                        break;
+                                                }
+                                            }
+                                            if ($alerting) { //open is verified
+                                                //Alarm state
+                                                $this->SetValue('AlarmState', 1);
+                                                $this->SetValue('AlertingSensor', $variable['Designation']);
+                                                //Protocol
+                                                if ($variable['UseAlarmProtocol']) {
+                                                    $text = ' wurde geöffnet und hat einen Alarm ausgelöst. (ID ' . $SenderID . ')';
+                                                    $logText = date('d.m.Y, H:i:s') . ', ' . $this->ReadPropertyString('Location') . ', ' . $this->ReadPropertyString('AlarmZoneName') . ', ' . $variable['Designation'] . $text;
+                                                    $this->UpdateAlarmProtocol($logText, 2);
+                                                }
+                                                //Notification
+                                                if ($variable['UseNotification']) {
+                                                    $this->SendNotification('DoorWindowAlarmNotification', (string) $variable['Designation']);
+                                                }
+                                                //Options
+                                                if ($variable['UseAlarmSiren']) {
+                                                    $this->SetValue('AlarmSiren', true);
+                                                }
+                                                if ($variable['UseAlarmLight']) {
+                                                    $this->SetValue('AlarmLight', true);
+                                                }
+                                                if ($variable['UseAlarmCall']) {
+                                                    $this->SetValue('AlarmCall', true);
+                                                }
+                                                if ($variable['UseAlertingAction']) {
+                                                    $action = json_decode($variable['AlertingAction'], true);
+                                                    @IPS_RunAction($action['actionID'], $action['parameters']);
+                                                }
+                                                if ($variable['UseAlarmSirenAction']) {
+                                                    $action = json_decode($variable['AlarmSirenAction'], true);
+                                                    @IPS_RunAction($action['actionID'], $action['parameters']);
+                                                }
+                                                if ($variable['UseAlarmLightAction']) {
+                                                    $action = json_decode($variable['AlarmLightAction'], true);
+                                                    @IPS_RunAction($action['actionID'], $action['parameters']);
+                                                }
+                                                if ($variable['UseAlarmCallAction']) {
+                                                    $action = json_decode($variable['AlarmCallAction'], true);
+                                                    @IPS_RunAction($action['actionID'], $action['parameters']);
+                                                }
+                                            }
+                                        }
+                                        break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     #################### Private

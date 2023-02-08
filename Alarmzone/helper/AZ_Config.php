@@ -389,7 +389,31 @@ trait AZ_Config
                     'type'    => 'CheckBox',
                     'name'    => 'EnableAlarmCallState',
                     'caption' => 'Alarmanruf'
-                ]
+                ],
+                [
+                    'type'    => 'Label',
+                    'caption' => ' '
+                ],
+                [
+                    'type'    => 'Label',
+                    'caption' => 'Statusüberprüfung',
+                    'bold'    => true,
+                    'italic'  => true,
+                ],
+                [
+                    'type'    => 'CheckBox',
+                    'name'    => 'VerifyOpenDoorWindowStatus',
+                    'caption' => 'Geöffnete Türen und Fenster bei aktivierter Alarmanlage verifizieren'
+                ],
+                [
+                    'type'    => 'NumberSpinner',
+                    'name'    => 'OpenDoorWindowStatusVerificationDelay',
+                    'caption' => 'Verzögerung',
+                    'suffix'  => 'Sekunden',
+                    'minimum' => 1,
+                    'maximum' => 5
+                ],
+
             ]
         ];
 
