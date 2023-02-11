@@ -30,7 +30,7 @@ class Alarmzone extends IPSModule
     //Constants
     private const MODULE_NAME = 'Alarmzone';
     private const MODULE_PREFIX = 'AZ';
-    private const MODULE_VERSION = '7.0-5, 08.02.2023';
+    private const MODULE_VERSION = '7.0-6, 11.02.2023';
     private const ALARMPROTOCOL_MODULE_GUID = '{66BDB59B-E80F-E837-6640-005C32D5FC24}';
     private const NOTIFICATION_MODULE_GUID = '{BDAB70AA-B45D-4CB4-3D65-509CFF0969F9}';
     private const HOMEMATIC_DEVICE_GUID = '{EE4A81C6-5C90-4DB7-AD2F-F6BBD521412E}';
@@ -43,22 +43,18 @@ class Alarmzone extends IPSModule
 
         ########## Properties
 
-        //Info
+        ##### Info
+
         $this->RegisterPropertyString('Note', '');
 
-        //Designations
+        ##### Designations
+
         $this->RegisterPropertyString('SystemName', 'Alarmzone');
         $this->RegisterPropertyString('Location', '');
         $this->RegisterPropertyString('AlarmZoneName', '');
 
-        //Functions
-        $this->RegisterPropertyBoolean('EnableActive', false);
-        $this->RegisterPropertyBoolean('EnableLocation', true);
-        $this->RegisterPropertyBoolean('EnableAlarmZoneName', true);
-        $this->RegisterPropertyBoolean('EnableFullProtectionControlSwitch', true);
-        $this->RegisterPropertyBoolean('EnableHullProtectionControlSwitch', true);
-        $this->RegisterPropertyBoolean('EnablePartialProtectionControlSwitch', true);
-        $this->RegisterPropertyBoolean('EnableMode', true);
+        ##### Operation modes
+
         $this->RegisterPropertyString('DisarmedName', 'Unscharf');
         $this->RegisterPropertyString('DisarmedIcon', 'Warning');
         $this->RegisterPropertyInteger('DisarmedColor', 65280);
@@ -74,30 +70,38 @@ class Alarmzone extends IPSModule
         $this->RegisterPropertyString('PartialProtectionName', 'Teilschutz');
         $this->RegisterPropertyString('PartialProtectionIcon', 'Moon');
         $this->RegisterPropertyInteger('PartialProtectionColor', 255);
-        $this->RegisterPropertyBoolean('EnableAlarmZoneState', true);
-        $this->RegisterPropertyBoolean('EnableAlarmZoneDetailedState', false);
-        $this->RegisterPropertyBoolean('EnableDoorWindowState', true);
-        $this->RegisterPropertyBoolean('EnableMotionDetectorState', true);
-        $this->RegisterPropertyBoolean('EnableAlarmState', true);
-        $this->RegisterPropertyBoolean('EnableAlertingSensor', true);
-        $this->RegisterPropertyBoolean('EnableAlarmSirenState', false);
-        $this->RegisterPropertyBoolean('EnableAlarmLightState', false);
-        $this->RegisterPropertyBoolean('EnableAlarmCallState', false);
-        $this->RegisterPropertyBoolean('VerifyOpenDoorWindowStatus', false);
-        $this->RegisterPropertyInteger('OpenDoorWindowStatusVerificationDelay', 3);
 
-        //Activation check
-        $this->RegisterPropertyBoolean('CheckFullProtectionModeActivation', false);
-        $this->RegisterPropertyBoolean('CheckHullProtectionModeActivation', false);
-        $this->RegisterPropertyBoolean('CheckPartialProtectionModeActivation', false);
+        ##### Activation delay
 
-        //Activation delay
         $this->RegisterPropertyInteger('FullProtectionModeActivationDelay', 0);
         $this->RegisterPropertyInteger('HullProtectionModeActivationDelay', 0);
         $this->RegisterPropertyInteger('PartialProtectionModeActivationDelay', 0);
 
-        //Alarm protocol
+        ##### Activation check
+
+        $this->RegisterPropertyBoolean('CheckFullProtectionModeActivation', false);
+        $this->RegisterPropertyBoolean('CheckHullProtectionModeActivation', false);
+        $this->RegisterPropertyBoolean('CheckPartialProtectionModeActivation', false);
+
+        ##### Door and window sensors
+
+        $this->RegisterPropertyString('DoorWindowSensors', '[]');
+
+        ##### Status verification
+
+        $this->RegisterPropertyBoolean('VerifyOpenDoorWindowStatus', false);
+        $this->RegisterPropertyInteger('OpenDoorWindowStatusVerificationDelay', 3);
+        $this->RegisterPropertyBoolean('OnlyLogRecheck', false);
+
+        ##### Motion detectors
+
+        $this->RegisterPropertyString('MotionDetectors', '[]');
+
+        ##### Alarm protocol
+
         $this->RegisterPropertyInteger('AlarmProtocol', 0);
+
+        ##### Notification
 
         //Notification center
         $this->RegisterPropertyInteger('Notification', 0);
@@ -130,9 +134,24 @@ class Alarmzone extends IPSModule
         $this->RegisterPropertyString('DoorWindowAlarmNotification', '[{"Use":false,"Designation":"Tür/Fenster Alarm","SpacerNotification":"","LabelMessageText":"","MessageText":"❗️%1$s hat einen Alarm ausgelöst!","UseTimestamp":true,"SpacerWebFrontNotification":"","LabelWebFrontNotification":"","UseWebFrontNotification":false,"WebFrontNotificationTitle":"","WebFrontNotificationIcon":"","WebFrontNotificationDisplayDuration":0,"SpacerWebFrontPushNotification":"","LabelWebFrontPushNotification":"","UseWebFrontPushNotification":false,"WebFrontPushNotificationTitle":"","WebFrontPushNotificationSound":"alarm","WebFrontPushNotificationTargetID":0,"SpacerMail":"","LabelMail":"","UseMailer":false,"Subject":"","SpacerSMS":"","LabelSMS":"","UseSMS":false,"SMSTitle":"","SpacerTelegram":"","LabelTelegram":"","UseTelegram":false,"TelegramTitle":""}]');
         $this->RegisterPropertyString('MotionDetectorAlarmNotification', '[{"Use":false,"Designation":"Bewegungsmelder Alarm","SpacerNotification":"","LabelMessageText":"","MessageText":"❗%1$s hat einen Alarm ausgelöst!","UseTimestamp":true,"SpacerWebFrontNotification":"","LabelWebFrontNotification":"","UseWebFrontNotification":false,"WebFrontNotificationTitle":"","WebFrontNotificationIcon":"","WebFrontNotificationDisplayDuration":0,"SpacerWebFrontPushNotification":"","LabelWebFrontPushNotification":"","UseWebFrontPushNotification":false,"WebFrontPushNotificationTitle":"","WebFrontPushNotificationSound":"alarm","WebFrontPushNotificationTargetID":0,"SpacerMail":"","LabelMail":"","UseMailer":false,"Subject":"","SpacerSMS":"","LabelSMS":"","UseSMS":false,"SMSTitle":"","SpacerTelegram":"","LabelTelegram":"","UseTelegram":false,"TelegramTitle":""}]');
 
-        //Alarm sensors
-        $this->RegisterPropertyString('DoorWindowSensors', '[]');
-        $this->RegisterPropertyString('MotionDetectors', '[]');
+        ##### Visualisation
+
+        $this->RegisterPropertyBoolean('EnableActive', false);
+        $this->RegisterPropertyBoolean('EnableLocation', true);
+        $this->RegisterPropertyBoolean('EnableAlarmZoneName', true);
+        $this->RegisterPropertyBoolean('EnableFullProtectionControlSwitch', true);
+        $this->RegisterPropertyBoolean('EnableHullProtectionControlSwitch', true);
+        $this->RegisterPropertyBoolean('EnablePartialProtectionControlSwitch', true);
+        $this->RegisterPropertyBoolean('EnableMode', true);
+        $this->RegisterPropertyBoolean('EnableAlarmZoneState', true);
+        $this->RegisterPropertyBoolean('EnableAlarmZoneDetailedState', false);
+        $this->RegisterPropertyBoolean('EnableDoorWindowState', true);
+        $this->RegisterPropertyBoolean('EnableMotionDetectorState', true);
+        $this->RegisterPropertyBoolean('EnableAlarmState', true);
+        $this->RegisterPropertyBoolean('EnableAlertingSensor', true);
+        $this->RegisterPropertyBoolean('EnableAlarmSirenState', false);
+        $this->RegisterPropertyBoolean('EnableAlarmLightState', false);
+        $this->RegisterPropertyBoolean('EnableAlarmCallState', false);
 
         ########## Variables
 
@@ -279,6 +298,10 @@ class Alarmzone extends IPSModule
         IPS_SetVariableProfileAssociation($profile, 1, 'An', '', 0xFF0000);
         $this->RegisterVariableBoolean('AlarmCall', 'Alarmanruf', $profile, 130);
 
+        ########## Attributes
+
+        $this->RegisterAttributeString('VerificationSensors', '[]');
+
         ########## Timer
 
         $this->RegisterTimer('StartActivation', 0, self::MODULE_PREFIX . '_StartActivation(' . $this->InstanceID . ');');
@@ -368,6 +391,10 @@ class Alarmzone extends IPSModule
 
         //Alarm call state
         IPS_SetHidden($this->GetIDForIdent('AlarmCall'), !$this->ReadPropertyBoolean('EnableAlarmCallState'));
+
+        ########## Attributes
+
+        $this->WriteAttributeString('VerificationSensors', '[]');
 
         ########## Timer
 

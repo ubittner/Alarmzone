@@ -251,15 +251,18 @@ trait AZ_DoorWindowSensors
                                                 }
                                             }
                                             if ($alerting) { //always open
+                                                $timeStamp = time();
                                                 //Status verification
                                                 if ($this->ReadPropertyBoolean('VerifyOpenDoorWindowStatus')) {
-                                                    $this->SendDebug(__FUNCTION__, 'Statusverifizierung wird in ' . $this->ReadPropertyInteger('OpenDoorWindowStatusVerificationDelay') . ' Sekunden ausgeführt!', 0);
+                                                    $this->SendDebug(__FUNCTION__, 'Status wird in ' . $this->ReadPropertyInteger('OpenDoorWindowStatusVerificationDelay') . ' Sekunden erneut geprüft!', 0);
                                                     if ($variable['UseAlarmProtocol']) {
-                                                        $text = ' wurde geöffnet und der Status wird erneut in ' . $this->ReadPropertyInteger('OpenDoorWindowStatusVerificationDelay') . ' Sekunden verifiziert. (ID ' . $SenderID . ')';
-                                                        $logText = date('d.m.Y, H:i:s') . ', ' . $this->ReadPropertyString('Location') . ', ' . $this->ReadPropertyString('AlarmZoneName') . ', ' . $variable['Designation'] . $text;
-                                                        $this->UpdateAlarmProtocol($logText, 0);
+                                                        if (!$this->ReadPropertyBoolean('OnlyLogRecheck')) {
+                                                            $text = ' wurde geöffnet und der Status wird in ' . $this->ReadPropertyInteger('OpenDoorWindowStatusVerificationDelay') . ' Sekunden erneut geprüft. (ID ' . $SenderID . ')';
+                                                            $logText = date('d.m.Y, H:i:s', $timeStamp) . ', ' . $this->ReadPropertyString('Location') . ', ' . $this->ReadPropertyString('AlarmZoneName') . ', ' . $variable['Designation'] . $text;
+                                                            $this->UpdateAlarmProtocol($logText, 0);
+                                                        }
                                                     }
-                                                    $scriptText = self::MODULE_PREFIX . '_VerifyOpenDoorWindowStatus(' . $this->InstanceID . ', ' . $SenderID . ');';
+                                                    $scriptText = self::MODULE_PREFIX . '_VerifyOpenDoorWindowStatus(' . $this->InstanceID . ', ' . $SenderID . ', ' . $timeStamp . ');';
                                                     @IPS_RunScriptText($scriptText);
                                                     return false;
                                                 }
@@ -311,8 +314,20 @@ trait AZ_DoorWindowSensors
                                                     if ($open) {
                                                         $text = ' wurde ohne Alarmauslösung geöffnet. (ID ' . $SenderID . ')';
                                                     }
+                                                    $log = true;
+                                                    if (!$open) {
+                                                        if ($this->ReadPropertyBoolean('OnlyLogRecheck')) {
+                                                            foreach (json_decode($this->ReadAttributeString('VerificationSensors'), true) as $sensor) {
+                                                                if ($sensor == $SenderID) {
+                                                                    $log = false;
+                                                                }
+                                                            }
+                                                        }
+                                                    }
                                                     $logText = date('d.m.Y, H:i:s') . ', ' . $this->ReadPropertyString('Location') . ', ' . $this->ReadPropertyString('AlarmZoneName') . ', ' . $variable['Designation'] . $text;
-                                                    $this->UpdateAlarmProtocol($logText, 0);
+                                                    if ($log) {
+                                                        $this->UpdateAlarmProtocol($logText, 0);
+                                                    }
                                                 }
                                             }
                                         }
@@ -337,13 +352,17 @@ trait AZ_DoorWindowSensors
      * Verifies the alerting.
      *
      * @param int $SenderID
+     * @param int $TimeStamp
      * @return void
      * @throws Exception
      */
-    public function VerifyOpenDoorWindowStatus(int $SenderID): void
+    public function VerifyOpenDoorWindowStatus(int $SenderID, int $TimeStamp): void
     {
         $this->SendDebug(__FUNCTION__, 'wird ausgeführt', 0);
         $this->SendDebug(__FUNCTION__, 'Sender: ' . $SenderID, 0);
+        $sensors = json_decode($this->ReadAttributeString('VerificationSensors'));
+        $sensors[] = $SenderID;
+        $this->WriteAttributeString('VerificationSensors', json_encode($sensors));
         $delay = $this->ReadPropertyInteger('OpenDoorWindowStatusVerificationDelay') * 1000;
         IPS_Sleep($delay);
         $variables = json_decode($this->ReadPropertyString('DoorWindowSensors'), true);
@@ -356,11 +375,12 @@ trait AZ_DoorWindowSensors
                             $id = $primaryCondition[0]['rules']['variable'][0]['variableID'];
                             if ($id == $SenderID) {
                                 if (!$variable['Use']) {
+                                    $this->RemoveVerificationSensor($SenderID);
                                     return;
                                 }
                                 $open = false;
                                 if (IPS_IsConditionPassing($variable['PrimaryCondition']) && IPS_IsConditionPassing($variable['SecondaryCondition'])) {
-                                    $this->SendDebug(__FUNCTION__, 'Der Status wurde verifiziert. Die Tür oder das Fenster ist geöffnet!', 0);
+                                    $this->SendDebug(__FUNCTION__, 'Der Status wurde erneut geprüft. Die Tür oder das Fenster ist geöffnet!', 0);
                                     $open = true;
                                 }
                                 $mode = $this->GetValue('Mode');
@@ -401,8 +421,13 @@ trait AZ_DoorWindowSensors
                                                 $this->SetValue('AlertingSensor', $variable['Designation']);
                                                 //Protocol
                                                 if ($variable['UseAlarmProtocol']) {
-                                                    $text = ' wurde geöffnet und hat einen Alarm ausgelöst. (ID ' . $SenderID . ')';
-                                                    $logText = date('d.m.Y, H:i:s') . ', ' . $this->ReadPropertyString('Location') . ', ' . $this->ReadPropertyString('AlarmZoneName') . ', ' . $variable['Designation'] . $text;
+                                                    if ($this->ReadPropertyBoolean('OnlyLogRecheck')) {
+                                                        $text = ' wurde geöffnet und hat einen Alarm ausgelöst. (ID ' . $SenderID . ')';
+                                                    } else {
+                                                        $TimeStamp = time();
+                                                        $text = ' ist offen und hat einen Alarm ausgelöst. (ID ' . $SenderID . ')';
+                                                    }
+                                                    $logText = date('d.m.Y, H:i:s', $TimeStamp) . ', ' . $this->ReadPropertyString('Location') . ', ' . $this->ReadPropertyString('AlarmZoneName') . ', ' . $variable['Designation'] . $text;
                                                     $this->UpdateAlarmProtocol($logText, 2);
                                                 }
                                                 //Notification
@@ -445,9 +470,29 @@ trait AZ_DoorWindowSensors
                 }
             }
         }
+        $this->RemoveVerificationSensor($SenderID);
     }
 
     #################### Private
+
+    /**
+     * Removes a sensor from the verification list.
+     *
+     * @param int $SensorID
+     * @return void
+     * @throws Exception
+     */
+    private function RemoveVerificationSensor(int $SensorID): void
+    {
+        $sensors = json_decode($this->ReadAttributeString('VerificationSensors'), true);
+        foreach ($sensors as $key => $sensor) {
+            if ($sensor == $SensorID) {
+                unset($sensors[$key]);
+            }
+        }
+        $sensors = array_values($sensors);
+        $this->WriteAttributeString('VerificationSensors', json_encode($sensors));
+    }
 
     /**
      * Checks the status of the door and window sensors for a specific mode.

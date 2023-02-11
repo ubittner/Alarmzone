@@ -108,85 +108,16 @@ trait AZST_Config
             ]
         ];
 
-        //Functions
+        //Operating modes
         $form['elements'][] = [
             'type'    => 'ExpansionPanel',
-            'caption' => 'Funktionen',
+            'caption' => 'Betriebsarten',
             'items'   => [
-                [
-                    'type'    => 'CheckBox',
-                    'name'    => 'EnableActive',
-                    'caption' => 'Aktiv (Schalter im WebFront)'
-                ],
-                [
-                    'type'    => 'Label',
-                    'caption' => ' '
-                ],
-                [
-                    'type'    => 'Label',
-                    'caption' => 'Bezeichnung',
-                    'bold'    => true,
-                    'italic'  => true,
-                ],
-                [
-                    'type'    => 'CheckBox',
-                    'name'    => 'EnableLocation',
-                    'caption' => 'Standortbezeichnung'
-                ],
-                [
-                    'type'    => 'Label',
-                    'caption' => ' '
-                ],
-                [
-                    'type'    => 'Label',
-                    'caption' => 'Kontrollschalter',
-                    'bold'    => true,
-                    'italic'  => true,
-                ],
-                [
-                    'type'    => 'CheckBox',
-                    'name'    => 'EnableFullProtectionControlSwitch',
-                    'caption' => 'Vollschutz'
-                ],
-                [
-                    'type'    => 'CheckBox',
-                    'name'    => 'EnableHullProtectionControlSwitch',
-                    'caption' => 'Hüllschutz'
-                ],
-                [
-                    'type'    => 'CheckBox',
-                    'name'    => 'EnablePartialProtectionControlSwitch',
-                    'caption' => 'Teilschutz'
-                ],
-                [
-                    'type'    => 'CheckBox',
-                    'name'    => 'EnableIndividualProtectionControlSwitch',
-                    'caption' => 'Individualschutz'
-                ],
-                [
-                    'type'    => 'Label',
-                    'caption' => ' '
-                ],
-                [
-                    'type'    => 'Label',
-                    'caption' => 'Modus',
-                    'bold'    => true,
-                    'italic'  => true,
-                ],
-                [
-                    'type'    => 'CheckBox',
-                    'name'    => 'EnableMode',
-                    'caption' => 'Modus'
-                ],
-                [
-                    'type'    => 'Label',
-                    'caption' => ' '
-                ],
                 [
                     'type'    => 'Label',
                     'caption' => 'Unscharf',
                     'bold'    => true,
-                    'italic'  => true,
+                    'italic'  => true
                 ],
                 [
                     'type'    => 'ValidationTextBox',
@@ -212,7 +143,7 @@ trait AZST_Config
                     'type'    => 'Label',
                     'caption' => 'Vollschutz',
                     'bold'    => true,
-                    'italic'  => true,
+                    'italic'  => true
                 ],
                 [
                     'type'    => 'CheckBox',
@@ -243,7 +174,7 @@ trait AZST_Config
                     'type'    => 'Label',
                     'caption' => 'Hüllschutz',
                     'bold'    => true,
-                    'italic'  => true,
+                    'italic'  => true
                 ],
                 [
                     'type'    => 'CheckBox',
@@ -274,7 +205,7 @@ trait AZST_Config
                     'type'    => 'Label',
                     'caption' => 'Teilschutz',
                     'bold'    => true,
-                    'italic'  => true,
+                    'italic'  => true
                 ],
                 [
                     'type'    => 'CheckBox',
@@ -305,7 +236,7 @@ trait AZST_Config
                     'type'    => 'Label',
                     'caption' => 'Individualschutz',
                     'bold'    => true,
-                    'italic'  => true,
+                    'italic'  => true
                 ],
                 [
                     'type'    => 'CheckBox',
@@ -327,61 +258,6 @@ trait AZST_Config
                     'type'    => 'SelectColor',
                     'name'    => 'IndividualProtectionColor',
                     'caption' => 'Farbe'
-                ],
-                [
-                    'type'    => 'Label',
-                    'caption' => ' '
-                ],
-                [
-                    'type'    => 'Label',
-                    'caption' => 'Status',
-                    'bold'    => true,
-                    'italic'  => true,
-                ],
-                [
-                    'type'    => 'CheckBox',
-                    'name'    => 'EnableSystemState',
-                    'caption' => 'Systemstatus'
-                ],
-                [
-                    'type'    => 'CheckBox',
-                    'name'    => 'EnableSystemDetailedState',
-                    'caption' => 'Detaillierter Systemstatus'
-                ],
-                [
-                    'type'    => 'CheckBox',
-                    'name'    => 'EnableDoorWindowState',
-                    'caption' => 'Tür- und Fensterstatus'
-                ],
-                [
-                    'type'    => 'CheckBox',
-                    'name'    => 'EnableMotionDetectorState',
-                    'caption' => 'Bewegungsmelderstatus'
-                ],
-                [
-                    'type'    => 'CheckBox',
-                    'name'    => 'EnableAlarmState',
-                    'caption' => 'Alarmstatus'
-                ],
-                [
-                    'type'    => 'CheckBox',
-                    'name'    => 'EnableAlertingSensor',
-                    'caption' => 'Auslösender Alarmsensor'
-                ],
-                [
-                    'type'    => 'CheckBox',
-                    'name'    => 'EnableAlarmSirenState',
-                    'caption' => 'Alarmsirene'
-                ],
-                [
-                    'type'    => 'CheckBox',
-                    'name'    => 'EnableAlarmLightState',
-                    'caption' => 'Alarmbeleuchtung'
-                ],
-                [
-                    'type'    => 'CheckBox',
-                    'name'    => 'EnableAlarmCallState',
-                    'caption' => 'Alarmanruf'
                 ]
             ]
         ];
@@ -1177,6 +1053,140 @@ trait AZST_Config
                     'name'     => 'AlarmCallConfigurationButton',
                     'visible'  => false,
                     'objectID' => 0
+                ]
+            ]
+        ];
+
+        //Visualisation
+        $form['elements'][] = [
+            'type'    => 'ExpansionPanel',
+            'caption' => 'Visualisierung',
+            'items'   => [
+                [
+                    'type'    => 'Label',
+                    'caption' => 'Aktiv',
+                    'bold'    => true,
+                    'italic'  => true
+                ],
+                [
+                    'type'    => 'CheckBox',
+                    'name'    => 'EnableActive',
+                    'caption' => 'Aktiv'
+                ],
+                [
+                    'type'    => 'Label',
+                    'caption' => ' '
+                ],
+                [
+                    'type'    => 'Label',
+                    'caption' => 'Bezeichnung',
+                    'bold'    => true,
+                    'italic'  => true
+                ],
+                [
+                    'type'    => 'CheckBox',
+                    'name'    => 'EnableLocation',
+                    'caption' => 'Standortbezeichnung'
+                ],
+                [
+                    'type'    => 'Label',
+                    'caption' => ' '
+                ],
+                [
+                    'type'    => 'Label',
+                    'caption' => 'Kontrollschalter',
+                    'bold'    => true,
+                    'italic'  => true
+                ],
+                [
+                    'type'    => 'CheckBox',
+                    'name'    => 'EnableFullProtectionControlSwitch',
+                    'caption' => 'Vollschutz'
+                ],
+                [
+                    'type'    => 'CheckBox',
+                    'name'    => 'EnableHullProtectionControlSwitch',
+                    'caption' => 'Hüllschutz'
+                ],
+                [
+                    'type'    => 'CheckBox',
+                    'name'    => 'EnablePartialProtectionControlSwitch',
+                    'caption' => 'Teilschutz'
+                ],
+                [
+                    'type'    => 'CheckBox',
+                    'name'    => 'EnableIndividualProtectionControlSwitch',
+                    'caption' => 'Individualschutz'
+                ],
+                [
+                    'type'    => 'Label',
+                    'caption' => ' '
+                ],
+                [
+                    'type'    => 'Label',
+                    'caption' => 'Modus',
+                    'bold'    => true,
+                    'italic'  => true
+                ],
+                [
+                    'type'    => 'CheckBox',
+                    'name'    => 'EnableMode',
+                    'caption' => 'Modus'
+                ],
+                [
+                    'type'    => 'Label',
+                    'caption' => ' '
+                ],
+                [
+                    'type'    => 'Label',
+                    'caption' => 'Status',
+                    'bold'    => true,
+                    'italic'  => true
+                ],
+                [
+                    'type'    => 'CheckBox',
+                    'name'    => 'EnableSystemState',
+                    'caption' => 'Systemstatus'
+                ],
+                [
+                    'type'    => 'CheckBox',
+                    'name'    => 'EnableSystemDetailedState',
+                    'caption' => 'Detaillierter Systemstatus'
+                ],
+                [
+                    'type'    => 'CheckBox',
+                    'name'    => 'EnableDoorWindowState',
+                    'caption' => 'Tür- und Fensterstatus'
+                ],
+                [
+                    'type'    => 'CheckBox',
+                    'name'    => 'EnableMotionDetectorState',
+                    'caption' => 'Bewegungsmelderstatus'
+                ],
+                [
+                    'type'    => 'CheckBox',
+                    'name'    => 'EnableAlarmState',
+                    'caption' => 'Alarmstatus'
+                ],
+                [
+                    'type'    => 'CheckBox',
+                    'name'    => 'EnableAlertingSensor',
+                    'caption' => 'Auslösender Alarmsensor'
+                ],
+                [
+                    'type'    => 'CheckBox',
+                    'name'    => 'EnableAlarmSirenState',
+                    'caption' => 'Alarmsirene'
+                ],
+                [
+                    'type'    => 'CheckBox',
+                    'name'    => 'EnableAlarmLightState',
+                    'caption' => 'Alarmbeleuchtung'
+                ],
+                [
+                    'type'    => 'CheckBox',
+                    'name'    => 'EnableAlarmCallState',
+                    'caption' => 'Alarmanruf'
                 ]
             ]
         ];

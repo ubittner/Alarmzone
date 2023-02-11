@@ -26,7 +26,7 @@ class Alarmzonensteuerung extends IPSModule
     //Constants
     private const MODULE_NAME = 'Alarmzonensteuerung';
     private const MODULE_PREFIX = 'AZST';
-    private const MODULE_VERSION = '7.0-5, 08.02.2023';
+    private const MODULE_VERSION = '7.0-6, 11.02.2023';
     private const ALARMZONE_MODULE_GUID = '{127AB08D-CD10-801D-D419-442CDE6E5C61}';
 
     public function Create()
@@ -36,20 +36,16 @@ class Alarmzonensteuerung extends IPSModule
 
         ########## Properties
 
-        //Info
+        ##### Info
+
         $this->RegisterPropertyString('Note', '');
 
-        //Designations
+        ##### Designations
+
         $this->RegisterPropertyString('Location', '');
 
-        //Functions
-        $this->RegisterPropertyBoolean('EnableActive', false);
-        $this->RegisterPropertyBoolean('EnableLocation', true);
-        $this->RegisterPropertyBoolean('EnableFullProtectionControlSwitch', true);
-        $this->RegisterPropertyBoolean('EnableHullProtectionControlSwitch', true);
-        $this->RegisterPropertyBoolean('EnablePartialProtectionControlSwitch', true);
-        $this->RegisterPropertyBoolean('EnableIndividualProtectionControlSwitch', true);
-        $this->RegisterPropertyBoolean('EnableMode', true);
+        ##### Operating modes
+
         $this->RegisterPropertyString('DisarmedName', 'Unscharf');
         $this->RegisterPropertyString('DisarmedIcon', 'Warning');
         $this->RegisterPropertyInteger('DisarmedColor', 65280);
@@ -69,20 +65,13 @@ class Alarmzonensteuerung extends IPSModule
         $this->RegisterPropertyString('IndividualProtectionName', 'Individualschutz');
         $this->RegisterPropertyString('IndividualProtectionIcon', 'Eyes');
         $this->RegisterPropertyInteger('IndividualProtectionColor', 16749824);
-        $this->RegisterPropertyBoolean('EnableSystemState', true);
-        $this->RegisterPropertyBoolean('EnableSystemDetailedState', false);
-        $this->RegisterPropertyBoolean('EnableDoorWindowState', true);
-        $this->RegisterPropertyBoolean('EnableMotionDetectorState', true);
-        $this->RegisterPropertyBoolean('EnableAlarmState', true);
-        $this->RegisterPropertyBoolean('EnableAlertingSensor', true);
-        $this->RegisterPropertyBoolean('EnableAlarmSirenState', false);
-        $this->RegisterPropertyBoolean('EnableAlarmLightState', false);
-        $this->RegisterPropertyBoolean('EnableAlarmCallState', false);
 
-        //Alarm zones
+        ##### Alarm zones
+
         $this->RegisterPropertyString('AlarmZones', '[]');
 
-        //Trigger
+        ##### Trigger
+
         $this->RegisterPropertyString('ProtectionMode', '[]');
         $this->RegisterPropertyString('SystemState', '[]');
         $this->RegisterPropertyString('SystemDetailedState', '[]');
@@ -93,6 +82,25 @@ class Alarmzonensteuerung extends IPSModule
         $this->RegisterPropertyString('AlarmSiren', '[]');
         $this->RegisterPropertyString('AlarmLight', '[]');
         $this->RegisterPropertyString('AlarmCall', '[]');
+
+        ##### Visualisation
+
+        $this->RegisterPropertyBoolean('EnableActive', false);
+        $this->RegisterPropertyBoolean('EnableLocation', true);
+        $this->RegisterPropertyBoolean('EnableFullProtectionControlSwitch', true);
+        $this->RegisterPropertyBoolean('EnableHullProtectionControlSwitch', true);
+        $this->RegisterPropertyBoolean('EnablePartialProtectionControlSwitch', true);
+        $this->RegisterPropertyBoolean('EnableIndividualProtectionControlSwitch', true);
+        $this->RegisterPropertyBoolean('EnableMode', true);
+        $this->RegisterPropertyBoolean('EnableSystemState', true);
+        $this->RegisterPropertyBoolean('EnableSystemDetailedState', false);
+        $this->RegisterPropertyBoolean('EnableDoorWindowState', true);
+        $this->RegisterPropertyBoolean('EnableMotionDetectorState', true);
+        $this->RegisterPropertyBoolean('EnableAlarmState', true);
+        $this->RegisterPropertyBoolean('EnableAlertingSensor', true);
+        $this->RegisterPropertyBoolean('EnableAlarmSirenState', false);
+        $this->RegisterPropertyBoolean('EnableAlarmLightState', false);
+        $this->RegisterPropertyBoolean('EnableAlarmCallState', false);
 
         ########## Variables
 

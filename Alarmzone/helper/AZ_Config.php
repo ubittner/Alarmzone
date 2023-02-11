@@ -146,85 +146,16 @@ trait AZ_Config
             ]
         ];
 
-        //Functions
+        //Operating modes
         $form['elements'][] = [
             'type'    => 'ExpansionPanel',
-            'caption' => 'Funktionen',
+            'caption' => 'Betriebsarten',
             'items'   => [
-                [
-                    'type'    => 'CheckBox',
-                    'name'    => 'EnableActive',
-                    'caption' => 'Aktiv (Schalter im WebFront)'
-                ],
-                [
-                    'type'    => 'Label',
-                    'caption' => ' '
-                ],
-                [
-                    'type'    => 'Label',
-                    'caption' => 'Bezeichnungen',
-                    'bold'    => true,
-                    'italic'  => true,
-                ],
-                [
-                    'type'    => 'CheckBox',
-                    'name'    => 'EnableLocation',
-                    'caption' => 'Standortbezeichnung'
-                ],
-                [
-                    'type'    => 'CheckBox',
-                    'name'    => 'EnableAlarmZoneName',
-                    'caption' => 'Alarmzonenbezeichnung'
-                ],
-                [
-                    'type'    => 'Label',
-                    'caption' => ' '
-                ],
-                [
-                    'type'    => 'Label',
-                    'caption' => 'Kontrollschalter',
-                    'bold'    => true,
-                    'italic'  => true,
-                ],
-                [
-                    'type'    => 'CheckBox',
-                    'name'    => 'EnableFullProtectionControlSwitch',
-                    'caption' => 'Vollschutz'
-                ],
-                [
-                    'type'    => 'CheckBox',
-                    'name'    => 'EnableHullProtectionControlSwitch',
-                    'caption' => 'Hüllschutz'
-                ],
-                [
-                    'type'    => 'CheckBox',
-                    'name'    => 'EnablePartialProtectionControlSwitch',
-                    'caption' => 'Teilschutz'
-                ],
-                [
-                    'type'    => 'Label',
-                    'caption' => ' '
-                ],
-                [
-                    'type'    => 'Label',
-                    'caption' => 'Modus',
-                    'bold'    => true,
-                    'italic'  => true,
-                ],
-                [
-                    'type'    => 'CheckBox',
-                    'name'    => 'EnableMode',
-                    'caption' => 'Modus'
-                ],
-                [
-                    'type'    => 'Label',
-                    'caption' => ' '
-                ],
                 [
                     'type'    => 'Label',
                     'caption' => 'Unscharf',
                     'bold'    => true,
-                    'italic'  => true,
+                    'italic'  => true
                 ],
                 [
                     'type'    => 'ValidationTextBox',
@@ -250,7 +181,7 @@ trait AZ_Config
                     'type'    => 'Label',
                     'caption' => 'Vollschutz',
                     'bold'    => true,
-                    'italic'  => true,
+                    'italic'  => true
                 ],
                 [
                     'type'    => 'CheckBox',
@@ -281,7 +212,7 @@ trait AZ_Config
                     'type'    => 'Label',
                     'caption' => 'Hüllschutz',
                     'bold'    => true,
-                    'italic'  => true,
+                    'italic'  => true
                 ],
                 [
                     'type'    => 'CheckBox',
@@ -312,7 +243,7 @@ trait AZ_Config
                     'type'    => 'Label',
                     'caption' => 'Teilschutz',
                     'bold'    => true,
-                    'italic'  => true,
+                    'italic'  => true
                 ],
                 [
                     'type'    => 'CheckBox',
@@ -334,108 +265,6 @@ trait AZ_Config
                     'type'    => 'SelectColor',
                     'name'    => 'PartialProtectionColor',
                     'caption' => 'Farbe'
-                ],
-                [
-                    'type'    => 'Label',
-                    'caption' => ' '
-                ],
-                [
-                    'type'    => 'Label',
-                    'caption' => 'Status',
-                    'bold'    => true,
-                    'italic'  => true,
-                ],
-                [
-                    'type'    => 'CheckBox',
-                    'name'    => 'EnableAlarmZoneState',
-                    'caption' => 'Alarmzonenstatus'
-                ],
-                [
-                    'type'    => 'CheckBox',
-                    'name'    => 'EnableAlarmZoneDetailedState',
-                    'caption' => 'Detaillierter Alarmzonenstatus'
-                ],
-                [
-                    'type'    => 'CheckBox',
-                    'name'    => 'EnableDoorWindowState',
-                    'caption' => 'Tür- und Fensterstatus'
-                ],
-                [
-                    'type'    => 'CheckBox',
-                    'name'    => 'EnableMotionDetectorState',
-                    'caption' => 'Bewegungsmelderstatus'
-                ],
-                [
-                    'type'    => 'CheckBox',
-                    'name'    => 'EnableAlarmState',
-                    'caption' => 'Alarmstatus'
-                ],
-                [
-                    'type'    => 'CheckBox',
-                    'name'    => 'EnableAlertingSensor',
-                    'caption' => 'Auslösender Alarmsensor'
-                ],
-                [
-                    'type'    => 'CheckBox',
-                    'name'    => 'EnableAlarmSirenState',
-                    'caption' => 'Alarmsirene'
-                ],
-                [
-                    'type'    => 'CheckBox',
-                    'name'    => 'EnableAlarmLightState',
-                    'caption' => 'Alarmbeleuchtung'
-                ],
-                [
-                    'type'    => 'CheckBox',
-                    'name'    => 'EnableAlarmCallState',
-                    'caption' => 'Alarmanruf'
-                ],
-                [
-                    'type'    => 'Label',
-                    'caption' => ' '
-                ],
-                [
-                    'type'    => 'Label',
-                    'caption' => 'Statusüberprüfung',
-                    'bold'    => true,
-                    'italic'  => true,
-                ],
-                [
-                    'type'    => 'CheckBox',
-                    'name'    => 'VerifyOpenDoorWindowStatus',
-                    'caption' => 'Geöffnete Türen und Fenster bei aktivierter Alarmanlage verifizieren'
-                ],
-                [
-                    'type'    => 'NumberSpinner',
-                    'name'    => 'OpenDoorWindowStatusVerificationDelay',
-                    'caption' => 'Verzögerung',
-                    'suffix'  => 'Sekunden',
-                    'minimum' => 1,
-                    'maximum' => 5
-                ],
-
-            ]
-        ];
-
-        //Activation check
-        $form['elements'][] = [
-            'type'    => 'ExpansionPanel',
-            'caption' => 'Aktivierungsprüfung',
-            'items'   => [
-                [
-                    'type'    => 'CheckBox',
-                    'name'    => 'CheckFullProtectionModeActivation',
-                    'caption' => 'Vollschutz'
-                ],
-                [
-                    'type'    => 'CheckBox',
-                    'name'    => 'CheckHullProtectionModeActivation',
-                    'caption' => 'Hüllschutz'
-                ],
-                [
-                    'type'    => 'CheckBox',
-                    'name'    => 'CheckPartialProtectionModeActivation',
-                    'caption' => 'Teilschutz'
                 ]
             ]
         ];
@@ -468,6 +297,29 @@ trait AZ_Config
                     'suffix'  => 'Sekunden',
                     'minimum' => 0,
                     'maximum' => 60
+                ]
+            ]
+        ];
+
+        //Activation check
+        $form['elements'][] = [
+            'type'    => 'ExpansionPanel',
+            'caption' => 'Aktivierungsprüfung',
+            'items'   => [
+                [
+                    'type'    => 'CheckBox',
+                    'name'    => 'CheckFullProtectionModeActivation',
+                    'caption' => 'Vollschutz'
+                ],
+                [
+                    'type'    => 'CheckBox',
+                    'name'    => 'CheckHullProtectionModeActivation',
+                    'caption' => 'Hüllschutz'
+                ],
+                [
+                    'type'    => 'CheckBox',
+                    'name'    => 'CheckPartialProtectionModeActivation',
+                    'caption' => 'Teilschutz'
                 ]
             ]
         ];
@@ -598,6 +450,7 @@ trait AZ_Config
                     [
                         'type'     => 'List',
                         'name'     => 'DoorWindowSensors',
+                        'caption'  => 'Tür- und Fenstersensoren',
                         'rowCount' => 15,
                         'add'      => true,
                         'delete'   => true,
@@ -1033,6 +886,32 @@ trait AZ_Config
                 ]
             ];
 
+        //Status verification
+        $form['elements'][] = [
+            'type'    => 'ExpansionPanel',
+            'caption' => 'Statusüberprüfung',
+            'items'   => [
+                [
+                    'type'    => 'CheckBox',
+                    'name'    => 'VerifyOpenDoorWindowStatus',
+                    'caption' => 'Geöffnete Türen und Fenster bei aktivierter Alarmanlage erneut prüfen'
+                ],
+                [
+                    'type'    => 'NumberSpinner',
+                    'name'    => 'OpenDoorWindowStatusVerificationDelay',
+                    'caption' => 'Erneut prüfen nach',
+                    'suffix'  => 'Sekunden',
+                    'minimum' => 1,
+                    'maximum' => 5
+                ],
+                [
+                    'type'    => 'CheckBox',
+                    'name'    => 'OnlyLogRecheck',
+                    'caption' => 'Nur erneute Überprüfung protokollieren'
+                ]
+            ]
+        ];
+
         //Motion detectors
         $motionDetectorsValues = [];
         $variables = json_decode($this->ReadPropertyString('MotionDetectors'), true);
@@ -1137,6 +1016,7 @@ trait AZ_Config
                     [
                         'type'     => 'List',
                         'name'     => 'MotionDetectors',
+                        'caption'  => 'Bewegungsmelder',
                         'rowCount' => 10,
                         'add'      => true,
                         'delete'   => true,
@@ -7922,6 +7802,140 @@ trait AZ_Config
                             ]
                         ]
                     ]
+                ]
+            ]
+        ];
+
+        //Visualisation
+        $form['elements'][] = [
+            'type'    => 'ExpansionPanel',
+            'caption' => 'Visualisierung',
+            'items'   => [
+                [
+                    'type'    => 'Label',
+                    'caption' => 'Aktiv',
+                    'bold'    => true,
+                    'italic'  => true
+                ],
+                [
+                    'type'    => 'CheckBox',
+                    'name'    => 'EnableActive',
+                    'caption' => 'Aktiv'
+                ],
+                [
+                    'type'    => 'Label',
+                    'caption' => ' '
+                ],
+                [
+                    'type'    => 'Label',
+                    'caption' => 'Bezeichnungen',
+                    'bold'    => true,
+                    'italic'  => true
+                ],
+                [
+                    'type'    => 'CheckBox',
+                    'name'    => 'EnableLocation',
+                    'caption' => 'Standortbezeichnung'
+                ],
+                [
+                    'type'    => 'CheckBox',
+                    'name'    => 'EnableAlarmZoneName',
+                    'caption' => 'Alarmzonenbezeichnung'
+                ],
+                [
+                    'type'    => 'Label',
+                    'caption' => ' '
+                ],
+                [
+                    'type'    => 'Label',
+                    'caption' => 'Kontrollschalter',
+                    'bold'    => true,
+                    'italic'  => true
+                ],
+                [
+                    'type'    => 'CheckBox',
+                    'name'    => 'EnableFullProtectionControlSwitch',
+                    'caption' => 'Vollschutz'
+                ],
+                [
+                    'type'    => 'CheckBox',
+                    'name'    => 'EnableHullProtectionControlSwitch',
+                    'caption' => 'Hüllschutz'
+                ],
+                [
+                    'type'    => 'CheckBox',
+                    'name'    => 'EnablePartialProtectionControlSwitch',
+                    'caption' => 'Teilschutz'
+                ],
+                [
+                    'type'    => 'Label',
+                    'caption' => ' '
+                ],
+                [
+                    'type'    => 'Label',
+                    'caption' => 'Modus',
+                    'bold'    => true,
+                    'italic'  => true
+                ],
+                [
+                    'type'    => 'CheckBox',
+                    'name'    => 'EnableMode',
+                    'caption' => 'Modus'
+                ],
+                [
+                    'type'    => 'Label',
+                    'caption' => ' '
+                ],
+                [
+                    'type'    => 'Label',
+                    'caption' => 'Status',
+                    'bold'    => true,
+                    'italic'  => true
+                ],
+                [
+                    'type'    => 'CheckBox',
+                    'name'    => 'EnableAlarmZoneState',
+                    'caption' => 'Alarmzonenstatus'
+                ],
+                [
+                    'type'    => 'CheckBox',
+                    'name'    => 'EnableAlarmZoneDetailedState',
+                    'caption' => 'Detaillierter Alarmzonenstatus'
+                ],
+                [
+                    'type'    => 'CheckBox',
+                    'name'    => 'EnableDoorWindowState',
+                    'caption' => 'Tür- und Fensterstatus'
+                ],
+                [
+                    'type'    => 'CheckBox',
+                    'name'    => 'EnableMotionDetectorState',
+                    'caption' => 'Bewegungsmelderstatus'
+                ],
+                [
+                    'type'    => 'CheckBox',
+                    'name'    => 'EnableAlarmState',
+                    'caption' => 'Alarmstatus'
+                ],
+                [
+                    'type'    => 'CheckBox',
+                    'name'    => 'EnableAlertingSensor',
+                    'caption' => 'Auslösender Alarmsensor'
+                ],
+                [
+                    'type'    => 'CheckBox',
+                    'name'    => 'EnableAlarmSirenState',
+                    'caption' => 'Alarmsirene'
+                ],
+                [
+                    'type'    => 'CheckBox',
+                    'name'    => 'EnableAlarmLightState',
+                    'caption' => 'Alarmbeleuchtung'
+                ],
+                [
+                    'type'    => 'CheckBox',
+                    'name'    => 'EnableAlarmCallState',
+                    'caption' => 'Alarmanruf'
                 ]
             ]
         ];
