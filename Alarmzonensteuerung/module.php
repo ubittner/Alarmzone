@@ -26,7 +26,7 @@ class Alarmzonensteuerung extends IPSModule
     //Constants
     private const MODULE_NAME = 'Alarmzonensteuerung';
     private const MODULE_PREFIX = 'AZST';
-    private const MODULE_VERSION = '7.0-6, 11.02.2023';
+    private const MODULE_VERSION = '7.0-7, 08.06.2023';
     private const ALARMZONE_MODULE_GUID = '{127AB08D-CD10-801D-D419-442CDE6E5C61}';
 
     public function Create()
@@ -46,25 +46,49 @@ class Alarmzonensteuerung extends IPSModule
 
         ##### Operating modes
 
-        $this->RegisterPropertyString('DisarmedName', 'Unscharf');
+        //Disarmed
         $this->RegisterPropertyString('DisarmedIcon', 'Warning');
+        $this->RegisterPropertyString('DisarmedName', 'Unscharf');
         $this->RegisterPropertyInteger('DisarmedColor', 65280);
+        $this->RegisterPropertyBoolean('UseDisarmedAction', false);
+        $parameters = '{"actionID":"{346AA8C1-30E0-1663-78EF-93EFADFAC650}","parameters":{"SCRIPT":"<?php\n\n//Quittungston\n$id = 12345;\nASIRHMIP_ExecuteSignaling($id, 16, 2, 0, 10);","ENVIRONMENT":"Default","PARENT":' . $this->InstanceID . ',"TARGET":' . $this->InstanceID . '}}';
+        $this->RegisterPropertyString('DisarmedAction', $parameters);
+
+        //Full protection
         $this->RegisterPropertyBoolean('UseFullProtectionMode', true);
-        $this->RegisterPropertyString('FullProtectionName', 'Vollschutz');
         $this->RegisterPropertyString('FullProtectionIcon', 'Basement');
+        $this->RegisterPropertyString('FullProtectionName', 'Vollschutz');
         $this->RegisterPropertyInteger('FullProtectionColor', 16711680);
+        $this->RegisterPropertyBoolean('UseFullProtectionAction', false);
+        $parameters = '{"actionID":"{346AA8C1-30E0-1663-78EF-93EFADFAC650}","parameters":{"SCRIPT":"<?php\n\n//Quittungston\n$id = 12345;\nASIRHMIP_ExecuteSignaling($id, 17, 3, 0, 10);","ENVIRONMENT":"Default","PARENT":' . $this->InstanceID . ',"TARGET":' . $this->InstanceID . '}}';
+        $this->RegisterPropertyString('FullProtectionAction', $parameters);
+
+        //Hull protection
         $this->RegisterPropertyBoolean('UseHullProtectionMode', false);
-        $this->RegisterPropertyString('HullProtectionName', 'Hüllschutz');
         $this->RegisterPropertyString('HullProtectionIcon', 'Presence');
+        $this->RegisterPropertyString('HullProtectionName', 'Hüllschutz');
         $this->RegisterPropertyInteger('HullProtectionColor', 16776960);
+        $this->RegisterPropertyBoolean('UseHullProtectionAction', false);
+        $parameters = '{"actionID":"{346AA8C1-30E0-1663-78EF-93EFADFAC650}","parameters":{"SCRIPT":"<?php\n\n//Quittungston\n$id = 12345;\nASIRHMIP_ExecuteSignaling($id, 17, 3, 0, 10);","ENVIRONMENT":"Default","PARENT":' . $this->InstanceID . ',"TARGET":' . $this->InstanceID . '}}';
+        $this->RegisterPropertyString('HullProtectionAction', $parameters);
+
+        //Partial protection
         $this->RegisterPropertyBoolean('UsePartialProtectionMode', false);
-        $this->RegisterPropertyString('PartialProtectionName', 'Teilschutz');
         $this->RegisterPropertyString('PartialProtectionIcon', 'Moon');
+        $this->RegisterPropertyString('PartialProtectionName', 'Teilschutz');
         $this->RegisterPropertyInteger('PartialProtectionColor', 255);
+        $this->RegisterPropertyBoolean('UsePartialProtectionAction', false);
+        $parameters = '{"actionID":"{346AA8C1-30E0-1663-78EF-93EFADFAC650}","parameters":{"SCRIPT":"<?php\n\n//Quittungston\n$id = 12345;\nASIRHMIP_ExecuteSignaling($id, 17, 3, 0, 10);","ENVIRONMENT":"Default","PARENT":' . $this->InstanceID . ',"TARGET":' . $this->InstanceID . '}}';
+        $this->RegisterPropertyString('PartialProtectionAction', $parameters);
+
+        //Individual protection
         $this->RegisterPropertyBoolean('UseIndividualProtectionMode', false);
-        $this->RegisterPropertyString('IndividualProtectionName', 'Individualschutz');
         $this->RegisterPropertyString('IndividualProtectionIcon', 'Eyes');
+        $this->RegisterPropertyString('IndividualProtectionName', 'Individualschutz');
         $this->RegisterPropertyInteger('IndividualProtectionColor', 16749824);
+        $this->RegisterPropertyBoolean('UseIndividualProtectionAction', false);
+        $parameters = '{"actionID":"{346AA8C1-30E0-1663-78EF-93EFADFAC650}","parameters":{"SCRIPT":"<?php\n\n//Quittungston\n$id = 12345;\nASIRHMIP_ExecuteSignaling($id, 17, 3, 0, 10);","ENVIRONMENT":"Default","PARENT":' . $this->InstanceID . ',"TARGET":' . $this->InstanceID . '}}';
+        $this->RegisterPropertyString('IndividualProtectionAction', $parameters);
 
         ##### Alarm zones
 

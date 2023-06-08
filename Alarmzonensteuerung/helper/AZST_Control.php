@@ -280,6 +280,84 @@ trait AZST_Control
         $this->WriteAttributeBoolean('DisableUpdateMode', false);
         $this->UpdateSystemState();
         $this->UpdateSystemDetailedState();
+
+        //Action
+        $executeAction = false;
+        $action = [];
+        switch ($Mode) {
+            case 0:
+                switch ($SenderID) {
+                    case $this->GetIDForIdent('FullProtectionControlSwitch'):
+                    case $this->GetIDForIdent('HullProtectionControlSwitch'):
+                    case $this->GetIDForIdent('PartialProtectionControlSwitch'):
+                    case $this->GetIDForIdent('IndividualProtectionControlSwitch'):
+                    case $this->GetIDForIdent('Mode'):
+                        if ($this->ReadPropertyBoolean('UseDisarmedAction')) {
+                            $executeAction = true;
+                            $action = json_decode($this->ReadPropertyString('DisarmedAction'), true);
+                        }
+                        break;
+
+                }
+                break;
+
+            case 1:
+                switch ($SenderID) {
+                    case $this->GetIDForIdent('FullProtectionControlSwitch'):
+                    case $this->GetIDForIdent('Mode'):
+                        if ($this->ReadPropertyBoolean('UseFullProtectionAction')) {
+                            $executeAction = true;
+                            $action = json_decode($this->ReadPropertyString('FullProtectionAction'), true);
+                        }
+                        break;
+
+                }
+                break;
+
+            case 2:
+                switch ($SenderID) {
+                    case $this->GetIDForIdent('HullProtectionControlSwitch'):
+                    case $this->GetIDForIdent('Mode'):
+                        if ($this->ReadPropertyBoolean('UseHullProtectionAction')) {
+                            $executeAction = true;
+                            $action = json_decode($this->ReadPropertyString('HullProtectionAction'), true);
+                        }
+                        break;
+
+                }
+                break;
+
+            case 3:
+                switch ($SenderID) {
+                    case $this->GetIDForIdent('PartialProtectionControlSwitch'):
+                    case $this->GetIDForIdent('Mode'):
+                        if ($this->ReadPropertyBoolean('UsePartialProtectionAction')) {
+                            $executeAction = true;
+                            $action = json_decode($this->ReadPropertyString('PartialProtectionAction'), true);
+                        }
+                        break;
+
+                }
+                break;
+
+            case 4:
+                switch ($SenderID) {
+                    case $this->GetIDForIdent('IndividualProtectionControlSwitch'):
+                    case $this->GetIDForIdent('Mode'):
+                        if ($this->ReadPropertyBoolean('UseIndividualProtectionAction')) {
+                            $executeAction = true;
+                            $action = json_decode($this->ReadPropertyString('IndividualProtectionAction'), true);
+                        }
+                        break;
+
+                }
+                break;
+
+        }
+        if ($executeAction && !empty($action)) {
+            $this->SendDebug(__FUNCTION__, 'Aktion: ' . json_encode($action), 0);
+            IPS_RunAction($action['actionID'], $action['parameters']);
+        }
         return $result;
     }
 }

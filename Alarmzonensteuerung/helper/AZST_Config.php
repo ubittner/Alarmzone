@@ -120,20 +120,47 @@ trait AZST_Config
                     'italic'  => true
                 ],
                 [
-                    'type'    => 'ValidationTextBox',
-                    'name'    => 'DisarmedName',
-                    'caption' => 'Bezeichnung',
-                    'width'   => '600px'
+                    'type'  => 'RowLayout',
+                    'items' => [
+                        [
+                            'type'    => 'SelectIcon',
+                            'name'    => 'DisarmedIcon',
+                            'caption' => 'Icon'
+                        ],
+                        [
+                            'type'    => 'Label',
+                            'caption' => ' '
+                        ],
+                        [
+                            'type'    => 'ValidationTextBox',
+                            'name'    => 'DisarmedName',
+                            'caption' => 'Bezeichnung'
+                        ],
+                        [
+                            'type'    => 'Label',
+                            'caption' => ' '
+                        ],
+                        [
+                            'type'    => 'SelectColor',
+                            'name'    => 'DisarmedColor',
+                            'caption' => 'Farbe'
+                        ]
+                    ]
                 ],
                 [
-                    'type'    => 'SelectIcon',
-                    'name'    => 'DisarmedIcon',
-                    'caption' => 'Icon'
-                ],
-                [
-                    'type'    => 'SelectColor',
-                    'name'    => 'DisarmedColor',
-                    'caption' => 'Farbe'
+                    'type'    => 'ExpansionPanel',
+                    'caption' => 'Aktion',
+                    'items'   => [
+                        [
+                            'type'    => 'CheckBox',
+                            'name'    => 'UseDisarmedAction',
+                            'caption' => 'Ausführen'
+                        ],
+                        [
+                            'type' => 'SelectAction',
+                            'name' => 'DisarmedAction'
+                        ]
+                    ]
                 ],
                 [
                     'type'    => 'Label',
@@ -151,20 +178,47 @@ trait AZST_Config
                     'caption' => 'Vollschutz'
                 ],
                 [
-                    'type'    => 'ValidationTextBox',
-                    'name'    => 'FullProtectionName',
-                    'caption' => 'Bezeichnung',
-                    'width'   => '600px'
+                    'type'  => 'RowLayout',
+                    'items' => [
+                        [
+                            'type'    => 'SelectIcon',
+                            'name'    => 'FullProtectionIcon',
+                            'caption' => 'Icon'
+                        ],
+                        [
+                            'type'    => 'Label',
+                            'caption' => ' '
+                        ],
+                        [
+                            'type'    => 'ValidationTextBox',
+                            'name'    => 'FullProtectionName',
+                            'caption' => 'Bezeichnung'
+                        ],
+                        [
+                            'type'    => 'Label',
+                            'caption' => ' '
+                        ],
+                        [
+                            'type'    => 'SelectColor',
+                            'name'    => 'FullProtectionColor',
+                            'caption' => 'Farbe'
+                        ]
+                    ]
                 ],
                 [
-                    'type'    => 'SelectIcon',
-                    'name'    => 'FullProtectionIcon',
-                    'caption' => 'Icon'
-                ],
-                [
-                    'type'    => 'SelectColor',
-                    'name'    => 'FullProtectionColor',
-                    'caption' => 'Farbe'
+                    'type'    => 'ExpansionPanel',
+                    'caption' => 'Aktion',
+                    'items'   => [
+                        [
+                            'type'    => 'CheckBox',
+                            'name'    => 'UseFullProtectionAction',
+                            'caption' => 'Ausführen'
+                        ],
+                        [
+                            'type' => 'SelectAction',
+                            'name' => 'FullProtectionAction'
+                        ]
+                    ]
                 ],
                 [
                     'type'    => 'Label',
@@ -182,20 +236,48 @@ trait AZST_Config
                     'caption' => 'Hüllschutz'
                 ],
                 [
-                    'type'    => 'ValidationTextBox',
-                    'name'    => 'HullProtectionName',
-                    'caption' => 'Hüllschutz',
-                    'width'   => '600px'
+                    'type'  => 'RowLayout',
+                    'items' => [
+                        [
+                            'type'    => 'SelectIcon',
+                            'name'    => 'HullProtectionIcon',
+                            'caption' => 'Icon'
+                        ],
+                        [
+                            'type'    => 'Label',
+                            'caption' => ' '
+                        ],
+                        [
+                            'type'    => 'ValidationTextBox',
+                            'name'    => 'HullProtectionName',
+                            'caption' => 'Hüllschutz'
+
+                        ],
+                        [
+                            'type'    => 'Label',
+                            'caption' => ' '
+                        ],
+                        [
+                            'type'    => 'SelectColor',
+                            'name'    => 'HullProtectionColor',
+                            'caption' => 'Farbe'
+                        ]
+                    ]
                 ],
                 [
-                    'type'    => 'SelectIcon',
-                    'name'    => 'HullProtectionIcon',
-                    'caption' => 'Icon'
-                ],
-                [
-                    'type'    => 'SelectColor',
-                    'name'    => 'HullProtectionColor',
-                    'caption' => 'Farbe'
+                    'type'    => 'ExpansionPanel',
+                    'caption' => 'Aktion',
+                    'items'   => [
+                        [
+                            'type'    => 'CheckBox',
+                            'name'    => 'UseHullProtectionAction',
+                            'caption' => 'Ausführen'
+                        ],
+                        [
+                            'type' => 'SelectAction',
+                            'name' => 'HullProtectionAction'
+                        ]
+                    ]
                 ],
                 [
                     'type'    => 'Label',
@@ -213,20 +295,47 @@ trait AZST_Config
                     'caption' => 'Teilschutz'
                 ],
                 [
-                    'type'    => 'ValidationTextBox',
-                    'name'    => 'PartialProtectionName',
-                    'caption' => 'Teilschutz',
-                    'width'   => '600px'
+                    'type'  => 'RowLayout',
+                    'items' => [
+                        [
+                            'type'    => 'SelectIcon',
+                            'name'    => 'PartialProtectionIcon',
+                            'caption' => 'Icon'
+                        ],
+                        [
+                            'type'    => 'Label',
+                            'caption' => ' '
+                        ],
+                        [
+                            'type'    => 'ValidationTextBox',
+                            'name'    => 'PartialProtectionName',
+                            'caption' => 'Teilschutz'
+                        ],
+                        [
+                            'type'    => 'Label',
+                            'caption' => ' '
+                        ],
+                        [
+                            'type'    => 'SelectColor',
+                            'name'    => 'PartialProtectionColor',
+                            'caption' => 'Farbe'
+                        ]
+                    ]
                 ],
                 [
-                    'type'    => 'SelectIcon',
-                    'name'    => 'PartialProtectionIcon',
-                    'caption' => 'Icon'
-                ],
-                [
-                    'type'    => 'SelectColor',
-                    'name'    => 'PartialProtectionColor',
-                    'caption' => 'Farbe'
+                    'type'    => 'ExpansionPanel',
+                    'caption' => 'Aktion',
+                    'items'   => [
+                        [
+                            'type'    => 'CheckBox',
+                            'name'    => 'UsePartialProtectionAction',
+                            'caption' => 'Ausführen'
+                        ],
+                        [
+                            'type' => 'SelectAction',
+                            'name' => 'PartialProtectionAction'
+                        ]
+                    ]
                 ],
                 [
                     'type'    => 'Label',
@@ -244,20 +353,47 @@ trait AZST_Config
                     'caption' => 'Individualschutz'
                 ],
                 [
-                    'type'    => 'ValidationTextBox',
-                    'name'    => 'IndividualProtectionName',
-                    'caption' => 'Individualschutz',
-                    'width'   => '600px'
+                    'type'  => 'RowLayout',
+                    'items' => [
+                        [
+                            'type'    => 'SelectIcon',
+                            'name'    => 'IndividualProtectionIcon',
+                            'caption' => 'Icon'
+                        ],
+                        [
+                            'type'    => 'Label',
+                            'caption' => ' '
+                        ],
+                        [
+                            'type'    => 'ValidationTextBox',
+                            'name'    => 'IndividualProtectionName',
+                            'caption' => 'Individualschutz'
+                        ],
+                        [
+                            'type'    => 'Label',
+                            'caption' => ' '
+                        ],
+                        [
+                            'type'    => 'SelectColor',
+                            'name'    => 'IndividualProtectionColor',
+                            'caption' => 'Farbe'
+                        ]
+                    ]
                 ],
                 [
-                    'type'    => 'SelectIcon',
-                    'name'    => 'IndividualProtectionIcon',
-                    'caption' => 'Icon'
-                ],
-                [
-                    'type'    => 'SelectColor',
-                    'name'    => 'IndividualProtectionColor',
-                    'caption' => 'Farbe'
+                    'type'    => 'ExpansionPanel',
+                    'caption' => 'Aktion',
+                    'items'   => [
+                        [
+                            'type'    => 'CheckBox',
+                            'name'    => 'UseIndividualProtectionAction',
+                            'caption' => 'Ausführen'
+                        ],
+                        [
+                            'type' => 'SelectAction',
+                            'name' => 'IndividualProtectionAction'
+                        ]
+                    ]
                 ]
             ]
         ];
@@ -1054,6 +1190,96 @@ trait AZST_Config
                     'visible'  => false,
                     'objectID' => 0
                 ]
+            ]
+        ];
+
+        //Tone acknowledgement
+        $form['elements'][] = [
+            'type'    => 'ExpansionPanel',
+            'caption' => 'Aktionen',
+            'items'   => [
+                [
+                    'type'    => 'Label',
+                    'caption' => 'Unscharf',
+                    'bold'    => true,
+                    'italic'  => true
+                ],
+                /*
+                [
+                    'type' => 'CheckBox',
+                    'name' => 'UseDisarmedAction',
+                    'caption' => 'Aktion'
+                ],
+                [
+                    'type' => 'SelectAction',
+                    'name' => 'DisarmedAction'
+                ],
+                 */
+                [
+                    'type'    => 'Label',
+                    'caption' => ' '
+                ],
+                [
+                    'type'    => 'Label',
+                    'caption' => 'Scharf',
+                    'bold'    => true,
+                    'italic'  => true
+                ],
+                [
+                    'type'    => 'CheckBox',
+                    'name'    => 'UseArmedAction',
+                    'caption' => 'Aktion'
+                ],
+                [
+                    'type' => 'SelectAction',
+                    'name' => 'ArmedAction'
+                ],
+                /*
+                [
+                    'type' => 'ExpansionPanel',
+                    'caption' => 'Unscharf',
+                    'items' => [
+                        [
+                            'type' => 'CheckBox',
+                            'name' => 'UseToneAcknowledgementDisarmed',
+                            'caption' => 'Quittungston'
+                        ],
+                        [
+                            'type' => 'SelectAction',
+                            'name' => 'ToneAcknowledgementDisarmedAction'
+                        ],
+                    ]
+                ],
+                [
+                    'type' => 'ExpansionPanel',
+                    'caption' => 'Teilscharf',
+                    'items' => [
+                        [
+                            'type' => 'CheckBox',
+                            'name' => 'UseToneAcknowledgementPartialArmed',
+                            'caption' => 'Quittungston'
+                        ],
+                        [
+                            'type' => 'SelectAction',
+                            'name' => 'ToneAcknowledgementPartialArmedAction'
+                        ]
+                    ]
+                ],
+                [
+                    'type' => 'ExpansionPanel',
+                    'caption' => 'Scharf',
+                    'items' => [
+                        [
+                            'type' => 'CheckBox',
+                            'name' => 'UseToneAcknowledgementArmed',
+                            'caption' => 'Quittungston'
+                        ],
+                        [
+                            'type' => 'SelectAction',
+                            'name' => 'ToneAcknowledgementArmedAction'
+                        ]
+                    ]
+                ]*/
             ]
         ];
 
