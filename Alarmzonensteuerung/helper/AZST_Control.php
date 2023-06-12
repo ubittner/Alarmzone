@@ -278,14 +278,41 @@ trait AZST_Control
 
         }
         $this->WriteAttributeBoolean('DisableUpdateMode', false);
+
+        $this->UpdateProtectionMode();
         $this->UpdateSystemState();
         $this->UpdateSystemDetailedState();
 
         //Action
+        $this->ExecuteAction($Mode, $SenderID);
+
+        return $result;
+    }
+
+    ########## Private
+
+    /**
+     * Executes an action.
+     *
+     * @param int $Mode
+     * 0 =  disarmed,
+     * 1 =  full protection
+     * 2 =  hull protection
+     * 3 =  partial protection
+     *
+     * @param string $SenderID
+     * ID of the sender
+     *
+     * @return void
+     * @throws Exception
+     */
+    private function ExecuteAction(int $Mode, string $SenderID): void
+    {
+        //Action
         $executeAction = false;
         $action = [];
         switch ($Mode) {
-            case 0:
+            case 0: # disarmed
                 switch ($SenderID) {
                     case $this->GetIDForIdent('FullProtectionControlSwitch'):
                     case $this->GetIDForIdent('HullProtectionControlSwitch'):
@@ -301,52 +328,64 @@ trait AZST_Control
                 }
                 break;
 
-            case 1:
+            case 1: # full protection
                 switch ($SenderID) {
                     case $this->GetIDForIdent('FullProtectionControlSwitch'):
                     case $this->GetIDForIdent('Mode'):
                         if ($this->ReadPropertyBoolean('UseFullProtectionAction')) {
-                            $executeAction = true;
-                            $action = json_decode($this->ReadPropertyString('FullProtectionAction'), true);
+                            //Check if the status has remained the same
+                            if ($this->GetValue('FullProtectionControlSwitch') || $this->GetValue('Mode') == 1) {
+                                $executeAction = true;
+                                $action = json_decode($this->ReadPropertyString('FullProtectionAction'), true);
+                            }
                         }
                         break;
 
                 }
                 break;
 
-            case 2:
+            case 2: # hull protection
                 switch ($SenderID) {
                     case $this->GetIDForIdent('HullProtectionControlSwitch'):
                     case $this->GetIDForIdent('Mode'):
                         if ($this->ReadPropertyBoolean('UseHullProtectionAction')) {
-                            $executeAction = true;
-                            $action = json_decode($this->ReadPropertyString('HullProtectionAction'), true);
+                            //Check if the status has remained the same
+                            if ($this->GetValue('HullProtectionControlSwitch') || $this->GetValue('Mode') == 2) {
+                                $executeAction = true;
+                                $action = json_decode($this->ReadPropertyString('HullProtectionAction'), true);
+                            }
                         }
                         break;
 
                 }
                 break;
 
-            case 3:
+            case 3: # partial protection
                 switch ($SenderID) {
                     case $this->GetIDForIdent('PartialProtectionControlSwitch'):
                     case $this->GetIDForIdent('Mode'):
                         if ($this->ReadPropertyBoolean('UsePartialProtectionAction')) {
-                            $executeAction = true;
-                            $action = json_decode($this->ReadPropertyString('PartialProtectionAction'), true);
+                            //Check if the status has remained the same
+                            if ($this->GetValue('PartialProtectionControlSwitch') || $this->GetValue('Mode') == 3) {
+                                $executeAction = true;
+                                $action = json_decode($this->ReadPropertyString('PartialProtectionAction'), true);
+                            }
                         }
                         break;
 
                 }
                 break;
 
-            case 4:
+            case 4: # individual protection
                 switch ($SenderID) {
                     case $this->GetIDForIdent('IndividualProtectionControlSwitch'):
                     case $this->GetIDForIdent('Mode'):
                         if ($this->ReadPropertyBoolean('UseIndividualProtectionAction')) {
-                            $executeAction = true;
-                            $action = json_decode($this->ReadPropertyString('IndividualProtectionAction'), true);
+                            //Check if the status has remained the same
+                            if ($this->GetValue('IndividualProtectionControlSwitch') || $this->GetValue('Mode') == 4) {
+                                $executeAction = true;
+                                $action = json_decode($this->ReadPropertyString('IndividualProtectionAction'), true);
+                            }
                         }
                         break;
 
@@ -358,6 +397,5 @@ trait AZST_Control
             $this->SendDebug(__FUNCTION__, 'Aktion: ' . json_encode($action), 0);
             IPS_RunAction($action['actionID'], $action['parameters']);
         }
-        return $result;
     }
 }

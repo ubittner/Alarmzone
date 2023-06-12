@@ -118,6 +118,9 @@ Detaillierter Alarmzonenstatus:
 
 Die nachfolgenden Punkte beschreiben die Prüfung der Alarmsensoren, sowie den Ablauf bei Scharf- und Unscharf-Schaltung der Alarmzone.
 
+![Logo](../docs/Ablaufplan_Scharfschaltung.png)
+
+
 #### 6.1 Prüfung der Alarmsensoren
 
 Prüfung der Alarmsensoren für den Voll-, Hüll- und Teilschutz:

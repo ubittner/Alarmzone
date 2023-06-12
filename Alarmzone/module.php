@@ -55,21 +55,40 @@ class Alarmzone extends IPSModule
 
         ##### Operation modes
 
-        $this->RegisterPropertyString('DisarmedName', 'Unscharf');
+        //Disarmed
         $this->RegisterPropertyString('DisarmedIcon', 'Warning');
+        $this->RegisterPropertyString('DisarmedName', 'Unscharf');
         $this->RegisterPropertyInteger('DisarmedColor', 65280);
+        $this->RegisterPropertyBoolean('UseDisarmedAction', false);
+        $parameters = '{"actionID":"{346AA8C1-30E0-1663-78EF-93EFADFAC650}","parameters":{"SCRIPT":"<?php\n\n//Quittungston\n$id = 12345;\nASIRHMIP_ExecuteSignaling($id, 16, 2, 0, 10);","ENVIRONMENT":"Default","PARENT":' . $this->InstanceID . ',"TARGET":' . $this->InstanceID . '}}';
+        $this->RegisterPropertyString('DisarmedAction', $parameters);
+
+        //Full protection
         $this->RegisterPropertyBoolean('UseFullProtectionMode', true);
-        $this->RegisterPropertyString('FullProtectionName', 'Vollschutz');
         $this->RegisterPropertyString('FullProtectionIcon', 'Basement');
+        $this->RegisterPropertyString('FullProtectionName', 'Vollschutz');
         $this->RegisterPropertyInteger('FullProtectionColor', 16711680);
+        $this->RegisterPropertyBoolean('UseFullProtectionAction', false);
+        $parameters = '{"actionID":"{346AA8C1-30E0-1663-78EF-93EFADFAC650}","parameters":{"SCRIPT":"<?php\n\n//Quittungston\n$id = 12345;\nASIRHMIP_ExecuteSignaling($id, 17, 3, 0, 10);","ENVIRONMENT":"Default","PARENT":' . $this->InstanceID . ',"TARGET":' . $this->InstanceID . '}}';
+        $this->RegisterPropertyString('FullProtectionAction', $parameters);
+
+        //Hull protection
         $this->RegisterPropertyBoolean('UseHullProtectionMode', false);
-        $this->RegisterPropertyString('HullProtectionName', 'Hüllschutz');
         $this->RegisterPropertyString('HullProtectionIcon', 'Presence');
+        $this->RegisterPropertyString('HullProtectionName', 'Hüllschutz');
         $this->RegisterPropertyInteger('HullProtectionColor', 16776960);
+        $this->RegisterPropertyBoolean('UseHullProtectionAction', false);
+        $parameters = '{"actionID":"{346AA8C1-30E0-1663-78EF-93EFADFAC650}","parameters":{"SCRIPT":"<?php\n\n//Quittungston\n$id = 12345;\nASIRHMIP_ExecuteSignaling($id, 17, 3, 0, 10);","ENVIRONMENT":"Default","PARENT":' . $this->InstanceID . ',"TARGET":' . $this->InstanceID . '}}';
+        $this->RegisterPropertyString('HullProtectionAction', $parameters);
+
+        //Partial protection
         $this->RegisterPropertyBoolean('UsePartialProtectionMode', false);
-        $this->RegisterPropertyString('PartialProtectionName', 'Teilschutz');
         $this->RegisterPropertyString('PartialProtectionIcon', 'Moon');
+        $this->RegisterPropertyString('PartialProtectionName', 'Teilschutz');
         $this->RegisterPropertyInteger('PartialProtectionColor', 255);
+        $this->RegisterPropertyBoolean('UsePartialProtectionAction', false);
+        $parameters = '{"actionID":"{346AA8C1-30E0-1663-78EF-93EFADFAC650}","parameters":{"SCRIPT":"<?php\n\n//Quittungston\n$id = 12345;\nASIRHMIP_ExecuteSignaling($id, 17, 3, 0, 10);","ENVIRONMENT":"Default","PARENT":' . $this->InstanceID . ',"TARGET":' . $this->InstanceID . '}}';
+        $this->RegisterPropertyString('PartialProtectionAction', $parameters);
 
         ##### Activation delay
 
