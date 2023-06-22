@@ -9,7 +9,6 @@
  */
 
 /** @noinspection DuplicatedCode */
-/** @noinspection PhpUnused */
 
 declare(strict_types=1);
 
@@ -102,7 +101,6 @@ trait AZ_Control
             $text = $this->ReadPropertyString($protectionModeName) . ' aktiviert. (Einschaltverzögerung, ID ' . $this->GetIDForIdent('Mode') . ')';
             $logText = date('d.m.Y, H:i:s') . ', ' . $this->ReadPropertyString('Location') . ', ' . $this->ReadPropertyString('AlarmZoneName') . ', ' . $text;
             $this->UpdateAlarmProtocol($logText, 1);
-
             //Notification
             if ($state == 3) { //partial armed
                 //Activation with open doors and windows
@@ -113,7 +111,7 @@ trait AZ_Control
                     $this->CheckDoorWindowState($mode, false, false, true);
                 }
             }
-            if ($state == 1) {
+            if ($state == 1) { //armed
                 $this->SendNotification($activationNotificationName, '');
                 $notification = json_decode($this->ReadPropertyString($activationNotificationName), true);
                 if ($notification[0]['Use'] && $notification[0]['UseOpenDoorWindowNotification']) {
@@ -121,7 +119,6 @@ trait AZ_Control
                     $this->CheckDoorWindowState($mode, false, false, true);
                 }
             }
-
             //Action
             $this->ExecuteAction($mode, (string) $this->InstanceID);
         }
@@ -131,10 +128,10 @@ trait AZ_Control
      * Selects the protection mode.
      *
      * @param int $Mode
-     * 0 =  Disarmed
-     * 1 =  Full protection mode
-     * 2 =  Hull protection mode
-     * 3 =  Partial protection mode
+     * 0 =  disarmed,
+     * 1 =  full protection mode,
+     * 2 =  hull protection mode,
+     * 3 =  partial protection mode
      *
      * @param string $SenderID
      *
@@ -250,7 +247,6 @@ trait AZ_Control
         $this->SetValue('AlarmLight', false);
         $this->SetValue('AlarmCall', false);
         $this->ResetBlacklist();
-
         //Check activation delay
         $activationDelay = $this->ReadPropertyInteger($activationDelayName);
         if ($activationDelay > 0) {
@@ -271,11 +267,9 @@ trait AZ_Control
             //Notification
             $this->SendNotification($delayedActivationNotificationName, (string) $activationDelay);
             $notification = json_decode($this->ReadPropertyString($delayedActivationNotificationName), true);
-
             //Action
             $this->ExecuteAction($Mode, $SenderID);
         }
-
         //Immediate activation
         else {
             $activation = $this->CheckDoorWindowState($Mode, false, false, false);
@@ -291,7 +285,6 @@ trait AZ_Control
                 //Notification
                 $this->SendNotification($abortActivationNotificationName, '');
                 $notification = json_decode($this->ReadPropertyString($abortActivationNotificationName), true);
-
                 //Action
                 $this->ExecuteAction(0, $SenderID);
             }
@@ -317,7 +310,6 @@ trait AZ_Control
                     $this->SendNotification($activationWithOpenDoorWindowNotificationName, '');
                     $notification = json_decode($this->ReadPropertyString($activationWithOpenDoorWindowNotificationName), true);
                 }
-
                 //Action
                 $this->ExecuteAction($Mode, $SenderID);
             }
@@ -326,81 +318,6 @@ trait AZ_Control
             IPS_Sleep(self::SLEEP_DELAY);
             $this->CheckDoorWindowState($Mode, false, false, true);
         }
-
-        /*
-        //Action
-        $executeAction = false;
-        $action = [];
-        switch ($Mode) {
-            case 0: # disarmed
-                switch ($SenderID) {
-                    case $this->GetIDForIdent('FullProtectionControlSwitch'):
-                    case $this->GetIDForIdent('HullProtectionControlSwitch'):
-                    case $this->GetIDForIdent('PartialProtectionControlSwitch'):
-                    case $this->GetIDForIdent('Mode'):
-                        if ($this->ReadPropertyBoolean('UseDisarmedAction')) {
-                            $executeAction = true;
-                            $action = json_decode($this->ReadPropertyString('DisarmedAction'), true);
-                        }
-                        break;
-
-                }
-                break;
-
-            case 1: # full protection
-                switch ($SenderID) {
-                    case $this->GetIDForIdent('FullProtectionControlSwitch'):
-                    case $this->GetIDForIdent('Mode'):
-                        if ($this->ReadPropertyBoolean('UseFullProtectionAction')) {
-                            //Check if the status has remained the same
-                            if ($this->GetValue('FullProtectionControlSwitch') || $this->GetValue('Mode') == 1) {
-                                $executeAction = true;
-                                $action = json_decode($this->ReadPropertyString('FullProtectionAction'), true);
-                            }
-                        }
-                        break;
-
-                }
-                break;
-
-            case 2: # hull protection
-                switch ($SenderID) {
-                    case $this->GetIDForIdent('HullProtectionControlSwitch'):
-                    case $this->GetIDForIdent('Mode'):
-                        if ($this->ReadPropertyBoolean('UseHullProtectionAction')) {
-                            //Check if the status has remained the same
-                            if ($this->GetValue('HullProtectionControlSwitch') || $this->GetValue('Mode') == 2) {
-                                $executeAction = true;
-                                $action = json_decode($this->ReadPropertyString('HullProtectionAction'), true);
-                            }
-                        }
-                        break;
-
-                }
-                break;
-
-            case 3: # partial protection
-                switch ($SenderID) {
-                    case $this->GetIDForIdent('PartialProtectionControlSwitch'):
-                    case $this->GetIDForIdent('Mode'):
-                        if ($this->ReadPropertyBoolean('UsePartialProtectionAction')) {
-                            //Check if the status has remained the same
-                            if ($this->GetValue('PartialProtectionControlSwitch') || $this->GetValue('Mode') == 3) {
-                                $executeAction = true;
-                                $action = json_decode($this->ReadPropertyString('PartialProtectionAction'), true);
-                            }
-                        }
-                        break;
-
-                }
-                break;
-
-        }
-        if ($executeAction && !empty($action)) {
-            $this->SendDebug(__FUNCTION__, 'Aktion: ' . json_encode($action), 0);
-            IPS_RunAction($action['actionID'], $action['parameters']);
-        }
-         */
         return $result;
     }
 
@@ -408,6 +325,7 @@ trait AZ_Control
 
     /**
      * Resets the values of the alarm zone.
+     *
      * @return void
      */
     private function ResetValues(): void
@@ -432,8 +350,8 @@ trait AZ_Control
      *
      * @param int $Mode
      * 0 =  disarmed,
-     * 1 =  full protection
-     * 2 =  hull protection
+     * 1 =  full protection,
+     * 2 =  hull protection,
      * 3 =  partial protection
      *
      * @param string $SenderID
@@ -446,7 +364,6 @@ trait AZ_Control
     {
         $executeAction = false;
         $action = [];
-
         switch ($Mode) {
             case 0: # disarmed
                 switch ($SenderID) {

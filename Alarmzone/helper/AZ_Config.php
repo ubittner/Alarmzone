@@ -9,7 +9,6 @@
  */
 
 /** @noinspection PhpUndefinedFunctionInspection */
-/** @noinspection PhpUnused */
 
 declare(strict_types=1);
 
@@ -26,6 +25,21 @@ trait AZ_Config
     }
 
     /**
+     * Expands or collapses the expansion panels.
+     *
+     * @param bool $State
+     * false =  collapse,
+     * true =   expand
+     * @return void
+     */
+    public function ExpandExpansionPanels(bool $State): void
+    {
+        for ($i = 1; $i <= 10; $i++) {
+            $this->UpdateFormField('Panel' . $i, 'expanded', $State);
+        }
+    }
+
+    /**
      * Modifies a configuration button.
      *
      * @param string $Field
@@ -36,7 +50,7 @@ trait AZ_Config
     public function ModifyButton(string $Field, string $Caption, int $ObjectID): void
     {
         $state = false;
-        if ($ObjectID > 1 && @IPS_ObjectExists($ObjectID)) { //0 = main category, 1 = none
+        if ($ObjectID > 1 && @IPS_ObjectExists($ObjectID)) {
             $state = true;
         }
         $this->UpdateFormField($Field, 'caption', $Caption);
@@ -45,7 +59,7 @@ trait AZ_Config
     }
 
     /**
-     * Modifies a trigger list configuration button
+     * Modifies a trigger list configuration button.
      *
      * @param string $Field
      * @param string $Condition
@@ -60,7 +74,7 @@ trait AZ_Config
         if (array_key_exists(0, $primaryCondition)) {
             if (array_key_exists(0, $primaryCondition[0]['rules']['variable'])) {
                 $id = $primaryCondition[0]['rules']['variable'][0]['variableID'];
-                if ($id > 1 && @IPS_ObjectExists($id)) { //0 = main category, 1 = none
+                if ($id > 1 && @IPS_ObjectExists($id)) {
                     $state = true;
                 }
             }
@@ -82,30 +96,56 @@ trait AZ_Config
 
         ########## Elements
 
+        //Configuration buttons
+        $form['elements'][0] =
+            [
+                'type'  => 'RowLayout',
+                'items' => [
+                    [
+                        'type'    => 'Button',
+                        'caption' => 'Konfiguration ausklappen',
+                        'onClick' => self::MODULE_PREFIX . '_ExpandExpansionPanels($id, true);'
+                    ],
+                    [
+                        'type'    => 'Button',
+                        'caption' => 'Konfiguration einklappen',
+                        'onClick' => self::MODULE_PREFIX . '_ExpandExpansionPanels($id, false);'
+                    ],
+                    [
+                        'type'    => 'Button',
+                        'caption' => 'Konfiguration neu laden',
+                        'onClick' => self::MODULE_PREFIX . '_ReloadConfig($id);'
+                    ]
+                ]
+            ];
+
         //Info
-        $form['elements'][0] = [
-            'type'    => 'ExpansionPanel',
-            'caption' => 'Info',
-            'items'   => [
+        $library = IPS_GetLibrary(self::LIBRARY_GUID);
+        $form['elements'][] = [
+            'type'     => 'ExpansionPanel',
+            'caption'  => 'Info',
+            'name'     => 'Panel1',
+            'expanded' => false,
+            'items'    => [
                 [
                     'type'    => 'Label',
-                    'name'    => 'ModuleID',
                     'caption' => "ID:\t\t\t" . $this->InstanceID
                 ],
                 [
                     'type'    => 'Label',
-                    'name'    => 'ModuleDesignation',
                     'caption' => "Modul:\t\t" . self::MODULE_NAME
                 ],
                 [
                     'type'    => 'Label',
-                    'name'    => 'ModulePrefix',
                     'caption' => "Präfix:\t\t" . self::MODULE_PREFIX
                 ],
                 [
                     'type'    => 'Label',
-                    'name'    => 'ModuleVersion',
-                    'caption' => "Version:\t\t" . self::MODULE_VERSION
+                    'caption' => "Version:\t\t" . $library['Version'] . '-' . $library['Build'] . ', ' . date('d.m.Y', $library['Date'])
+                ],
+                [
+                    'type'    => 'Label',
+                    'caption' => "Entwickler:\t" . $library['Author']
                 ],
                 [
                     'type'    => 'Label',
@@ -122,9 +162,11 @@ trait AZ_Config
 
         //Designations
         $form['elements'][] = [
-            'type'    => 'ExpansionPanel',
-            'caption' => 'Bezeichnungen',
-            'items'   => [
+            'type'     => 'ExpansionPanel',
+            'caption'  => 'Bezeichnungen',
+            'name'     => 'Panel2',
+            'expanded' => false,
+            'items'    => [
                 [
                     'type'    => 'ValidationTextBox',
                     'name'    => 'SystemName',
@@ -148,9 +190,11 @@ trait AZ_Config
 
         //Operating modes
         $form['elements'][] = [
-            'type'    => 'ExpansionPanel',
-            'caption' => 'Betriebsarten',
-            'items'   => [
+            'type'     => 'ExpansionPanel',
+            'caption'  => 'Betriebsarten',
+            'name'     => 'Panel3',
+            'expanded' => false,
+            'items'    => [
                 [
                     'type'    => 'Label',
                     'caption' => 'Unscharf',
@@ -186,34 +230,24 @@ trait AZ_Config
                     ]
                 ],
                 [
-                    'type'    => 'ExpansionPanel',
-                    'caption' => 'Aktion',
-                    'items'   => [
-                        [
-                            'type'    => 'CheckBox',
-                            'name'    => 'UseDisarmedAction',
-                            'caption' => 'Ausführen'
-                        ],
-                        [
-                            'type' => 'SelectAction',
-                            'name' => 'DisarmedAction'
-                        ]
-                    ]
-                ],
-                [
                     'type'    => 'Label',
                     'caption' => ' '
                 ],
                 [
-                    'type'    => 'Label',
-                    'caption' => 'Vollschutz',
-                    'bold'    => true,
-                    'italic'  => true
+                    'type'    => 'Button',
+                    'caption' => 'Ablaufplan Scharfschaltung',
+                    'onClick' => 'echo "https://github.com/ubittner/Alarmzone/blob/main/docs/Ablaufplan_Scharfschaltung.png";'
                 ],
                 [
-                    'type'    => 'CheckBox',
-                    'name'    => 'UseFullProtectionMode',
-                    'caption' => 'Vollschutz'
+                    'type'  => 'RowLayout',
+                    'items' => [
+                        [
+                            'type'    => 'Label',
+                            'caption' => 'Vollschutz',
+                            'bold'    => true,
+                            'italic'  => true
+                        ]
+                    ]
                 ],
                 [
                     'type'  => 'RowLayout',
@@ -244,17 +278,25 @@ trait AZ_Config
                     ]
                 ],
                 [
-                    'type'    => 'ExpansionPanel',
-                    'caption' => 'Aktion',
-                    'items'   => [
+                    'type'    => 'CheckBox',
+                    'name'    => 'UseFullProtectionMode',
+                    'caption' => 'Aktiv'
+                ],
+                [
+                    'type'    => 'CheckBox',
+                    'name'    => 'CheckFullProtectionModeActivation',
+                    'caption' => 'Aktivierungsprüfung'
+                ],
+                [
+                    'type'  => 'RowLayout',
+                    'items' => [
                         [
-                            'type'    => 'CheckBox',
-                            'name'    => 'UseFullProtectionAction',
-                            'caption' => 'Ausführen'
-                        ],
-                        [
-                            'type' => 'SelectAction',
-                            'name' => 'FullProtectionAction'
+                            'type'    => 'NumberSpinner',
+                            'name'    => 'FullProtectionModeActivationDelay',
+                            'caption' => 'Einschaltverzögerung',
+                            'suffix'  => 'Sekunden',
+                            'minimum' => 0,
+                            'maximum' => 60
                         ]
                     ]
                 ],
@@ -267,11 +309,6 @@ trait AZ_Config
                     'caption' => 'Hüllschutz',
                     'bold'    => true,
                     'italic'  => true
-                ],
-                [
-                    'type'    => 'CheckBox',
-                    'name'    => 'UseHullProtectionMode',
-                    'caption' => 'Hüllschutz'
                 ],
                 [
                     'type'  => 'RowLayout',
@@ -302,19 +339,22 @@ trait AZ_Config
                     ]
                 ],
                 [
-                    'type'    => 'ExpansionPanel',
-                    'caption' => 'Aktion',
-                    'items'   => [
-                        [
-                            'type'    => 'CheckBox',
-                            'name'    => 'UseHullProtectionAction',
-                            'caption' => 'Ausführen'
-                        ],
-                        [
-                            'type' => 'SelectAction',
-                            'name' => 'HullProtectionAction'
-                        ]
-                    ]
+                    'type'    => 'CheckBox',
+                    'name'    => 'UseHullProtectionMode',
+                    'caption' => 'Aktiv'
+                ],
+                [
+                    'type'    => 'CheckBox',
+                    'name'    => 'CheckHullProtectionModeActivation',
+                    'caption' => 'Aktivierungsprüfung'
+                ],
+                [
+                    'type'    => 'NumberSpinner',
+                    'name'    => 'HullProtectionModeActivationDelay',
+                    'caption' => 'Einschaltverzögerung',
+                    'suffix'  => 'Sekunden',
+                    'minimum' => 0,
+                    'maximum' => 60
                 ],
                 [
                     'type'    => 'Label',
@@ -325,11 +365,6 @@ trait AZ_Config
                     'caption' => 'Teilschutz',
                     'bold'    => true,
                     'italic'  => true
-                ],
-                [
-                    'type'    => 'CheckBox',
-                    'name'    => 'UsePartialProtectionMode',
-                    'caption' => 'Teilschutz'
                 ],
                 [
                     'type'  => 'RowLayout',
@@ -360,74 +395,22 @@ trait AZ_Config
                     ]
                 ],
                 [
-                    'type'    => 'ExpansionPanel',
-                    'caption' => 'Aktion',
-                    'items'   => [
-                        [
-                            'type'    => 'CheckBox',
-                            'name'    => 'UsePartialProtectionAction',
-                            'caption' => 'Ausführen'
-                        ],
-                        [
-                            'type' => 'SelectAction',
-                            'name' => 'PartialProtectionAction'
-                        ]
-                    ]
-                ],
-            ]
-        ];
-
-        //Activation delay
-        $form['elements'][] = [
-            'type'    => 'ExpansionPanel',
-            'caption' => 'Einschaltverzögerung',
-            'items'   => [
-                [
-                    'type'    => 'NumberSpinner',
-                    'name'    => 'FullProtectionModeActivationDelay',
-                    'caption' => 'Vollschutz',
-                    'suffix'  => 'Sekunden',
-                    'minimum' => 0,
-                    'maximum' => 60
-                ],
-                [
-                    'type'    => 'NumberSpinner',
-                    'name'    => 'HullProtectionModeActivationDelay',
-                    'caption' => 'Hüllschutz',
-                    'suffix'  => 'Sekunden',
-                    'minimum' => 0,
-                    'maximum' => 60
-                ],
-                [
-                    'type'    => 'NumberSpinner',
-                    'name'    => 'PartialProtectionModeActivationDelay',
-                    'caption' => 'Teilschutz',
-                    'suffix'  => 'Sekunden',
-                    'minimum' => 0,
-                    'maximum' => 60
-                ]
-            ]
-        ];
-
-        //Activation check
-        $form['elements'][] = [
-            'type'    => 'ExpansionPanel',
-            'caption' => 'Aktivierungsprüfung',
-            'items'   => [
-                [
                     'type'    => 'CheckBox',
-                    'name'    => 'CheckFullProtectionModeActivation',
-                    'caption' => 'Vollschutz'
-                ],
-                [
-                    'type'    => 'CheckBox',
-                    'name'    => 'CheckHullProtectionModeActivation',
-                    'caption' => 'Hüllschutz'
+                    'name'    => 'UsePartialProtectionMode',
+                    'caption' => 'Aktiv'
                 ],
                 [
                     'type'    => 'CheckBox',
                     'name'    => 'CheckPartialProtectionModeActivation',
-                    'caption' => 'Teilschutz'
+                    'caption' => 'Aktivierungsprüfung'
+                ],
+                [
+                    'type'    => 'NumberSpinner',
+                    'name'    => 'PartialProtectionModeActivationDelay',
+                    'caption' => 'Einschaltverzögerung',
+                    'suffix'  => 'Sekunden',
+                    'minimum' => 0,
+                    'maximum' => 60
                 ]
             ]
         ];
@@ -447,7 +430,7 @@ trait AZ_Config
             }
             //Check conditions first
             $conditions = true;
-            if ($sensorID <= 1 || !@IPS_ObjectExists($sensorID)) { //0 = main category, 1 = none
+            if ($sensorID <= 1 || !@IPS_ObjectExists($sensorID)) {
                 $conditions = false;
             }
             if ($variable['SecondaryCondition'] != '') {
@@ -458,7 +441,7 @@ trait AZ_Config
                         foreach ($rules as $rule) {
                             if (array_key_exists('variableID', $rule)) {
                                 $id = $rule['variableID'];
-                                if ($id <= 1 || !@IPS_ObjectExists($id)) { //0 = main category, 1 = none
+                                if ($id <= 1 || !@IPS_ObjectExists($id)) {
                                     $conditions = false;
                                 }
                             }
@@ -470,48 +453,6 @@ trait AZ_Config
             if ($variable['UseAlertingAction']) {
                 if ($variable['AlertingAction'] != '') {
                     $action = json_decode($variable['AlertingAction'], true);
-                    if (array_key_exists('parameters', $action)) {
-                        if (array_key_exists('TARGET', $action['parameters'])) {
-                            $id = $action['parameters']['TARGET'];
-                            if (!@IPS_ObjectExists($id)) {
-                                $conditions = false;
-                            }
-                        }
-                    }
-                }
-            }
-            //Alarm siren action
-            if ($variable['UseAlarmSirenAction']) {
-                if ($variable['AlarmSirenAction'] != '') {
-                    $action = json_decode($variable['AlarmSirenAction'], true);
-                    if (array_key_exists('parameters', $action)) {
-                        if (array_key_exists('TARGET', $action['parameters'])) {
-                            $id = $action['parameters']['TARGET'];
-                            if (!@IPS_ObjectExists($id)) {
-                                $conditions = false;
-                            }
-                        }
-                    }
-                }
-            }
-            //Alarm light action
-            if ($variable['UseAlarmLightAction']) {
-                if ($variable['AlarmLightAction'] != '') {
-                    $action = json_decode($variable['AlarmLightAction'], true);
-                    if (array_key_exists('parameters', $action)) {
-                        if (array_key_exists('TARGET', $action['parameters'])) {
-                            $id = $action['parameters']['TARGET'];
-                            if (!@IPS_ObjectExists($id)) {
-                                $conditions = false;
-                            }
-                        }
-                    }
-                }
-            }
-            //Alarm call action
-            if ($variable['UseAlarmCallAction']) {
-                if ($variable['AlarmCallAction'] != '') {
-                    $action = json_decode($variable['AlarmCallAction'], true);
                     if (array_key_exists('parameters', $action)) {
                         if (array_key_exists('TARGET', $action['parameters'])) {
                             $id = $action['parameters']['TARGET'];
@@ -552,9 +493,11 @@ trait AZ_Config
 
         $form['elements'][] =
             [
-                'type'    => 'ExpansionPanel',
-                'caption' => 'Tür- und Fenstersensoren',
-                'items'   => [
+                'type'     => 'ExpansionPanel',
+                'caption'  => 'Tür- und Fenstersensoren',
+                'name'     => 'Panel4',
+                'expanded' => false,
+                'items'    => [
                     [
                         'type'     => 'List',
                         'name'     => 'DoorWindowSensors',
@@ -578,6 +521,17 @@ trait AZ_Config
                                 'width'   => '400px',
                                 'add'     => '',
                                 'onClick' => self::MODULE_PREFIX . '_ModifyTriggerListButton($id, "DoorWindowSensorsConfigurationButton", $DoorWindowSensors["PrimaryCondition"]);',
+                                'edit'    => [
+                                    'type' => 'ValidationTextBox'
+                                ]
+                            ],
+                            [
+                                'caption' => 'Bemerkung',
+                                'name'    => 'Comment',
+                                'onClick' => self::MODULE_PREFIX . '_ModifyTriggerListButton($id, "DoorWindowSensorsConfigurationButton", $DoorWindowSensors["PrimaryCondition"]);',
+                                'visible' => true,
+                                'width'   => '300px',
+                                'add'     => '',
                                 'edit'    => [
                                     'type' => 'ValidationTextBox'
                                 ]
@@ -815,6 +769,19 @@ trait AZ_Config
                                 ]
                             ],
                             [
+                                'caption' => 'Erneute Überprüfung nach',
+                                'name'    => 'OpenDoorWindowStatusVerificationDelay',
+                                'width'   => '220px',
+                                'add'     => 0,
+                                'visible' => true,
+                                'edit'    => [
+                                    'type'    => 'NumberSpinner',
+                                    'suffix'  => ' Sekunden',
+                                    'minimum' => 0,
+                                    'maximum' => 10
+                                ]
+                            ],
+                            [
                                 'caption' => 'Benachrichtigung',
                                 'name'    => 'UseNotification',
                                 'width'   => '200px',
@@ -855,125 +822,17 @@ trait AZ_Config
                                 ]
                             ],
                             [
-                                'caption' => ' ',
-                                'name'    => 'SpacerAlarmActions',
-                                'width'   => '200px',
-                                'add'     => '',
-                                'visible' => false,
-                                'edit'    => [
-                                    'type' => 'Label'
-                                ]
-                            ],
-                            [
-                                'caption' => 'Aktionen:',
-                                'name'    => 'LabelAlarmActions',
-                                'width'   => '200px',
-                                'add'     => '',
-                                'visible' => false,
-                                'edit'    => [
-                                    'type' => 'Label',
-                                    'bold' => true
-                                ]
-                            ],
-                            [
-                                'caption' => 'Alarmierung',
+                                'caption' => 'Aktion',
                                 'name'    => 'UseAlertingAction',
-                                'width'   => '200px',
+                                'width'   => '80px',
                                 'add'     => false,
-                                'visible' => false,
+                                'visible' => true,
                                 'edit'    => [
                                     'type' => 'CheckBox'
                                 ]
                             ],
                             [
                                 'name'    => 'AlertingAction',
-                                'width'   => '200px',
-                                'add'     => '',
-                                'visible' => false,
-                                'edit'    => [
-                                    'type' => 'SelectAction'
-                                ]
-                            ],
-                            [
-                                'caption' => ' ',
-                                'name'    => 'SpacerUseAlarmSirenAction',
-                                'width'   => '200px',
-                                'add'     => '',
-                                'visible' => false,
-                                'edit'    => [
-                                    'type' => 'Label'
-                                ]
-                            ],
-                            [
-                                'caption' => 'Alarmsirene',
-                                'name'    => 'UseAlarmSirenAction',
-                                'width'   => '200px',
-                                'add'     => false,
-                                'visible' => false,
-                                'edit'    => [
-                                    'type' => 'CheckBox'
-                                ]
-                            ],
-                            [
-                                'name'    => 'AlarmSirenAction',
-                                'width'   => '200px',
-                                'add'     => '',
-                                'visible' => false,
-                                'edit'    => [
-                                    'type' => 'SelectAction'
-                                ]
-                            ],
-                            [
-                                'caption' => ' ',
-                                'name'    => 'SpacerUseAlarmLightAction',
-                                'width'   => '200px',
-                                'add'     => '',
-                                'visible' => false,
-                                'edit'    => [
-                                    'type' => 'Label'
-                                ]
-                            ],
-                            [
-                                'caption' => 'Alarmbeleuchtung',
-                                'name'    => 'UseAlarmLightAction',
-                                'width'   => '200px',
-                                'add'     => false,
-                                'visible' => false,
-                                'edit'    => [
-                                    'type' => 'CheckBox'
-                                ]
-                            ],
-                            [
-                                'name'    => 'AlarmLightAction',
-                                'width'   => '200px',
-                                'add'     => '',
-                                'visible' => false,
-                                'edit'    => [
-                                    'type' => 'SelectAction'
-                                ]
-                            ],
-                            [
-                                'caption' => ' ',
-                                'name'    => 'SpacerUseAlarmCallAction',
-                                'width'   => '200px',
-                                'add'     => '',
-                                'visible' => false,
-                                'edit'    => [
-                                    'type' => 'Label'
-                                ]
-                            ],
-                            [
-                                'caption' => 'Alarmanruf',
-                                'name'    => 'UseAlarmCallAction',
-                                'width'   => '200px',
-                                'add'     => false,
-                                'visible' => false,
-                                'edit'    => [
-                                    'type' => 'CheckBox'
-                                ]
-                            ],
-                            [
-                                'name'    => 'AlarmCallAction',
                                 'width'   => '200px',
                                 'add'     => '',
                                 'visible' => false,
@@ -994,32 +853,6 @@ trait AZ_Config
                 ]
             ];
 
-        //Status verification
-        $form['elements'][] = [
-            'type'    => 'ExpansionPanel',
-            'caption' => 'Statusüberprüfung',
-            'items'   => [
-                [
-                    'type'    => 'CheckBox',
-                    'name'    => 'VerifyOpenDoorWindowStatus',
-                    'caption' => 'Geöffnete Türen und Fenster bei aktivierter Alarmanlage erneut prüfen'
-                ],
-                [
-                    'type'    => 'NumberSpinner',
-                    'name'    => 'OpenDoorWindowStatusVerificationDelay',
-                    'caption' => 'Erneut prüfen nach',
-                    'suffix'  => 'Sekunden',
-                    'minimum' => 1,
-                    'maximum' => 5
-                ],
-                [
-                    'type'    => 'CheckBox',
-                    'name'    => 'OnlyLogRecheck',
-                    'caption' => 'Nur erneute Überprüfung protokollieren'
-                ]
-            ]
-        ];
-
         //Motion detectors
         $motionDetectorsValues = [];
         $variables = json_decode($this->ReadPropertyString('MotionDetectors'), true);
@@ -1034,7 +867,7 @@ trait AZ_Config
                 if (array_key_exists(0, $primaryCondition)) {
                     if (array_key_exists(0, $primaryCondition[0]['rules']['variable'])) {
                         $id = $primaryCondition[0]['rules']['variable'][0]['variableID'];
-                        if ($id <= 1 || !@IPS_ObjectExists($id)) { //0 = main category, 1 = none
+                        if ($id <= 1 || !@IPS_ObjectExists($id)) {
                             $rowColor = '#FFC0C0'; //red
                         }
                     }
@@ -1049,7 +882,7 @@ trait AZ_Config
                         foreach ($rules as $rule) {
                             if (array_key_exists('variableID', $rule)) {
                                 $id = $rule['variableID'];
-                                if ($id <= 1 || !@IPS_ObjectExists($id)) { //0 = main category, 1 = none
+                                if ($id <= 1 || !@IPS_ObjectExists($id)) {
                                     $rowColor = '#FFC0C0'; //red
                                 }
                             }
@@ -1071,56 +904,16 @@ trait AZ_Config
                     }
                 }
             }
-            //Alarm siren action
-            if ($variable['UseAlarmSirenAction']) {
-                if ($variable['AlarmSirenAction'] != '') {
-                    $action = json_decode($variable['AlarmSirenAction'], true);
-                    if (array_key_exists('parameters', $action)) {
-                        if (array_key_exists('TARGET', $action['parameters'])) {
-                            $id = $action['parameters']['TARGET'];
-                            if (!@IPS_ObjectExists($id)) {
-                                $rowColor = '#FFC0C0'; //red
-                            }
-                        }
-                    }
-                }
-            }
-            //Alarm light action
-            if ($variable['UseAlarmLightAction']) {
-                if ($variable['AlarmLightAction'] != '') {
-                    $action = json_decode($variable['AlarmLightAction'], true);
-                    if (array_key_exists('parameters', $action)) {
-                        if (array_key_exists('TARGET', $action['parameters'])) {
-                            $id = $action['parameters']['TARGET'];
-                            if (!@IPS_ObjectExists($id)) {
-                                $rowColor = '#FFC0C0'; //red
-                            }
-                        }
-                    }
-                }
-            }
-            //Alarm call action
-            if ($variable['UseAlarmCallAction']) {
-                if ($variable['AlarmCallAction'] != '') {
-                    $action = json_decode($variable['AlarmCallAction'], true);
-                    if (array_key_exists('parameters', $action)) {
-                        if (array_key_exists('TARGET', $action['parameters'])) {
-                            $id = $action['parameters']['TARGET'];
-                            if (!@IPS_ObjectExists($id)) {
-                                $rowColor = '#FFC0C0'; //red
-                            }
-                        }
-                    }
-                }
-            }
             $motionDetectorsValues[] = ['rowColor' => $rowColor];
         }
 
         $form['elements'][] =
             [
-                'type'    => 'ExpansionPanel',
-                'caption' => 'Bewegungsmelder',
-                'items'   => [
+                'type'     => 'ExpansionPanel',
+                'caption'  => 'Bewegungsmelder',
+                'name'     => 'Panel5',
+                'expanded' => false,
+                'items'    => [
                     [
                         'type'     => 'List',
                         'name'     => 'MotionDetectors',
@@ -1144,6 +937,17 @@ trait AZ_Config
                                 'width'   => '400px',
                                 'add'     => '',
                                 'onClick' => self::MODULE_PREFIX . '_ModifyTriggerListButton($id, "MotionDetectorsConfigurationButton", $MotionDetectors["PrimaryCondition"]);',
+                                'edit'    => [
+                                    'type' => 'ValidationTextBox'
+                                ]
+                            ],
+                            [
+                                'caption' => 'Bemerkung',
+                                'name'    => 'Comment',
+                                'onClick' => self::MODULE_PREFIX . '_ModifyTriggerListButton($id, "MotionDetectorsConfigurationButton", $MotionDetectors["PrimaryCondition"]);',
+                                'visible' => true,
+                                'width'   => '300px',
+                                'add'     => '',
                                 'edit'    => [
                                     'type' => 'ValidationTextBox'
                                 ]
@@ -1364,125 +1168,17 @@ trait AZ_Config
                                 ]
                             ],
                             [
-                                'caption' => ' ',
-                                'name'    => 'SpacerAlarmActions',
-                                'width'   => '200px',
-                                'add'     => '',
-                                'visible' => false,
-                                'edit'    => [
-                                    'type' => 'Label'
-                                ]
-                            ],
-                            [
-                                'caption' => 'Aktionen:',
-                                'name'    => 'LabelAlarmActions',
-                                'width'   => '200px',
-                                'add'     => '',
-                                'visible' => false,
-                                'edit'    => [
-                                    'type' => 'Label',
-                                    'bold' => true
-                                ]
-                            ],
-                            [
-                                'caption' => 'Alarmierung',
+                                'caption' => 'Aktion',
                                 'name'    => 'UseAlertingAction',
-                                'width'   => '200px',
+                                'width'   => '80px',
                                 'add'     => false,
-                                'visible' => false,
+                                'visible' => true,
                                 'edit'    => [
                                     'type' => 'CheckBox'
                                 ]
                             ],
                             [
                                 'name'    => 'AlertingAction',
-                                'width'   => '200px',
-                                'add'     => '',
-                                'visible' => false,
-                                'edit'    => [
-                                    'type' => 'SelectAction'
-                                ]
-                            ],
-                            [
-                                'caption' => ' ',
-                                'name'    => 'SpacerUseAlarmSirenAction',
-                                'width'   => '200px',
-                                'add'     => '',
-                                'visible' => false,
-                                'edit'    => [
-                                    'type' => 'Label'
-                                ]
-                            ],
-                            [
-                                'caption' => 'Alarmsirene',
-                                'name'    => 'UseAlarmSirenAction',
-                                'width'   => '200px',
-                                'add'     => false,
-                                'visible' => false,
-                                'edit'    => [
-                                    'type' => 'CheckBox'
-                                ]
-                            ],
-                            [
-                                'name'    => 'AlarmSirenAction',
-                                'width'   => '200px',
-                                'add'     => '',
-                                'visible' => false,
-                                'edit'    => [
-                                    'type' => 'SelectAction'
-                                ]
-                            ],
-                            [
-                                'caption' => ' ',
-                                'name'    => 'SpacerUseAlarmLightAction',
-                                'width'   => '200px',
-                                'add'     => '',
-                                'visible' => false,
-                                'edit'    => [
-                                    'type' => 'Label'
-                                ]
-                            ],
-                            [
-                                'caption' => 'Alarmbeleuchtung',
-                                'name'    => 'UseAlarmLightAction',
-                                'width'   => '200px',
-                                'add'     => false,
-                                'visible' => false,
-                                'edit'    => [
-                                    'type' => 'CheckBox'
-                                ]
-                            ],
-                            [
-                                'name'    => 'AlarmLightAction',
-                                'width'   => '200px',
-                                'add'     => '',
-                                'visible' => false,
-                                'edit'    => [
-                                    'type' => 'SelectAction'
-                                ]
-                            ],
-                            [
-                                'caption' => ' ',
-                                'name'    => 'SpacerUseAlarmCallAction',
-                                'width'   => '200px',
-                                'add'     => '',
-                                'visible' => false,
-                                'edit'    => [
-                                    'type' => 'Label'
-                                ]
-                            ],
-                            [
-                                'caption' => 'Alarmanruf',
-                                'name'    => 'UseAlarmCallAction',
-                                'width'   => '200px',
-                                'add'     => false,
-                                'visible' => false,
-                                'edit'    => [
-                                    'type' => 'CheckBox'
-                                ]
-                            ],
-                            [
-                                'name'    => 'AlarmCallAction',
                                 'width'   => '200px',
                                 'add'     => '',
                                 'visible' => false,
@@ -1506,13 +1202,15 @@ trait AZ_Config
         //Alarm protocol
         $id = $this->ReadPropertyInteger('AlarmProtocol');
         $enableButton = false;
-        if ($id > 1 && @IPS_ObjectExists($id)) { //0 = main category, 1 = none
+        if ($id > 1 && @IPS_ObjectExists($id)) {
             $enableButton = true;
         }
         $form['elements'][] = [
-            'type'    => 'ExpansionPanel',
-            'caption' => 'Alarmprotokoll',
-            'items'   => [
+            'type'     => 'ExpansionPanel',
+            'caption'  => 'Alarmprotokoll',
+            'name'     => 'Panel6',
+            'expanded' => false,
+            'items'    => [
                 [
                     'type'  => 'RowLayout',
                     'items' => [
@@ -1522,7 +1220,7 @@ trait AZ_Config
                             'caption'  => 'Instanz',
                             'moduleID' => self::ALARMPROTOCOL_MODULE_GUID,
                             'width'    => '600px',
-                            'onChange' => self::MODULE_PREFIX . '_ModifyButton($id, "AlarmProtocolConfigurationButton", "ID " . $AlarmProtocol . " Instanzkonfiguration", $AlarmProtocol);'
+                            'onChange' => self::MODULE_PREFIX . '_ModifyButton($id, "AlarmProtocolConfigurationButton", "ID " . $AlarmProtocol . " konfigurieren", $AlarmProtocol);'
                         ],
                         [
                             'type'    => 'Button',
@@ -1530,12 +1228,8 @@ trait AZ_Config
                             'onClick' => self::MODULE_PREFIX . '_CreateAlarmProtocolInstance($id);'
                         ],
                         [
-                            'type'    => 'Label',
-                            'caption' => ' '
-                        ],
-                        [
                             'type'     => 'OpenObjectButton',
-                            'caption'  => 'ID ' . $id . ' Instanzkonfiguration',
+                            'caption'  => 'ID ' . $id . ' konfigurieren',
                             'name'     => 'AlarmProtocolConfigurationButton',
                             'visible'  => $enableButton,
                             'objectID' => $id
@@ -1548,13 +1242,15 @@ trait AZ_Config
         //Notification
         $id = $this->ReadPropertyInteger('Notification');
         $enableButton = false;
-        if ($id > 1 && @IPS_ObjectExists($id)) { //0 = main category, 1 = none
+        if ($id > 1 && @IPS_ObjectExists($id)) {
             $enableButton = true;
         }
         $form['elements'][] = [
-            'type'    => 'ExpansionPanel',
-            'caption' => 'Benachrichtigung',
-            'items'   => [
+            'type'     => 'ExpansionPanel',
+            'caption'  => 'Benachrichtigung',
+            'name'     => 'Panel7',
+            'expanded' => false,
+            'items'    => [
                 [
                     'type'  => 'RowLayout',
                     'items' => [
@@ -1564,7 +1260,7 @@ trait AZ_Config
                             'caption'  => 'Instanz',
                             'moduleID' => self::NOTIFICATION_MODULE_GUID,
                             'width'    => '600px',
-                            'onChange' => self::MODULE_PREFIX . '_ModifyButton($id, "NotificationConfigurationButton", "ID " . $Notification . " Instanzkonfiguration", $Notification);'
+                            'onChange' => self::MODULE_PREFIX . '_ModifyButton($id, "NotificationConfigurationButton", "ID " . $Notification . " konfigurieren", $Notification);'
                         ],
                         [
                             'type'    => 'Button',
@@ -1572,12 +1268,8 @@ trait AZ_Config
                             'onClick' => self::MODULE_PREFIX . '_CreateNotificationInstance($id);'
                         ],
                         [
-                            'type'    => 'Label',
-                            'caption' => ' '
-                        ],
-                        [
                             'type'     => 'OpenObjectButton',
-                            'caption'  => 'ID ' . $id . ' Instanzkonfiguration',
+                            'caption'  => 'ID ' . $id . ' konfigurieren',
                             'name'     => 'NotificationConfigurationButton',
                             'visible'  => $enableButton,
                             'objectID' => $id
@@ -1591,7 +1283,7 @@ trait AZ_Config
                 //Disarmed
                 [
                     'type'    => 'Label',
-                    'caption' => 'Aus',
+                    'caption' => 'Unscharf',
                     'bold'    => true,
                     'italic'  => true
                 ],
@@ -7914,11 +7606,95 @@ trait AZ_Config
             ]
         ];
 
+        //Actions
+        $form['elements'][] = [
+            'type'     => 'ExpansionPanel',
+            'caption'  => 'Aktionen',
+            'name'     => 'Panel8',
+            'expanded' => false,
+            'items'    => [
+                [
+                    'type'    => 'Label',
+                    'caption' => 'Unscharf',
+                    'bold'    => true,
+                    'italic'  => true
+                ],
+                [
+                    'type'    => 'CheckBox',
+                    'name'    => 'UseDisarmedAction',
+                    'caption' => 'Aktiv'
+                ],
+                [
+                    'type' => 'SelectAction',
+                    'name' => 'DisarmedAction'
+                ],
+                [
+                    'type'    => 'Label',
+                    'caption' => ' '
+                ],
+                [
+                    'type'    => 'Label',
+                    'caption' => 'Vollschutz',
+                    'bold'    => true,
+                    'italic'  => true
+                ],
+                [
+                    'type'    => 'CheckBox',
+                    'name'    => 'UseFullProtectionAction',
+                    'caption' => 'Aktiv'
+                ],
+                [
+                    'type' => 'SelectAction',
+                    'name' => 'FullProtectionAction'
+                ],
+                [
+                    'type'    => 'Label',
+                    'caption' => ' '
+                ],
+                [
+                    'type'    => 'Label',
+                    'caption' => 'Hüllschutz',
+                    'bold'    => true,
+                    'italic'  => true
+                ],
+                [
+                    'type'    => 'CheckBox',
+                    'name'    => 'UseHullProtectionAction',
+                    'caption' => 'Aktiv'
+                ],
+                [
+                    'type' => 'SelectAction',
+                    'name' => 'HullProtectionAction'
+                ],
+                [
+                    'type'    => 'Label',
+                    'caption' => ' '
+                ],
+                [
+                    'type'    => 'Label',
+                    'caption' => 'Teilschutz',
+                    'bold'    => true,
+                    'italic'  => true
+                ],
+                [
+                    'type'    => 'CheckBox',
+                    'name'    => 'UsePartialProtectionAction',
+                    'caption' => 'Aktiv'
+                ],
+                [
+                    'type' => 'SelectAction',
+                    'name' => 'PartialProtectionAction'
+                ]
+            ]
+        ];
+
         //Visualisation
         $form['elements'][] = [
-            'type'    => 'ExpansionPanel',
-            'caption' => 'Visualisierung',
-            'items'   => [
+            'type'     => 'ExpansionPanel',
+            'caption'  => 'Visualisierung',
+            'name'     => 'Panel9',
+            'expanded' => false,
+            'items'    => [
                 [
                     'type'    => 'Label',
                     'caption' => 'Aktiv',
@@ -8050,28 +7826,200 @@ trait AZ_Config
 
         ########## Actions
 
-        $form['actions'][] = [
-            'type'    => 'ExpansionPanel',
-            'caption' => 'Konfiguration',
-            'items'   => [
-                [
-                    'type'    => 'Button',
-                    'caption' => 'Neu laden',
-                    'onClick' => self::MODULE_PREFIX . '_ReloadConfig($id);'
-                ]
-            ]
-        ];
+        $form['actions'][] =
+            [
+                'type'  => 'RowLayout',
+                'items' => [
+                    [
+                        'type'    => 'PopupButton',
+                        'caption' => 'Tür- und Fenstersensoren ermitteln',
+                        'popup'   => [
+                            'caption' => 'Variablen wirklich automatisch ermitteln und hinzufügen?',
+                            'items'   => [
+                                [
+                                    'type'    => 'Button',
+                                    'caption' => 'Ermitteln',
+                                    'onClick' => self::MODULE_PREFIX . '_DetermineDoorWindowVariables($id, $SelectDoorWindowIdents, $DoorWindowObjectIdents);'
+                                ],
+                                [
+                                    'type'    => 'ProgressBar',
+                                    'name'    => 'DoorWindowSensorProgress',
+                                    'caption' => 'Fortschritt',
+                                    'minimum' => 0,
+                                    'maximum' => 100,
+                                    'visible' => false
+                                ],
+                                [
+                                    'type'    => 'Label',
+                                    'name'    => 'DoorWindowSensorProgressInfo',
+                                    'caption' => '',
+                                    'visible' => false
+                                ]
+                            ]
+                        ]
+                    ],
+                    [
+                        'type'    => 'Label',
+                        'caption' => ' ',
+                        'width'   => '20px'
+                    ],
+                    [
+                        'type'    => 'Select',
+                        'name'    => 'SelectDoorWindowIdents',
+                        'options' => [
+                            [
+                                'caption' => 'Benutzerdefiniert',
+                                'value'   => ''
+                            ],
+                            [
+                                'caption' => 'STATE',
+                                'value'   => 'STATE'
+                            ]
+                        ],
+                        'value' => 'STATE'
 
-        //Test center
-        $form['actions'][] = [
-            'type'    => 'ExpansionPanel',
-            'caption' => 'Schaltfunktionen',
-            'items'   => [
-                [
-                    'type' => 'TestCenter',
+                    ],
+                    [
+                        'type'    => 'ValidationTextBox',
+                        'name'    => 'DoorWindowObjectIdents',
+                        'caption' => 'Identifikator'
+                    ]
                 ]
-            ]
-        ];
+            ];
+
+        $form['actions'][] =
+            [
+                'type'  => 'RowLayout',
+                'items' => [
+                    [
+                        'type'    => 'PopupButton',
+                        'caption' => 'Erneute Überprüfung festlegen',
+                        'popup'   => [
+                            'caption' => 'Erneute Überprüfung wirklich automatisch festlegen?',
+                            'items'   => [
+                                [
+                                    'type'    => 'Button',
+                                    'caption' => 'Festlegen',
+                                    'onClick' => self::MODULE_PREFIX . '_ConfigureVerificationDelay($id, $VerificationDelay);'
+                                ],
+                                [
+                                    'type'    => 'ProgressBar',
+                                    'name'    => 'VerificationDelayProgress',
+                                    'caption' => 'Fortschritt',
+                                    'minimum' => 0,
+                                    'maximum' => 100,
+                                    'visible' => false
+                                ],
+                                [
+                                    'type'    => 'Label',
+                                    'name'    => 'VerificationDelayProgressInfo',
+                                    'caption' => '',
+                                    'visible' => false
+                                ],
+                            ]
+                        ]
+                    ],
+                    [
+                        'type'    => 'Label',
+                        'caption' => ' ', @'width'   => '55px'
+                    ],
+                    [
+                        'type'    => 'NumberSpinner',
+                        'name'    => 'VerificationDelay',
+                        'caption' => 'Erneute Überprüfung nach',
+                        'suffix'  => 'Sekunden',
+                        'minimum' => 0,
+                        'maximum' => 10
+                    ]
+                ]
+            ];
+
+        $form['actions'][] =
+            [
+                'type'  => 'RowLayout',
+                'items' => [
+                    [
+                        'type'    => 'PopupButton',
+                        'caption' => 'Bewegungsmelder ermitteln',
+                        'popup'   => [
+                            'caption' => 'Variablen wirklich automatisch ermitteln und hinzufügen?',
+                            'items'   => [
+                                [
+                                    'type'    => 'Button',
+                                    'caption' => 'Ermitteln',
+                                    'onClick' => self::MODULE_PREFIX . '_DetermineMotionDetectorVariables($id, $SelectMotionDetectorIdents, $MotionDetectorsObjectIdents);'
+                                ],
+                                [
+                                    'type'    => 'ProgressBar',
+                                    'name'    => 'MotionDetectorProgress',
+                                    'caption' => 'Fortschritt',
+                                    'minimum' => 0,
+                                    'maximum' => 100,
+                                    'visible' => false
+                                ],
+                                [
+                                    'type'    => 'Label',
+                                    'name'    => 'MotionDetectorProgressInfo',
+                                    'caption' => '',
+                                    'visible' => false
+                                ]
+                            ]
+                        ]
+                    ],
+                    [
+                        'type'    => 'Label',
+                        'caption' => ' ',
+                        'width'   => '80px'
+                    ],
+                    [
+                        'type'    => 'Select',
+                        'name'    => 'SelectMotionDetectorIdents',
+                        'options' => [
+                            [
+                                'caption' => 'Benutzerdefiniert',
+                                'value'   => ''
+                            ],
+                            [
+                                'caption' => 'MOTION',
+                                'value'   => 'MOTION'
+                            ]
+                        ],
+                        'value' => 'MOTION'
+
+                    ],
+                    [
+                        'type'    => 'ValidationTextBox',
+                        'name'    => 'MotionDetectorsObjectIdents',
+                        'caption' => 'Identifikator'
+                    ]
+                ]
+            ];
+
+        $form['actions'][] =
+            [
+                'type'    => 'Label',
+                'caption' => ' '
+            ];
+
+        $form['actions'][] =
+            [
+                'type' => 'TestCenter',
+            ];
+
+        $form['actions'][] =
+            [
+                'type'    => 'Label',
+                'caption' => ' '
+            ];
+
+        //Blacklist
+        $blacklistedVariables = [];
+        foreach (json_decode($this->GetBuffer('Blacklist')) as $element) {
+            $variable = json_decode($element, true);
+            $blacklistedVariables[] = [
+                'SensorID'    => $variable['sensorID'],
+                'Designation' => $variable['sensorDesignation']];
+        }
 
         //Registered references
         $registeredReferences = [];
@@ -8088,44 +8036,6 @@ trait AZ_Config
                 'Name'     => $name,
                 'rowColor' => $rowColor];
         }
-
-        $form['actions'][] = [
-            'type'    => 'ExpansionPanel',
-            'caption' => 'Registrierte Referenzen',
-            'items'   => [
-                [
-                    'type'     => 'List',
-                    'name'     => 'RegisteredReferences',
-                    'rowCount' => 10,
-                    'sort'     => [
-                        'column'    => 'ObjectID',
-                        'direction' => 'ascending'
-                    ],
-                    'columns' => [
-                        [
-                            'caption' => 'ID',
-                            'name'    => 'ObjectID',
-                            'width'   => '150px',
-                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "RegisteredReferencesConfigurationButton", "ID " . $RegisteredReferences["ObjectID"] . " aufrufen", $RegisteredReferences["ObjectID"]);'
-                        ],
-                        [
-                            'caption' => 'Name',
-                            'name'    => 'Name',
-                            'width'   => '300px',
-                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "RegisteredReferencesConfigurationButton", "ID " . $RegisteredReferences["ObjectID"] . " aufrufen", $RegisteredReferences["ObjectID"]);'
-                        ]
-                    ],
-                    'values' => $registeredReferences
-                ],
-                [
-                    'type'     => 'OpenObjectButton',
-                    'name'     => 'RegisteredReferencesConfigurationButton',
-                    'caption'  => 'Aufrufen',
-                    'visible'  => false,
-                    'objectID' => 0
-                ]
-            ]
-        ];
 
         //Registered messages
         $registeredMessages = [];
@@ -8158,12 +8068,106 @@ trait AZ_Config
         }
 
         $form['actions'][] = [
-            'type'    => 'ExpansionPanel',
-            'caption' => 'Registrierte Nachrichten',
-            'items'   => [
+            'type'     => 'ExpansionPanel',
+            'caption'  => 'Entwicklerbereich',
+            'name'     => 'Panel10',
+            'expanded' => false,
+            'items'    => [
+                [
+                    'type'     => 'List',
+                    'name'     => 'Blacklist',
+                    'caption'  => 'Sperrliste',
+                    'rowCount' => 15,
+                    'sort'     => [
+                        'column'    => 'SensorID',
+                        'direction' => 'ascending'
+                    ],
+                    'columns' => [
+                        [
+                            'caption' => 'ID',
+                            'name'    => 'SensorID',
+                            'width'   => '150px',
+                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "BlacklistConfigurationButton", "ID " . $Blacklist["SensorID"] . " bearbeiten", $Blacklist["SensorID"]);'
+                        ],
+                        [
+                            'caption' => 'Bezeichnung',
+                            'name'    => 'Designation',
+                            'width'   => '300px',
+                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "BlacklistConfigurationButton", "ID " . $Blacklist["SensorID"] . " bearbeiten", $Blacklist["SensorID"]);'
+                        ]
+                    ],
+                    'values' => $blacklistedVariables
+                ],
+                [
+                    'type'  => 'RowLayout',
+                    'items' => [
+                        [
+                            'type'    => 'PopupButton',
+                            'caption' => 'Zurücksetzen',
+                            'popup'   => [
+                                'caption' => 'Sperrliste wirklich zurücksetzen?',
+                                'items'   => [
+                                    [
+                                        'type'    => 'Button',
+                                        'caption' => 'Zurücksetzen',
+                                        'onClick' => self::MODULE_PREFIX . '_ResetBlackList($id);'
+                                    ]
+                                ]
+                            ]
+                        ],
+                        [
+                            'type'     => 'OpenObjectButton',
+                            'name'     => 'BlacklistConfigurationButton',
+                            'caption'  => 'Bearbeiten',
+                            'visible'  => false,
+                            'objectID' => 0
+                        ]
+                    ]
+                ],
+                [
+                    'type'    => 'Label',
+                    'caption' => ' '
+                ],
+                [
+                    'type'     => 'List',
+                    'name'     => 'RegisteredReferences',
+                    'caption'  => 'Registrierte Referenzen',
+                    'rowCount' => 10,
+                    'sort'     => [
+                        'column'    => 'ObjectID',
+                        'direction' => 'ascending'
+                    ],
+                    'columns' => [
+                        [
+                            'caption' => 'ID',
+                            'name'    => 'ObjectID',
+                            'width'   => '150px',
+                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "RegisteredReferencesConfigurationButton", "ID " . $RegisteredReferences["ObjectID"] . " aufrufen", $RegisteredReferences["ObjectID"]);'
+                        ],
+                        [
+                            'caption' => 'Name',
+                            'name'    => 'Name',
+                            'width'   => '300px',
+                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "RegisteredReferencesConfigurationButton", "ID " . $RegisteredReferences["ObjectID"] . " aufrufen", $RegisteredReferences["ObjectID"]);'
+                        ]
+                    ],
+                    'values' => $registeredReferences
+                ],
+                [
+                    'type'     => 'OpenObjectButton',
+                    'name'     => 'RegisteredReferencesConfigurationButton',
+                    'caption'  => 'Aufrufen',
+                    'visible'  => false,
+                    'objectID' => 0
+                ],
+                [
+                    'type'    => 'Label',
+                    'caption' => ' '
+                ],
                 [
                     'type'     => 'List',
                     'name'     => 'RegisteredMessages',
+                    'caption'  => 'Registrierte Nachrichten',
                     'rowCount' => 10,
                     'sort'     => [
                         'column'    => 'ObjectID',
@@ -8205,115 +8209,20 @@ trait AZ_Config
             ]
         ];
 
-        //Door and window sensor determination
-        $form['actions'][] = [
-            'type'    => 'ExpansionPanel',
-            'caption' => 'Tür- und Fenstersensoren',
-            'items'   => [
-                [
-                    'type'    => 'PopupButton',
-                    'caption' => 'Ermitteln',
-                    'popup'   => [
-                        'caption' => 'Tür- und Fenstersensoren (HomeMatic und Homematic IP) automatisch ermitteln und hinzufügen?',
-                        'items'   => [
-                            [
-                                'type'    => 'Button',
-                                'caption' => 'Ermitteln',
-                                'onClick' => self::MODULE_PREFIX . '_DetermineDoorWindowVariables($id);'
-                            ]
-                        ]
-                    ]
-                ]
-            ]
-        ];
-
-        //Motion detector determination
-        $form['actions'][] = [
-            'type'    => 'ExpansionPanel',
-            'caption' => 'Bewegungsmelder',
-            'items'   => [
-                [
-                    'type'    => 'PopupButton',
-                    'caption' => 'Ermitteln',
-                    'popup'   => [
-                        'caption' => 'Bewegungsmelder (HomeMatic und Homematic IP) automatisch ermitteln und hinzufügen?',
-                        'items'   => [
-                            [
-                                'type'    => 'Button',
-                                'caption' => 'Ermitteln',
-                                'onClick' => self::MODULE_PREFIX . '_DetermineMotionDetectorVariables($id);'
-                            ]
-                        ]
-                    ]
-                ]
-            ]
-        ];
-
-        //Blacklist
-        $blacklistedVariables = [];
-        foreach (json_decode($this->GetBuffer('Blacklist')) as $element) {
-            $variable = json_decode($element, true);
-            $blacklistedVariables[] = [
-                'SensorID'    => $variable['sensorID'],
-                'Designation' => $variable['sensorDesignation']];
-        }
-
-        $form['actions'][] = [
-            'type'    => 'ExpansionPanel',
-            'caption' => 'Sperrliste',
-            'items'   => [
-                [
-                    'type'     => 'List',
-                    'name'     => 'Blacklist',
-                    'rowCount' => 15,
-                    'sort'     => [
-                        'column'    => 'SensorID',
-                        'direction' => 'ascending'
-                    ],
-                    'columns' => [
-                        [
-                            'caption' => 'ID',
-                            'name'    => 'SensorID',
-                            'width'   => '150px',
-                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "BlacklistConfigurationButton", "ID " . $Blacklist["SensorID"] . " bearbeiten", $Blacklist["SensorID"]);'
-                        ],
-                        [
-                            'caption' => 'Bezeichnung',
-                            'name'    => 'Designation',
-                            'width'   => '300px',
-                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "BlacklistConfigurationButton", "ID " . $Blacklist["SensorID"] . " bearbeiten", $Blacklist["SensorID"]);'
-                        ]
-                    ],
-                    'values' => $blacklistedVariables
-                ],
-                [
-                    'type'  => 'RowLayout',
-                    'items' => [
-                        [
-                            'type'    => 'PopupButton',
-                            'caption' => 'Zurücksetzen',
-                            'popup'   => [
-                                'caption' => 'Sperrliste wirklich zurücksetzen?',
-                                'items'   => [
-                                    [
-                                        'type'    => 'Button',
-                                        'caption' => 'Zurücksetzen',
-                                        'onClick' => self::MODULE_PREFIX . '_ResetBlackList($id); echo "Die Sperrliste wurde erfolgreich zurückgesetzt!";'
-                                    ]
-                                ]
-                            ]
-                        ],
-                        [
-                            'type'    => 'Label',
-                            'caption' => ' '
-                        ],
-                        [
-                            'type'     => 'OpenObjectButton',
-                            'name'     => 'BlacklistConfigurationButton',
-                            'caption'  => 'Bearbeiten',
-                            'visible'  => false,
-                            'objectID' => 0
-                        ]
+        //Dummy info message
+        $form['actions'][] =
+        [
+            'type'    => 'PopupAlert',
+            'name'    => 'InfoMessage',
+            'visible' => false,
+            'popup'   => [
+                'closeCaption' => 'OK',
+                'items'        => [
+                    [
+                        'type'    => 'Label',
+                        'name'    => 'InfoMessageLabel',
+                        'caption' => '',
+                        'visible' => true
                     ]
                 ]
             ]

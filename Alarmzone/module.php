@@ -28,12 +28,12 @@ class Alarmzone extends IPSModule
     use AZ_Notification;
 
     //Constants
+    private const LIBRARY_GUID = '{F227BA9C-8112-3B9F-1149-9B53E10D4F79}';
+    private const MODULE_GUID = '{127AB08D-CD10-801D-D419-442CDE6E5C61}';
     private const MODULE_NAME = 'Alarmzone';
     private const MODULE_PREFIX = 'AZ';
-    private const MODULE_VERSION = '7.0-7, 08.06.2023';
     private const ALARMPROTOCOL_MODULE_GUID = '{66BDB59B-E80F-E837-6640-005C32D5FC24}';
     private const NOTIFICATION_MODULE_GUID = '{BDAB70AA-B45D-4CB4-3D65-509CFF0969F9}';
-    private const HOMEMATIC_DEVICE_GUID = '{EE4A81C6-5C90-4DB7-AD2F-F6BBD521412E}';
     private const SLEEP_DELAY = 100;
 
     public function Create()
@@ -59,58 +59,34 @@ class Alarmzone extends IPSModule
         $this->RegisterPropertyString('DisarmedIcon', 'Warning');
         $this->RegisterPropertyString('DisarmedName', 'Unscharf');
         $this->RegisterPropertyInteger('DisarmedColor', 65280);
-        $this->RegisterPropertyBoolean('UseDisarmedAction', false);
-        $parameters = '{"actionID":"{346AA8C1-30E0-1663-78EF-93EFADFAC650}","parameters":{"SCRIPT":"<?php\n\n//Quittungston\n$id = 12345;\nASIRHMIP_ExecuteSignaling($id, 16, 2, 0, 10);","ENVIRONMENT":"Default","PARENT":' . $this->InstanceID . ',"TARGET":' . $this->InstanceID . '}}';
-        $this->RegisterPropertyString('DisarmedAction', $parameters);
 
         //Full protection
-        $this->RegisterPropertyBoolean('UseFullProtectionMode', true);
         $this->RegisterPropertyString('FullProtectionIcon', 'Basement');
         $this->RegisterPropertyString('FullProtectionName', 'Vollschutz');
         $this->RegisterPropertyInteger('FullProtectionColor', 16711680);
-        $this->RegisterPropertyBoolean('UseFullProtectionAction', false);
-        $parameters = '{"actionID":"{346AA8C1-30E0-1663-78EF-93EFADFAC650}","parameters":{"SCRIPT":"<?php\n\n//Quittungston\n$id = 12345;\nASIRHMIP_ExecuteSignaling($id, 17, 3, 0, 10);","ENVIRONMENT":"Default","PARENT":' . $this->InstanceID . ',"TARGET":' . $this->InstanceID . '}}';
-        $this->RegisterPropertyString('FullProtectionAction', $parameters);
+        $this->RegisterPropertyBoolean('UseFullProtectionMode', true);
+        $this->RegisterPropertyBoolean('CheckFullProtectionModeActivation', false);
+        $this->RegisterPropertyInteger('FullProtectionModeActivationDelay', 0);
 
         //Hull protection
-        $this->RegisterPropertyBoolean('UseHullProtectionMode', false);
         $this->RegisterPropertyString('HullProtectionIcon', 'Presence');
         $this->RegisterPropertyString('HullProtectionName', 'Hüllschutz');
         $this->RegisterPropertyInteger('HullProtectionColor', 16776960);
-        $this->RegisterPropertyBoolean('UseHullProtectionAction', false);
-        $parameters = '{"actionID":"{346AA8C1-30E0-1663-78EF-93EFADFAC650}","parameters":{"SCRIPT":"<?php\n\n//Quittungston\n$id = 12345;\nASIRHMIP_ExecuteSignaling($id, 17, 3, 0, 10);","ENVIRONMENT":"Default","PARENT":' . $this->InstanceID . ',"TARGET":' . $this->InstanceID . '}}';
-        $this->RegisterPropertyString('HullProtectionAction', $parameters);
+        $this->RegisterPropertyBoolean('UseHullProtectionMode', false);
+        $this->RegisterPropertyBoolean('CheckHullProtectionModeActivation', false);
+        $this->RegisterPropertyInteger('HullProtectionModeActivationDelay', 0);
 
         //Partial protection
-        $this->RegisterPropertyBoolean('UsePartialProtectionMode', false);
         $this->RegisterPropertyString('PartialProtectionIcon', 'Moon');
         $this->RegisterPropertyString('PartialProtectionName', 'Teilschutz');
         $this->RegisterPropertyInteger('PartialProtectionColor', 255);
-        $this->RegisterPropertyBoolean('UsePartialProtectionAction', false);
-        $parameters = '{"actionID":"{346AA8C1-30E0-1663-78EF-93EFADFAC650}","parameters":{"SCRIPT":"<?php\n\n//Quittungston\n$id = 12345;\nASIRHMIP_ExecuteSignaling($id, 17, 3, 0, 10);","ENVIRONMENT":"Default","PARENT":' . $this->InstanceID . ',"TARGET":' . $this->InstanceID . '}}';
-        $this->RegisterPropertyString('PartialProtectionAction', $parameters);
-
-        ##### Activation delay
-
-        $this->RegisterPropertyInteger('FullProtectionModeActivationDelay', 0);
-        $this->RegisterPropertyInteger('HullProtectionModeActivationDelay', 0);
-        $this->RegisterPropertyInteger('PartialProtectionModeActivationDelay', 0);
-
-        ##### Activation check
-
-        $this->RegisterPropertyBoolean('CheckFullProtectionModeActivation', false);
-        $this->RegisterPropertyBoolean('CheckHullProtectionModeActivation', false);
+        $this->RegisterPropertyBoolean('UsePartialProtectionMode', false);
         $this->RegisterPropertyBoolean('CheckPartialProtectionModeActivation', false);
+        $this->RegisterPropertyInteger('PartialProtectionModeActivationDelay', 0);
 
         ##### Door and window sensors
 
         $this->RegisterPropertyString('DoorWindowSensors', '[]');
-
-        ##### Status verification
-
-        $this->RegisterPropertyBoolean('VerifyOpenDoorWindowStatus', false);
-        $this->RegisterPropertyInteger('OpenDoorWindowStatusVerificationDelay', 3);
-        $this->RegisterPropertyBoolean('OnlyLogRecheck', false);
 
         ##### Motion detectors
 
@@ -152,6 +128,18 @@ class Alarmzone extends IPSModule
         //Notification alarm
         $this->RegisterPropertyString('DoorWindowAlarmNotification', '[{"Use":false,"Designation":"Tür/Fenster Alarm","SpacerNotification":"","LabelMessageText":"","MessageText":"❗️%1$s hat einen Alarm ausgelöst!","UseTimestamp":true,"SpacerWebFrontNotification":"","LabelWebFrontNotification":"","UseWebFrontNotification":false,"WebFrontNotificationTitle":"","WebFrontNotificationIcon":"","WebFrontNotificationDisplayDuration":0,"SpacerWebFrontPushNotification":"","LabelWebFrontPushNotification":"","UseWebFrontPushNotification":false,"WebFrontPushNotificationTitle":"","WebFrontPushNotificationSound":"alarm","WebFrontPushNotificationTargetID":0,"SpacerMail":"","LabelMail":"","UseMailer":false,"Subject":"","SpacerSMS":"","LabelSMS":"","UseSMS":false,"SMSTitle":"","SpacerTelegram":"","LabelTelegram":"","UseTelegram":false,"TelegramTitle":""}]');
         $this->RegisterPropertyString('MotionDetectorAlarmNotification', '[{"Use":false,"Designation":"Bewegungsmelder Alarm","SpacerNotification":"","LabelMessageText":"","MessageText":"❗%1$s hat einen Alarm ausgelöst!","UseTimestamp":true,"SpacerWebFrontNotification":"","LabelWebFrontNotification":"","UseWebFrontNotification":false,"WebFrontNotificationTitle":"","WebFrontNotificationIcon":"","WebFrontNotificationDisplayDuration":0,"SpacerWebFrontPushNotification":"","LabelWebFrontPushNotification":"","UseWebFrontPushNotification":false,"WebFrontPushNotificationTitle":"","WebFrontPushNotificationSound":"alarm","WebFrontPushNotificationTargetID":0,"SpacerMail":"","LabelMail":"","UseMailer":false,"Subject":"","SpacerSMS":"","LabelSMS":"","UseSMS":false,"SMSTitle":"","SpacerTelegram":"","LabelTelegram":"","UseTelegram":false,"TelegramTitle":""}]');
+
+        ##### Actions
+
+        $parameters = '{"actionID":"{346AA8C1-30E0-1663-78EF-93EFADFAC650}","parameters":{"SCRIPT":"<?php\n\n//Skript hier einfügen","ENVIRONMENT":"Default","PARENT":' . $this->InstanceID . ',"TARGET":' . $this->InstanceID . '}}';
+        $this->RegisterPropertyBoolean('UseDisarmedAction', false);
+        $this->RegisterPropertyString('DisarmedAction', $parameters);
+        $this->RegisterPropertyBoolean('UseFullProtectionAction', false);
+        $this->RegisterPropertyString('FullProtectionAction', $parameters);
+        $this->RegisterPropertyBoolean('UseHullProtectionAction', false);
+        $this->RegisterPropertyString('HullProtectionAction', $parameters);
+        $this->RegisterPropertyBoolean('UsePartialProtectionAction', false);
+        $this->RegisterPropertyString('PartialProtectionAction', $parameters);
 
         ##### Visualisation
 
@@ -449,13 +437,13 @@ class Alarmzone extends IPSModule
 
         //Alarm protocol
         $id = $this->ReadPropertyInteger('AlarmProtocol');
-        if ($id > 1 && @IPS_ObjectExists($id)) { //0 = main category, 1 = none
+        if ($id > 1 && @IPS_ObjectExists($id)) {
             $this->RegisterReference($id);
         }
 
         //Notification
         $id = $this->ReadPropertyInteger('Notification');
-        if ($id > 1 && @IPS_ObjectExists($id)) { //0 = main category, 1 = none
+        if ($id > 1 && @IPS_ObjectExists($id)) {
             $this->RegisterReference($id);
         }
 
@@ -471,7 +459,7 @@ class Alarmzone extends IPSModule
                 if (array_key_exists(0, $primaryCondition)) {
                     if (array_key_exists(0, $primaryCondition[0]['rules']['variable'])) {
                         $id = $primaryCondition[0]['rules']['variable'][0]['variableID'];
-                        if ($id > 1 && @IPS_ObjectExists($id)) { //0 = main category, 1 = none
+                        if ($id > 1 && @IPS_ObjectExists($id)) {
                             $this->RegisterReference($id);
                             $this->RegisterMessage($id, VM_UPDATE);
                         }
@@ -487,7 +475,7 @@ class Alarmzone extends IPSModule
                         foreach ($rules as $rule) {
                             if (array_key_exists('variableID', $rule)) {
                                 $id = $rule['variableID'];
-                                if ($id > 1 && @IPS_ObjectExists($id)) { //0 = main category, 1 = none
+                                if ($id > 1 && @IPS_ObjectExists($id)) {
                                     $this->RegisterReference($id);
                                 }
                             }
@@ -502,49 +490,7 @@ class Alarmzone extends IPSModule
                     if (array_key_exists('parameters', $action)) {
                         if (array_key_exists('TARGET', $action['parameters'])) {
                             $id = $action['parameters']['TARGET'];
-                            if ($id > 1 && @IPS_ObjectExists($id)) { //0 = main category, 1 = none
-                                $this->RegisterReference($id);
-                            }
-                        }
-                    }
-                }
-            }
-            //Alarm siren action
-            if ($variable['UseAlarmSirenAction']) {
-                if ($variable['AlarmSirenAction'] != '') {
-                    $action = json_decode($variable['AlarmSirenAction'], true);
-                    if (array_key_exists('parameters', $action)) {
-                        if (array_key_exists('TARGET', $action['parameters'])) {
-                            $id = $action['parameters']['TARGET'];
-                            if ($id > 1 && @IPS_ObjectExists($id)) { //0 = main category, 1 = none
-                                $this->RegisterReference($id);
-                            }
-                        }
-                    }
-                }
-            }
-            //Alarm light action
-            if ($variable['UseAlarmLightAction']) {
-                if ($variable['AlarmLightAction'] != '') {
-                    $action = json_decode($variable['AlarmLightAction'], true);
-                    if (array_key_exists('parameters', $action)) {
-                        if (array_key_exists('TARGET', $action['parameters'])) {
-                            $id = $action['parameters']['TARGET'];
-                            if ($id > 1 && @IPS_ObjectExists($id)) { //0 = main category, 1 = none
-                                $this->RegisterReference($id);
-                            }
-                        }
-                    }
-                }
-            }
-            //Alarm call action
-            if ($variable['UseAlarmCallAction']) {
-                if ($variable['AlarmCallAction'] != '') {
-                    $action = json_decode($variable['AlarmCallAction'], true);
-                    if (array_key_exists('parameters', $action)) {
-                        if (array_key_exists('TARGET', $action['parameters'])) {
-                            $id = $action['parameters']['TARGET'];
-                            if ($id > 1 && @IPS_ObjectExists($id)) { //0 = main category, 1 = none
+                            if ($id > 1 && @IPS_ObjectExists($id)) {
                                 $this->RegisterReference($id);
                             }
                         }
@@ -565,7 +511,7 @@ class Alarmzone extends IPSModule
                 if (array_key_exists(0, $primaryCondition)) {
                     if (array_key_exists(0, $primaryCondition[0]['rules']['variable'])) {
                         $id = $primaryCondition[0]['rules']['variable'][0]['variableID'];
-                        if ($id > 1 && @IPS_ObjectExists($id)) { //0 = main category, 1 = none
+                        if ($id > 1 && @IPS_ObjectExists($id)) {
                             $this->RegisterReference($id);
                             $this->RegisterMessage($id, VM_UPDATE);
                         }
@@ -581,7 +527,7 @@ class Alarmzone extends IPSModule
                         foreach ($rules as $rule) {
                             if (array_key_exists('variableID', $rule)) {
                                 $id = $rule['variableID'];
-                                if ($id > 1 && @IPS_ObjectExists($id)) { //0 = main category, 1 = none
+                                if ($id > 1 && @IPS_ObjectExists($id)) {
                                     $this->RegisterReference($id);
                                 }
                             }
@@ -596,49 +542,7 @@ class Alarmzone extends IPSModule
                     if (array_key_exists('parameters', $action)) {
                         if (array_key_exists('TARGET', $action['parameters'])) {
                             $id = $action['parameters']['TARGET'];
-                            if ($id > 1 && @IPS_ObjectExists($id)) { //0 = main category, 1 = none
-                                $this->RegisterReference($id);
-                            }
-                        }
-                    }
-                }
-            }
-            //Alarm siren action
-            if ($variable['UseAlarmSirenAction']) {
-                if ($variable['AlarmSirenAction'] != '') {
-                    $action = json_decode($variable['AlarmSirenAction'], true);
-                    if (array_key_exists('parameters', $action)) {
-                        if (array_key_exists('TARGET', $action['parameters'])) {
-                            $id = $action['parameters']['TARGET'];
-                            if ($id > 1 && @IPS_ObjectExists($id)) { //0 = main category, 1 = none
-                                $this->RegisterReference($id);
-                            }
-                        }
-                    }
-                }
-            }
-            //Alarm light action
-            if ($variable['UseAlarmLightAction']) {
-                if ($variable['AlarmLightAction'] != '') {
-                    $action = json_decode($variable['AlarmLightAction'], true);
-                    if (array_key_exists('parameters', $action)) {
-                        if (array_key_exists('TARGET', $action['parameters'])) {
-                            $id = $action['parameters']['TARGET'];
-                            if ($id > 1 && @IPS_ObjectExists($id)) { //0 = main category, 1 = none
-                                $this->RegisterReference($id);
-                            }
-                        }
-                    }
-                }
-            }
-            //Alarm call action
-            if ($variable['UseAlarmCallAction']) {
-                if ($variable['AlarmCallAction'] != '') {
-                    $action = json_decode($variable['AlarmCallAction'], true);
-                    if (array_key_exists('parameters', $action)) {
-                        if (array_key_exists('TARGET', $action['parameters'])) {
-                            $id = $action['parameters']['TARGET'];
-                            if ($id > 1 && @IPS_ObjectExists($id)) { //0 = main category, 1 = none
+                            if ($id > 1 && @IPS_ObjectExists($id)) {
                                 $this->RegisterReference($id);
                             }
                         }
@@ -660,9 +564,7 @@ class Alarmzone extends IPSModule
         if (!empty($profiles)) {
             foreach ($profiles as $profile) {
                 $profileName = self::MODULE_PREFIX . '.' . $this->InstanceID . '.' . $profile;
-                if (IPS_VariableProfileExists($profileName)) {
-                    IPS_DeleteVariableProfile($profileName);
-                }
+                $this->UnregisterProfile($profileName);
             }
         }
     }
@@ -738,26 +640,40 @@ class Alarmzone extends IPSModule
         }
     }
 
+    /**
+     * Creates a new alarm protocol instance.
+     *
+     * @return void
+     */
     public function CreateAlarmProtocolInstance(): void
     {
         $id = @IPS_CreateInstance(self::ALARMPROTOCOL_MODULE_GUID);
         if (is_int($id)) {
             IPS_SetName($id, 'Alarmprotokoll');
-            echo 'Instanz mit der ID ' . $id . ' wurde erfolgreich erstellt!';
+            $infoText = 'Instanz mit der ID ' . $id . ' wurde erfolgreich erstellt!';
         } else {
-            echo 'Instanz konnte nicht erstellt werden!';
+            $infoText = 'Instanz konnte nicht erstellt werden!';
         }
+        $this->UpdateFormField('InfoMessage', 'visible', true);
+        $this->UpdateFormField('InfoMessageLabel', 'caption', $infoText);
     }
 
+    /**
+     * Creates a new notification instance.
+     *
+     * @return void
+     */
     public function CreateNotificationInstance(): void
     {
         $id = IPS_CreateInstance(self::NOTIFICATION_MODULE_GUID);
         if (is_int($id)) {
             IPS_SetName($id, 'Benachrichtigung');
-            echo 'Instanz mit der ID ' . $id . ' wurde erfolgreich erstellt!';
+            $infoText = 'Instanz mit der ID ' . $id . ' wurde erfolgreich erstellt!';
         } else {
-            echo 'Instanz konnte nicht erstellt werden!';
+            $infoText = 'Instanz konnte nicht erstellt werden!';
         }
+        $this->UpdateFormField('InfoMessage', 'visible', true);
+        $this->UpdateFormField('InfoMessageLabel', 'caption', $infoText);
     }
 
     #################### Request Action
@@ -811,6 +727,48 @@ class Alarmzone extends IPSModule
         $this->ApplyChanges();
     }
 
+    /**
+     * Unregisters a variable profile.
+     *
+     * @param string $Name
+     * @return void
+     */
+    private function UnregisterProfile(string $Name): void
+    {
+        if (!IPS_VariableProfileExists($Name)) {
+            return;
+        }
+        foreach (IPS_GetVariableList() as $VarID) {
+            if (IPS_GetParent($VarID) == $this->InstanceID) {
+                continue;
+            }
+            if (IPS_GetVariable($VarID)['VariableCustomProfile'] == $Name) {
+                return;
+            }
+            if (IPS_GetVariable($VarID)['VariableProfile'] == $Name) {
+                return;
+            }
+        }
+        foreach (IPS_GetMediaListByType(MEDIATYPE_CHART) as $mediaID) {
+            $content = json_decode(base64_decode(IPS_GetMediaContent($mediaID)), true);
+            foreach ($content['axes'] as $axis) {
+                if ($axis['profile' === $Name]) {
+                    return;
+                }
+            }
+        }
+        IPS_DeleteVariableProfile($Name);
+    }
+
+    /**
+     * Validates the configuration.
+     *
+     * @return bool
+     * false =  invalid,
+     * true =   valid
+     *
+     * @throws Exception
+     */
     private function ValidateConfiguration(): bool
     {
         $result = true;
@@ -835,6 +793,13 @@ class Alarmzone extends IPSModule
         return $result;
     }
 
+    /**
+     * Checks for maintenance.
+     *
+     * @return bool
+     * false =  active,
+     * true =   inactive
+     */
     private function CheckMaintenance(): bool
     {
         $result = false;

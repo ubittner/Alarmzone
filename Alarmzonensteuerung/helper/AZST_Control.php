@@ -9,7 +9,6 @@
  */
 
 /** @noinspection PhpUndefinedFunctionInspection */
-/** @noinspection PhpUnused */
 
 declare(strict_types=1);
 
@@ -24,10 +23,11 @@ trait AZST_Control
     public function DetermineAlarmZoneVariables(): void
     {
         $this->SendDebug(__FUNCTION__, 'wird ausgeführt', 0);
-        $alarmZones = json_decode($this->ReadPropertyString('AlarmZones'), true);
+        $alarmZones = IPS_GetInstanceListByModuleID(self::ALARMZONE_MODULE_GUID);
         if (empty($alarmZones)) {
             return;
         }
+        $zones = [];
         $protectionMode = [];
         $systemState = [];
         $systemDetailedState = [];
@@ -38,20 +38,31 @@ trait AZST_Control
         $alarmSiren = [];
         $alarmLight = [];
         $alarmCall = [];
+        $this->UpdateFormField('DetermineAlarmZoneVariablesProgress', 'minimum', 0);
+        $maximumZones = count($alarmZones);
+        $this->UpdateFormField('DetermineAlarmZoneVariablesProgress', 'maximum', $maximumZones);
+        $this->UpdateFormField('DetermineAlarmZoneVariablesProgress', 'visible', true);
+        $this->UpdateFormField('DetermineAlarmZoneVariablesProgressInfo', 'visible', true);
+        $passedZones = 0;
         foreach ($alarmZones as $alarmZone) {
-            if (!$alarmZone['Use']) {
-                continue;
-            }
-            $id = $alarmZone['ID'];
+            $passedZones++;
+            $this->UpdateFormField('DetermineAlarmZoneVariablesProgress', 'visible', true);
+            $this->UpdateFormField('DetermineAlarmZoneVariablesProgress', 'current', $passedZones);
+            $this->UpdateFormField('DetermineAlarmZoneVariablesProgressInfo', 'visible', true);
+            $this->UpdateFormField('DetermineAlarmZoneVariablesProgressInfo', 'caption', $passedZones . '/' . $maximumZones);
+            IPS_Sleep(100);
+            $id = $alarmZone;
             if ($id <= 1 || !@IPS_ObjectExists($id)) {
                 continue;
             }
+            $zones[] = ['Use' => true, 'ID' => $id, 'Designation' => IPS_GetName($id), 'IndividualProtectionMode' => 4];
             $children = IPS_GetChildrenIDs($id);
             if (empty($children)) {
                 continue;
             }
-            $description = $alarmZone['Designation'];
+            $description = IPS_GetName($id);
             foreach ($children as $child) {
+                IPS_Sleep(50);
                 if ($child <= 1 || !@IPS_ObjectExists($child)) {
                     continue;
                 }
@@ -100,6 +111,7 @@ trait AZST_Control
                 }
             }
         }
+        @IPS_SetProperty($this->InstanceID, 'AlarmZones', json_encode($zones));
         @IPS_SetProperty($this->InstanceID, 'ProtectionMode', json_encode($protectionMode));
         @IPS_SetProperty($this->InstanceID, 'SystemState', json_encode($systemState));
         @IPS_SetProperty($this->InstanceID, 'SystemDetailedState', json_encode($systemDetailedState));
@@ -113,24 +125,23 @@ trait AZST_Control
         if (@IPS_HasChanges($this->InstanceID)) {
             @IPS_ApplyChanges($this->InstanceID);
         }
-        echo 'Die Variablen wurden erfolgreich ermittelt!';
     }
 
     /**
      * Selects the protection mode.
      *
      * @param int $Mode
-     * 0 =  Disarmed
-     * 1 =  Full protection mode
-     * 2 =  Hull protection mode
-     * 3 =  Partial protection mode
-     * 4 =  Individual protection mode
+     * 0 =  disarmed,
+     * 1 =  full protection mode,
+     * 2 =  hull protection mode,
+     * 3 =  partial protection mode,
+     * 4 =  individual protection mode
      *
      * @param string $SenderID
      *
      * @return bool
-     * false =  An error occurred
-     * true =   Successful
+     * false =  an error occurred
+     * true =   successful
      *
      * @throws Exception
      */
@@ -217,7 +228,7 @@ trait AZST_Control
                         continue;
                     }
                     $id = $alarmZone['ID'];
-                    if ($id == 0 || @!IPS_ObjectExists($id)) { //0 = main category, 1 = none
+                    if ($id == 0 || @!IPS_ObjectExists($id)) {
                         continue;
                     }
                     $response = @AZ_SelectProtectionMode($id, $Mode, $SenderID);
@@ -233,7 +244,7 @@ trait AZST_Control
                         continue;
                     }
                     $id = $alarmZone['ID'];
-                    if ($id == 0 || @!IPS_ObjectExists($id)) { //0 = main category, 1 = none
+                    if ($id == 0 || @!IPS_ObjectExists($id)) {
                         continue;
                     }
                     switch ($alarmZone['IndividualProtectionMode']) {
@@ -278,14 +289,12 @@ trait AZST_Control
 
         }
         $this->WriteAttributeBoolean('DisableUpdateMode', false);
-
+        //Update
         $this->UpdateProtectionMode();
         $this->UpdateSystemState();
         $this->UpdateSystemDetailedState();
-
         //Action
         $this->ExecuteAction($Mode, $SenderID);
-
         return $result;
     }
 
@@ -296,8 +305,8 @@ trait AZST_Control
      *
      * @param int $Mode
      * 0 =  disarmed,
-     * 1 =  full protection
-     * 2 =  hull protection
+     * 1 =  full protection,
+     * 2 =  hull protection,
      * 3 =  partial protection
      *
      * @param string $SenderID
