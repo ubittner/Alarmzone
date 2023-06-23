@@ -35,7 +35,7 @@ trait AZST_Config
      */
     public function ExpandExpansionPanels(bool $State): void
     {
-        for ($i = 1; $i <= 10; $i++) {
+        for ($i = 1; $i <= 6; $i++) {
             $this->UpdateFormField('Panel' . $i, 'expanded', $State);
         }
     }
@@ -1473,7 +1473,6 @@ trait AZST_Config
         $form['actions'][] = [
             'type'     => 'ExpansionPanel',
             'caption'  => 'Entwicklerbereich',
-            'name'     => 'Panel10',
             'expanded' => false,
             'items'    => [
                 [
