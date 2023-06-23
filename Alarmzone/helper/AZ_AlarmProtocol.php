@@ -18,11 +18,13 @@ trait AZ_AlarmProtocol
     #################### Private
 
     /**
+     * Updates the alarm protocol.
+     *
      * @param string $LogText
      * @param int $LogType
-     * 0 =  Event message
-     * 1 =  State message
-     * 2 =  Alarm message
+     * 0 =  event message,
+     * 1 =  state message,
+     * 2 =  alarm message
      *
      * @return void
      * @throws Exception
@@ -34,7 +36,7 @@ trait AZ_AlarmProtocol
             return;
         }
         $id = $this->ReadPropertyInteger('AlarmProtocol');
-        if ($id > 1 && @IPS_ObjectExists($id)) { //0 = main category, 1 = none
+        if ($id > 1 && @IPS_ObjectExists($id)) {
             @AP_UpdateMessages($id, $LogText, $LogType);
         }
     }

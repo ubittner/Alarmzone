@@ -23,7 +23,7 @@ trait AZ_Blacklist
     {
         $this->SendDebug(__FUNCTION__, 'wird ausgeführt', 0);
         $this->SetBuffer('Blacklist', json_encode([]));
-        $this->SendDebug(__FUNCTION__, 'Die Sperrliste wurde erfolgreich zurückgesetzt.', 0);
+        $this->SendDebug(__FUNCTION__, 'Die Sperrliste wurde erfolgreich zurückgesetzt!', 0);
         $this->ReloadForm();
     }
 
@@ -50,8 +50,8 @@ trait AZ_Blacklist
      *
      * @param int $SensorID
      * @return bool
-     * false =  Not blacklisted
-     * true =   Blacklisted
+     * false =  not blacklisted,
+     * true =   blacklisted
      */
     private function CheckSensorBlacklist(int $SensorID): bool
     {

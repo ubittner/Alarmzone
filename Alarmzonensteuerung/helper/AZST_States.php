@@ -18,7 +18,7 @@ trait AZST_States
      * Updates to the actual states.
      *
      * @return bool
-     * false =  an error occurred
+     * false =  an error occurred,
      * true =   successful
      *
      * @throws Exception
@@ -56,7 +56,7 @@ trait AZST_States
      * Updates the status of the protection modes.
      *
      * @return bool
-     * false =  an error occurred
+     * false =  an error occurred,
      * true =   successful
      *
      * @throws Exception
@@ -82,7 +82,7 @@ trait AZST_States
             if ($variable['Use']) {
                 $amount++;
                 $id = $variable['ID'];
-                if ($id > 1 && @IPS_ObjectExists($id)) { //0 = main category, 1 = none
+                if ($id > 1 && @IPS_ObjectExists($id)) {
                     $value = GetValue($variable['ID']);
                     switch ($value) {
                         case 0: //Disarmed
@@ -179,7 +179,7 @@ trait AZST_States
      * Updates the state of the system state.
      *
      * @return bool
-     * false =  an error occurred
+     * false =  an error occurred,
      * true =   successful
      *
      * @throws Exception
@@ -198,12 +198,6 @@ trait AZST_States
             return false;
         }
         $result = false;
-        $amount = 0;
-        foreach ($variables as $variable) {
-            if ($variable['Use']) {
-                $amount++;
-            }
-        }
         $zoneStates = [];
         $zoneStates['disarmed'] = 0;
         $zoneStates['armed'] = 0;
@@ -211,7 +205,7 @@ trait AZST_States
         foreach ($variables as $variable) {
             if ($variable['Use']) {
                 $id = $variable['ID'];
-                if ($id > 1 && @IPS_ObjectExists($id)) { //0 = main category, 1 = none
+                if ($id > 1 && @IPS_ObjectExists($id)) {
                     $result = true;
                     switch (GetValueInteger($variable['ID'])) {
                         case 0: //disarmed
@@ -245,7 +239,7 @@ trait AZST_States
      * Updates the state of the system detailed state.
      *
      * @return bool
-     * false =  an error occurred
+     * false =  an error occurred,
      * true =   successful
      *
      * @throws Exception
@@ -279,7 +273,7 @@ trait AZST_States
         foreach ($variables as $variable) {
             if ($variable['Use']) {
                 $id = $variable['ID'];
-                if ($id > 1 && @IPS_ObjectExists($id)) { //0 = main category, 1 = none
+                if ($id > 1 && @IPS_ObjectExists($id)) {
                     $result = true;
                     switch (GetValueInteger($variable['ID'])) {
                         case 0: //disarmed
@@ -331,7 +325,7 @@ trait AZST_States
      * Updates the state of the alarm state.
      *
      * @return bool
-     * false =  an error occurred
+     * false =  an error occurred,
      * true =   successful
      *
      * @throws Exception
@@ -351,7 +345,7 @@ trait AZST_States
         foreach ($variables as $variable) {
             if ($variable['Use']) {
                 $id = $variable['ID'];
-                if ($id > 1 && @IPS_ObjectExists($id)) { //0 = main category, 1 = none
+                if ($id > 1 && @IPS_ObjectExists($id)) {
                     $result = true;
                     $actualValue = GetValueInteger($variable['ID']);
                     if ($actualValue == 1) {
@@ -365,10 +359,10 @@ trait AZST_States
     }
 
     /**
-     * Updates the state of the alerting sensor state.
+     * Updates the state of the alerting sensor.
      *
      * @return bool
-     * false =  an error occurred
+     * false =  an error occurred,
      * true =   successful
      *
      * @throws Exception
@@ -386,7 +380,7 @@ trait AZST_States
             foreach ($variables as $variable) {
                 if ($variable['Use']) {
                     $id = $variable['ID'];
-                    if ($id > 1 && @IPS_ObjectExists($id)) { //0 = main category, 1 = none
+                    if ($id > 1 && @IPS_ObjectExists($id)) {
                         $result = true;
                         $actualValue = GetValueString($id);
                         if ($actualValue != '') {
@@ -404,7 +398,7 @@ trait AZST_States
      * Updates the state of the door and window state.
      *
      * @return bool
-     * false =  an error occurred
+     * false =  an error occurred,
      * true =   successful
      *
      * @throws Exception
@@ -424,7 +418,7 @@ trait AZST_States
         foreach ($variables as $variable) {
             if ($variable['Use']) {
                 $id = $variable['ID'];
-                if ($id > 1 && @IPS_ObjectExists($id)) { //0 = main category, 1 = none
+                if ($id > 1 && @IPS_ObjectExists($id)) {
                     $result = true;
                     $actualValue = GetValueBoolean($variable['ID']);
                     if ($actualValue) {
@@ -441,7 +435,7 @@ trait AZST_States
      * Updates the state of the motion detector state.
      *
      * @return bool
-     * false =  an error occurred
+     * false =  an error occurred,
      * true =   successful
      *
      * @throws Exception
@@ -461,7 +455,7 @@ trait AZST_States
         foreach ($variables as $variable) {
             if ($variable['Use']) {
                 $id = $variable['ID'];
-                if ($id > 1 && @IPS_ObjectExists($id)) { //0 = main category, 1 = none
+                if ($id > 1 && @IPS_ObjectExists($id)) {
                     $result = true;
                     $actualValue = GetValueBoolean($variable['ID']);
                     if ($actualValue) {
@@ -478,7 +472,7 @@ trait AZST_States
      * Updates the state of the alarm siren.
      *
      * @return bool
-     * false =  an error occurred
+     * false =  an error occurred,
      * true =   successful
      *
      * @throws Exception
@@ -498,7 +492,7 @@ trait AZST_States
         foreach ($variables as $variable) {
             if ($variable['Use']) {
                 $id = $variable['ID'];
-                if ($id > 1 && @IPS_ObjectExists($id)) { //0 = main category, 1 = none
+                if ($id > 1 && @IPS_ObjectExists($id)) {
                     $result = true;
                     $actualValue = GetValueBoolean($variable['ID']);
                     if ($actualValue) {
@@ -515,7 +509,7 @@ trait AZST_States
      * Updates the state of the alarm light.
      *
      * @return bool
-     * false =  an error occurred
+     * false =  an error occurred,
      * true =   successful
      *
      * @throws Exception
@@ -535,7 +529,7 @@ trait AZST_States
         foreach ($variables as $variable) {
             if ($variable['Use']) {
                 $id = $variable['ID'];
-                if ($id > 1 && @IPS_ObjectExists($id)) { //0 = main category, 1 = none
+                if ($id > 1 && @IPS_ObjectExists($id)) {
                     $result = true;
                     $actualValue = GetValueBoolean($variable['ID']);
                     if ($actualValue) {
@@ -552,7 +546,7 @@ trait AZST_States
      * Updates the state of the alarm call.
      *
      * @return bool
-     * false =  an error occurred
+     * false =  an error occurred,
      * true =   successful
      *
      * @throws Exception
@@ -572,7 +566,7 @@ trait AZST_States
         foreach ($variables as $variable) {
             if ($variable['Use']) {
                 $id = $variable['ID'];
-                if ($id > 1 && @IPS_ObjectExists($id)) { //0 = main category, 1 = none
+                if ($id > 1 && @IPS_ObjectExists($id)) {
                     $result = true;
                     $actualValue = GetValueBoolean($variable['ID']);
                     if ($actualValue) {

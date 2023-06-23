@@ -185,14 +185,16 @@ Prüfung der Alarmsensoren für den Voll-, Hüll- und Teilschutz:
 ### 7. Externe Aktion
 
 Das Modul kann über eine externe Aktion gesteuert werden.  
-Nachfolgendes Beispiel aktiviert die Alarmzone mit Vollschutz.
-> AZ_SelectProtectionMode(12345, 1, 'Sender ID');
+Nachfolgendes Beispiel aktiviert die Alarmzone mit Vollschutz.  
 
+```php
+AZ_SelectProtectionMode(12345, 1, 'Sender ID');
+```
 ### 8. PHP-Befehlsreferenz
 
 #### 8.1 Alarmzone schalten
 
-```
+```text
 boolean AZ_SelectProtectionMode(integer INSTANCE_ID, integer MODE, string SENDER_ID);
 ```
 
@@ -208,7 +210,10 @@ Konnte der jeweilige Befehl erfolgreich ausgeführt werden, liefert er als Ergeb
 | `SENDER_ID`   | Eine Kennung, die den Sender identifiziert und |                |
 |               | im Alarmprotokoll anzeigt                      |                |
 
-Beispiel:
-> AZ_SelectProtectionMode(12345, 0, 'Sender');
+**Beispiel:**
+```php
+$result = AZ_SelectProtectionMode(12345, 0, 'Sender');
+var_dump($result);
+```
 
 ---

@@ -24,9 +24,10 @@ class Alarmzonensteuerung extends IPSModule
     use AZST_States;
 
     //Constants
+    private const LIBRARY_GUID = '{F227BA9C-8112-3B9F-1149-9B53E10D4F79}';
+    private const MODULE_GUID = '{79BB840E-65C1-06E0-E1DD-BAFEFC514848}';
     private const MODULE_NAME = 'Alarmzonensteuerung';
     private const MODULE_PREFIX = 'AZST';
-    private const MODULE_VERSION = '7.0-7, 08.06.2023';
     private const ALARMZONE_MODULE_GUID = '{127AB08D-CD10-801D-D419-442CDE6E5C61}';
 
     public function Create()
@@ -50,52 +51,34 @@ class Alarmzonensteuerung extends IPSModule
         $this->RegisterPropertyString('DisarmedIcon', 'Warning');
         $this->RegisterPropertyString('DisarmedName', 'Unscharf');
         $this->RegisterPropertyInteger('DisarmedColor', 65280);
-        $this->RegisterPropertyBoolean('UseDisarmedAction', false);
-        $parameters = '{"actionID":"{346AA8C1-30E0-1663-78EF-93EFADFAC650}","parameters":{"SCRIPT":"<?php\n\n//Quittungston\n$id = 12345;\nASIRHMIP_ExecuteSignaling($id, 16, 2, 0, 10);","ENVIRONMENT":"Default","PARENT":' . $this->InstanceID . ',"TARGET":' . $this->InstanceID . '}}';
-        $this->RegisterPropertyString('DisarmedAction', $parameters);
 
         //Full protection
         $this->RegisterPropertyBoolean('UseFullProtectionMode', true);
         $this->RegisterPropertyString('FullProtectionIcon', 'Basement');
         $this->RegisterPropertyString('FullProtectionName', 'Vollschutz');
         $this->RegisterPropertyInteger('FullProtectionColor', 16711680);
-        $this->RegisterPropertyBoolean('UseFullProtectionAction', false);
-        $parameters = '{"actionID":"{346AA8C1-30E0-1663-78EF-93EFADFAC650}","parameters":{"SCRIPT":"<?php\n\n//Quittungston\n$id = 12345;\nASIRHMIP_ExecuteSignaling($id, 17, 3, 0, 10);","ENVIRONMENT":"Default","PARENT":' . $this->InstanceID . ',"TARGET":' . $this->InstanceID . '}}';
-        $this->RegisterPropertyString('FullProtectionAction', $parameters);
 
         //Hull protection
         $this->RegisterPropertyBoolean('UseHullProtectionMode', false);
         $this->RegisterPropertyString('HullProtectionIcon', 'Presence');
         $this->RegisterPropertyString('HullProtectionName', 'Hüllschutz');
         $this->RegisterPropertyInteger('HullProtectionColor', 16776960);
-        $this->RegisterPropertyBoolean('UseHullProtectionAction', false);
-        $parameters = '{"actionID":"{346AA8C1-30E0-1663-78EF-93EFADFAC650}","parameters":{"SCRIPT":"<?php\n\n//Quittungston\n$id = 12345;\nASIRHMIP_ExecuteSignaling($id, 17, 3, 0, 10);","ENVIRONMENT":"Default","PARENT":' . $this->InstanceID . ',"TARGET":' . $this->InstanceID . '}}';
-        $this->RegisterPropertyString('HullProtectionAction', $parameters);
 
         //Partial protection
         $this->RegisterPropertyBoolean('UsePartialProtectionMode', false);
         $this->RegisterPropertyString('PartialProtectionIcon', 'Moon');
         $this->RegisterPropertyString('PartialProtectionName', 'Teilschutz');
         $this->RegisterPropertyInteger('PartialProtectionColor', 255);
-        $this->RegisterPropertyBoolean('UsePartialProtectionAction', false);
-        $parameters = '{"actionID":"{346AA8C1-30E0-1663-78EF-93EFADFAC650}","parameters":{"SCRIPT":"<?php\n\n//Quittungston\n$id = 12345;\nASIRHMIP_ExecuteSignaling($id, 17, 3, 0, 10);","ENVIRONMENT":"Default","PARENT":' . $this->InstanceID . ',"TARGET":' . $this->InstanceID . '}}';
-        $this->RegisterPropertyString('PartialProtectionAction', $parameters);
 
         //Individual protection
         $this->RegisterPropertyBoolean('UseIndividualProtectionMode', false);
         $this->RegisterPropertyString('IndividualProtectionIcon', 'Eyes');
         $this->RegisterPropertyString('IndividualProtectionName', 'Individualschutz');
         $this->RegisterPropertyInteger('IndividualProtectionColor', 16749824);
-        $this->RegisterPropertyBoolean('UseIndividualProtectionAction', false);
-        $parameters = '{"actionID":"{346AA8C1-30E0-1663-78EF-93EFADFAC650}","parameters":{"SCRIPT":"<?php\n\n//Quittungston\n$id = 12345;\nASIRHMIP_ExecuteSignaling($id, 17, 3, 0, 10);","ENVIRONMENT":"Default","PARENT":' . $this->InstanceID . ',"TARGET":' . $this->InstanceID . '}}';
-        $this->RegisterPropertyString('IndividualProtectionAction', $parameters);
 
         ##### Alarm zones
 
         $this->RegisterPropertyString('AlarmZones', '[]');
-
-        ##### Trigger
-
         $this->RegisterPropertyString('ProtectionMode', '[]');
         $this->RegisterPropertyString('SystemState', '[]');
         $this->RegisterPropertyString('SystemDetailedState', '[]');
@@ -106,6 +89,20 @@ class Alarmzonensteuerung extends IPSModule
         $this->RegisterPropertyString('AlarmSiren', '[]');
         $this->RegisterPropertyString('AlarmLight', '[]');
         $this->RegisterPropertyString('AlarmCall', '[]');
+
+        ###### Actions
+
+        $parameters = '{"actionID":"{346AA8C1-30E0-1663-78EF-93EFADFAC650}","parameters":{"SCRIPT":"<?php\n\n//Skript hier einfügen","ENVIRONMENT":"Default","PARENT":' . $this->InstanceID . ',"TARGET":' . $this->InstanceID . '}}';
+        $this->RegisterPropertyBoolean('UseDisarmedAction', false);
+        $this->RegisterPropertyString('DisarmedAction', $parameters);
+        $this->RegisterPropertyBoolean('UseFullProtectionAction', false);
+        $this->RegisterPropertyString('FullProtectionAction', $parameters);
+        $this->RegisterPropertyBoolean('UseHullProtectionAction', false);
+        $this->RegisterPropertyString('HullProtectionAction', $parameters);
+        $this->RegisterPropertyBoolean('UsePartialProtectionAction', false);
+        $this->RegisterPropertyString('PartialProtectionAction', $parameters);
+        $this->RegisterPropertyBoolean('UseIndividualProtectionAction', false);
+        $this->RegisterPropertyString('IndividualProtectionAction', $parameters);
 
         ##### Visualisation
 
@@ -387,7 +384,7 @@ class Alarmzonensteuerung extends IPSModule
                 continue;
             }
             $id = $alarmZone['ID'];
-            if ($id > 1 && @IPS_ObjectExists($id)) { //0 = main category, 1 = none
+            if ($id > 1 && @IPS_ObjectExists($id)) {
                 $this->RegisterReference($id);
             }
         }
@@ -407,7 +404,7 @@ class Alarmzonensteuerung extends IPSModule
             foreach ($variables as $variable) {
                 if ($variable['Use']) {
                     $id = $variable['ID'];
-                    if ($id > 1 && IPS_ObjectExists($id)) { //0 = main category, 1 = none
+                    if ($id > 1 && IPS_ObjectExists($id)) {
                         $this->RegisterReference($id);
                         $this->RegisterMessage($id, VM_UPDATE);
                     }
@@ -427,9 +424,7 @@ class Alarmzonensteuerung extends IPSModule
         if (!empty($profiles)) {
             foreach ($profiles as $profile) {
                 $profileName = self::MODULE_PREFIX . '.' . $this->InstanceID . '.' . $profile;
-                if (IPS_VariableProfileExists($profileName)) {
-                    IPS_DeleteVariableProfile($profileName);
-                }
+                $this->UnregisterProfile($profileName);
             }
         }
     }
@@ -482,15 +477,22 @@ class Alarmzonensteuerung extends IPSModule
         }
     }
 
+    /**
+     * Creates a new alarm zone instance.
+     *
+     * @return void
+     */
     public function CreateAlarmZoneInstance(): void
     {
         $id = @IPS_CreateInstance(self::ALARMZONE_MODULE_GUID);
         if (is_int($id)) {
             IPS_SetName($id, 'Alarmzone');
-            echo 'Instanz mit der ID ' . $id . ' wurde erfolgreich erstellt!';
+            $infoText = 'Eine neue Alarmzone mit der ID ' . $id . ' wurde erfolgreich erstellt!';
         } else {
-            echo 'Instanz konnte nicht erstellt werden!';
+            $infoText = 'Alarmzone konnte nicht erstellt werden!';
         }
+        $this->UpdateFormField('InfoMessage', 'visible', true);
+        $this->UpdateFormField('InfoMessageLabel', 'caption', $infoText);
     }
 
     #################### Request Action
@@ -554,6 +556,46 @@ class Alarmzonensteuerung extends IPSModule
         $this->ApplyChanges();
     }
 
+    /**
+     * Unregisters a variable profile.
+     *
+     * @param string $Name
+     * @return void
+     */
+    private function UnregisterProfile(string $Name): void
+    {
+        if (!IPS_VariableProfileExists($Name)) {
+            return;
+        }
+        foreach (IPS_GetVariableList() as $VarID) {
+            if (IPS_GetParent($VarID) == $this->InstanceID) {
+                continue;
+            }
+            if (IPS_GetVariable($VarID)['VariableCustomProfile'] == $Name) {
+                return;
+            }
+            if (IPS_GetVariable($VarID)['VariableProfile'] == $Name) {
+                return;
+            }
+        }
+        foreach (IPS_GetMediaListByType(MEDIATYPE_CHART) as $mediaID) {
+            $content = json_decode(base64_decode(IPS_GetMediaContent($mediaID)), true);
+            foreach ($content['axes'] as $axis) {
+                if ($axis['profile' === $Name]) {
+                    return;
+                }
+            }
+        }
+        IPS_DeleteVariableProfile($Name);
+    }
+
+    /**
+     * Checks for maintenance.
+     *
+     * @return bool
+     * false =  active,
+     * true =   inactive
+     */
     private function CheckMaintenance(): bool
     {
         $result = false;

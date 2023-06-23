@@ -33,7 +33,7 @@ trait AZ_Notification
             return;
         }
         $id = $this->ReadPropertyInteger('Notification');
-        if ($id <= 1 || !@IPS_ObjectExists($id)) { //0 = main category, 1 = none
+        if ($id <= 1 || !@IPS_ObjectExists($id)) {
             return;
         }
         $notification = json_decode($this->ReadPropertyString($NotificationName), true);

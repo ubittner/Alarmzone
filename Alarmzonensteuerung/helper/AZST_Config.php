@@ -9,7 +9,6 @@
  */
 
 /** @noinspection DuplicatedCode */
-/** @noinspection PhpUnused */
 
 declare(strict_types=1);
 
@@ -26,6 +25,22 @@ trait AZST_Config
     }
 
     /**
+     * Expands or collapses the expansion panels.
+     *
+     * @param bool $State
+     * false =  collapse,
+     * true =   expand
+     *
+     * @return void
+     */
+    public function ExpandExpansionPanels(bool $State): void
+    {
+        for ($i = 1; $i <= 6; $i++) {
+            $this->UpdateFormField('Panel' . $i, 'expanded', $State);
+        }
+    }
+
+    /**
      * Modifies a configuration button.
      *
      * @param string $Field
@@ -36,7 +51,7 @@ trait AZST_Config
     public function ModifyButton(string $Field, string $Caption, int $ObjectID): void
     {
         $state = false;
-        if ($ObjectID > 1 && @IPS_ObjectExists($ObjectID)) { //0 = main category, 1 = none
+        if ($ObjectID > 1 && @IPS_ObjectExists($ObjectID)) {
             $state = true;
         }
         $this->UpdateFormField($Field, 'caption', $Caption);
@@ -56,30 +71,55 @@ trait AZST_Config
 
         ########## Elements
 
+        //Configuration buttons
+        $form['elements'][0] =
+            [
+                'type'  => 'RowLayout',
+                'items' => [
+                    [
+                        'type'    => 'Button',
+                        'caption' => 'Konfiguration ausklappen',
+                        'onClick' => self::MODULE_PREFIX . '_ExpandExpansionPanels($id, true);'
+                    ],
+                    [
+                        'type'    => 'Button',
+                        'caption' => 'Konfiguration einklappen',
+                        'onClick' => self::MODULE_PREFIX . '_ExpandExpansionPanels($id, false);'
+                    ],
+                    [
+                        'type'    => 'Button',
+                        'caption' => 'Konfiguration neu laden',
+                        'onClick' => self::MODULE_PREFIX . '_ReloadConfig($id);'
+                    ]
+                ]
+            ];
+
         //Info
-        $form['elements'][0] = [
+        $library = IPS_GetLibrary(self::LIBRARY_GUID);
+        $form['elements'][] = [
             'type'    => 'ExpansionPanel',
+            'name'    => 'Panel1',
             'caption' => 'Info',
             'items'   => [
                 [
                     'type'    => 'Label',
-                    'name'    => 'ModuleID',
                     'caption' => "ID:\t\t\t" . $this->InstanceID
                 ],
                 [
                     'type'    => 'Label',
-                    'name'    => 'ModuleDesignation',
                     'caption' => "Modul:\t\t" . self::MODULE_NAME
                 ],
                 [
                     'type'    => 'Label',
-                    'name'    => 'ModulePrefix',
                     'caption' => "Präfix:\t\t" . self::MODULE_PREFIX
                 ],
                 [
                     'type'    => 'Label',
-                    'name'    => 'ModuleVersion',
-                    'caption' => "Version:\t\t" . self::MODULE_VERSION
+                    'caption' => "Version:\t\t" . $library['Version'] . '-' . $library['Build'] . ', ' . date('d.m.Y', $library['Date'])
+                ],
+                [
+                    'type'    => 'Label',
+                    'caption' => "Entwickler:\t" . $library['Author']
                 ],
                 [
                     'type'    => 'Label',
@@ -97,6 +137,7 @@ trait AZST_Config
         //Designations
         $form['elements'][] = [
             'type'    => 'ExpansionPanel',
+            'name'    => 'Panel2',
             'caption' => 'Bezeichnung',
             'items'   => [
                 [
@@ -111,6 +152,7 @@ trait AZST_Config
         //Operating modes
         $form['elements'][] = [
             'type'    => 'ExpansionPanel',
+            'name'    => 'Panel3',
             'caption' => 'Betriebsarten',
             'items'   => [
                 [
@@ -148,21 +190,6 @@ trait AZST_Config
                     ]
                 ],
                 [
-                    'type'    => 'ExpansionPanel',
-                    'caption' => 'Aktion',
-                    'items'   => [
-                        [
-                            'type'    => 'CheckBox',
-                            'name'    => 'UseDisarmedAction',
-                            'caption' => 'Ausführen'
-                        ],
-                        [
-                            'type' => 'SelectAction',
-                            'name' => 'DisarmedAction'
-                        ]
-                    ]
-                ],
-                [
                     'type'    => 'Label',
                     'caption' => ' '
                 ],
@@ -171,11 +198,6 @@ trait AZST_Config
                     'caption' => 'Vollschutz',
                     'bold'    => true,
                     'italic'  => true
-                ],
-                [
-                    'type'    => 'CheckBox',
-                    'name'    => 'UseFullProtectionMode',
-                    'caption' => 'Vollschutz'
                 ],
                 [
                     'type'  => 'RowLayout',
@@ -206,19 +228,9 @@ trait AZST_Config
                     ]
                 ],
                 [
-                    'type'    => 'ExpansionPanel',
-                    'caption' => 'Aktion',
-                    'items'   => [
-                        [
-                            'type'    => 'CheckBox',
-                            'name'    => 'UseFullProtectionAction',
-                            'caption' => 'Ausführen'
-                        ],
-                        [
-                            'type' => 'SelectAction',
-                            'name' => 'FullProtectionAction'
-                        ]
-                    ]
+                    'type'    => 'CheckBox',
+                    'name'    => 'UseFullProtectionMode',
+                    'caption' => 'Aktiv'
                 ],
                 [
                     'type'    => 'Label',
@@ -229,11 +241,6 @@ trait AZST_Config
                     'caption' => 'Hüllschutz',
                     'bold'    => true,
                     'italic'  => true
-                ],
-                [
-                    'type'    => 'CheckBox',
-                    'name'    => 'UseHullProtectionMode',
-                    'caption' => 'Hüllschutz'
                 ],
                 [
                     'type'  => 'RowLayout',
@@ -265,19 +272,9 @@ trait AZST_Config
                     ]
                 ],
                 [
-                    'type'    => 'ExpansionPanel',
-                    'caption' => 'Aktion',
-                    'items'   => [
-                        [
-                            'type'    => 'CheckBox',
-                            'name'    => 'UseHullProtectionAction',
-                            'caption' => 'Ausführen'
-                        ],
-                        [
-                            'type' => 'SelectAction',
-                            'name' => 'HullProtectionAction'
-                        ]
-                    ]
+                    'type'    => 'CheckBox',
+                    'name'    => 'UseHullProtectionMode',
+                    'caption' => 'Aktiv'
                 ],
                 [
                     'type'    => 'Label',
@@ -288,11 +285,6 @@ trait AZST_Config
                     'caption' => 'Teilschutz',
                     'bold'    => true,
                     'italic'  => true
-                ],
-                [
-                    'type'    => 'CheckBox',
-                    'name'    => 'UsePartialProtectionMode',
-                    'caption' => 'Teilschutz'
                 ],
                 [
                     'type'  => 'RowLayout',
@@ -323,19 +315,9 @@ trait AZST_Config
                     ]
                 ],
                 [
-                    'type'    => 'ExpansionPanel',
-                    'caption' => 'Aktion',
-                    'items'   => [
-                        [
-                            'type'    => 'CheckBox',
-                            'name'    => 'UsePartialProtectionAction',
-                            'caption' => 'Ausführen'
-                        ],
-                        [
-                            'type' => 'SelectAction',
-                            'name' => 'PartialProtectionAction'
-                        ]
-                    ]
+                    'type'    => 'CheckBox',
+                    'name'    => 'UsePartialProtectionMode',
+                    'caption' => 'Aktiv'
                 ],
                 [
                     'type'    => 'Label',
@@ -346,11 +328,6 @@ trait AZST_Config
                     'caption' => 'Individualschutz',
                     'bold'    => true,
                     'italic'  => true
-                ],
-                [
-                    'type'    => 'CheckBox',
-                    'name'    => 'UseIndividualProtectionMode',
-                    'caption' => 'Individualschutz'
                 ],
                 [
                     'type'  => 'RowLayout',
@@ -381,19 +358,9 @@ trait AZST_Config
                     ]
                 ],
                 [
-                    'type'    => 'ExpansionPanel',
-                    'caption' => 'Aktion',
-                    'items'   => [
-                        [
-                            'type'    => 'CheckBox',
-                            'name'    => 'UseIndividualProtectionAction',
-                            'caption' => 'Ausführen'
-                        ],
-                        [
-                            'type' => 'SelectAction',
-                            'name' => 'IndividualProtectionAction'
-                        ]
-                    ]
+                    'type'    => 'CheckBox',
+                    'name'    => 'UseIndividualProtectionMode',
+                    'caption' => 'Aktiv'
                 ]
             ]
         ];
@@ -407,19 +374,171 @@ trait AZST_Config
             }
             $rowColor = '#FFC0C0'; //red
             $id = $alarmZone['ID'];
-            if ($id > 1 && @IPS_ObjectExists($id)) { //0 = main category, 1 = none
+            if ($id > 1 && @IPS_ObjectExists($id)) {
                 $rowColor = '#C0FFC0'; //light green
             }
             $alarmZoneValues[] = ['rowColor' => $rowColor];
         }
 
+        //Protection mode
+        $protectionModeValues = [];
+        $variables = json_decode($this->ReadPropertyString('ProtectionMode'), true);
+        foreach ($variables as $variable) {
+            $rowColor = '#FFC0C0'; //red
+            $id = $variable['ID'];
+            if ($id > 1 && @IPS_ObjectExists($id)) {
+                $rowColor = '#DFDFDF'; # grey
+                if ($variable['Use']) {
+                    $rowColor = '#C0FFC0'; //light green
+                }
+            }
+            $protectionModeValues[] = ['rowColor' => $rowColor];
+        }
+
+        //System state
+        $systemStateValues = [];
+        $variables = json_decode($this->ReadPropertyString('SystemState'), true);
+        foreach ($variables as $variable) {
+            $rowColor = '#FFC0C0'; //red
+            $id = $variable['ID'];
+            if ($id > 1 && @IPS_ObjectExists($id)) {
+                $rowColor = '#DFDFDF'; # grey
+                if ($variable['Use']) {
+                    $rowColor = '#C0FFC0'; //light green
+                }
+            }
+            $systemStateValues[] = ['rowColor' => $rowColor];
+        }
+
+        //System detailed state
+        $systemDetailedStateValues = [];
+        $variables = json_decode($this->ReadPropertyString('SystemDetailedState'), true);
+        foreach ($variables as $variable) {
+            $rowColor = '#FFC0C0'; //red
+            $id = $variable['ID'];
+            if ($id > 1 && @IPS_ObjectExists($id)) {
+                $rowColor = '#DFDFDF'; # grey
+                if ($variable['Use']) {
+                    $rowColor = '#C0FFC0'; //light green
+                }
+            }
+            $systemDetailedStateValues[] = ['rowColor' => $rowColor];
+        }
+
+        //Alarm state
+        $alarmStateValues = [];
+        $variables = json_decode($this->ReadPropertyString('AlarmState'), true);
+        foreach ($variables as $variable) {
+            $rowColor = '#FFC0C0'; //red
+            $id = $variable['ID'];
+            if ($id > 1 && @IPS_ObjectExists($id)) {
+                $rowColor = '#DFDFDF'; # grey
+                if ($variable['Use']) {
+                    $rowColor = '#C0FFC0'; //light green
+                }
+            }
+            $alarmStateValues[] = ['rowColor' => $rowColor];
+        }
+
+        //Alerting sensors
+        $alertingSensorValues = [];
+        $variables = json_decode($this->ReadPropertyString('AlertingSensor'), true);
+        foreach ($variables as $variable) {
+            $rowColor = '#FFC0C0'; //red
+            $id = $variable['ID'];
+            if ($id > 1 && @IPS_ObjectExists($id)) {
+                $rowColor = '#DFDFDF'; # grey
+                if ($variable['Use']) {
+                    $rowColor = '#C0FFC0'; //light green
+                }
+            }
+            $alertingSensorValues[] = ['rowColor' => $rowColor];
+        }
+
+        //Door and window states
+        $doorWindowStateValues = [];
+        $variables = json_decode($this->ReadPropertyString('DoorWindowState'), true);
+        foreach ($variables as $variable) {
+            $rowColor = '#FFC0C0'; //red
+            $id = $variable['ID'];
+            if ($id > 1 && @IPS_ObjectExists($id)) {
+                $rowColor = '#DFDFDF'; # grey
+                if ($variable['Use']) {
+                    $rowColor = '#C0FFC0'; //light green
+                }
+            }
+            $doorWindowStateValues[] = ['rowColor' => $rowColor];
+        }
+
+        //Motion detector states
+        $motionDetectorStateValues = [];
+        $variables = json_decode($this->ReadPropertyString('MotionDetectorState'), true);
+        foreach ($variables as $variable) {
+            $rowColor = '#FFC0C0'; //red
+            $id = $variable['ID'];
+            if ($id > 1 && @IPS_ObjectExists($id)) {
+                $rowColor = '#DFDFDF'; # grey
+                if ($variable['Use']) {
+                    $rowColor = '#C0FFC0'; //light green
+                }
+            }
+            $motionDetectorStateValues[] = ['rowColor' => $rowColor];
+        }
+
+        //Alarm sirens
+        $alarmSirenValues = [];
+        $variables = json_decode($this->ReadPropertyString('AlarmSiren'), true);
+        foreach ($variables as $variable) {
+            $rowColor = '#FFC0C0'; //red
+            $id = $variable['ID'];
+            if ($id > 1 && @IPS_ObjectExists($id)) {
+                $rowColor = '#DFDFDF'; # grey
+                if ($variable['Use']) {
+                    $rowColor = '#C0FFC0'; //light green
+                }
+            }
+            $alarmSirenValues[] = ['rowColor' => $rowColor];
+        }
+
+        //Alarm lights
+        $alarmLightValues = [];
+        $variables = json_decode($this->ReadPropertyString('AlarmLight'), true);
+        foreach ($variables as $variable) {
+            $rowColor = '#FFC0C0'; //red
+            $id = $variable['ID'];
+            if ($id > 1 && @IPS_ObjectExists($id)) {
+                $rowColor = '#DFDFDF'; # grey
+                if ($variable['Use']) {
+                    $rowColor = '#C0FFC0'; //light green
+                }
+            }
+            $alarmLightValues[] = ['rowColor' => $rowColor];
+        }
+
+        //Alarm calls
+        $alarmCallValues = [];
+        $variables = json_decode($this->ReadPropertyString('AlarmCall'), true);
+        foreach ($variables as $variable) {
+            $rowColor = '#FFC0C0'; //red
+            $id = $variable['ID'];
+            if ($id > 1 && @IPS_ObjectExists($id)) {
+                $rowColor = '#DFDFDF'; # grey
+                if ($variable['Use']) {
+                    $rowColor = '#C0FFC0'; //light green
+                }
+            }
+            $alarmCallValues[] = ['rowColor' => $rowColor];
+        }
+
         $form['elements'][] = [
             'type'    => 'ExpansionPanel',
+            'name'    => 'Panel4',
             'caption' => 'Alarmzonen',
             'items'   => [
                 [
                     'type'     => 'List',
                     'name'     => 'AlarmZones',
+                    'caption'  => 'Alarmzonen',
                     'rowCount' => 6,
                     'add'      => true,
                     'delete'   => true,
@@ -438,7 +557,7 @@ trait AZST_Config
                             'name'    => 'ID',
                             'width'   => '450px',
                             'add'     => 0,
-                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "AlarmZoneConfigurationButton", "ID " . $AlarmZones["ID"] . " Instanzkonfiguration", $AlarmZones["ID"]);',
+                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "AlarmZoneConfigurationButton", "ID " . $AlarmZones["ID"] . " konfigurieren", $AlarmZones["ID"]);',
                             'edit'    => [
                                 'type'     => 'SelectModule',
                                 'moduleID' => self::ALARMZONE_MODULE_GUID
@@ -449,7 +568,7 @@ trait AZST_Config
                             'caption' => 'Bezeichnung',
                             'width'   => '400px',
                             'add'     => '',
-                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "AlarmZoneConfigurationButton", "ID " . $AlarmZones["ID"] . " Instanzkonfiguration", $AlarmZones["ID"]);',
+                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "AlarmZoneConfigurationButton", "ID " . $AlarmZones["ID"] . " konfigurieren", $AlarmZones["ID"]);',
                             'edit'    => [
                                 'type' => 'ValidationTextBox'
                             ]
@@ -485,56 +604,24 @@ trait AZST_Config
                                 ]
                             ]
                         ]
-
                     ],
                     'values' => $alarmZoneValues,
                 ],
                 [
-                    'type'  => 'RowLayout',
-                    'items' => [
-                        [
-                            'type'    => 'Button',
-                            'caption' => 'Neue Instanz erstellen',
-                            'onClick' => self::MODULE_PREFIX . '_CreateAlarmZoneInstance($id);'
-                        ],
-                        [
-                            'type'    => 'Label',
-                            'caption' => ' '
-                        ],
-                        [
-                            'type'     => 'OpenObjectButton',
-                            'caption'  => 'Instanzkonfiguration',
-                            'name'     => 'AlarmZoneConfigurationButton',
-                            'visible'  => false,
-                            'objectID' => 0
-                        ]
-                    ]
-                ]
-            ]
-        ];
-
-        //Protection mode
-        $protectionModeValues = [];
-        $variables = json_decode($this->ReadPropertyString('ProtectionMode'), true);
-        foreach ($variables as $variable) {
-            $rowColor = '#FFC0C0'; //red
-            $id = $variable['ID'];
-            if ($id > 1 && @IPS_ObjectExists($id)) { //0 = main category, 1 = none
-                $rowColor = '#DFDFDF'; # grey
-                if ($variable['Use']) {
-                    $rowColor = '#C0FFC0'; //light green
-                }
-            }
-            $protectionModeValues[] = ['rowColor' => $rowColor];
-        }
-
-        $form['elements'][] = [
-            'type'    => 'ExpansionPanel',
-            'caption' => 'Modus',
-            'items'   => [
+                    'type'     => 'OpenObjectButton',
+                    'caption'  => 'konfigurieren',
+                    'name'     => 'AlarmZoneConfigurationButton',
+                    'visible'  => false,
+                    'objectID' => 0
+                ],
+                [
+                    'type'    => 'Label',
+                    'caption' => ' '
+                ],
                 [
                     'type'     => 'List',
                     'name'     => 'ProtectionMode',
+                    'caption'  => 'Modus',
                     'rowCount' => 6,
                     'add'      => true,
                     'delete'   => true,
@@ -553,7 +640,7 @@ trait AZST_Config
                             'caption' => 'Variable',
                             'width'   => '450px',
                             'add'     => 0,
-                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "ProtectionModeConfigurationButton", "ID " . $ProtectionMode["ID"] . " aufrufen", $ProtectionMode["ID"]);',
+                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "ProtectionModeConfigurationButton", "ID " . $ProtectionMode["ID"] . " bearbeiten", $ProtectionMode["ID"]);',
                             'edit'    => [
                                 'type' => 'SelectVariable'
                             ]
@@ -563,7 +650,7 @@ trait AZST_Config
                             'name'    => 'Designation',
                             'width'   => '400px',
                             'add'     => '',
-                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "ProtectionModeConfigurationButton", "ID " . $ProtectionMode["ID"] . " aufrufen", $ProtectionMode["ID"]);',
+                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "ProtectionModeConfigurationButton", "ID " . $ProtectionMode["ID"] . " bearbeiten", $ProtectionMode["ID"]);',
                             'edit'    => [
                                 'type' => 'ValidationTextBox'
                             ]
@@ -577,32 +664,15 @@ trait AZST_Config
                     'name'     => 'ProtectionModeConfigurationButton',
                     'visible'  => false,
                     'objectID' => 0
-                ]
-            ]
-        ];
-
-        //System state
-        $systemStateValues = [];
-        $variables = json_decode($this->ReadPropertyString('SystemState'), true);
-        foreach ($variables as $variable) {
-            $rowColor = '#FFC0C0'; //red
-            $id = $variable['ID'];
-            if ($id > 1 && @IPS_ObjectExists($id)) { //0 = main category, 1 = none
-                $rowColor = '#DFDFDF'; # grey
-                if ($variable['Use']) {
-                    $rowColor = '#C0FFC0'; //light green
-                }
-            }
-            $systemStateValues[] = ['rowColor' => $rowColor];
-        }
-
-        $form['elements'][] = [
-            'type'    => 'ExpansionPanel',
-            'caption' => 'Systemstatus',
-            'items'   => [
+                ],
+                [
+                    'type'    => 'Label',
+                    'caption' => ' '
+                ],
                 [
                     'type'     => 'List',
                     'name'     => 'SystemState',
+                    'caption'  => 'Systemstatus',
                     'rowCount' => 6,
                     'add'      => true,
                     'delete'   => true,
@@ -621,7 +691,7 @@ trait AZST_Config
                             'caption' => 'Variable',
                             'width'   => '450px',
                             'add'     => 0,
-                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "SystemStateConfigurationButton", "ID " . $SystemState["ID"] . " aufrufen", $SystemState["ID"]);',
+                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "SystemStateConfigurationButton", "ID " . $SystemState["ID"] . " bearbeiten", $SystemState["ID"]);',
                             'edit'    => [
                                 'type' => 'SelectVariable'
                             ]
@@ -631,7 +701,7 @@ trait AZST_Config
                             'name'    => 'Designation',
                             'width'   => '400px',
                             'add'     => '',
-                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "SystemStateConfigurationButton", "ID " . $SystemState["ID"] . " aufrufen", $SystemState["ID"]);',
+                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "SystemStateConfigurationButton", "ID " . $SystemState["ID"] . " bearbeiten", $SystemState["ID"]);',
                             'edit'    => [
                                 'type' => 'ValidationTextBox'
                             ]
@@ -645,32 +715,15 @@ trait AZST_Config
                     'name'     => 'SystemStateConfigurationButton',
                     'visible'  => false,
                     'objectID' => 0
-                ]
-            ]
-        ];
-
-        //System detailed state
-        $systemDetailedStateValues = [];
-        $variables = json_decode($this->ReadPropertyString('SystemDetailedState'), true);
-        foreach ($variables as $variable) {
-            $rowColor = '#FFC0C0'; //red
-            $id = $variable['ID'];
-            if ($id > 1 && @IPS_ObjectExists($id)) { //0 = main category, 1 = none
-                $rowColor = '#DFDFDF'; # grey
-                if ($variable['Use']) {
-                    $rowColor = '#C0FFC0'; //light green
-                }
-            }
-            $systemDetailedStateValues[] = ['rowColor' => $rowColor];
-        }
-
-        $form['elements'][] = [
-            'type'    => 'ExpansionPanel',
-            'caption' => 'Detaillierter Systemstatus',
-            'items'   => [
+                ],
+                [
+                    'type'    => 'Label',
+                    'caption' => ' '
+                ],
                 [
                     'type'     => 'List',
                     'name'     => 'SystemDetailedState',
+                    'caption'  => 'Detaillierter Systemstatus',
                     'rowCount' => 6,
                     'add'      => true,
                     'delete'   => true,
@@ -689,7 +742,7 @@ trait AZST_Config
                             'caption' => 'Variable',
                             'width'   => '450px',
                             'add'     => 0,
-                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "SystemDetailedStateConfigurationButton", "ID " . $SystemDetailedState["ID"] . " aufrufen", $SystemDetailedState["ID"]);',
+                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "SystemDetailedStateConfigurationButton", "ID " . $SystemDetailedState["ID"] . " bearbeiten", $SystemDetailedState["ID"]);',
                             'edit'    => [
                                 'type' => 'SelectVariable'
                             ]
@@ -699,7 +752,7 @@ trait AZST_Config
                             'name'    => 'Designation',
                             'width'   => '400px',
                             'add'     => '',
-                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "SystemDetailedStateConfigurationButton", "ID " . $SystemDetailedState["ID"] . " aufrufen", $SystemDetailedState["ID"]);',
+                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "SystemDetailedStateConfigurationButton", "ID " . $SystemDetailedState["ID"] . " bearbeiten", $SystemDetailedState["ID"]);',
                             'edit'    => [
                                 'type' => 'ValidationTextBox'
                             ]
@@ -713,32 +766,15 @@ trait AZST_Config
                     'name'     => 'SystemDetailedStateConfigurationButton',
                     'visible'  => false,
                     'objectID' => 0
-                ]
-            ]
-        ];
-
-        //Alarm state
-        $alarmStateValues = [];
-        $variables = json_decode($this->ReadPropertyString('AlarmState'), true);
-        foreach ($variables as $variable) {
-            $rowColor = '#FFC0C0'; //red
-            $id = $variable['ID'];
-            if ($id > 1 && @IPS_ObjectExists($id)) { //0 = main category, 1 = none
-                $rowColor = '#DFDFDF'; # grey
-                if ($variable['Use']) {
-                    $rowColor = '#C0FFC0'; //light green
-                }
-            }
-            $alarmStateValues[] = ['rowColor' => $rowColor];
-        }
-
-        $form['elements'][] = [
-            'type'    => 'ExpansionPanel',
-            'caption' => 'Alarmstatus',
-            'items'   => [
+                ],
+                [
+                    'type'    => 'Label',
+                    'caption' => ' '
+                ],
                 [
                     'type'     => 'List',
                     'name'     => 'AlarmState',
+                    'caption'  => 'Alarmstatus',
                     'rowCount' => 6,
                     'add'      => true,
                     'delete'   => true,
@@ -757,7 +793,7 @@ trait AZST_Config
                             'caption' => 'Variable',
                             'width'   => '450px',
                             'add'     => 0,
-                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "AlarmStateConfigurationButton", "ID " . $AlarmState["ID"] . " aufrufen", $AlarmState["ID"]);',
+                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "AlarmStateConfigurationButton", "ID " . $AlarmState["ID"] . " bearbeiten", $AlarmState["ID"]);',
                             'edit'    => [
                                 'type' => 'SelectVariable'
                             ]
@@ -767,7 +803,7 @@ trait AZST_Config
                             'name'    => 'Designation',
                             'width'   => '400px',
                             'add'     => '',
-                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "AlarmStateConfigurationButton", "ID " . $AlarmState["ID"] . " aufrufen", $AlarmState["ID"]);',
+                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "AlarmStateConfigurationButton", "ID " . $AlarmState["ID"] . " bearbeiten", $AlarmState["ID"]);',
                             'edit'    => [
                                 'type' => 'ValidationTextBox'
                             ]
@@ -781,32 +817,15 @@ trait AZST_Config
                     'name'     => 'AlarmStateConfigurationButton',
                     'visible'  => false,
                     'objectID' => 0
-                ]
-            ]
-        ];
-
-        //Alerting sensors
-        $alertingSensorValues = [];
-        $variables = json_decode($this->ReadPropertyString('AlertingSensor'), true);
-        foreach ($variables as $variable) {
-            $rowColor = '#FFC0C0'; //red
-            $id = $variable['ID'];
-            if ($id > 1 && @IPS_ObjectExists($id)) { //0 = main category, 1 = none
-                $rowColor = '#DFDFDF'; # grey
-                if ($variable['Use']) {
-                    $rowColor = '#C0FFC0'; //light green
-                }
-            }
-            $alertingSensorValues[] = ['rowColor' => $rowColor];
-        }
-
-        $form['elements'][] = [
-            'type'    => 'ExpansionPanel',
-            'caption' => 'Auslösender Alarmsensor',
-            'items'   => [
+                ],
+                [
+                    'type'    => 'Label',
+                    'caption' => ' '
+                ],
                 [
                     'type'     => 'List',
                     'name'     => 'AlertingSensor',
+                    'caption'  => 'Auslösender Alarmsensor',
                     'rowCount' => 6,
                     'add'      => true,
                     'delete'   => true,
@@ -825,7 +844,7 @@ trait AZST_Config
                             'caption' => 'Variable',
                             'width'   => '450px',
                             'add'     => 0,
-                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "AlertingSensorConfigurationButton", "ID " . $AlertingSensor["ID"] . " aufrufen", $AlertingSensor["ID"]);',
+                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "AlertingSensorConfigurationButton", "ID " . $AlertingSensor["ID"] . " bearbeiten", $AlertingSensor["ID"]);',
                             'edit'    => [
                                 'type' => 'SelectVariable'
                             ]
@@ -835,7 +854,7 @@ trait AZST_Config
                             'name'    => 'Designation',
                             'width'   => '400px',
                             'add'     => '',
-                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "AlertingSensorConfigurationButton", "ID " . $AlertingSensor["ID"] . " aufrufen", $AlertingSensor["ID"]);',
+                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "AlertingSensorConfigurationButton", "ID " . $AlertingSensor["ID"] . " bearbeiten", $AlertingSensor["ID"]);',
                             'edit'    => [
                                 'type' => 'ValidationTextBox'
                             ]
@@ -849,32 +868,15 @@ trait AZST_Config
                     'name'     => 'AlertingSensorConfigurationButton',
                     'visible'  => false,
                     'objectID' => 0
-                ]
-            ]
-        ];
-
-        //Door and window states
-        $doorWindowStateValues = [];
-        $variables = json_decode($this->ReadPropertyString('DoorWindowState'), true);
-        foreach ($variables as $variable) {
-            $rowColor = '#FFC0C0'; //red
-            $id = $variable['ID'];
-            if ($id > 1 && @IPS_ObjectExists($id)) { //0 = main category, 1 = none
-                $rowColor = '#DFDFDF'; # grey
-                if ($variable['Use']) {
-                    $rowColor = '#C0FFC0'; //light green
-                }
-            }
-            $doorWindowStateValues[] = ['rowColor' => $rowColor];
-        }
-
-        $form['elements'][] = [
-            'type'    => 'ExpansionPanel',
-            'caption' => 'Tür- und Fensterstatus',
-            'items'   => [
+                ],
+                [
+                    'type'    => 'Label',
+                    'caption' => ' '
+                ],
                 [
                     'type'     => 'List',
                     'name'     => 'DoorWindowState',
+                    'caption'  => 'Tür- und Fensterstatus',
                     'rowCount' => 6,
                     'add'      => true,
                     'delete'   => true,
@@ -893,7 +895,7 @@ trait AZST_Config
                             'caption' => 'Variable',
                             'width'   => '450px',
                             'add'     => 0,
-                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "DoorWindowStateConfigurationButton", "ID " . $DoorWindowState["ID"] . " aufrufen", $DoorWindowState["ID"]);',
+                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "DoorWindowStateConfigurationButton", "ID " . $DoorWindowState["ID"] . " bearbeiten", $DoorWindowState["ID"]);',
                             'edit'    => [
                                 'type' => 'SelectVariable'
                             ]
@@ -903,7 +905,7 @@ trait AZST_Config
                             'name'    => 'Designation',
                             'width'   => '400px',
                             'add'     => '',
-                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "DoorWindowStateConfigurationButton", "ID " . $DoorWindowState["ID"] . " aufrufen", $DoorWindowState["ID"]);',
+                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "DoorWindowStateConfigurationButton", "ID " . $DoorWindowState["ID"] . " bearbeiten", $DoorWindowState["ID"]);',
                             'edit'    => [
                                 'type' => 'ValidationTextBox'
                             ]
@@ -917,32 +919,15 @@ trait AZST_Config
                     'name'     => 'DoorWindowStateConfigurationButton',
                     'visible'  => false,
                     'objectID' => 0
-                ]
-            ]
-        ];
-
-        //Motion detector states
-        $motionDetectorStateValues = [];
-        $variables = json_decode($this->ReadPropertyString('MotionDetectorState'), true);
-        foreach ($variables as $variable) {
-            $rowColor = '#FFC0C0'; //red
-            $id = $variable['ID'];
-            if ($id > 1 && @IPS_ObjectExists($id)) { //0 = main category, 1 = none
-                $rowColor = '#DFDFDF'; # grey
-                if ($variable['Use']) {
-                    $rowColor = '#C0FFC0'; //light green
-                }
-            }
-            $motionDetectorStateValues[] = ['rowColor' => $rowColor];
-        }
-
-        $form['elements'][] = [
-            'type'    => 'ExpansionPanel',
-            'caption' => 'Bewegungsmelderstatus',
-            'items'   => [
+                ],
+                [
+                    'type'    => 'Label',
+                    'caption' => ' '
+                ],
                 [
                     'type'     => 'List',
                     'name'     => 'MotionDetectorState',
+                    'caption'  => 'Bewegungsmelderstatus',
                     'rowCount' => 6,
                     'add'      => true,
                     'delete'   => true,
@@ -961,7 +946,7 @@ trait AZST_Config
                             'caption' => 'Variable',
                             'width'   => '450px',
                             'add'     => 0,
-                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "MotionDetectorStateConfigurationButton", "ID " . $MotionDetectorState["ID"] . " aufrufen", $MotionDetectorState["ID"]);',
+                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "MotionDetectorStateConfigurationButton", "ID " . $MotionDetectorState["ID"] . " bearbeiten", $MotionDetectorState["ID"]);',
                             'edit'    => [
                                 'type' => 'SelectVariable'
                             ]
@@ -971,7 +956,7 @@ trait AZST_Config
                             'name'    => 'Designation',
                             'width'   => '400px',
                             'add'     => '',
-                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "MotionDetectorStateConfigurationButton", "ID " . $MotionDetectorState["ID"] . " aufrufen", $MotionDetectorState["ID"]);',
+                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "MotionDetectorStateConfigurationButton", "ID " . $MotionDetectorState["ID"] . " bearbeiten", $MotionDetectorState["ID"]);',
                             'edit'    => [
                                 'type' => 'ValidationTextBox'
                             ]
@@ -985,32 +970,15 @@ trait AZST_Config
                     'name'     => 'MotionDetectorStateConfigurationButton',
                     'visible'  => false,
                     'objectID' => 0
-                ]
-            ]
-        ];
-
-        //Alarm sirens
-        $alarmSirenValues = [];
-        $variables = json_decode($this->ReadPropertyString('AlarmSiren'), true);
-        foreach ($variables as $variable) {
-            $rowColor = '#FFC0C0'; //red
-            $id = $variable['ID'];
-            if ($id > 1 && @IPS_ObjectExists($id)) { //0 = main category, 1 = none
-                $rowColor = '#DFDFDF'; # grey
-                if ($variable['Use']) {
-                    $rowColor = '#C0FFC0'; //light green
-                }
-            }
-            $alarmSirenValues[] = ['rowColor' => $rowColor];
-        }
-
-        $form['elements'][] = [
-            'type'    => 'ExpansionPanel',
-            'caption' => 'Alarmsirene',
-            'items'   => [
+                ],
+                [
+                    'type'    => 'Label',
+                    'caption' => ' '
+                ],
                 [
                     'type'     => 'List',
                     'name'     => 'AlarmSiren',
+                    'caption'  => 'Alarmsirene',
                     'rowCount' => 6,
                     'add'      => true,
                     'delete'   => true,
@@ -1029,7 +997,7 @@ trait AZST_Config
                             'caption' => 'Variable',
                             'width'   => '450px',
                             'add'     => 0,
-                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "AlarmSirenConfigurationButton", "ID " . $AlarmSiren["ID"] . " aufrufen", $AlarmSiren["ID"]);',
+                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "AlarmSirenConfigurationButton", "ID " . $AlarmSiren["ID"] . " bearbeiten", $AlarmSiren["ID"]);',
                             'edit'    => [
                                 'type' => 'SelectVariable'
                             ]
@@ -1039,7 +1007,7 @@ trait AZST_Config
                             'name'    => 'Designation',
                             'width'   => '400px',
                             'add'     => '',
-                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "AlarmSirenConfigurationButton", "ID " . $AlarmSiren["ID"] . " aufrufen", $AlarmSiren["ID"]);',
+                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "AlarmSirenConfigurationButton", "ID " . $AlarmSiren["ID"] . " bearbeiten", $AlarmSiren["ID"]);',
                             'edit'    => [
                                 'type' => 'ValidationTextBox'
                             ]
@@ -1053,32 +1021,15 @@ trait AZST_Config
                     'name'     => 'AlarmSirenConfigurationButton',
                     'visible'  => false,
                     'objectID' => 0
-                ]
-            ]
-        ];
-
-        //Alarm lights
-        $alarmLightValues = [];
-        $variables = json_decode($this->ReadPropertyString('AlarmLight'), true);
-        foreach ($variables as $variable) {
-            $rowColor = '#FFC0C0'; //red
-            $id = $variable['ID'];
-            if ($id > 1 && @IPS_ObjectExists($id)) { //0 = main category, 1 = none
-                $rowColor = '#DFDFDF'; # grey
-                if ($variable['Use']) {
-                    $rowColor = '#C0FFC0'; //light green
-                }
-            }
-            $alarmLightValues[] = ['rowColor' => $rowColor];
-        }
-
-        $form['elements'][] = [
-            'type'    => 'ExpansionPanel',
-            'caption' => 'Alarmbeleuchtung',
-            'items'   => [
+                ],
+                [
+                    'type'    => 'Label',
+                    'caption' => ' '
+                ],
                 [
                     'type'     => 'List',
                     'name'     => 'AlarmLight',
+                    'caption'  => 'Alarmbeleuchtung',
                     'rowCount' => 6,
                     'add'      => true,
                     'delete'   => true,
@@ -1097,7 +1048,7 @@ trait AZST_Config
                             'caption' => 'Variable',
                             'width'   => '450px',
                             'add'     => 0,
-                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "AlarmLightConfigurationButton", "ID " . $AlarmLight["ID"] . " aufrufen", $AlarmLight["ID"]);',
+                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "AlarmLightConfigurationButton", "ID " . $AlarmLight["ID"] . " bearbeiten", $AlarmLight["ID"]);',
                             'edit'    => [
                                 'type' => 'SelectVariable'
                             ]
@@ -1107,7 +1058,7 @@ trait AZST_Config
                             'name'    => 'Designation',
                             'width'   => '400px',
                             'add'     => '',
-                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "AlarmLightConfigurationButton", "ID " . $AlarmLight["ID"] . " aufrufen", $AlarmLight["ID"]);',
+                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "AlarmLightConfigurationButton", "ID " . $AlarmLight["ID"] . " bearbeiten", $AlarmLight["ID"]);',
                             'edit'    => [
                                 'type' => 'ValidationTextBox'
                             ]
@@ -1121,32 +1072,15 @@ trait AZST_Config
                     'name'     => 'AlarmLightConfigurationButton',
                     'visible'  => false,
                     'objectID' => 0
-                ]
-            ]
-        ];
-
-        //Alarm calls
-        $alarmCallValues = [];
-        $variables = json_decode($this->ReadPropertyString('AlarmCall'), true);
-        foreach ($variables as $variable) {
-            $rowColor = '#FFC0C0'; //red
-            $id = $variable['ID'];
-            if ($id > 1 && @IPS_ObjectExists($id)) { //0 = main category, 1 = none
-                $rowColor = '#DFDFDF'; # grey
-                if ($variable['Use']) {
-                    $rowColor = '#C0FFC0'; //light green
-                }
-            }
-            $alarmCallValues[] = ['rowColor' => $rowColor];
-        }
-
-        $form['elements'][] = [
-            'type'    => 'ExpansionPanel',
-            'caption' => 'Alarmanruf',
-            'items'   => [
+                ],
+                [
+                    'type'    => 'Label',
+                    'caption' => ' '
+                ],
                 [
                     'type'     => 'List',
                     'name'     => 'AlarmCall',
+                    'caption'  => 'Alarmanruf',
                     'rowCount' => 6,
                     'add'      => true,
                     'delete'   => true,
@@ -1165,7 +1099,7 @@ trait AZST_Config
                             'caption' => 'Variable',
                             'width'   => '450px',
                             'add'     => 0,
-                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "AlarmCallConfigurationButton", "ID " . $AlarmCall["ID"] . " aufrufen", $AlarmCall["ID"]);',
+                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "AlarmCallConfigurationButton", "ID " . $AlarmCall["ID"] . " bearbeiten", $AlarmCall["ID"]);',
                             'edit'    => [
                                 'type' => 'SelectVariable'
                             ]
@@ -1175,7 +1109,7 @@ trait AZST_Config
                             'name'    => 'Designation',
                             'width'   => '400px',
                             'add'     => '',
-                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "AlarmCallConfigurationButton", "ID " . $AlarmCall["ID"] . " aufrufen", $AlarmCall["ID"]);',
+                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "AlarmCallConfigurationButton", "ID " . $AlarmCall["ID"] . " bearbeiten", $AlarmCall["ID"]);',
                             'edit'    => [
                                 'type' => 'ValidationTextBox'
                             ]
@@ -1193,9 +1127,10 @@ trait AZST_Config
             ]
         ];
 
-        //Tone acknowledgement
+        //Actions
         $form['elements'][] = [
             'type'    => 'ExpansionPanel',
+            'name'    => 'Panel5',
             'caption' => 'Aktionen',
             'items'   => [
                 [
@@ -1204,88 +1139,98 @@ trait AZST_Config
                     'bold'    => true,
                     'italic'  => true
                 ],
-                /*
                 [
-                    'type' => 'CheckBox',
-                    'name' => 'UseDisarmedAction',
-                    'caption' => 'Aktion'
+                    'type'    => 'CheckBox',
+                    'name'    => 'UseDisarmedAction',
+                    'caption' => 'Aktiv'
                 ],
                 [
                     'type' => 'SelectAction',
                     'name' => 'DisarmedAction'
                 ],
-                 */
                 [
                     'type'    => 'Label',
                     'caption' => ' '
                 ],
                 [
                     'type'    => 'Label',
-                    'caption' => 'Scharf',
+                    'caption' => 'Vollschutz',
                     'bold'    => true,
                     'italic'  => true
                 ],
                 [
                     'type'    => 'CheckBox',
-                    'name'    => 'UseArmedAction',
-                    'caption' => 'Aktion'
+                    'name'    => 'UseFullProtectionAction',
+                    'caption' => 'Aktiv'
                 ],
                 [
                     'type' => 'SelectAction',
-                    'name' => 'ArmedAction'
-                ],
-                /*
-                [
-                    'type' => 'ExpansionPanel',
-                    'caption' => 'Unscharf',
-                    'items' => [
-                        [
-                            'type' => 'CheckBox',
-                            'name' => 'UseToneAcknowledgementDisarmed',
-                            'caption' => 'Quittungston'
-                        ],
-                        [
-                            'type' => 'SelectAction',
-                            'name' => 'ToneAcknowledgementDisarmedAction'
-                        ],
-                    ]
+                    'name' => 'FullProtectionAction'
                 ],
                 [
-                    'type' => 'ExpansionPanel',
-                    'caption' => 'Teilscharf',
-                    'items' => [
-                        [
-                            'type' => 'CheckBox',
-                            'name' => 'UseToneAcknowledgementPartialArmed',
-                            'caption' => 'Quittungston'
-                        ],
-                        [
-                            'type' => 'SelectAction',
-                            'name' => 'ToneAcknowledgementPartialArmedAction'
-                        ]
-                    ]
+                    'type'    => 'Label',
+                    'caption' => ' '
                 ],
                 [
-                    'type' => 'ExpansionPanel',
-                    'caption' => 'Scharf',
-                    'items' => [
-                        [
-                            'type' => 'CheckBox',
-                            'name' => 'UseToneAcknowledgementArmed',
-                            'caption' => 'Quittungston'
-                        ],
-                        [
-                            'type' => 'SelectAction',
-                            'name' => 'ToneAcknowledgementArmedAction'
-                        ]
-                    ]
-                ]*/
+                    'type'    => 'Label',
+                    'caption' => 'Hüllschutz',
+                    'bold'    => true,
+                    'italic'  => true
+                ],
+                [
+                    'type'    => 'CheckBox',
+                    'name'    => 'UseHullProtectionAction',
+                    'caption' => 'Aktiv'
+                ],
+                [
+                    'type' => 'SelectAction',
+                    'name' => 'HullProtectionAction'
+                ],
+                [
+                    'type'    => 'Label',
+                    'caption' => ' '
+                ],
+                [
+                    'type'    => 'Label',
+                    'caption' => 'Teilschutz',
+                    'bold'    => true,
+                    'italic'  => true
+                ],
+                [
+                    'type'    => 'CheckBox',
+                    'name'    => 'UsePartialProtectionAction',
+                    'caption' => 'Aktiv'
+                ],
+                [
+                    'type' => 'SelectAction',
+                    'name' => 'PartialProtectionAction'
+                ],
+                [
+                    'type'    => 'Label',
+                    'caption' => ' '
+                ],
+                [
+                    'type'    => 'Label',
+                    'caption' => 'Individualschutz',
+                    'bold'    => true,
+                    'italic'  => true
+                ],
+                [
+                    'type'    => 'CheckBox',
+                    'name'    => 'UseIndividualProtectionAction',
+                    'caption' => 'Aktiv'
+                ],
+                [
+                    'type' => 'SelectAction',
+                    'name' => 'IndividualProtectionAction'
+                ]
             ]
         ];
 
         //Visualisation
         $form['elements'][] = [
             'type'    => 'ExpansionPanel',
+            'name'    => 'Panel6',
             'caption' => 'Visualisierung',
             'items'   => [
                 [
@@ -1419,28 +1364,65 @@ trait AZST_Config
 
         ########## Actions
 
-        $form['actions'][] = [
-            'type'    => 'ExpansionPanel',
-            'caption' => 'Konfiguration',
-            'items'   => [
-                [
-                    'type'    => 'Button',
-                    'caption' => 'Neu laden',
-                    'onClick' => self::MODULE_PREFIX . '_ReloadConfig($id);'
+        $form['actions'][] =
+            [
+                'type'  => 'RowLayout',
+                'items' => [
+                    [
+
+                        'type'    => 'PopupButton',
+                        'caption' => 'Alarmzonen ermitteln',
+                        'popup'   => [
+                            'caption' => 'Alarmzonen wirklich automatisch ermitteln?',
+                            'items'   => [
+                                [
+                                    'type'    => 'Button',
+                                    'caption' => 'Ermitteln',
+                                    'onClick' => self::MODULE_PREFIX . '_DetermineAlarmZoneVariables($id);'
+                                ],
+                                [
+                                    'type'    => 'ProgressBar',
+                                    'name'    => 'DetermineAlarmZoneVariablesProgress',
+                                    'caption' => 'Fortschritt',
+                                    'minimum' => 0,
+                                    'maximum' => 100,
+                                    'visible' => false
+                                ],
+                                [
+                                    'type'    => 'Label',
+                                    'name'    => 'DetermineAlarmZoneVariablesProgressInfo',
+                                    'caption' => 'Alarmzone',
+                                    'visible' => false
+                                ]
+                            ]
+                        ]
+                    ],
+                    [
+                        'type'    => 'Button',
+                        'caption' => 'Neue Alarmzone erstellen',
+                        'onClick' => self::MODULE_PREFIX . '_CreateAlarmZoneInstance($id);'
+                    ]
                 ]
-            ]
-        ];
+            ];
+
+        $form['actions'][] =
+            [
+                'type'    => 'Label',
+                'caption' => ' '
+            ];
 
         //Test center
-        $form['actions'][] = [
-            'type'    => 'ExpansionPanel',
-            'caption' => 'Schaltfunktionen',
-            'items'   => [
-                [
-                    'type' => 'TestCenter',
-                ]
-            ]
-        ];
+        $form['actions'][] =
+            [
+                'type' => 'TestCenter',
+
+            ];
+
+        $form['actions'][] =
+            [
+                'type'    => 'Label',
+                'caption' => ' '
+            ];
 
         //Registered references
         $registeredReferences = [];
@@ -1457,44 +1439,6 @@ trait AZST_Config
                 'Name'     => $name,
                 'rowColor' => $rowColor];
         }
-
-        $form['actions'][] = [
-            'type'    => 'ExpansionPanel',
-            'caption' => 'Registrierte Referenzen',
-            'items'   => [
-                [
-                    'type'     => 'List',
-                    'name'     => 'RegisteredReferences',
-                    'rowCount' => 10,
-                    'sort'     => [
-                        'column'    => 'ObjectID',
-                        'direction' => 'ascending'
-                    ],
-                    'columns' => [
-                        [
-                            'caption' => 'ID',
-                            'name'    => 'ObjectID',
-                            'width'   => '150px',
-                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "RegisteredReferencesConfigurationButton", "ID " . $RegisteredReferences["ObjectID"] . " aufrufen", $RegisteredReferences["ObjectID"]);'
-                        ],
-                        [
-                            'caption' => 'Name',
-                            'name'    => 'Name',
-                            'width'   => '300px',
-                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "RegisteredReferencesConfigurationButton", "ID " . $RegisteredReferences["ObjectID"] . " aufrufen", $RegisteredReferences["ObjectID"]);'
-                        ]
-                    ],
-                    'values' => $registeredReferences
-                ],
-                [
-                    'type'     => 'OpenObjectButton',
-                    'name'     => 'RegisteredReferencesConfigurationButton',
-                    'caption'  => 'Aufrufen',
-                    'visible'  => false,
-                    'objectID' => 0
-                ]
-            ]
-        ];
 
         //Registered messages
         $registeredMessages = [];
@@ -1527,12 +1471,14 @@ trait AZST_Config
         }
 
         $form['actions'][] = [
-            'type'    => 'ExpansionPanel',
-            'caption' => 'Registrierte Nachrichten',
-            'items'   => [
+            'type'     => 'ExpansionPanel',
+            'caption'  => 'Entwicklerbereich',
+            'expanded' => false,
+            'items'    => [
                 [
                     'type'     => 'List',
-                    'name'     => 'RegisteredMessages',
+                    'name'     => 'RegisteredReferences',
+                    'caption'  => 'Registrierte Referenzen',
                     'rowCount' => 10,
                     'sort'     => [
                         'column'    => 'ObjectID',
@@ -1543,13 +1489,49 @@ trait AZST_Config
                             'caption' => 'ID',
                             'name'    => 'ObjectID',
                             'width'   => '150px',
-                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "RegisteredMessagesConfigurationButton", "ID " . $RegisteredMessages["ObjectID"] . " aufrufen", $RegisteredMessages["ObjectID"]);'
+                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "RegisteredReferencesConfigurationButton", "ID " . $RegisteredReferences["ObjectID"] . " bearbeiten", $RegisteredReferences["ObjectID"]);'
                         ],
                         [
                             'caption' => 'Name',
                             'name'    => 'Name',
                             'width'   => '300px',
-                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "RegisteredMessagesConfigurationButton", "ID " . $RegisteredMessages["ObjectID"] . " aufrufen", $RegisteredMessages["ObjectID"]);'
+                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "RegisteredReferencesConfigurationButton", "ID " . $RegisteredReferences["ObjectID"] . " bearbeiten", $RegisteredReferences["ObjectID"]);'
+                        ]
+                    ],
+                    'values' => $registeredReferences
+                ],
+                [
+                    'type'     => 'OpenObjectButton',
+                    'name'     => 'RegisteredReferencesConfigurationButton',
+                    'caption'  => 'Bearbeiten',
+                    'visible'  => false,
+                    'objectID' => 0
+                ],
+                [
+                    'type'    => 'Label',
+                    'caption' => ' '
+                ],
+                [
+                    'type'     => 'List',
+                    'name'     => 'RegisteredMessages',
+                    'caption'  => 'Registrierte Nachrichten',
+                    'rowCount' => 10,
+                    'sort'     => [
+                        'column'    => 'ObjectID',
+                        'direction' => 'ascending'
+                    ],
+                    'columns' => [
+                        [
+                            'caption' => 'ID',
+                            'name'    => 'ObjectID',
+                            'width'   => '150px',
+                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "RegisteredMessagesConfigurationButton", "ID " . $RegisteredMessages["ObjectID"] . " bearbeiten", $RegisteredMessages["ObjectID"]);'
+                        ],
+                        [
+                            'caption' => 'Name',
+                            'name'    => 'Name',
+                            'width'   => '300px',
+                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "RegisteredMessagesConfigurationButton", "ID " . $RegisteredMessages["ObjectID"] . " bearbeiten", $RegisteredMessages["ObjectID"]);'
                         ],
                         [
                             'caption' => 'Nachrichten ID',
@@ -1567,34 +1549,30 @@ trait AZST_Config
                 [
                     'type'     => 'OpenObjectButton',
                     'name'     => 'RegisteredMessagesConfigurationButton',
-                    'caption'  => 'Aufrufen',
+                    'caption'  => 'Bearbeiten',
                     'visible'  => false,
                     'objectID' => 0
                 ]
             ]
         ];
 
-        //Alarm zone
-        $form['actions'][] = [
-            'type'    => 'ExpansionPanel',
-            'caption' => 'Alarmzonen',
-            'items'   => [
-                [
-                    'type'    => 'PopupButton',
-                    'caption' => 'Variablen ermitteln',
-                    'popup'   => [
-                        'caption' => 'Variablen wirklich automatisch ermitteln?',
-                        'items'   => [
-                            [
-                                'type'    => 'Button',
-                                'caption' => 'Variablen ermitteln',
-                                'onClick' => self::MODULE_PREFIX . '_DetermineAlarmZoneVariables($id);'
-                            ]
+        $form['actions'][] =
+            [
+                'type'    => 'PopupAlert',
+                'name'    => 'InfoMessage',
+                'visible' => false,
+                'popup'   => [
+                    'closeCaption' => 'OK',
+                    'items'        => [
+                        [
+                            'type'    => 'Label',
+                            'name'    => 'InfoMessageLabel',
+                            'caption' => '',
+                            'visible' => true
                         ]
                     ]
                 ]
-            ]
-        ];
+            ];
 
         ########## Status
 
