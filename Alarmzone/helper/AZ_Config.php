@@ -34,7 +34,7 @@ trait AZ_Config
      */
     public function ExpandExpansionPanels(bool $State): void
     {
-        for ($i = 1; $i <= 10; $i++) {
+        for ($i = 1; $i <= 9; $i++) {
             $this->UpdateFormField('Panel' . $i, 'expanded', $State);
         }
     }
@@ -1223,16 +1223,16 @@ trait AZ_Config
                             'onChange' => self::MODULE_PREFIX . '_ModifyButton($id, "AlarmProtocolConfigurationButton", "ID " . $AlarmProtocol . " konfigurieren", $AlarmProtocol);'
                         ],
                         [
-                            'type'    => 'Button',
-                            'caption' => 'Neue Instanz erstellen',
-                            'onClick' => self::MODULE_PREFIX . '_CreateAlarmProtocolInstance($id);'
-                        ],
-                        [
                             'type'     => 'OpenObjectButton',
                             'caption'  => 'ID ' . $id . ' konfigurieren',
                             'name'     => 'AlarmProtocolConfigurationButton',
                             'visible'  => $enableButton,
                             'objectID' => $id
+                        ],
+                        [
+                            'type'    => 'Button',
+                            'caption' => 'Neue Instanz erstellen',
+                            'onClick' => self::MODULE_PREFIX . '_CreateAlarmProtocolInstance($id);'
                         ]
                     ]
                 ]
@@ -1263,16 +1263,16 @@ trait AZ_Config
                             'onChange' => self::MODULE_PREFIX . '_ModifyButton($id, "NotificationConfigurationButton", "ID " . $Notification . " konfigurieren", $Notification);'
                         ],
                         [
-                            'type'    => 'Button',
-                            'caption' => 'Neue Instanz erstellen',
-                            'onClick' => self::MODULE_PREFIX . '_CreateNotificationInstance($id);'
-                        ],
-                        [
                             'type'     => 'OpenObjectButton',
                             'caption'  => 'ID ' . $id . ' konfigurieren',
                             'name'     => 'NotificationConfigurationButton',
                             'visible'  => $enableButton,
                             'objectID' => $id
+                        ],
+                        [
+                            'type'    => 'Button',
+                            'caption' => 'Neue Instanz erstellen',
+                            'onClick' => self::MODULE_PREFIX . '_CreateNotificationInstance($id);'
                         ]
                     ]
                 ],
@@ -8070,7 +8070,6 @@ trait AZ_Config
         $form['actions'][] = [
             'type'     => 'ExpansionPanel',
             'caption'  => 'Entwicklerbereich',
-            'name'     => 'Panel10',
             'expanded' => false,
             'items'    => [
                 [
