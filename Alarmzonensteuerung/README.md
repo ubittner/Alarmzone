@@ -16,7 +16,7 @@ Der Nutzer stimmt den o.a. Bedingungen, sowie den Lizenzbedingungen ausdrücklic
    1. [Vollschutz](#41-vollschutz)
    2. [Hüllschutz](#42-hüllschutz)
    3. [Teilschutz](#43-teilschutz)
-   4. [Individualschutz](#44-teilschutz)
+   4. [Individualschutz](#44-individualschutz)
 5. [Systemstatus](#5-systemstatus)
 6. [Ablaufplan](#6-ablaufplan)
 7. [Externe Aktion](#7-externe-aktion)
@@ -114,13 +114,15 @@ Der Ablaufplan ist in der jeweiligen Alarmzone definiert.
 
 Das Modul kann über eine externe Aktion gesteuert werden.  
 Nachfolgendes Beispiel aktiviert die Alarmzone mit Vollschutz.
-> AZST_SelectProtectionMode(12345, 1, 'Sender ID');
 
+```php
+AZST_SelectProtectionMode(12345, 1, 'Sender ID');
+```
 ### 8. PHP-Befehlsreferenz
 
 #### 8.1 Alarmzonen schalten
 
-```
+```text
 boolean AZST_SelectProtectionMode(integer INSTANCE_ID, integer MODE, string SENDER_ID);
 ```
 
@@ -137,7 +139,9 @@ Konnte der jeweilige Befehl erfolgreich ausgeführt werden, liefert er als Ergeb
 | `SENDER_ID`   | Eine Kennung, die den Sender identifiziert und |                      |
 |               | im Alarmprotokoll anzeigt                      |                      |
 
-Beispiel:
-> AZST_SelectProtectionMode(12345, 0, 'Sender');
+**Beispiel**:
+```php
+AZST_SelectProtectionMode(12345, 0, 'Sender');
+```
 
 ---
