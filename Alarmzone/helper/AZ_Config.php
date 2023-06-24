@@ -121,6 +121,7 @@ trait AZ_Config
 
         //Info
         $library = IPS_GetLibrary(self::LIBRARY_GUID);
+        $module = IPS_GetModule(self::MODULE_GUID);
         $form['elements'][] = [
             'type'     => 'ExpansionPanel',
             'caption'  => 'Info',
@@ -133,11 +134,11 @@ trait AZ_Config
                 ],
                 [
                     'type'    => 'Label',
-                    'caption' => "Modul:\t\t" . self::MODULE_NAME
+                    'caption' => "Modul:\t\t" . $module['ModuleName']
                 ],
                 [
                     'type'    => 'Label',
-                    'caption' => "Präfix:\t\t" . self::MODULE_PREFIX
+                    'caption' => "Präfix:\t\t" . $module['Prefix']
                 ],
                 [
                     'type'    => 'Label',
@@ -8232,22 +8233,22 @@ trait AZ_Config
         $form['status'][] = [
             'code'    => 101,
             'icon'    => 'active',
-            'caption' => self::MODULE_NAME . ' wird erstellt',
+            'caption' => $module['ModuleName'] . ' wird erstellt',
         ];
         $form['status'][] = [
             'code'    => 102,
             'icon'    => 'active',
-            'caption' => self::MODULE_NAME . ' ist aktiv',
+            'caption' => $module['ModuleName'] . ' ist aktiv',
         ];
         $form['status'][] = [
             'code'    => 103,
             'icon'    => 'active',
-            'caption' => self::MODULE_NAME . ' wird gelöscht',
+            'caption' => $module['ModuleName'] . ' wird gelöscht',
         ];
         $form['status'][] = [
             'code'    => 104,
             'icon'    => 'inactive',
-            'caption' => self::MODULE_NAME . ' ist inaktiv',
+            'caption' => $module['ModuleName'] . ' ist inaktiv',
         ];
         $form['status'][] = [
             'code'    => 200,
