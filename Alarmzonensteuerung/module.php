@@ -26,7 +26,6 @@ class Alarmzonensteuerung extends IPSModule
     //Constants
     private const LIBRARY_GUID = '{F227BA9C-8112-3B9F-1149-9B53E10D4F79}';
     private const MODULE_GUID = '{79BB840E-65C1-06E0-E1DD-BAFEFC514848}';
-    private const MODULE_NAME = 'Alarmzonensteuerung';
     private const MODULE_PREFIX = 'AZST';
     private const ALARMZONE_MODULE_GUID = '{127AB08D-CD10-801D-D419-442CDE6E5C61}';
 
