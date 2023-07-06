@@ -311,6 +311,11 @@ class Alarmzone extends IPSModule
         ########## Timer
 
         $this->RegisterTimer('StartActivation', 0, self::MODULE_PREFIX . '_StartActivation(' . $this->InstanceID . ');');
+
+        ########## General variable profiles
+
+        $this->CreateDoorWindowVariableProfiles();
+        $this->CreateMotionDetectorVariableProfiles();
     }
 
     public function ApplyChanges()

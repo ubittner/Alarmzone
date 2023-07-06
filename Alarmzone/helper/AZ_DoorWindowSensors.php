@@ -18,107 +18,248 @@ trait AZ_DoorWindowSensors
     /**
      * Determines automatically the variables of all existing door and window sensors.
      *
-     * @param string $SelectIdents
-     * @param string $ObjectIdents
+     * @param int $DeterminationType
+     * @param string $DeterminationValue
      * @return void
      * @throws Exception
      */
-    public function DetermineDoorWindowVariables(string $SelectIdents, string $ObjectIdents): void
+    public function DetermineDoorWindowVariables(int $DeterminationType, string $DeterminationValue): void
     {
         $this->SendDebug(__FUNCTION__, 'wird ausgeführt', 0);
-        $this->SendDebug(__FUNCTION__, 'Auswahl: ' . $SelectIdents, 0);
-        $this->SendDebug(__FUNCTION__, 'Identifikator: ' . $ObjectIdents, 0);
+        $this->SendDebug(__FUNCTION__, 'Auswahl: ' . $DeterminationType, 0);
+        $this->SendDebug(__FUNCTION__, 'Identifikator/Profilname: ' . $DeterminationValue, 0);
+
         $this->UpdateFormField('DoorWindowSensorProgress', 'minimum', 0);
         $maximumVariables = count(IPS_GetVariableList());
         $this->UpdateFormField('DoorWindowSensorProgress', 'maximum', $maximumVariables);
+
+        $determineIdent = false;
+        $determineProfile = false;
+
         //Determine variables first
         $determinedVariables = [];
         $passedVariables = 0;
         foreach (@IPS_GetVariableList() as $variable) {
-            if ($SelectIdents == '') {
-                if ($ObjectIdents == '') {
-                    $infoText = 'Abbruch, es wurde kein Identifikator angegeben!';
-                    $this->UpdateFormField('InfoMessage', 'visible', true);
-                    $this->UpdateFormField('InfoMessageLabel', 'caption', $infoText);
-                    return;
-                }
-            } else {
-                $ObjectIdents = $SelectIdents;
+            switch ($DeterminationType) {
+                case 0: //Custom Ident
+                    if ($DeterminationValue == '') {
+                        $infoText = 'Abbruch, es wurde kein Identifikator angegeben!';
+                        $this->UpdateFormField('InfoMessage', 'visible', true);
+                        $this->UpdateFormField('InfoMessageLabel', 'caption', $infoText);
+                        return;
+                    } else {
+                        $determineIdent = true;
+                    }
+                    break;
+
+                case 1: //Ident: STATE
+                    $determineIdent = true;
+                    break;
+
+                case 2: //Custom Profile
+                    if ($DeterminationValue == '') {
+                        $infoText = 'Abbruch, es wurde kein Profilname angegeben!';
+                        $this->UpdateFormField('InfoMessage', 'visible', true);
+                        $this->UpdateFormField('InfoMessageLabel', 'caption', $infoText);
+                        return;
+                    } else {
+                        $determineProfile = true;
+                    }
+                    break;
+
+                case 3: //Profile: ~Window
+                case 4: //Profile: ~Window.Reversed
+                case 5: //Profile: ~Window.HM
+                    $determineProfile = true;
+                    break;
             }
+
             $passedVariables++;
             $this->UpdateFormField('DoorWindowSensorProgress', 'visible', true);
             $this->UpdateFormField('DoorWindowSensorProgress', 'current', $passedVariables);
             $this->UpdateFormField('DoorWindowSensorProgressInfo', 'visible', true);
             $this->UpdateFormField('DoorWindowSensorProgressInfo', 'caption', $passedVariables . '/' . $maximumVariables);
             IPS_Sleep(25);
-            $objectIdents = str_replace(' ', '', $ObjectIdents);
-            $objectIdents = explode(',', $objectIdents);
-            foreach ($objectIdents as $objectIdent) {
-                $object = @IPS_GetObject($variable);
-                if ($object['ObjectIdent'] == $objectIdent) {
-                    $name = @IPS_GetName($variable);
-                    $address = '';
-                    $parent = @IPS_GetParent($variable);
-                    if ($parent > 1 && @IPS_ObjectExists($parent)) {
-                        $parentObject = @IPS_GetObject($parent);
-                        if ($parentObject['ObjectType'] == 1) { //1 = instance
-                            $name = strstr(@IPS_GetName($parent), ':', true);
-                            if (!$name) {
-                                $name = @IPS_GetName($parent);
+
+            ##### Ident
+
+            //Determine via ident
+            if ($determineIdent && !$determineProfile) {
+                switch ($DeterminationType) {
+                    case 0: //Custom ident
+                        $objectIdents = $DeterminationValue;
+                        break;
+
+                    case 1: //Ident: STATE
+                        $objectIdents = 'STATE';
+                        break;
+
+                }
+                if (isset($objectIdents)) {
+                    $objectIdents = str_replace(' ', '', $objectIdents);
+                    $objectIdents = explode(',', $objectIdents);
+                    foreach ($objectIdents as $objectIdent) {
+                        $object = @IPS_GetObject($variable);
+                        if ($object['ObjectIdent'] == $objectIdent) {
+                            $name = @IPS_GetName($variable);
+                            $address = '';
+                            $parent = @IPS_GetParent($variable);
+                            if ($parent > 1 && @IPS_ObjectExists($parent)) {
+                                $parentObject = @IPS_GetObject($parent);
+                                if ($parentObject['ObjectType'] == 1) { //1 = instance
+                                    $name = strstr(@IPS_GetName($parent), ':', true);
+                                    if (!$name) {
+                                        $name = @IPS_GetName($parent);
+                                    }
+                                    $address = @IPS_GetProperty($parent, 'Address');
+                                    if (!$address) {
+                                        $address = '';
+                                    }
+                                }
                             }
-                            $address = @IPS_GetProperty($parent, 'Address');
-                            if (!$address) {
-                                $address = '';
+                            $value = true;
+                            if (IPS_GetVariable($variable)['VariableType'] == 1) {
+                                $value = 1;
                             }
+                            $primaryCondition[0] = [
+                                'id'        => 0,
+                                'parentID'  => 0,
+                                'operation' => 0,
+                                'rules'     => [
+                                    'variable' => [
+                                        '0' => [
+                                            'id'         => 0,
+                                            'variableID' => $variable,
+                                            'comparison' => 0,
+                                            'value'      => $value,
+                                            'type'       => 0
+                                        ]
+                                    ],
+                                    'date'         => [],
+                                    'time'         => [],
+                                    'dayOfTheWeek' => []
+                                ]
+                            ];
+                            $determinedVariables[] = [
+                                'Use'                                   => true,
+                                'Designation'                           => $name,
+                                'Comment'                               => $address,
+                                'UseMultipleAlerts'                     => false,
+                                'PrimaryCondition'                      => json_encode($primaryCondition),
+                                'SecondaryCondition'                    => '[]',
+                                'FullProtectionModeActive'              => true,
+                                'HullProtectionModeActive'              => false,
+                                'PartialProtectionModeActive'           => false,
+                                'CheckFullProtectionActivation'         => false,
+                                'CheckHullProtectionActivation'         => false,
+                                'CheckPartialProtectionActivation'      => false,
+                                'UseAlarmProtocol'                      => true,
+                                'OpenDoorWindowStatusVerificationDelay' => 0,
+                                'UseNotification'                       => true,
+                                'UseAlarmSiren'                         => true,
+                                'UseAlarmLight'                         => false,
+                                'UseAlarmCall'                          => false,
+                                'UseAlertingAction'                     => false,
+                                'AlertingAction'                        => '[]'];
                         }
                     }
-                    $value = true;
-                    if (IPS_GetVariable($variable)['VariableType'] == 1) {
-                        $value = 1;
-                    }
-                    $primaryCondition[0] = [
-                        'id'        => 0,
-                        'parentID'  => 0,
-                        'operation' => 0,
-                        'rules'     => [
-                            'variable' => [
-                                '0' => [
-                                    'id'         => 0,
-                                    'variableID' => $variable,
-                                    'comparison' => 0,
-                                    'value'      => $value,
-                                    'type'       => 0
+                }
+            }
+
+            ##### Profile
+
+            //Determine via profile
+            if ($determineProfile && !$determineIdent) {
+                switch ($DeterminationType) {
+                    case 2: //Custom ident
+                        $profileNames = $DeterminationValue;
+                        break;
+
+                    case 3:
+                        $profileNames = '~Window';
+                        break;
+
+                    case 4:
+                        $profileNames = '~Window.Reversed';
+                        break;
+
+                    case 5:
+                        $profileNames = '~Window.HM';
+                        break;
+
+                }
+                if (isset($profileNames)) {
+                    $profileNames = str_replace(' ', '', $profileNames);
+                    $profileNames = explode(',', $profileNames);
+                    foreach ($profileNames as $profileName) {
+                        $variableData = IPS_GetVariable($variable);
+                        if ($variableData['VariableCustomProfile'] == $profileName || $variableData['VariableProfile'] == $profileName) {
+                            $name = @IPS_GetName($variable);
+                            $address = '';
+                            $parent = @IPS_GetParent($variable);
+                            if ($parent > 1 && @IPS_ObjectExists($parent)) {
+                                $parentObject = @IPS_GetObject($parent);
+                                if ($parentObject['ObjectType'] == 1) { //1 = instance
+                                    $name = strstr(@IPS_GetName($parent), ':', true);
+                                    if (!$name) {
+                                        $name = @IPS_GetName($parent);
+                                    }
+                                    $address = @IPS_GetProperty($parent, 'Address');
+                                    if (!$address) {
+                                        $address = '';
+                                    }
+                                }
+                            }
+                            $value = true;
+                            if (IPS_GetVariable($variable)['VariableType'] == 1) {
+                                $value = 1;
+                            }
+                            $primaryCondition[0] = [
+                                'id'        => 0,
+                                'parentID'  => 0,
+                                'operation' => 0,
+                                'rules'     => [
+                                    'variable' => [
+                                        '0' => [
+                                            'id'         => 0,
+                                            'variableID' => $variable,
+                                            'comparison' => 0,
+                                            'value'      => $value,
+                                            'type'       => 0
+                                        ]
+                                    ],
+                                    'date'         => [],
+                                    'time'         => [],
+                                    'dayOfTheWeek' => []
                                 ]
-                            ],
-                            'date'         => [],
-                            'time'         => [],
-                            'dayOfTheWeek' => []
-                        ]
-                    ];
-                    $determinedVariables[] = [
-                        'Use'                                   => true,
-                        'Designation'                           => $name,
-                        'Comment'                               => $address,
-                        'UseMultipleAlerts'                     => false,
-                        'PrimaryCondition'                      => json_encode($primaryCondition),
-                        'SecondaryCondition'                    => '[]',
-                        'FullProtectionModeActive'              => true,
-                        'HullProtectionModeActive'              => false,
-                        'PartialProtectionModeActive'           => false,
-                        'CheckFullProtectionActivation'         => false,
-                        'CheckHullProtectionActivation'         => false,
-                        'CheckPartialProtectionActivation'      => false,
-                        'UseAlarmProtocol'                      => true,
-                        'OpenDoorWindowStatusVerificationDelay' => 0,
-                        'UseNotification'                       => true,
-                        'UseAlarmSiren'                         => true,
-                        'UseAlarmLight'                         => false,
-                        'UseAlarmCall'                          => false,
-                        'UseAlertingAction'                     => false,
-                        'AlertingAction'                        => '[]'];
+                            ];
+                            $determinedVariables[] = [
+                                'Use'                                   => true,
+                                'Designation'                           => $name,
+                                'Comment'                               => $address,
+                                'UseMultipleAlerts'                     => false,
+                                'PrimaryCondition'                      => json_encode($primaryCondition),
+                                'SecondaryCondition'                    => '[]',
+                                'FullProtectionModeActive'              => true,
+                                'HullProtectionModeActive'              => false,
+                                'PartialProtectionModeActive'           => false,
+                                'CheckFullProtectionActivation'         => false,
+                                'CheckHullProtectionActivation'         => false,
+                                'CheckPartialProtectionActivation'      => false,
+                                'UseAlarmProtocol'                      => true,
+                                'OpenDoorWindowStatusVerificationDelay' => 0,
+                                'UseNotification'                       => true,
+                                'UseAlarmSiren'                         => true,
+                                'UseAlarmLight'                         => false,
+                                'UseAlarmCall'                          => false,
+                                'UseAlertingAction'                     => false,
+                                'AlertingAction'                        => '[]'];
+                        }
+                    }
                 }
             }
         }
+
         //Get already listed variables
         $listedVariables = json_decode($this->ReadPropertyString('DoorWindowSensors'), true);
         foreach ($determinedVariables as $determinedVariable) {
@@ -158,18 +299,97 @@ trait AZ_DoorWindowSensors
                 }
             }
         }
+        if (empty($determinedVariables)) {
+            $this->UpdateFormField('DoorWindowSensorProgress', 'visible', false);
+            $this->UpdateFormField('DoorWindowSensorProgressInfo', 'visible', false);
+            $infoText = 'Es wurden keinen Variablen gefunden!';
+            $this->UpdateFormField('InfoMessage', 'visible', true);
+            $this->UpdateFormField('InfoMessageLabel', 'caption', $infoText);
+            return;
+        }
         //Sort variables by name
         array_multisort(array_column($listedVariables, 'Designation'), SORT_ASC, $listedVariables);
         @IPS_SetProperty($this->InstanceID, 'DoorWindowSensors', json_encode(array_values($listedVariables)));
         if (@IPS_HasChanges($this->InstanceID)) {
-            $this->UpdateFormField('ProgressAlert', 'visible', false);
             @IPS_ApplyChanges($this->InstanceID);
         }
-        if (empty($determinedVariables)) {
-            $infoText = 'Es wurden keinen Variablen gefunden!';
-            $this->UpdateFormField('InfoMessage', 'visible', true);
-            $this->UpdateFormField('InfoMessageLabel', 'caption', $infoText);
+    }
+
+    public function CheckDoorWindowDeterminationValue(int $DoorWindowDeterminationType): void
+    {
+        $visible = false;
+        if ($DoorWindowDeterminationType == 0) {
+            $this->UpdateFormfield('DoorWindowDeterminationValue', 'caption', 'Identifikator');
+            $visible = true;
         }
+        if ($DoorWindowDeterminationType == 2) {
+            $this->UpdateFormfield('DoorWindowDeterminationValue', 'caption', 'Profilname');
+            $visible = true;
+        }
+        $this->UpdateFormfield('DoorWindowDeterminationValue', 'visible', $visible);
+    }
+
+    public function AssignDoorWindowVariableProfile(): void
+    {
+        //Only assign a standard profile, a reversed profile must be assigned manually by the user!
+        $listedVariables = json_decode($this->ReadPropertyString('DoorWindowSensors'), true);
+        $maximumVariables = count($listedVariables);
+        $this->UpdateFormField('AssignDoorWindowVariableProfileProgress', 'minimum', 0);
+        $this->UpdateFormField('AssignDoorWindowVariableProfileProgress', 'maximum', $maximumVariables);
+        $passedVariables = 0;
+        foreach ($listedVariables as $variable) {
+            $passedVariables++;
+            $this->UpdateFormField('AssignDoorWindowVariableProfileProgress', 'visible', true);
+            $this->UpdateFormField('AssignDoorWindowVariableProfileProgress', 'current', $passedVariables);
+            $this->UpdateFormField('AssignDoorWindowVariableProfileProgressInfo', 'visible', true);
+            $this->UpdateFormField('AssignDoorWindowVariableProfileProgressInfo', 'caption', $passedVariables . '/' . $maximumVariables);
+            IPS_Sleep(250);
+            $id = 0;
+            //Primary condition
+            if ($variable['PrimaryCondition'] != '') {
+                $primaryCondition = json_decode($variable['PrimaryCondition'], true);
+                if (array_key_exists(0, $primaryCondition)) {
+                    if (array_key_exists(0, $primaryCondition[0]['rules']['variable'])) {
+                        $id = $primaryCondition[0]['rules']['variable'][0]['variableID'];
+                    }
+                }
+            }
+            if ($id > 1 && @IPS_ObjectExists($id)) {
+                $object = IPS_GetObject($id)['ObjectType'];
+                //0: Category, 1: Instance, 2: Variable, 3: Script, 4: Event, 5: Media, 6: Link)
+                if ($object == 2) {
+                    $variable = IPS_GetVariable($id)['VariableType'];
+                    switch ($variable) {
+                        //0: Boolean, 1: Integer, 2: Float, 3: String
+                        case 0:
+                            $profileName = 'DoorWindow.Bool';
+                            break;
+
+                        case 1:
+                            $profileName = 'DoorWindow.Integer';
+                            break;
+
+                        default:
+                            $profileName = '';
+                    }
+                    if (!empty($profileName)) {
+                        //Assign profile
+                        IPS_SetVariableCustomProfile($id, $profileName);
+                        //Deactivate standard action
+                        IPS_SetVariableCustomAction($id, 1);
+                    }
+                }
+            }
+        }
+        if ($maximumVariables == 0) {
+            $infoText = 'Es sind keine Variablen vorhanden!';
+        } else {
+            $this->UpdateFormField('AssignDoorWindowVariableProfileProgress', 'visible', false);
+            $this->UpdateFormField('AssignDoorWindowVariableProfileProgressInfo', 'visible', false);
+            $infoText = 'Variablenprofil wurde erfolgreich zugewiesen!';
+        }
+        $this->UpdateFormField('InfoMessage', 'visible', true);
+        $this->UpdateFormField('InfoMessageLabel', 'caption', $infoText);
     }
 
     /**
@@ -486,6 +706,45 @@ trait AZ_DoorWindowSensors
         if (@IPS_HasChanges($this->InstanceID)) {
             @IPS_ApplyChanges($this->InstanceID);
         }
+    }
+
+    private function CreateDoorWindowVariableProfiles(): void
+    {
+        //Bool variable
+        $profile = 'DoorWindow.Bool';
+        if (!IPS_VariableProfileExists($profile)) {
+            IPS_CreateVariableProfile($profile, 0);
+        }
+        IPS_SetVariableProfileIcon($profile, 'Window');
+        IPS_SetVariableProfileAssociation($profile, 0, 'Geschlossen', '', 0x00FF00);
+        IPS_SetVariableProfileAssociation($profile, 1, 'Geöffnet', '', 0xFF0000);
+
+        //Bool variable reversed
+        $profile = 'DoorWindow.Bool.Reversed';
+        if (!IPS_VariableProfileExists($profile)) {
+            IPS_CreateVariableProfile($profile, 0);
+        }
+        IPS_SetVariableProfileIcon($profile, 'Window');
+        IPS_SetVariableProfileAssociation($profile, 0, 'Geöffnet', '', 0xFF0000);
+        IPS_SetVariableProfileAssociation($profile, 1, 'Geschlossen', '', 0x00FF00);
+
+        //Integer variable
+        $profile = 'DoorWindow.Integer';
+        if (!IPS_VariableProfileExists($profile)) {
+            IPS_CreateVariableProfile($profile, 1);
+        }
+        IPS_SetVariableProfileIcon($profile, 'Window');
+        IPS_SetVariableProfileAssociation($profile, 0, 'Geschlossen', '', 0x00FF00);
+        IPS_SetVariableProfileAssociation($profile, 1, 'Geöffnet', '', 0xFF0000);
+
+        //Integer variable reversed
+        $profile = 'DoorWindow.Integer.Reversed';
+        if (!IPS_VariableProfileExists($profile)) {
+            IPS_CreateVariableProfile($profile, 1);
+        }
+        IPS_SetVariableProfileIcon($profile, 'Window');
+        IPS_SetVariableProfileAssociation($profile, 0, 'Geöffnet', '', 0xFF0000);
+        IPS_SetVariableProfileAssociation($profile, 1, 'Geschlossen', '', 0x00FF00);
     }
 
     #################### Private
