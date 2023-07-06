@@ -18,103 +18,240 @@ trait AZ_MotionDetectors
     /**
      * Determines automatically the variables of all existing motion detectors.
      *
-     * @param string $SelectIdents
-     * @param string $ObjectIdents
+     * @param int $DeterminationType
+     * @param string $DeterminationValue
      * @return void
      * @throws Exception
      */
-    public function DetermineMotionDetectorVariables(string $SelectIdents, string $ObjectIdents): void
+    public function DetermineMotionDetectorVariables(int $DeterminationType, string $DeterminationValue): void
     {
         $this->SendDebug(__FUNCTION__, 'wird ausgeführt', 0);
-        $this->SendDebug(__FUNCTION__, 'Auswahl: ' . $SelectIdents, 0);
-        $this->SendDebug(__FUNCTION__, 'Identifikator: ' . $ObjectIdents, 0);
+        $this->SendDebug(__FUNCTION__, 'Auswahl: ' . $DeterminationType, 0);
+        $this->SendDebug(__FUNCTION__, 'Identifikator: ' . $DeterminationValue, 0);
+
         $this->UpdateFormField('MotionDetectorProgress', 'minimum', 0);
         $maximumVariables = count(IPS_GetVariableList());
         $this->UpdateFormField('MotionDetectorProgress', 'maximum', $maximumVariables);
+
+        $determineIdent = false;
+        $determineProfile = false;
+
         //Determine variables first
         $determinedVariables = [];
         $passedVariables = 0;
         foreach (@IPS_GetVariableList() as $variable) {
-            if ($SelectIdents == '') {
-                if ($ObjectIdents == '') {
-                    $infoText = 'Abbruch, es wurde kein Identifikator angegeben!';
-                    $this->UpdateFormField('InfoMessage', 'visible', true);
-                    $this->UpdateFormField('InfoMessageLabel', 'caption', $infoText);
-                    return;
-                }
-            } else {
-                $ObjectIdents = $SelectIdents;
+            switch ($DeterminationType) {
+                case 0: //Custom Ident
+                    if ($DeterminationValue == '') {
+                        $infoText = 'Abbruch, es wurde kein Identifikator angegeben!';
+                        $this->UpdateFormField('InfoMessage', 'visible', true);
+                        $this->UpdateFormField('InfoMessageLabel', 'caption', $infoText);
+                        return;
+                    } else {
+                        $determineIdent = true;
+                    }
+                    break;
+
+                case 1: //Ident: MOTION
+                    $determineIdent = true;
+                    break;
+
+                case 2: //Custom Profile
+                    if ($DeterminationValue == '') {
+                        $infoText = 'Abbruch, es wurde kein Profilname angegeben!';
+                        $this->UpdateFormField('InfoMessage', 'visible', true);
+                        $this->UpdateFormField('InfoMessageLabel', 'caption', $infoText);
+                        return;
+                    } else {
+                        $determineProfile = true;
+                    }
+                    break;
+
+                case 3: //Profile: ~Motion
+                case 4: //Profile: ~Motion.Reversed
+                case 5: //Profile: ~Motion.HM
+                    $determineProfile = true;
+                    break;
             }
+
             $passedVariables++;
             $this->UpdateFormField('MotionDetectorProgress', 'visible', true);
             $this->UpdateFormField('MotionDetectorProgress', 'current', $passedVariables);
             $this->UpdateFormField('MotionDetectorProgressInfo', 'visible', true);
             $this->UpdateFormField('MotionDetectorProgressInfo', 'caption', $passedVariables . '/' . $maximumVariables);
             IPS_Sleep(25);
-            $objectIdents = str_replace(' ', '', $ObjectIdents);
-            $objectIdents = explode(',', $objectIdents);
-            foreach ($objectIdents as $objectIdent) {
-                $object = @IPS_GetObject($variable);
-                if ($object['ObjectIdent'] == $objectIdent) {
-                    $name = @IPS_GetName($variable);
-                    $address = '';
-                    $parent = @IPS_GetParent($variable);
-                    if ($parent > 1 && @IPS_ObjectExists($parent)) {
-                        $parentObject = @IPS_GetObject($parent);
-                        if ($parentObject['ObjectType'] == 1) { //1 = instance
-                            $name = strstr(@IPS_GetName($parent), ':', true);
-                            if (!$name) {
-                                $name = @IPS_GetName($parent);
+
+            ##### Ident
+
+            //Determine via ident
+            if ($determineIdent && !$determineProfile) {
+                switch ($DeterminationType) {
+                    case 0: //Custom ident
+                        $objectIdents = $DeterminationValue;
+                        break;
+
+                    case 1: //Ident: MOTION
+                        $objectIdents = 'MOTION';
+                        break;
+
+                }
+                if (isset($objectIdents)) {
+                    $objectIdents = str_replace(' ', '', $objectIdents);
+                    $objectIdents = explode(',', $objectIdents);
+                    foreach ($objectIdents as $objectIdent) {
+                        $object = @IPS_GetObject($variable);
+                        if ($object['ObjectIdent'] == $objectIdent) {
+                            $name = @IPS_GetName($variable);
+                            $address = '';
+                            $parent = @IPS_GetParent($variable);
+                            if ($parent > 1 && @IPS_ObjectExists($parent)) {
+                                $parentObject = @IPS_GetObject($parent);
+                                if ($parentObject['ObjectType'] == 1) { //1 = instance
+                                    $name = strstr(@IPS_GetName($parent), ':', true);
+                                    if (!$name) {
+                                        $name = @IPS_GetName($parent);
+                                    }
+                                    $address = @IPS_GetProperty($parent, 'Address');
+                                    if (!$address) {
+                                        $address = '';
+                                    }
+                                }
                             }
-                            $address = @IPS_GetProperty($parent, 'Address');
-                            if (!$address) {
-                                $address = '';
+                            $value = true;
+                            if (IPS_GetVariable($variable)['VariableType'] == 1) {
+                                $value = 1;
                             }
+                            $primaryCondition[0] = [
+                                'id'        => 0,
+                                'parentID'  => 0,
+                                'operation' => 0,
+                                'rules'     => [
+                                    'variable' => [
+                                        '0' => [
+                                            'id'         => 0,
+                                            'variableID' => $variable,
+                                            'comparison' => 0,
+                                            'value'      => $value,
+                                            'type'       => 0
+                                        ]
+                                    ],
+                                    'date'         => [],
+                                    'time'         => [],
+                                    'dayOfTheWeek' => []
+                                ]
+                            ];
+                            $determinedVariables[] = [
+                                'Use'                         => true,
+                                'Designation'                 => $name,
+                                'Comment'                     => $address,
+                                'UseMultipleAlerts'           => false,
+                                'PrimaryCondition'            => json_encode($primaryCondition),
+                                'SecondaryCondition'          => '[]',
+                                'FullProtectionModeActive'    => true,
+                                'HullProtectionModeActive'    => false,
+                                'PartialProtectionModeActive' => false,
+                                'UseAlarmProtocol'            => true,
+                                'UseNotification'             => true,
+                                'UseAlarmSiren'               => true,
+                                'UseAlarmLight'               => false,
+                                'UseAlarmCall'                => false,
+                                'UseAlertingAction'           => false,
+                                'AlertingAction'              => '[]'];
                         }
                     }
-                    $value = true;
-                    if (IPS_GetVariable($variable)['VariableType'] == 1) {
-                        $value = 1;
-                    }
-                    $primaryCondition[0] = [
-                        'id'        => 0,
-                        'parentID'  => 0,
-                        'operation' => 0,
-                        'rules'     => [
-                            'variable' => [
-                                '0' => [
-                                    'id'         => 0,
-                                    'variableID' => $variable,
-                                    'comparison' => 0,
-                                    'value'      => $value,
-                                    'type'       => 0
+                }
+            }
+
+            ##### Profile
+
+            //Determine via profile
+            if ($determineProfile && !$determineIdent) {
+                switch ($DeterminationType) {
+                    case 2: //Custom ident
+                        $profileNames = $DeterminationValue;
+                        break;
+
+                    case 3:
+                        $profileNames = '~Motion';
+                        break;
+
+                    case 4:
+                        $profileNames = '~Motion.Reversed';
+                        break;
+
+                    case 5:
+                        $profileNames = '~Motion.HM';
+                        break;
+
+                }
+                if (isset($profileNames)) {
+                    $profileNames = str_replace(' ', '', $profileNames);
+                    $profileNames = explode(',', $profileNames);
+                    foreach ($profileNames as $profileName) {
+                        $variableData = IPS_GetVariable($variable);
+                        if ($variableData['VariableCustomProfile'] == $profileName || $variableData['VariableProfile'] == $profileName) {
+                            $name = @IPS_GetName($variable);
+                            $address = '';
+                            $parent = @IPS_GetParent($variable);
+                            if ($parent > 1 && @IPS_ObjectExists($parent)) {
+                                $parentObject = @IPS_GetObject($parent);
+                                if ($parentObject['ObjectType'] == 1) { //1 = instance
+                                    $name = strstr(@IPS_GetName($parent), ':', true);
+                                    if (!$name) {
+                                        $name = @IPS_GetName($parent);
+                                    }
+                                    $address = @IPS_GetProperty($parent, 'Address');
+                                    if (!$address) {
+                                        $address = '';
+                                    }
+                                }
+                            }
+                            $value = true;
+                            if (IPS_GetVariable($variable)['VariableType'] == 1) {
+                                $value = 1;
+                            }
+                            $primaryCondition[0] = [
+                                'id'        => 0,
+                                'parentID'  => 0,
+                                'operation' => 0,
+                                'rules'     => [
+                                    'variable' => [
+                                        '0' => [
+                                            'id'         => 0,
+                                            'variableID' => $variable,
+                                            'comparison' => 0,
+                                            'value'      => $value,
+                                            'type'       => 0
+                                        ]
+                                    ],
+                                    'date'         => [],
+                                    'time'         => [],
+                                    'dayOfTheWeek' => []
                                 ]
-                            ],
-                            'date'         => [],
-                            'time'         => [],
-                            'dayOfTheWeek' => []
-                        ]
-                    ];
-                    $determinedVariables[] = [
-                        'Use'                              => true,
-                        'Designation'                      => $name,
-                        'Comment'                          => $address,
-                        'UseMultipleAlerts'                => false,
-                        'PrimaryCondition'                 => json_encode($primaryCondition),
-                        'SecondaryCondition'               => '[]',
-                        'FullProtectionModeActive'         => true,
-                        'HullProtectionModeActive'         => false,
-                        'PartialProtectionModeActive'      => false,
-                        'UseAlarmProtocol'                 => true,
-                        'UseNotification'                  => true,
-                        'UseAlarmSiren'                    => true,
-                        'UseAlarmLight'                    => false,
-                        'UseAlarmCall'                     => false,
-                        'UseAlertingAction'                => false,
-                        'AlertingAction'                   => '[]'];
+                            ];
+                            $determinedVariables[] = [
+                                'Use'                         => true,
+                                'Designation'                 => $name,
+                                'Comment'                     => $address,
+                                'UseMultipleAlerts'           => false,
+                                'PrimaryCondition'            => json_encode($primaryCondition),
+                                'SecondaryCondition'          => '[]',
+                                'FullProtectionModeActive'    => true,
+                                'HullProtectionModeActive'    => false,
+                                'PartialProtectionModeActive' => false,
+                                'UseAlarmProtocol'            => true,
+                                'UseNotification'             => true,
+                                'UseAlarmSiren'               => true,
+                                'UseAlarmLight'               => false,
+                                'UseAlarmCall'                => false,
+                                'UseAlertingAction'           => false,
+                                'AlertingAction'              => '[]'];
+                        }
+                    }
                 }
             }
         }
+
         //Get already listed variables
         $listedVariables = json_decode($this->ReadPropertyString('MotionDetectors'), true);
         foreach ($determinedVariables as $determinedVariable) {
@@ -154,17 +291,97 @@ trait AZ_MotionDetectors
                 }
             }
         }
+        if (empty($determinedVariables)) {
+            $this->UpdateFormField('MotionDetectorProgress', 'visible', false);
+            $this->UpdateFormField('MotionDetectorProgressInfo', 'visible', false);
+            $infoText = 'Es wurden keinen Variablen gefunden!';
+            $this->UpdateFormField('InfoMessage', 'visible', true);
+            $this->UpdateFormField('InfoMessageLabel', 'caption', $infoText);
+            return;
+        }
         //Sort variables by name
         array_multisort(array_column($listedVariables, 'Designation'), SORT_ASC, $listedVariables);
         @IPS_SetProperty($this->InstanceID, 'MotionDetectors', json_encode(array_values($listedVariables)));
         if (@IPS_HasChanges($this->InstanceID)) {
             @IPS_ApplyChanges($this->InstanceID);
         }
-        if (empty($determinedVariables)) {
-            $infoText = 'Es wurden keinen Variablen gefunden!';
-            $this->UpdateFormField('InfoMessage', 'visible', true);
-            $this->UpdateFormField('InfoMessageLabel', 'caption', $infoText);
+    }
+
+    public function CheckMotionDetectorDeterminationValue(int $MotionDetectorDeterminationType): void
+    {
+        $visible = false;
+        if ($MotionDetectorDeterminationType == 0) {
+            $this->UpdateFormfield('MotionDetectorDeterminationValue', 'caption', 'Identifikator');
+            $visible = true;
         }
+        if ($MotionDetectorDeterminationType == 2) {
+            $this->UpdateFormfield('MotionDetectorDeterminationValue', 'caption', 'Profilname');
+            $visible = true;
+        }
+        $this->UpdateFormfield('MotionDetectorDeterminationValue', 'visible', $visible);
+    }
+
+    public function AssignMotionDetectorVariableProfile(): void
+    {
+        //Only assign a standard profile, a reversed profile must be assigned manually by the user!
+        $listedVariables = json_decode($this->ReadPropertyString('MotionDetectors'), true);
+        $maximumVariables = count($listedVariables);
+        $this->UpdateFormField('AssignMotionDetectorVariableProfileProgress', 'minimum', 0);
+        $this->UpdateFormField('AssignMotionDetectorVariableProfileProgress', 'maximum', $maximumVariables);
+        $passedVariables = 0;
+        foreach ($listedVariables as $variable) {
+            $passedVariables++;
+            $this->UpdateFormField('AssignMotionDetectorVariableProfileProgress', 'visible', true);
+            $this->UpdateFormField('AssignMotionDetectorVariableProfileProgress', 'current', $passedVariables);
+            $this->UpdateFormField('AssignMotionDetectorVariableProfileProgressInfo', 'visible', true);
+            $this->UpdateFormField('AssignMotionDetectorVariableProfileProgressInfo', 'caption', $passedVariables . '/' . $maximumVariables);
+            IPS_Sleep(250);
+            $id = 0;
+            //Primary condition
+            if ($variable['PrimaryCondition'] != '') {
+                $primaryCondition = json_decode($variable['PrimaryCondition'], true);
+                if (array_key_exists(0, $primaryCondition)) {
+                    if (array_key_exists(0, $primaryCondition[0]['rules']['variable'])) {
+                        $id = $primaryCondition[0]['rules']['variable'][0]['variableID'];
+                    }
+                }
+            }
+            if ($id > 1 && @IPS_ObjectExists($id)) {
+                $object = IPS_GetObject($id)['ObjectType'];
+                //0: Category, 1: Instance, 2: Variable, 3: Script, 4: Event, 5: Media, 6: Link)
+                if ($object == 2) {
+                    $variable = IPS_GetVariable($id)['VariableType'];
+                    switch ($variable) {
+                        //0: Boolean, 1: Integer, 2: Float, 3: String
+                        case 0:
+                            $profileName = 'MotionDetector.Bool';
+                            break;
+
+                        case 1:
+                            $profileName = 'MotionDetector.Integer';
+                            break;
+
+                        default:
+                            $profileName = '';
+                    }
+                    if (!empty($profileName)) {
+                        //Assign profile
+                        IPS_SetVariableCustomProfile($id, $profileName);
+                        //Deactivate standard action
+                        IPS_SetVariableCustomAction($id, 1);
+                    }
+                }
+            }
+        }
+        if ($maximumVariables == 0) {
+            $infoText = 'Es sind keine Variablen vorhanden!';
+        } else {
+            $this->UpdateFormField('AssignMotionDetectorVariableProfileProgress', 'visible', false);
+            $this->UpdateFormField('AssignMotionDetectorVariableProfileProgressInfo', 'visible', false);
+            $infoText = 'Variablenprofil wurde erfolgreich zugewiesen!';
+        }
+        $this->UpdateFormField('InfoMessage', 'visible', true);
+        $this->UpdateFormField('InfoMessageLabel', 'caption', $infoText);
     }
 
     /**
@@ -287,6 +504,41 @@ trait AZ_MotionDetectors
             }
         }
         return $result;
+    }
+
+    private function CreateMotionDetectorVariableProfiles(): void
+    {
+        //Bool variable
+        $profile = 'MotionDetector.Bool';
+        if (!IPS_VariableProfileExists($profile)) {
+            IPS_CreateVariableProfile($profile, 0);
+        }
+        IPS_SetVariableProfileAssociation($profile, 0, 'Untätig', 'Information', 0x00FF00);
+        IPS_SetVariableProfileAssociation($profile, 1, 'Bewegung erkannt', 'Motion', 0xFF0000);
+
+        //Bool variable reversed
+        $profile = 'MotionDetector.Bool.Reversed';
+        if (!IPS_VariableProfileExists($profile)) {
+            IPS_CreateVariableProfile($profile, 0);
+        }
+        IPS_SetVariableProfileAssociation($profile, 0, 'Bewegung erkannt', 'Motion', 0xFF0000);
+        IPS_SetVariableProfileAssociation($profile, 1, 'Untätig', 'Information', 0x00FF00);
+
+        //Integer variable
+        $profile = 'MotionDetector.Integer';
+        if (!IPS_VariableProfileExists($profile)) {
+            IPS_CreateVariableProfile($profile, 1);
+        }
+        IPS_SetVariableProfileAssociation($profile, 0, 'Untätig', 'Information', 0x00FF00);
+        IPS_SetVariableProfileAssociation($profile, 1, 'Bewegung erkannt', 'Motion', 0xFF0000);
+
+        //Integer variable reversed
+        $profile = 'MotionDetector.Integer.Reversed';
+        if (!IPS_VariableProfileExists($profile)) {
+            IPS_CreateVariableProfile($profile, 1);
+        }
+        IPS_SetVariableProfileAssociation($profile, 0, 'Bewegung erkannt', 'Motion', 0xFF0000);
+        IPS_SetVariableProfileAssociation($profile, 1, 'Untätig', 'Information', 0x00FF00);
     }
 
     #################### Private

@@ -7829,8 +7829,53 @@ trait AZ_Config
 
         $form['actions'][] =
             [
+                'type'    => 'Label',
+                'caption' => 'Tür- und Fenstersensoren'
+            ];
+
+        $form['actions'][] =
+            [
                 'type'  => 'RowLayout',
                 'items' => [
+                    [
+                        'type'    => 'Select',
+                        'name'    => 'DoorWindowDeterminationType',
+                        'caption' => 'Ident / Profil',
+                        'options' => [
+                            [
+                                'caption' => 'Benutzerdefinierter Ident',
+                                'value'   => 0
+                            ],
+                            [
+                                'caption' => 'Ident: STATE',
+                                'value'   => 1
+                            ],
+                            [
+                                'caption' => 'Benutzerdefiniertes Profil',
+                                'value'   => 2
+                            ],
+                            [
+                                'caption' => 'Profil: ~Window',
+                                'value'   => 3
+                            ],
+                            [
+                                'caption' => 'Profil: ~Window.Reversed',
+                                'value'   => 4
+                            ],
+                            [
+                                'caption' => 'Profil: ~Window.HM',
+                                'value'   => 5
+                            ]
+                        ],
+                        'value'    => 0,
+                        'onChange' => self::MODULE_PREFIX . '_CheckDoorWindowDeterminationValue($id, $DoorWindowDeterminationType);'
+                    ],
+                    [
+                        'type'    => 'ValidationTextBox',
+                        'name'    => 'DoorWindowDeterminationValue',
+                        'caption' => 'Identifikator',
+                        'visible' => true
+                    ],
                     [
                         'type'    => 'PopupButton',
                         'caption' => 'Tür- und Fenstersensoren ermitteln',
@@ -7840,7 +7885,7 @@ trait AZ_Config
                                 [
                                     'type'    => 'Button',
                                     'caption' => 'Ermitteln',
-                                    'onClick' => self::MODULE_PREFIX . '_DetermineDoorWindowVariables($id, $SelectDoorWindowIdents, $DoorWindowObjectIdents);'
+                                    'onClick' => self::MODULE_PREFIX . '_DetermineDoorWindowVariables($id, $DoorWindowDeterminationType, $DoorWindowDeterminationValue);'
                                 ],
                                 [
                                     'type'    => 'ProgressBar',
@@ -7860,31 +7905,33 @@ trait AZ_Config
                         ]
                     ],
                     [
-                        'type'    => 'Label',
-                        'caption' => ' ',
-                        'width'   => '20px'
-                    ],
-                    [
-                        'type'    => 'Select',
-                        'name'    => 'SelectDoorWindowIdents',
-                        'options' => [
-                            [
-                                'caption' => 'Benutzerdefiniert',
-                                'value'   => ''
-                            ],
-                            [
-                                'caption' => 'STATE',
-                                'value'   => 'STATE'
+                        'type'    => 'PopupButton',
+                        'caption' => 'Variablenprofil zuweisen',
+                        'popup'   => [
+                            'caption' => 'Variablenprofil wirklich automatisch zuweisen?',
+                            'items'   => [
+                                [
+                                    'type'    => 'Button',
+                                    'caption' => 'Zuweisen',
+                                    'onClick' => self::MODULE_PREFIX . '_AssignDoorWindowVariableProfile($id);'
+                                ],
+                                [
+                                    'type'    => 'ProgressBar',
+                                    'name'    => 'AssignDoorWindowVariableProfileProgress',
+                                    'caption' => 'Fortschritt',
+                                    'minimum' => 0,
+                                    'maximum' => 100,
+                                    'visible' => false
+                                ],
+                                [
+                                    'type'    => 'Label',
+                                    'name'    => 'AssignDoorWindowVariableProfileProgressInfo',
+                                    'caption' => '',
+                                    'visible' => false
+                                ]
                             ]
-                        ],
-                        'value' => 'STATE'
-
+                        ]
                     ],
-                    [
-                        'type'    => 'ValidationTextBox',
-                        'name'    => 'DoorWindowObjectIdents',
-                        'caption' => 'Identifikator'
-                    ]
                 ]
             ];
 
@@ -7892,6 +7939,14 @@ trait AZ_Config
             [
                 'type'  => 'RowLayout',
                 'items' => [
+                    [
+                        'type'    => 'NumberSpinner',
+                        'name'    => 'VerificationDelay',
+                        'caption' => 'Erneute Überprüfung nach',
+                        'suffix'  => 'Sekunden',
+                        'minimum' => 0,
+                        'maximum' => 10
+                    ],
                     [
                         'type'    => 'PopupButton',
                         'caption' => 'Erneute Überprüfung festlegen',
@@ -7919,26 +7974,65 @@ trait AZ_Config
                                 ],
                             ]
                         ]
-                    ],
-                    [
-                        'type'    => 'Label',
-                        'caption' => ' ', @'width'   => '55px'
-                    ],
-                    [
-                        'type'    => 'NumberSpinner',
-                        'name'    => 'VerificationDelay',
-                        'caption' => 'Erneute Überprüfung nach',
-                        'suffix'  => 'Sekunden',
-                        'minimum' => 0,
-                        'maximum' => 10
                     ]
                 ]
             ];
 
         $form['actions'][] =
             [
+                'type'    => 'Label',
+                'caption' => ' '
+            ];
+
+        $form['actions'][] =
+            [
+                'type'    => 'Label',
+                'caption' => 'Bewegungsmelder'
+            ];
+
+        $form['actions'][] =
+            [
                 'type'  => 'RowLayout',
                 'items' => [
+                    [
+                        'type'    => 'Select',
+                        'name'    => 'MotionDetectorDeterminationType',
+                        'caption' => 'Ident / Profil',
+                        'options' => [
+                            [
+                                'caption' => 'Benutzerdefinierter Ident',
+                                'value'   => 0
+                            ],
+                            [
+                                'caption' => 'Ident: MOTION',
+                                'value'   => 1
+                            ],
+                            [
+                                'caption' => 'Benutzerdefiniertes Profil',
+                                'value'   => 2
+                            ],
+                            [
+                                'caption' => 'Profil: ~Motion',
+                                'value'   => 3
+                            ],
+                            [
+                                'caption' => 'Profil: ~Motion.Reversed',
+                                'value'   => 4
+                            ],
+                            [
+                                'caption' => 'Profil: ~Motion.HM',
+                                'value'   => 5
+                            ],
+                        ],
+                        'value'    => 0,
+                        'onChange' => self::MODULE_PREFIX . '_CheckMotionDetectorDeterminationValue($id, $MotionDetectorDeterminationType);'
+                    ],
+                    [
+                        'type'    => 'ValidationTextBox',
+                        'name'    => 'MotionDetectorDeterminationValue',
+                        'caption' => 'Identifikator',
+                        'visible' => true
+                    ],
                     [
                         'type'    => 'PopupButton',
                         'caption' => 'Bewegungsmelder ermitteln',
@@ -7948,7 +8042,7 @@ trait AZ_Config
                                 [
                                     'type'    => 'Button',
                                     'caption' => 'Ermitteln',
-                                    'onClick' => self::MODULE_PREFIX . '_DetermineMotionDetectorVariables($id, $SelectMotionDetectorIdents, $MotionDetectorsObjectIdents);'
+                                    'onClick' => self::MODULE_PREFIX . '_DetermineMotionDetectorVariables($id, $MotionDetectorDeterminationType, $MotionDetectorDeterminationValue);'
                                 ],
                                 [
                                     'type'    => 'ProgressBar',
@@ -7967,32 +8061,35 @@ trait AZ_Config
                             ]
                         ]
                     ],
-                    [
-                        'type'    => 'Label',
-                        'caption' => ' ',
-                        'width'   => '80px'
-                    ],
-                    [
-                        'type'    => 'Select',
-                        'name'    => 'SelectMotionDetectorIdents',
-                        'options' => [
-                            [
-                                'caption' => 'Benutzerdefiniert',
-                                'value'   => ''
-                            ],
-                            [
-                                'caption' => 'MOTION',
-                                'value'   => 'MOTION'
-                            ]
-                        ],
-                        'value' => 'MOTION'
 
-                    ],
                     [
-                        'type'    => 'ValidationTextBox',
-                        'name'    => 'MotionDetectorsObjectIdents',
-                        'caption' => 'Identifikator'
-                    ]
+                        'type'    => 'PopupButton',
+                        'caption' => 'Variablenprofil zuweisen',
+                        'popup'   => [
+                            'caption' => 'Variablenprofil wirklich automatisch zuweisen?',
+                            'items'   => [
+                                [
+                                    'type'    => 'Button',
+                                    'caption' => 'Zuweisen',
+                                    'onClick' => self::MODULE_PREFIX . '_AssignMotionDetectorVariableProfile($id);'
+                                ],
+                                [
+                                    'type'    => 'ProgressBar',
+                                    'name'    => 'AssignMotionDetectorVariableProfileProgress',
+                                    'caption' => 'Fortschritt',
+                                    'minimum' => 0,
+                                    'maximum' => 100,
+                                    'visible' => false
+                                ],
+                                [
+                                    'type'    => 'Label',
+                                    'name'    => 'AssignMotionDetectorVariableProfileProgressInfo',
+                                    'caption' => '',
+                                    'visible' => false
+                                ]
+                            ]
+                        ]
+                    ],
                 ]
             ];
 
@@ -8211,22 +8308,22 @@ trait AZ_Config
 
         //Dummy info message
         $form['actions'][] =
-        [
-            'type'    => 'PopupAlert',
-            'name'    => 'InfoMessage',
-            'visible' => false,
-            'popup'   => [
-                'closeCaption' => 'OK',
-                'items'        => [
-                    [
-                        'type'    => 'Label',
-                        'name'    => 'InfoMessageLabel',
-                        'caption' => '',
-                        'visible' => true
+            [
+                'type'    => 'PopupAlert',
+                'name'    => 'InfoMessage',
+                'visible' => false,
+                'popup'   => [
+                    'closeCaption' => 'OK',
+                    'items'        => [
+                        [
+                            'type'    => 'Label',
+                            'name'    => 'InfoMessageLabel',
+                            'caption' => '',
+                            'visible' => true
+                        ]
                     ]
                 ]
-            ]
-        ];
+            ];
 
         ########## Status
 
