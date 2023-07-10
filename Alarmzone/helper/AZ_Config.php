@@ -7843,38 +7843,48 @@ trait AZ_Config
                         'caption' => 'Ident / Profil',
                         'options' => [
                             [
-                                'caption' => 'Benutzerdefinierter Ident',
+                                'caption' => 'Profil auswählen',
                                 'value'   => 0
                             ],
                             [
-                                'caption' => 'Ident: STATE',
+                                'caption' => 'Profil: ~Window',
                                 'value'   => 1
                             ],
                             [
-                                'caption' => 'Benutzerdefiniertes Profil',
+                                'caption' => 'Profil: ~Window.Reversed',
                                 'value'   => 2
                             ],
                             [
-                                'caption' => 'Profil: ~Window',
+                                'caption' => 'Profil: ~Window.HM',
                                 'value'   => 3
                             ],
                             [
-                                'caption' => 'Profil: ~Window.Reversed',
+                                'caption' => 'Profil: Benutzerdefiniert',
                                 'value'   => 4
                             ],
                             [
-                                'caption' => 'Profil: ~Window.HM',
+                                'caption' => 'Ident: STATE',
                                 'value'   => 5
+                            ],
+                            [
+                                'caption' => 'Ident: Benutzerdefiniert',
+                                'value'   => 6
                             ]
                         ],
                         'value'    => 0,
                         'onChange' => self::MODULE_PREFIX . '_CheckDoorWindowDeterminationValue($id, $DoorWindowDeterminationType);'
                     ],
                     [
+                        'type'    => 'SelectProfile',
+                        'name'    => 'DoorWindowSensorDeterminationProfileSelection',
+                        'caption' => 'Profil',
+                        'visible' => true
+                    ],
+                    [
                         'type'    => 'ValidationTextBox',
                         'name'    => 'DoorWindowDeterminationValue',
                         'caption' => 'Identifikator',
-                        'visible' => true
+                        'visible' => false
                     ],
                     [
                         'type'    => 'PopupButton',
@@ -7885,7 +7895,7 @@ trait AZ_Config
                                 [
                                     'type'    => 'Button',
                                     'caption' => 'Ermitteln',
-                                    'onClick' => self::MODULE_PREFIX . '_DetermineDoorWindowVariables($id, $DoorWindowDeterminationType, $DoorWindowDeterminationValue);'
+                                    'onClick' => self::MODULE_PREFIX . '_DetermineDoorWindowVariables($id, $DoorWindowDeterminationType, $DoorWindowDeterminationValue, $DoorWindowSensorDeterminationProfileSelection);'
                                 ],
                                 [
                                     'type'    => 'ProgressBar',
@@ -8000,38 +8010,48 @@ trait AZ_Config
                         'caption' => 'Ident / Profil',
                         'options' => [
                             [
-                                'caption' => 'Benutzerdefinierter Ident',
+                                'caption' => 'Profil auswählen',
                                 'value'   => 0
                             ],
                             [
-                                'caption' => 'Ident: MOTION',
+                                'caption' => 'Profil: ~Motion',
                                 'value'   => 1
                             ],
                             [
-                                'caption' => 'Benutzerdefiniertes Profil',
+                                'caption' => 'Profil: ~Motion.Reversed',
                                 'value'   => 2
                             ],
                             [
-                                'caption' => 'Profil: ~Motion',
+                                'caption' => 'Profil: ~Motion.HM',
                                 'value'   => 3
                             ],
                             [
-                                'caption' => 'Profil: ~Motion.Reversed',
+                                'caption' => 'Profil: Benutzerdefiniert',
                                 'value'   => 4
                             ],
                             [
-                                'caption' => 'Profil: ~Motion.HM',
+                                'caption' => 'Ident: MOTION',
                                 'value'   => 5
+                            ],
+                            [
+                                'caption' => 'Ident: Benutzerdefiniert',
+                                'value'   => 6
                             ],
                         ],
                         'value'    => 0,
                         'onChange' => self::MODULE_PREFIX . '_CheckMotionDetectorDeterminationValue($id, $MotionDetectorDeterminationType);'
                     ],
                     [
+                        'type'    => 'SelectProfile',
+                        'name'    => 'MotionDetectorDeterminationProfileSelection',
+                        'caption' => 'Profil',
+                        'visible' => true
+                    ],
+                    [
                         'type'    => 'ValidationTextBox',
                         'name'    => 'MotionDetectorDeterminationValue',
                         'caption' => 'Identifikator',
-                        'visible' => true
+                        'visible' => false
                     ],
                     [
                         'type'    => 'PopupButton',
@@ -8042,7 +8062,7 @@ trait AZ_Config
                                 [
                                     'type'    => 'Button',
                                     'caption' => 'Ermitteln',
-                                    'onClick' => self::MODULE_PREFIX . '_DetermineMotionDetectorVariables($id, $MotionDetectorDeterminationType, $MotionDetectorDeterminationValue);'
+                                    'onClick' => self::MODULE_PREFIX . '_DetermineMotionDetectorVariables($id, $MotionDetectorDeterminationType, $MotionDetectorDeterminationValue, $MotionDetectorDeterminationProfileSelection);'
                                 ],
                                 [
                                     'type'    => 'ProgressBar',

@@ -8,6 +8,7 @@
  * @license       https://creativecommons.org/licenses/by-nc-sa/4.0/ CC BY-NC-SA 4.0
  */
 
+/** @noinspection PhpUnhandledExceptionInspection */
 /** @noinspection PhpUndefinedFunctionInspection */
 /** @noinspection DuplicatedCode */
 
@@ -20,10 +21,11 @@ trait AZ_DoorWindowSensors
      *
      * @param int $DeterminationType
      * @param string $DeterminationValue
+     * @param string $ProfileSelection
      * @return void
      * @throws Exception
      */
-    public function DetermineDoorWindowVariables(int $DeterminationType, string $DeterminationValue): void
+    public function DetermineDoorWindowVariables(int $DeterminationType, string $DeterminationValue, string $ProfileSelection = ''): void
     {
         $this->SendDebug(__FUNCTION__, 'wird ausgeführt', 0);
         $this->SendDebug(__FUNCTION__, 'Auswahl: ' . $DeterminationType, 0);
@@ -41,22 +43,14 @@ trait AZ_DoorWindowSensors
         $passedVariables = 0;
         foreach (@IPS_GetVariableList() as $variable) {
             switch ($DeterminationType) {
-                case 0: //Custom Ident
-                    if ($DeterminationValue == '') {
-                        $infoText = 'Abbruch, es wurde kein Identifikator angegeben!';
-                        $this->UpdateFormField('InfoMessage', 'visible', true);
-                        $this->UpdateFormField('InfoMessageLabel', 'caption', $infoText);
-                        return;
-                    } else {
-                        $determineIdent = true;
-                    }
+                case 0: //Profile: select profile
+                case 1: //Profile: ~Window
+                case 2: //Profile: ~Window.Reversed
+                case 3: //Profile: ~Window.HM
+                    $determineProfile = true;
                     break;
 
-                case 1: //Ident: STATE
-                    $determineIdent = true;
-                    break;
-
-                case 2: //Custom Profile
+                case 4: //Custom Profile
                     if ($DeterminationValue == '') {
                         $infoText = 'Abbruch, es wurde kein Profilname angegeben!';
                         $this->UpdateFormField('InfoMessage', 'visible', true);
@@ -67,11 +61,21 @@ trait AZ_DoorWindowSensors
                     }
                     break;
 
-                case 3: //Profile: ~Window
-                case 4: //Profile: ~Window.Reversed
-                case 5: //Profile: ~Window.HM
-                    $determineProfile = true;
+                case 5: //Ident: STATE
+                    $determineIdent = true;
                     break;
+
+                case 6: //Custom Ident
+                    if ($DeterminationValue == '') {
+                        $infoText = 'Abbruch, es wurde kein Identifikator angegeben!';
+                        $this->UpdateFormField('InfoMessage', 'visible', true);
+                        $this->UpdateFormField('InfoMessageLabel', 'caption', $infoText);
+                        return;
+                    } else {
+                        $determineIdent = true;
+                    }
+                    break;
+
             }
 
             $passedVariables++;
@@ -81,26 +85,38 @@ trait AZ_DoorWindowSensors
             $this->UpdateFormField('DoorWindowSensorProgressInfo', 'caption', $passedVariables . '/' . $maximumVariables);
             IPS_Sleep(25);
 
-            ##### Ident
+            ##### Profile
 
-            //Determine via ident
-            if ($determineIdent && !$determineProfile) {
+            //Determine via profile
+            if ($determineProfile && !$determineIdent) {
                 switch ($DeterminationType) {
-                    case 0: //Custom ident
-                        $objectIdents = $DeterminationValue;
+                    case 0: //Select profile
+                        $profileNames = $ProfileSelection;
                         break;
 
-                    case 1: //Ident: STATE
-                        $objectIdents = 'STATE';
+                    case 1:
+                        $profileNames = '~Window';
+                        break;
+
+                    case 2:
+                        $profileNames = '~Window.Reversed';
+                        break;
+
+                    case 3:
+                        $profileNames = '~Window.HM';
+                        break;
+
+                    case 4: //Custom profile
+                        $profileNames = $DeterminationValue;
                         break;
 
                 }
-                if (isset($objectIdents)) {
-                    $objectIdents = str_replace(' ', '', $objectIdents);
-                    $objectIdents = explode(',', $objectIdents);
-                    foreach ($objectIdents as $objectIdent) {
-                        $object = @IPS_GetObject($variable);
-                        if ($object['ObjectIdent'] == $objectIdent) {
+                if (isset($profileNames)) {
+                    $profileNames = str_replace(' ', '', $profileNames);
+                    $profileNames = explode(',', $profileNames);
+                    foreach ($profileNames as $profileName) {
+                        $variableData = IPS_GetVariable($variable);
+                        if ($variableData['VariableCustomProfile'] == $profileName || $variableData['VariableProfile'] == $profileName) {
                             $name = @IPS_GetName($variable);
                             $address = '';
                             $parent = @IPS_GetParent($variable);
@@ -166,34 +182,26 @@ trait AZ_DoorWindowSensors
                 }
             }
 
-            ##### Profile
+            ##### Ident
 
-            //Determine via profile
-            if ($determineProfile && !$determineIdent) {
+            //Determine via ident
+            if ($determineIdent && !$determineProfile) {
                 switch ($DeterminationType) {
-                    case 2: //Custom ident
-                        $profileNames = $DeterminationValue;
-                        break;
-
-                    case 3:
-                        $profileNames = '~Window';
-                        break;
-
-                    case 4:
-                        $profileNames = '~Window.Reversed';
-                        break;
-
                     case 5:
-                        $profileNames = '~Window.HM';
+                        $objectIdents = 'STATE';
+                        break;
+
+                    case 6: //Custom ident
+                        $objectIdents = $DeterminationValue;
                         break;
 
                 }
-                if (isset($profileNames)) {
-                    $profileNames = str_replace(' ', '', $profileNames);
-                    $profileNames = explode(',', $profileNames);
-                    foreach ($profileNames as $profileName) {
-                        $variableData = IPS_GetVariable($variable);
-                        if ($variableData['VariableCustomProfile'] == $profileName || $variableData['VariableProfile'] == $profileName) {
+                if (isset($objectIdents)) {
+                    $objectIdents = str_replace(' ', '', $objectIdents);
+                    $objectIdents = explode(',', $objectIdents);
+                    foreach ($objectIdents as $objectIdent) {
+                        $object = @IPS_GetObject($variable);
+                        if ($object['ObjectIdent'] == $objectIdent) {
                             $name = @IPS_GetName($variable);
                             $address = '';
                             $parent = @IPS_GetParent($variable);
@@ -317,16 +325,27 @@ trait AZ_DoorWindowSensors
 
     public function CheckDoorWindowDeterminationValue(int $DoorWindowDeterminationType): void
     {
-        $visible = false;
+        $profileSelection = false;
+        $determinationValue = false;
+
+        //Profile selection
         if ($DoorWindowDeterminationType == 0) {
-            $this->UpdateFormfield('DoorWindowDeterminationValue', 'caption', 'Identifikator');
-            $visible = true;
+            $profileSelection = true;
         }
-        if ($DoorWindowDeterminationType == 2) {
+
+        //Custom profile
+        if ($DoorWindowDeterminationType == 4) {
             $this->UpdateFormfield('DoorWindowDeterminationValue', 'caption', 'Profilname');
-            $visible = true;
+            $determinationValue = true;
         }
-        $this->UpdateFormfield('DoorWindowDeterminationValue', 'visible', $visible);
+        //Custom ident
+        if ($DoorWindowDeterminationType == 6) {
+            $this->UpdateFormfield('DoorWindowDeterminationValue', 'caption', 'Identifikator');
+            $determinationValue = true;
+        }
+
+        $this->UpdateFormfield('DoorWindowSensorDeterminationProfileSelection', 'visible', $profileSelection);
+        $this->UpdateFormfield('DoorWindowDeterminationValue', 'visible', $determinationValue);
     }
 
     public function AssignDoorWindowVariableProfile(): void
