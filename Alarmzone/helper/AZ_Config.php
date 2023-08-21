@@ -468,12 +468,15 @@ trait AZ_Config
             $rowColor = '#FFC0C0'; //red
             if ($conditions) {
                 $blacklisted = false;
-                foreach (json_decode($this->GetBuffer('Blacklist'), true) as $element) {
-                    $blackListedSensor = json_decode($element, true);
-                    if ($blackListedSensor['sensorID'] == $sensorID) {
-                        $blacklisted = true;
-                        $stateName = 'gesperrt';
-                        $rowColor = '#DFDFDF'; //grey
+                $blacklist = json_decode($this->GetBuffer('Blacklist'), true);
+                if (is_array($blacklist)) {
+                    foreach ($blacklist as $element) {
+                        $blackListedSensor = json_decode($element, true);
+                        if ($blackListedSensor['sensorID'] == $sensorID) {
+                            $blacklisted = true;
+                            $stateName = 'gesperrt';
+                            $rowColor = '#DFDFDF'; //grey
+                        }
                     }
                 }
                 if (!$blacklisted) {
@@ -777,9 +780,9 @@ trait AZ_Config
                                 'visible' => true,
                                 'edit'    => [
                                     'type'    => 'NumberSpinner',
-                                    'suffix'  => ' Sekunden',
+                                    'suffix'  => ' Millisekunden',
                                     'minimum' => 0,
-                                    'maximum' => 10
+                                    'maximum' => 10000
                                 ]
                             ],
                             [
@@ -7953,9 +7956,9 @@ trait AZ_Config
                         'type'    => 'NumberSpinner',
                         'name'    => 'VerificationDelay',
                         'caption' => 'Erneute Überprüfung nach',
-                        'suffix'  => 'Sekunden',
+                        'suffix'  => 'Millisekunden',
                         'minimum' => 0,
-                        'maximum' => 10
+                        'maximum' => 10000
                     ],
                     [
                         'type'    => 'PopupButton',
@@ -8132,13 +8135,15 @@ trait AZ_Config
 
         //Blacklist
         $blacklistedVariables = [];
-        foreach (json_decode($this->GetBuffer('Blacklist')) as $element) {
-            $variable = json_decode($element, true);
-            $blacklistedVariables[] = [
-                'SensorID'    => $variable['sensorID'],
-                'Designation' => $variable['sensorDesignation']];
+        $blacklist = json_decode($this->GetBuffer('Blacklist'), true);
+        if (is_array($blacklist)) {
+            foreach ($blacklist as $element) {
+                $variable = json_decode($element, true);
+                $blacklistedVariables[] = [
+                    'SensorID'    => $variable['sensorID'],
+                    'Designation' => $variable['sensorDesignation']];
+            }
         }
-
         //Registered references
         $registeredReferences = [];
         $references = $this->GetReferenceList();

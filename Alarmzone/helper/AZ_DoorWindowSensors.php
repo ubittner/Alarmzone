@@ -602,7 +602,7 @@ trait AZ_DoorWindowSensors
         $sensors = json_decode($this->ReadAttributeString('VerificationSensors'));
         $sensors[] = $SenderID;
         $this->WriteAttributeString('VerificationSensors', json_encode($sensors));
-        IPS_Sleep($Delay * 1000);
+        IPS_Sleep($Delay);
         $variables = json_decode($this->ReadPropertyString('DoorWindowSensors'), true);
         foreach ($variables as $variable) {
             if (array_key_exists('PrimaryCondition', $variable)) {
@@ -704,7 +704,7 @@ trait AZ_DoorWindowSensors
      */
     public function ConfigureVerificationDelay(int $Delay): void
     {
-        if ($Delay > 10) {
+        if ($Delay > 10000) { //Delay must be equal or lower than 10 seconds
             return;
         }
         $listedVariables = json_decode($this->ReadPropertyString('DoorWindowSensors'), true);
