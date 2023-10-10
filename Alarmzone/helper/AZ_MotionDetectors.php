@@ -53,7 +53,7 @@ trait AZ_MotionDetectors
                         $determineProfile = true;
                     }
                     break;
-                    
+
                 case 1: //Profile: ~Motion
                 case 2: //Profile: ~Motion.Reversed
                 case 3: //Profile: ~Motion.HM
