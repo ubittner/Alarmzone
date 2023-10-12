@@ -468,7 +468,7 @@ trait AZ_Config
             $rowColor = '#FFC0C0'; //red
             if ($conditions) {
                 $blacklisted = false;
-                $blacklist = json_decode($this->GetBuffer('Blacklist'), true);
+                $blacklist = json_decode($this->ReadAttributeString('Blacklist'), true);
                 if (is_array($blacklist)) {
                     foreach ($blacklist as $element) {
                         $blackListedSensor = json_decode($element, true);
@@ -8135,7 +8135,7 @@ trait AZ_Config
 
         //Blacklist
         $blacklistedVariables = [];
-        $blacklist = json_decode($this->GetBuffer('Blacklist'), true);
+        $blacklist = json_decode($this->ReadAttributeString('Blacklist'), true);
         if (is_array($blacklist)) {
             foreach ($blacklist as $element) {
                 $variable = json_decode($element, true);

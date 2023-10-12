@@ -18,11 +18,12 @@ trait AZ_Blacklist
      * Resets the blacklist.
      *
      * @return void
+     * @throws Exception
      */
     public function ResetBlacklist(): void
     {
         $this->SendDebug(__FUNCTION__, 'wird ausgeführt', 0);
-        $this->SetBuffer('Blacklist', json_encode([]));
+        $this->WriteAttributeString('Blacklist', '[]');
         $this->SendDebug(__FUNCTION__, 'Die Sperrliste wurde erfolgreich zurückgesetzt!', 0);
         $this->ReloadForm();
     }
@@ -35,13 +36,14 @@ trait AZ_Blacklist
      * @param int $SensorID
      * @param string $SensorDesignation
      * @return void
+     * @throws Exception
      */
     private function AddSensorBlacklist(int $SensorID, string $SensorDesignation): void
     {
         $this->SendDebug(__FUNCTION__, 'wird ausgeführt', 0);
-        $blackList = json_decode($this->GetBuffer('Blacklist'), true);
+        $blackList = json_decode($this->ReadAttributeString('Blacklist'), true);
         $blackList[] = '{"sensorID": ' . $SensorID . ',"sensorDesignation": "' . $SensorDesignation . '"}';
-        $this->SetBuffer('Blacklist', json_encode(array_unique($blackList)));
+        $this->WriteAttributeString('Blacklist', json_encode(array_unique($blackList)));
         $this->SendDebug(__FUNCTION__, 'Der Sensor mit der ID ' . $SensorID . ' wurde zur Sperrliste hinzugefügt.', 0);
     }
 
@@ -52,11 +54,14 @@ trait AZ_Blacklist
      * @return bool
      * false =  not blacklisted,
      * true =   blacklisted
+     *
+     * @throws Exception
      */
     private function CheckSensorBlacklist(int $SensorID): bool
     {
         $this->SendDebug(__FUNCTION__, 'wird ausgeführt', 0);
-        foreach (json_decode($this->GetBuffer('Blacklist')) as $element) {
+        $blacklist = json_decode($this->ReadAttributeString('Blacklist'), true);
+        foreach ($blacklist as $element) {
             $variable = json_decode($element, true);
             if ($variable['sensorID'] == $SensorID) {
                 return true;

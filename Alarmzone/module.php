@@ -306,6 +306,7 @@ class Alarmzone extends IPSModule
 
         ########## Attributes
 
+        $this->RegisterAttributeString('Blacklist', '[]');
         $this->RegisterAttributeString('VerificationSensors', '[]');
 
         ########## Timer
