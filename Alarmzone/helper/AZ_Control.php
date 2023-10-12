@@ -327,6 +327,7 @@ trait AZ_Control
      * Resets the values of the alarm zone.
      *
      * @return void
+     * @throws Exception
      */
     private function ResetValues(): void
     {
