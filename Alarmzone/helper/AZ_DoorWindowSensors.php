@@ -385,7 +385,7 @@ trait AZ_DoorWindowSensors
             }
             if ($id > 1 && @IPS_ObjectExists($id)) {
                 $object = IPS_GetObject($id)['ObjectType'];
-                //0: Category, 1: Instance, 2: Variable, 3: Script, 4: Event, 5: Media, 6: Link)
+                //0: Category, 1: Instance, 2: Variable, 3: Script, 4: Event, 5: Media, 6: Link
                 if ($object == 2) {
                     $variable = IPS_GetVariable($id)['VariableType'];
                     switch ($variable) {
