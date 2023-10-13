@@ -19,7 +19,7 @@ include_once __DIR__ . '/helper/AZST_autoload.php';
 class Alarmzonensteuerung extends IPSModule
 {
     //Helper
-    use AZST_Config;
+    use AZST_ConfigurationForm;
     use AZST_Control;
     use AZST_States;
 

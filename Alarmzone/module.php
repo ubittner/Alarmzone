@@ -21,7 +21,7 @@ class Alarmzone extends IPSModule
     //Helper
     use AZ_AlarmProtocol;
     use AZ_Blacklist;
-    use AZ_Config;
+    use AZ_ConfigurationForm;
     use AZ_Control;
     use AZ_DoorWindowSensors;
     use AZ_MotionDetectors;

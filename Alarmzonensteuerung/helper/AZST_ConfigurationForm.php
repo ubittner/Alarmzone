@@ -2,7 +2,7 @@
 
 /**
  * @project       Alarmzone/Alarmzonensteuerung
- * @file          AZST_Config.php
+ * @file          AZST_ConfigurationForm.php
  * @author        Ulrich Bittner
  * @copyright     2022 Ulrich Bittner
  * @license       https://creativecommons.org/licenses/by-nc-sa/4.0/ CC BY-NC-SA 4.0
@@ -12,7 +12,7 @@
 
 declare(strict_types=1);
 
-trait AZST_Config
+trait AZST_ConfigurationForm
 {
     /**
      * Reloads the configuration form.
@@ -1410,6 +1410,12 @@ trait AZST_Config
             [
                 'type'    => 'Label',
                 'caption' => ' '
+            ];
+
+        $form['actions'][] =
+            [
+                'type'    => 'Label',
+                'caption' => 'Schaltelemente'
             ];
 
         //Test center

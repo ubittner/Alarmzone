@@ -2,7 +2,7 @@
 
 /**
  * @project       Alarmzone/Alarmzone
- * @file          AZ_Config.php
+ * @file          AZ_ConfigurationForm.php
  * @author        Ulrich Bittner
  * @copyright     2022 Ulrich Bittner
  * @license       https://creativecommons.org/licenses/by-nc-sa/4.0/ CC BY-NC-SA 4.0
@@ -12,7 +12,7 @@
 
 declare(strict_types=1);
 
-trait AZ_Config
+trait AZ_ConfigurationForm
 {
     /**
      * Reloads the configuration form.
@@ -8120,6 +8120,12 @@ trait AZ_Config
             [
                 'type'    => 'Label',
                 'caption' => ' '
+            ];
+
+        $form['actions'][] =
+            [
+                'type'    => 'Label',
+                'caption' => 'Schaltelemente'
             ];
 
         $form['actions'][] =
