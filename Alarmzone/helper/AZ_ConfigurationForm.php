@@ -419,8 +419,10 @@ trait AZ_ConfigurationForm
         //Door window sensors
         $doorWindowSensorValues = [];
         $variables = json_decode($this->ReadPropertyString('DoorWindowSensors'), true);
+        $amount = count($variables);
         foreach ($variables as $variable) {
             $sensorID = 0;
+            $variableLocation = '';
             if ($variable['PrimaryCondition'] != '') {
                 $primaryCondition = json_decode($variable['PrimaryCondition'], true);
                 if (array_key_exists(0, $primaryCondition)) {
@@ -433,6 +435,8 @@ trait AZ_ConfigurationForm
             $conditions = true;
             if ($sensorID <= 1 || !@IPS_ObjectExists($sensorID)) {
                 $conditions = false;
+            } else {
+                $variableLocation = IPS_GetLocation($sensorID);
             }
             if ($variable['SecondaryCondition'] != '') {
                 $secondaryConditions = json_decode($variable['SecondaryCondition'], true);
@@ -492,7 +496,7 @@ trait AZ_ConfigurationForm
                     }
                 }
             }
-            $doorWindowSensorValues[] = ['ActualState' => $stateName, 'rowColor' => $rowColor];
+            $doorWindowSensorValues[] = ['ActualState' => $stateName, 'ID' => $sensorID, 'VariableLocation' => $variableLocation, 'rowColor' => $rowColor];
         }
 
         $form['elements'][] =
@@ -506,7 +510,7 @@ trait AZ_ConfigurationForm
                         'type'     => 'List',
                         'name'     => 'DoorWindowSensors',
                         'caption'  => 'Tür- und Fenstersensoren',
-                        'rowCount' => 15,
+                        'rowCount' => $amount,
                         'add'      => true,
                         'delete'   => true,
                         'columns'  => [
@@ -520,7 +524,27 @@ trait AZ_ConfigurationForm
                                 ]
                             ],
                             [
-                                'caption' => 'Bezeichnung',
+                                'name'    => 'ActualState',
+                                'caption' => 'Aktueller Status',
+                                'width'   => '150px',
+                                'add'     => ''
+                            ],
+                            [
+                                'name'    => 'ID',
+                                'caption' => 'ID',
+                                'width'   => '80px',
+                                'add'     => '',
+                                'onClick' => self::MODULE_PREFIX . '_ModifyTriggerListButton($id, "DoorWindowSensorsConfigurationButton", $DoorWindowSensors["PrimaryCondition"]);',
+                            ],
+                            [
+                                'caption' => 'Objektbaum',
+                                'name'    => 'VariableLocation',
+                                'onClick' => self::MODULE_PREFIX . '_ModifyTriggerListButton($id, "DoorWindowSensorsConfigurationButton", $DoorWindowSensors["PrimaryCondition"]);',
+                                'width'   => '350px',
+                                'add'     => ''
+                            ],
+                            [
+                                'caption' => 'Name',
                                 'name'    => 'Designation',
                                 'width'   => '400px',
                                 'add'     => '',
@@ -540,12 +564,7 @@ trait AZ_ConfigurationForm
                                     'type' => 'ValidationTextBox'
                                 ]
                             ],
-                            [
-                                'name'    => 'ActualState',
-                                'caption' => 'Aktueller Status',
-                                'width'   => '150px',
-                                'add'     => ''
-                            ],
+
                             [
                                 'caption' => ' ',
                                 'name'    => 'SpacerPrimaryCondition',
@@ -860,7 +879,10 @@ trait AZ_ConfigurationForm
         //Motion detectors
         $motionDetectorsValues = [];
         $variables = json_decode($this->ReadPropertyString('MotionDetectors'), true);
+        $amount = count($variables);
         foreach ($variables as $variable) {
+            $sensorID = 0;
+            $variableLocation = '';
             $rowColor = '#C0FFC0'; //light green
             if (!$variable['Use']) {
                 $rowColor = '#DFDFDF'; //grey
@@ -870,9 +892,11 @@ trait AZ_ConfigurationForm
                 $primaryCondition = json_decode($variable['PrimaryCondition'], true);
                 if (array_key_exists(0, $primaryCondition)) {
                     if (array_key_exists(0, $primaryCondition[0]['rules']['variable'])) {
-                        $id = $primaryCondition[0]['rules']['variable'][0]['variableID'];
-                        if ($id <= 1 || !@IPS_ObjectExists($id)) {
+                        $sensorID = $primaryCondition[0]['rules']['variable'][0]['variableID'];
+                        if ($sensorID <= 1 || !@IPS_ObjectExists($sensorID)) {
                             $rowColor = '#FFC0C0'; //red
+                        } else {
+                            $variableLocation = IPS_GetLocation($sensorID);
                         }
                     }
                 }
@@ -908,7 +932,7 @@ trait AZ_ConfigurationForm
                     }
                 }
             }
-            $motionDetectorsValues[] = ['rowColor' => $rowColor];
+            $motionDetectorsValues[] = ['ID' => $sensorID, 'VariableLocation' => $variableLocation, 'rowColor' => $rowColor];
         }
 
         $form['elements'][] =
@@ -922,7 +946,7 @@ trait AZ_ConfigurationForm
                         'type'     => 'List',
                         'name'     => 'MotionDetectors',
                         'caption'  => 'Bewegungsmelder',
-                        'rowCount' => 10,
+                        'rowCount' => $amount,
                         'add'      => true,
                         'delete'   => true,
                         'columns'  => [
@@ -936,7 +960,21 @@ trait AZ_ConfigurationForm
                                 ]
                             ],
                             [
-                                'caption' => 'Bezeichnung',
+                                'name'    => 'ID',
+                                'caption' => 'ID',
+                                'width'   => '80px',
+                                'add'     => '',
+                                'onClick' => self::MODULE_PREFIX . '_ModifyTriggerListButton($id, "MotionDetectorsConfigurationButton", $MotionDetectors["PrimaryCondition"]);',
+                            ],
+                            [
+                                'caption' => 'Objektbaum',
+                                'name'    => 'VariableLocation',
+                                'onClick' => self::MODULE_PREFIX . '_ModifyTriggerListButton($id, "MotionDetectorsConfigurationButton", $MotionDetectors["PrimaryCondition"]);',
+                                'width'   => '350px',
+                                'add'     => ''
+                            ],
+                            [
+                                'caption' => 'Name',
                                 'name'    => 'Designation',
                                 'width'   => '400px',
                                 'add'     => '',
@@ -7841,60 +7879,56 @@ trait AZ_ConfigurationForm
                 'type'  => 'RowLayout',
                 'items' => [
                     [
-                        'type'    => 'Select',
-                        'name'    => 'DoorWindowDeterminationType',
-                        'caption' => 'Ident / Profil',
-                        'options' => [
-                            [
-                                'caption' => 'Profil auswählen',
-                                'value'   => 0
-                            ],
-                            [
-                                'caption' => 'Profil: ~Window',
-                                'value'   => 1
-                            ],
-                            [
-                                'caption' => 'Profil: ~Window.Reversed',
-                                'value'   => 2
-                            ],
-                            [
-                                'caption' => 'Profil: ~Window.HM',
-                                'value'   => 3
-                            ],
-                            [
-                                'caption' => 'Profil: Benutzerdefiniert',
-                                'value'   => 4
-                            ],
-                            [
-                                'caption' => 'Ident: STATE',
-                                'value'   => 5
-                            ],
-                            [
-                                'caption' => 'Ident: Benutzerdefiniert',
-                                'value'   => 6
-                            ]
-                        ],
-                        'value'    => 0,
-                        'onChange' => self::MODULE_PREFIX . '_CheckDoorWindowDeterminationValue($id, $DoorWindowDeterminationType);'
-                    ],
-                    [
-                        'type'    => 'SelectProfile',
-                        'name'    => 'DoorWindowSensorDeterminationProfileSelection',
-                        'caption' => 'Profil',
-                        'visible' => true
-                    ],
-                    [
-                        'type'    => 'ValidationTextBox',
-                        'name'    => 'DoorWindowDeterminationValue',
-                        'caption' => 'Identifikator',
-                        'visible' => false
-                    ],
-                    [
                         'type'    => 'PopupButton',
                         'caption' => 'Tür- und Fenstersensoren ermitteln',
                         'popup'   => [
                             'caption' => 'Variablen wirklich automatisch ermitteln und hinzufügen?',
                             'items'   => [
+                                [
+                                    'type'    => 'Select',
+                                    'name'    => 'DoorWindowDeterminationType',
+                                    'caption' => 'Auswahl',
+                                    'options' => [
+                                        [
+                                            'caption' => 'Profil auswählen',
+                                            'value'   => 0
+                                        ],
+                                        [
+                                            'caption' => 'Profil: ~Window',
+                                            'value'   => 1
+                                        ],
+                                        [
+                                            'caption' => 'Profil: ~Window.Reversed',
+                                            'value'   => 2
+                                        ],
+                                        [
+                                            'caption' => 'Profil: ~Window.HM',
+                                            'value'   => 3
+                                        ],
+                                        [
+                                            'caption' => 'Ident: STATE',
+                                            'value'   => 4
+                                        ],
+                                        [
+                                            'caption' => 'Ident: Benutzerdefiniert',
+                                            'value'   => 5
+                                        ]
+                                    ],
+                                    'value'    => 0,
+                                    'onChange' => self::MODULE_PREFIX . '_CheckDoorWindowDeterminationValue($id, $DoorWindowDeterminationType);'
+                                ],
+                                [
+                                    'type'    => 'SelectProfile',
+                                    'name'    => 'DoorWindowSensorDeterminationProfileSelection',
+                                    'caption' => 'Profil',
+                                    'visible' => true
+                                ],
+                                [
+                                    'type'    => 'ValidationTextBox',
+                                    'name'    => 'DoorWindowDeterminationValue',
+                                    'caption' => 'Identifikator',
+                                    'visible' => false
+                                ],
                                 [
                                     'type'    => 'Button',
                                     'caption' => 'Ermitteln',
@@ -7902,7 +7936,7 @@ trait AZ_ConfigurationForm
                                 ],
                                 [
                                     'type'    => 'ProgressBar',
-                                    'name'    => 'DoorWindowSensorProgress',
+                                    'name'    => 'DoorWindowSensorDeterminationProgress',
                                     'caption' => 'Fortschritt',
                                     'minimum' => 0,
                                     'maximum' => 100,
@@ -7910,48 +7944,62 @@ trait AZ_ConfigurationForm
                                 ],
                                 [
                                     'type'    => 'Label',
-                                    'name'    => 'DoorWindowSensorProgressInfo',
+                                    'name'    => 'DoorWindowSensorDeterminationProgressInfo',
                                     'caption' => '',
                                     'visible' => false
-                                ]
-                            ]
-                        ]
-                    ],
-                    [
-                        'type'    => 'PopupButton',
-                        'caption' => 'Variablenprofil zuweisen',
-                        'popup'   => [
-                            'caption' => 'Variablenprofil wirklich automatisch zuweisen?',
-                            'items'   => [
+                                ],
+                                [
+                                    'type'     => 'List',
+                                    'name'     => 'DeterminedDoorWindowVariableList',
+                                    'caption'  => 'Variablen',
+                                    'visible'  => false,
+                                    'rowCount' => 15,
+                                    'delete'   => true,
+                                    'sort'     => [
+                                        'column'    => 'ID',
+                                        'direction' => 'ascending'
+                                    ],
+                                    'columns'  => [
+                                        [
+                                            'caption' => 'Übernehmen',
+                                            'name'    => 'Use',
+                                            'width'   => '100px',
+                                            'add'     => true,
+                                            'edit'    => [
+                                                'type' => 'CheckBox'
+                                            ]
+                                        ],
+                                        [
+                                            'name'    => 'ID',
+                                            'caption' => 'ID',
+                                            'width'   => '80px',
+                                            'add'     => ''
+                                        ],
+                                        [
+                                            'caption' => 'Objektbaum',
+                                            'name'    => 'Location',
+                                            'width'   => '800px',
+                                            'add'     => ''
+                                        ],
+                                    ]
+                                ],
+                                [
+                                    'type'    => 'CheckBox',
+                                    'name'    => 'OverwriteDoorWindowVariableProfiles',
+                                    'caption' => 'Variablenprofile überschreiben',
+                                    'visible' => false,
+                                    'value'   => true
+                                ],
                                 [
                                     'type'    => 'Button',
-                                    'caption' => 'Zuweisen',
-                                    'onClick' => self::MODULE_PREFIX . '_AssignDoorWindowVariableProfile($id);'
-                                ],
-                                [
-                                    'type'    => 'ProgressBar',
-                                    'name'    => 'AssignDoorWindowVariableProfileProgress',
-                                    'caption' => 'Fortschritt',
-                                    'minimum' => 0,
-                                    'maximum' => 100,
-                                    'visible' => false
-                                ],
-                                [
-                                    'type'    => 'Label',
-                                    'name'    => 'AssignDoorWindowVariableProfileProgressInfo',
-                                    'caption' => '',
-                                    'visible' => false
+                                    'name'    => 'ApplyPreDoorWindowTriggerValues',
+                                    'caption' => 'Übernehmen',
+                                    'visible' => false,
+                                    'onClick' => self::MODULE_PREFIX . '_ApplyDeterminedDoorWindowVariables($id, $DeterminedDoorWindowVariableList, OverwriteDoorWindowVariableProfiles);'
                                 ]
                             ]
                         ]
                     ],
-                ]
-            ];
-
-        $form['actions'][] =
-            [
-                'type'  => 'RowLayout',
-                'items' => [
                     [
                         'type'    => 'NumberSpinner',
                         'name'    => 'VerificationDelay',
@@ -7987,6 +8035,34 @@ trait AZ_ConfigurationForm
                                 ],
                             ]
                         ]
+                    ],
+                    [
+                        'type'    => 'PopupButton',
+                        'caption' => 'Variablenprofil zuweisen',
+                        'popup'   => [
+                            'caption' => 'Variablenprofil wirklich automatisch zuweisen?',
+                            'items'   => [
+                                [
+                                    'type'    => 'Button',
+                                    'caption' => 'Zuweisen',
+                                    'onClick' => self::MODULE_PREFIX . '_AssignDoorWindowVariableProfile($id);'
+                                ],
+                                [
+                                    'type'    => 'ProgressBar',
+                                    'name'    => 'AssignDoorWindowVariableProfileProgress',
+                                    'caption' => 'Fortschritt',
+                                    'minimum' => 0,
+                                    'maximum' => 100,
+                                    'visible' => false
+                                ],
+                                [
+                                    'type'    => 'Label',
+                                    'name'    => 'AssignDoorWindowVariableProfileProgressInfo',
+                                    'caption' => '',
+                                    'visible' => false
+                                ]
+                            ]
+                        ]
                     ]
                 ]
             ];
@@ -8008,60 +8084,56 @@ trait AZ_ConfigurationForm
                 'type'  => 'RowLayout',
                 'items' => [
                     [
-                        'type'    => 'Select',
-                        'name'    => 'MotionDetectorDeterminationType',
-                        'caption' => 'Ident / Profil',
-                        'options' => [
-                            [
-                                'caption' => 'Profil auswählen',
-                                'value'   => 0
-                            ],
-                            [
-                                'caption' => 'Profil: ~Motion',
-                                'value'   => 1
-                            ],
-                            [
-                                'caption' => 'Profil: ~Motion.Reversed',
-                                'value'   => 2
-                            ],
-                            [
-                                'caption' => 'Profil: ~Motion.HM',
-                                'value'   => 3
-                            ],
-                            [
-                                'caption' => 'Profil: Benutzerdefiniert',
-                                'value'   => 4
-                            ],
-                            [
-                                'caption' => 'Ident: MOTION',
-                                'value'   => 5
-                            ],
-                            [
-                                'caption' => 'Ident: Benutzerdefiniert',
-                                'value'   => 6
-                            ],
-                        ],
-                        'value'    => 0,
-                        'onChange' => self::MODULE_PREFIX . '_CheckMotionDetectorDeterminationValue($id, $MotionDetectorDeterminationType);'
-                    ],
-                    [
-                        'type'    => 'SelectProfile',
-                        'name'    => 'MotionDetectorDeterminationProfileSelection',
-                        'caption' => 'Profil',
-                        'visible' => true
-                    ],
-                    [
-                        'type'    => 'ValidationTextBox',
-                        'name'    => 'MotionDetectorDeterminationValue',
-                        'caption' => 'Identifikator',
-                        'visible' => false
-                    ],
-                    [
                         'type'    => 'PopupButton',
                         'caption' => 'Bewegungsmelder ermitteln',
                         'popup'   => [
                             'caption' => 'Variablen wirklich automatisch ermitteln und hinzufügen?',
                             'items'   => [
+                                [
+                                    'type'    => 'Select',
+                                    'name'    => 'MotionDetectorDeterminationType',
+                                    'caption' => 'Auswahl',
+                                    'options' => [
+                                        [
+                                            'caption' => 'Profil auswählen',
+                                            'value'   => 0
+                                        ],
+                                        [
+                                            'caption' => 'Profil: ~Motion',
+                                            'value'   => 1
+                                        ],
+                                        [
+                                            'caption' => 'Profil: ~Motion.Reversed',
+                                            'value'   => 2
+                                        ],
+                                        [
+                                            'caption' => 'Profil: ~Motion.HM',
+                                            'value'   => 3
+                                        ],
+                                        [
+                                            'caption' => 'Ident: MOTION',
+                                            'value'   => 4
+                                        ],
+                                        [
+                                            'caption' => 'Ident: Benutzerdefiniert',
+                                            'value'   => 5
+                                        ],
+                                    ],
+                                    'value'    => 0,
+                                    'onChange' => self::MODULE_PREFIX . '_CheckMotionDetectorDeterminationValue($id, $MotionDetectorDeterminationType);'
+                                ],
+                                [
+                                    'type'    => 'SelectProfile',
+                                    'name'    => 'MotionDetectorDeterminationProfileSelection',
+                                    'caption' => 'Profil',
+                                    'visible' => true
+                                ],
+                                [
+                                    'type'    => 'ValidationTextBox',
+                                    'name'    => 'MotionDetectorDeterminationValue',
+                                    'caption' => 'Identifikator',
+                                    'visible' => false
+                                ],
                                 [
                                     'type'    => 'Button',
                                     'caption' => 'Ermitteln',
@@ -8069,7 +8141,7 @@ trait AZ_ConfigurationForm
                                 ],
                                 [
                                     'type'    => 'ProgressBar',
-                                    'name'    => 'MotionDetectorProgress',
+                                    'name'    => 'MotionDetectorDeterminationProgress',
                                     'caption' => 'Fortschritt',
                                     'minimum' => 0,
                                     'maximum' => 100,
@@ -8077,14 +8149,62 @@ trait AZ_ConfigurationForm
                                 ],
                                 [
                                     'type'    => 'Label',
-                                    'name'    => 'MotionDetectorProgressInfo',
+                                    'name'    => 'MotionDetectorDeterminationProgressInfo',
                                     'caption' => '',
                                     'visible' => false
+                                ],
+                                [
+                                    'type'     => 'List',
+                                    'name'     => 'DeterminedMotionDetectorVariableList',
+                                    'caption'  => 'Variablen',
+                                    'visible'  => false,
+                                    'rowCount' => 15,
+                                    'delete'   => true,
+                                    'sort'     => [
+                                        'column'    => 'ID',
+                                        'direction' => 'ascending'
+                                    ],
+                                    'columns'  => [
+                                        [
+                                            'caption' => 'Übernehmen',
+                                            'name'    => 'Use',
+                                            'width'   => '100px',
+                                            'add'     => true,
+                                            'edit'    => [
+                                                'type' => 'CheckBox'
+                                            ]
+                                        ],
+                                        [
+                                            'name'    => 'ID',
+                                            'caption' => 'ID',
+                                            'width'   => '80px',
+                                            'add'     => ''
+                                        ],
+                                        [
+                                            'caption' => 'Objektbaum',
+                                            'name'    => 'Location',
+                                            'width'   => '800px',
+                                            'add'     => ''
+                                        ],
+                                    ]
+                                ],
+                                [
+                                    'type'    => 'CheckBox',
+                                    'name'    => 'OverwriteMotionDetectorVariableProfiles',
+                                    'caption' => 'Variablenprofile überschreiben',
+                                    'visible' => false,
+                                    'value'   => true
+                                ],
+                                [
+                                    'type'    => 'Button',
+                                    'name'    => 'ApplyPreMotionDetectorTriggerValues',
+                                    'caption' => 'Übernehmen',
+                                    'visible' => false,
+                                    'onClick' => self::MODULE_PREFIX . '_ApplyDeterminedMotionDetectorVariables($id, $DeterminedMotionDetectorVariableList, $OverwriteMotionDetectorVariableProfiles);'
                                 ]
                             ]
                         ]
                     ],
-
                     [
                         'type'    => 'PopupButton',
                         'caption' => 'Variablenprofil zuweisen',
