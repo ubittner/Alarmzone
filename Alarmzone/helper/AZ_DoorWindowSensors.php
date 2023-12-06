@@ -367,6 +367,111 @@ trait AZ_DoorWindowSensors
         $this->UpdateFormfield('DoorWindowDeterminationValue', 'visible', $determinationValue);
     }
 
+    /**
+     * Gets the actual door and window sensor states
+     *
+     * @return void
+     * @throws Exception
+     */
+    public function GetActualDoorWindowStates(): void
+    {
+        $this->SendDebug(__FUNCTION__, 'wird ausgeführt', 0);
+        $this->UpdateFormField('ActualDoorWindowStateConfigurationButton', 'visible', false);
+        $actualVariableStates = [];
+        $variables = json_decode($this->ReadPropertyString('DoorWindowSensors'), true);
+        foreach ($variables as $variable) {
+            if (!$variable['Use']) {
+                continue;
+            }
+            $conditions = true;
+            if ($variable['PrimaryCondition'] != '') {
+                $primaryCondition = json_decode($variable['PrimaryCondition'], true);
+                if (array_key_exists(0, $primaryCondition)) {
+                    if (array_key_exists(0, $primaryCondition[0]['rules']['variable'])) {
+                        $sensorID = $primaryCondition[0]['rules']['variable'][0]['variableID'];
+                        if ($sensorID <= 1 || @!IPS_ObjectExists($sensorID)) {
+                            $conditions = false;
+                        }
+                    }
+                }
+            }
+            if ($variable['SecondaryCondition'] != '') {
+                $secondaryConditions = json_decode($variable['SecondaryCondition'], true);
+                if (array_key_exists(0, $secondaryConditions)) {
+                    if (array_key_exists('rules', $secondaryConditions[0])) {
+                        $rules = $secondaryConditions[0]['rules']['variable'];
+                        foreach ($rules as $rule) {
+                            if (array_key_exists('variableID', $rule)) {
+                                $id = $rule['variableID'];
+                                if ($id <= 1 || @!IPS_ObjectExists($id)) {
+                                    $conditions = false;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            if ($conditions && isset($sensorID)) {
+                $stateName = '';
+                $blacklisted = false;
+                $blacklist = json_decode($this->ReadAttributeString('Blacklist'), true);
+                if (is_array($blacklist)) {
+                    foreach ($blacklist as $element) {
+                        $blackListedSensor = json_decode($element, true);
+                        if ($blackListedSensor['sensorID'] == $sensorID) {
+                            $blacklisted = true;
+                            $stateName = '🚫 Gesperrt';
+                        }
+                    }
+                }
+                if (!$blacklisted) {
+                    $stateName = '🟢 Geschlossen';
+                    if (IPS_IsConditionPassing($variable['PrimaryCondition']) && IPS_IsConditionPassing($variable['SecondaryCondition'])) {
+                        $stateName = '🔵 Geöffnet';
+                    }
+                }
+                $variableUpdate = IPS_GetVariable($sensorID)['VariableUpdated']; //timestamp or 0 = never
+                $lastUpdate = 'Nie';
+                if ($variableUpdate != 0) {
+                    $lastUpdate = date('d.m.Y H:i:s', $variableUpdate);
+                }
+                $actualVariableStates[] = ['ActualStatus' => $stateName, 'SensorID' => $sensorID, 'Designation' =>  $variable['Designation'], 'Comment' => $variable['Comment'], 'LastUpdate' => $lastUpdate];
+            }
+        }
+        $amount = count($actualVariableStates);
+        if ($amount == 0) {
+            $amount = 1;
+        }
+        $this->UpdateFormField('ActualDoorWindowStateList', 'visible', true);
+        $this->UpdateFormField('ActualDoorWindowStateList', 'rowCount', $amount);
+        $this->UpdateFormField('ActualDoorWindowStateList', 'values', json_encode($actualVariableStates));
+    }
+
+    /**
+     * Deletes an element from the blacklist.
+     *
+     * @param int $VariableID
+     * @return void
+     * @throws Exception
+     */
+    public function DeleteElementFromBlacklist(int $VariableID): void
+    {
+        $elements = json_decode($this->ReadAttributeString('Blacklist'), true);
+        foreach ($elements as $key => $element) {
+            $data = json_decode($element, true);
+            if ($data['sensorID'] == $VariableID) {
+                unset($elements[$key]);
+            }
+        }
+        $elements = array_values($elements);
+        $amountBlacklist = count($elements);
+        if ($amountBlacklist == 0) {
+            $amountBlacklist = 1;
+        }
+        $this->UpdateFormField('Blacklist', 'rowCount', $amountBlacklist);
+        $this->WriteAttributeString('Blacklist', json_encode($elements));
+    }
+
     public function AssignDoorWindowVariableProfile(): void
     {
         //Only assign a standard profile, a reversed profile must be assigned manually by the user!

@@ -681,6 +681,18 @@ class Alarmzone extends IPSModule
         $this->UpdateFormField('InfoMessageLabel', 'caption', $infoText);
     }
 
+    /**
+     * Shows an attribute.
+     *
+     * @param string $AttributeName
+     * @return void
+     * @throws Exception
+     */
+    public function ShowAttribute(string $AttributeName): void
+    {
+        print_r(json_decode($this->ReadAttributeString($AttributeName), true));
+    }
+
     #################### Request Action
 
     public function RequestAction($Ident, $Value)

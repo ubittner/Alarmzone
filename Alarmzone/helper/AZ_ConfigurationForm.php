@@ -84,6 +84,17 @@ trait AZ_ConfigurationForm
         $this->UpdateFormField($Field, 'objectID', $id);
     }
 
+    public function ModifyActualVariableStatesConfigurationButton(string $Field, int $VariableID): void
+    {
+        $state = false;
+        if ($VariableID > 1 && @IPS_ObjectExists($VariableID)) { //0 = main category, 1 = none
+            $state = true;
+        }
+        $this->UpdateFormField($Field, 'caption', 'ID ' . $VariableID . ' Bearbeiten');
+        $this->UpdateFormField($Field, 'visible', $state);
+        $this->UpdateFormField($Field, 'objectID', $VariableID);
+    }
+
     /**
      * Gets the configuration form.
      *
@@ -418,35 +429,33 @@ trait AZ_ConfigurationForm
 
         //Door window sensors
         $doorWindowSensorValues = [];
-        $variables = json_decode($this->ReadPropertyString('DoorWindowSensors'), true);
-        $amount = count($variables);
-        foreach ($variables as $variable) {
+        $doorWindowSensors = json_decode($this->ReadPropertyString('DoorWindowSensors'), true);
+        $amountDoorWindowSensors = count($doorWindowSensors);
+        foreach ($doorWindowSensors as $doorWindowSensor) {
             $sensorID = 0;
-            $variableLocation = '';
-            if ($variable['PrimaryCondition'] != '') {
-                $primaryCondition = json_decode($variable['PrimaryCondition'], true);
+            $sensorLocation = '';
+            $rowColor = '#C0FFC0'; //light green
+            $conditions = true;
+            if ($doorWindowSensor['PrimaryCondition'] != '') {
+                $primaryCondition = json_decode($doorWindowSensor['PrimaryCondition'], true);
                 if (array_key_exists(0, $primaryCondition)) {
                     if (array_key_exists(0, $primaryCondition[0]['rules']['variable'])) {
                         $sensorID = $primaryCondition[0]['rules']['variable'][0]['variableID'];
+                        if ($sensorID <= 1 || @!IPS_ObjectExists($sensorID)) {
+                            $conditions = false;
+                        }
                     }
                 }
             }
-            //Check conditions first
-            $conditions = true;
-            if ($sensorID <= 1 || !@IPS_ObjectExists($sensorID)) {
-                $conditions = false;
-            } else {
-                $variableLocation = IPS_GetLocation($sensorID);
-            }
-            if ($variable['SecondaryCondition'] != '') {
-                $secondaryConditions = json_decode($variable['SecondaryCondition'], true);
+            if ($doorWindowSensor['SecondaryCondition'] != '') {
+                $secondaryConditions = json_decode($doorWindowSensor['SecondaryCondition'], true);
                 if (array_key_exists(0, $secondaryConditions)) {
                     if (array_key_exists('rules', $secondaryConditions[0])) {
                         $rules = $secondaryConditions[0]['rules']['variable'];
                         foreach ($rules as $rule) {
                             if (array_key_exists('variableID', $rule)) {
                                 $id = $rule['variableID'];
-                                if ($id <= 1 || !@IPS_ObjectExists($id)) {
+                                if ($id <= 1 || @!IPS_ObjectExists($id)) {
                                     $conditions = false;
                                 }
                             }
@@ -455,48 +464,38 @@ trait AZ_ConfigurationForm
                 }
             }
             //Alerting action
-            if ($variable['UseAlertingAction']) {
-                if ($variable['AlertingAction'] != '') {
-                    $action = json_decode($variable['AlertingAction'], true);
+            if ($doorWindowSensor['UseAlertingAction']) {
+                if ($doorWindowSensor['AlertingAction'] != '') {
+                    $action = json_decode($doorWindowSensor['AlertingAction'], true);
                     if (array_key_exists('parameters', $action)) {
                         if (array_key_exists('TARGET', $action['parameters'])) {
                             $id = $action['parameters']['TARGET'];
-                            if (!@IPS_ObjectExists($id)) {
+                            if (@!IPS_ObjectExists($id)) {
                                 $conditions = false;
                             }
                         }
                     }
                 }
             }
-            $stateName = 'fehlerhaft';
-            $rowColor = '#FFC0C0'; //red
-            if ($conditions) {
-                $blacklisted = false;
+            if ($conditions && isset($sensorID)) {
+                $sensorLocation = IPS_GetLocation($sensorID);
                 $blacklist = json_decode($this->ReadAttributeString('Blacklist'), true);
                 if (is_array($blacklist)) {
                     foreach ($blacklist as $element) {
                         $blackListedSensor = json_decode($element, true);
                         if ($blackListedSensor['sensorID'] == $sensorID) {
-                            $blacklisted = true;
-                            $stateName = 'gesperrt';
                             $rowColor = '#DFDFDF'; //grey
                         }
                     }
                 }
-                if (!$blacklisted) {
-                    $stateName = 'geschlossen';
-                    $rowColor = '#C0FFC0'; //light green
-                    if (IPS_IsConditionPassing($variable['PrimaryCondition']) && IPS_IsConditionPassing($variable['SecondaryCondition'])) {
-                        $stateName = 'geöffnet';
-                        $rowColor = '#C0C0FF'; //violett
-                    }
-                    if (!$variable['Use']) {
-                        $stateName = 'deaktiviert';
-                        $rowColor = '#DFDFDF'; //grey
-                    }
+                if (!$doorWindowSensor['Use']) {
+                    $rowColor = '#DFDFDF'; //grey
                 }
             }
-            $doorWindowSensorValues[] = ['ActualState' => $stateName, 'ID' => $sensorID, 'VariableLocation' => $variableLocation, 'rowColor' => $rowColor];
+            if (!$conditions) {
+                $rowColor = '#FFC0C0'; //red
+            }
+            $doorWindowSensorValues[] = ['ID' => $sensorID, 'VariableLocation' => $sensorLocation, 'rowColor' => $rowColor];
         }
 
         $form['elements'][] =
@@ -507,10 +506,72 @@ trait AZ_ConfigurationForm
                 'expanded' => false,
                 'items'    => [
                     [
+                        'type'    => 'PopupButton',
+                        'caption' => 'Aktueller Status',
+                        'popup'   => [
+                            'caption' => 'Aktueller Status',
+                            'items'   => [
+                                [
+                                    'type'     => 'List',
+                                    'name'     => 'ActualDoorWindowStateList',
+                                    'caption'  => 'Tür- und Fenstersensoren',
+                                    'add'      => false,
+                                    'visible'  => false,
+                                    'rowCount' => 1,
+                                    'sort'     => [
+                                        'column'    => 'ActualStatus',
+                                        'direction' => 'ascending'
+                                    ],
+                                    'columns'  => [
+                                        [
+                                            'name'    => 'ActualStatus',
+                                            'caption' => 'Aktueller Status',
+                                            'width'   => '200px',
+                                            'save'    => false
+                                        ],
+                                        [
+                                            'name'    => 'SensorID',
+                                            'caption' => 'ID',
+                                            'width'   => '80px',
+                                            'onClick' => self::MODULE_PREFIX . '_ModifyActualVariableStatesConfigurationButton($id, "ActualDoorWindowStateConfigurationButton", $ActualDoorWindowStateList["SensorID"]);',
+                                            'save'    => false
+                                        ],
+                                        [
+                                            'name'    => 'Designation',
+                                            'caption' => 'Name',
+                                            'width'   => '400px',
+                                            'save'    => false
+                                        ],
+                                        [
+                                            'name'    => 'Comment',
+                                            'caption' => 'Bemerkung',
+                                            'width'   => '400px',
+                                            'save'    => false
+                                        ],
+                                        [
+                                            'name'    => 'LastUpdate',
+                                            'caption' => 'Letzte Aktualisierung',
+                                            'width'   => '200px',
+                                            'save'    => false
+                                        ]
+                                    ]
+                                ],
+                                [
+                                    'type'     => 'OpenObjectButton',
+                                    'name'     => 'ActualDoorWindowStateConfigurationButton',
+                                    'caption'  => 'Bearbeiten',
+                                    'visible'  => false,
+                                    'objectID' => 0
+                                ]
+                            ]
+                        ],
+                        'onClick' => self::MODULE_PREFIX . '_GetActualDoorWindowStates($id);'
+                    ],
+                    [
                         'type'     => 'List',
                         'name'     => 'DoorWindowSensors',
                         'caption'  => 'Tür- und Fenstersensoren',
-                        'rowCount' => $amount,
+                        'rowCount' => $amountDoorWindowSensors,
                         'add'      => true,
                         'delete'   => true,
                         'columns'  => [
@@ -524,31 +585,25 @@ trait AZ_ConfigurationForm
                                 ]
                             ],
                             [
-                                'name'    => 'ActualState',
-                                'caption' => 'Aktueller Status',
-                                'width'   => '150px',
-                                'add'     => ''
-                            ],
-                            [
                                 'name'    => 'ID',
                                 'caption' => 'ID',
                                 'width'   => '80px',
                                 'add'     => '',
+                                'save'    => false,
                                 'onClick' => self::MODULE_PREFIX . '_ModifyTriggerListButton($id, "DoorWindowSensorsConfigurationButton", $DoorWindowSensors["PrimaryCondition"]);',
                             ],
                             [
                                 'caption' => 'Objektbaum',
                                 'name'    => 'VariableLocation',
-                                'onClick' => self::MODULE_PREFIX . '_ModifyTriggerListButton($id, "DoorWindowSensorsConfigurationButton", $DoorWindowSensors["PrimaryCondition"]);',
                                 'width'   => '350px',
-                                'add'     => ''
+                                'add'     => '',
+                                'save'    => false
                             ],
                             [
                                 'caption' => 'Name',
                                 'name'    => 'Designation',
                                 'width'   => '400px',
                                 'add'     => '',
-                                'onClick' => self::MODULE_PREFIX . '_ModifyTriggerListButton($id, "DoorWindowSensorsConfigurationButton", $DoorWindowSensors["PrimaryCondition"]);',
                                 'edit'    => [
                                     'type' => 'ValidationTextBox'
                                 ]
@@ -556,7 +611,6 @@ trait AZ_ConfigurationForm
                             [
                                 'caption' => 'Bemerkung',
                                 'name'    => 'Comment',
-                                'onClick' => self::MODULE_PREFIX . '_ModifyTriggerListButton($id, "DoorWindowSensorsConfigurationButton", $DoorWindowSensors["PrimaryCondition"]);',
                                 'visible' => true,
                                 'width'   => '300px',
                                 'add'     => '',
@@ -564,13 +618,13 @@ trait AZ_ConfigurationForm
                                     'type' => 'ValidationTextBox'
                                 ]
                             ],
-
                             [
                                 'caption' => ' ',
                                 'name'    => 'SpacerPrimaryCondition',
                                 'width'   => '200px',
                                 'add'     => '',
                                 'visible' => false,
+                                'save'    => false,
                                 'edit'    => [
                                     'type' => 'Label'
                                 ]
@@ -581,6 +635,7 @@ trait AZ_ConfigurationForm
                                 'width'   => '200px',
                                 'add'     => '',
                                 'visible' => false,
+                                'save'    => false,
                                 'edit'    => [
                                     'type' => 'Label',
                                     'bold' => true
@@ -611,6 +666,7 @@ trait AZ_ConfigurationForm
                                 'width'   => '200px',
                                 'add'     => '',
                                 'visible' => false,
+                                'save'    => false,
                                 'edit'    => [
                                     'type' => 'Label'
                                 ]
@@ -621,6 +677,7 @@ trait AZ_ConfigurationForm
                                 'width'   => '200px',
                                 'add'     => '',
                                 'visible' => false,
+                                'save'    => false,
                                 'edit'    => [
                                     'type' => 'Label',
                                     'bold' => true
@@ -643,6 +700,7 @@ trait AZ_ConfigurationForm
                                 'width'   => '200px',
                                 'add'     => '',
                                 'visible' => false,
+                                'save'    => false,
                                 'edit'    => [
                                     'type' => 'Label'
                                 ]
@@ -653,6 +711,7 @@ trait AZ_ConfigurationForm
                                 'width'   => '200px',
                                 'add'     => '',
                                 'visible' => false,
+                                'save'    => false,
                                 'edit'    => [
                                     'type' => 'Label',
                                     'bold' => true
@@ -694,6 +753,7 @@ trait AZ_ConfigurationForm
                                 'width'   => '200px',
                                 'add'     => '',
                                 'visible' => false,
+                                'save'    => false,
                                 'edit'    => [
                                     'type' => 'Label'
                                 ]
@@ -704,6 +764,7 @@ trait AZ_ConfigurationForm
                                 'width'   => '200px',
                                 'add'     => '',
                                 'visible' => false,
+                                'save'    => false,
                                 'edit'    => [
                                     'type' => 'Label',
                                     'bold' => true
@@ -745,6 +806,7 @@ trait AZ_ConfigurationForm
                                 'width'   => '200px',
                                 'add'     => '',
                                 'visible' => false,
+                                'save'    => false,
                                 'edit'    => [
                                     'type' => 'Label'
                                 ]
@@ -755,6 +817,7 @@ trait AZ_ConfigurationForm
                                 'width'   => '200px',
                                 'add'     => '',
                                 'visible' => false,
+                                'save'    => false,
                                 'edit'    => [
                                     'type' => 'Label',
                                     'bold' => true
@@ -776,6 +839,7 @@ trait AZ_ConfigurationForm
                                 'width'   => '200px',
                                 'add'     => '',
                                 'visible' => false,
+                                'save'    => false,
                                 'edit'    => [
                                     'type' => 'Label'
                                 ]
@@ -786,6 +850,7 @@ trait AZ_ConfigurationForm
                                 'width'   => '200px',
                                 'add'     => '',
                                 'visible' => false,
+                                'save'    => false,
                                 'edit'    => [
                                     'type' => 'Label',
                                     'bold' => true
@@ -943,6 +1008,68 @@ trait AZ_ConfigurationForm
                 'expanded' => false,
                 'items'    => [
                     [
+                        'type'    => 'PopupButton',
+                        'caption' => 'Aktueller Status',
+                        'popup'   => [
+                            'caption' => 'Aktueller Status',
+                            'items'   => [
+                                [
+                                    'type'     => 'List',
+                                    'name'     => 'ActualMotionDetectorStateList',
+                                    'caption'  => 'Bewegungsmelder',
+                                    'add'      => false,
+                                    'visible'  => false,
+                                    'rowCount' => 1,
+                                    'sort'     => [
+                                        'column'    => 'ActualStatus',
+                                        'direction' => 'ascending'
+                                    ],
+                                    'columns'  => [
+                                        [
+                                            'name'    => 'ActualStatus',
+                                            'caption' => 'Aktueller Status',
+                                            'width'   => '200px',
+                                            'save'    => false
+                                        ],
+                                        [
+                                            'name'    => 'SensorID',
+                                            'caption' => 'ID',
+                                            'width'   => '80px',
+                                            'onClick' => self::MODULE_PREFIX . '_ModifyActualVariableStatesConfigurationButton($id, "ActualMotionDetectorStateConfigurationButton", $ActualMotionDetectorStateList["SensorID"]);',
+                                            'save'    => false
+                                        ],
+                                        [
+                                            'name'    => 'Designation',
+                                            'caption' => 'Name',
+                                            'width'   => '400px',
+                                            'save'    => false
+                                        ],
+                                        [
+                                            'name'    => 'Comment',
+                                            'caption' => 'Bemerkung',
+                                            'width'   => '400px',
+                                            'save'    => false
+                                        ],
+                                        [
+                                            'name'    => 'LastUpdate',
+                                            'caption' => 'Letzte Aktualisierung',
+                                            'width'   => '200px',
+                                            'save'    => false
+                                        ]
+                                    ]
+                                ],
+                                [
+                                    'type'     => 'OpenObjectButton',
+                                    'name'     => 'ActualMotionDetectorStateConfigurationButton',
+                                    'caption'  => 'Bearbeiten',
+                                    'visible'  => false,
+                                    'objectID' => 0
+                                ]
+                            ]
+                        ],
+                        'onClick' => self::MODULE_PREFIX . '_GetActualMotionDetectorStates($id);'
+                    ],
+                    [
                         'type'     => 'List',
                         'name'     => 'MotionDetectors',
                         'caption'  => 'Bewegungsmelder',
@@ -964,12 +1091,13 @@ trait AZ_ConfigurationForm
                                 'caption' => 'ID',
                                 'width'   => '80px',
                                 'add'     => '',
+                                'save'    => false,
                                 'onClick' => self::MODULE_PREFIX . '_ModifyTriggerListButton($id, "MotionDetectorsConfigurationButton", $MotionDetectors["PrimaryCondition"]);',
                             ],
                             [
                                 'caption' => 'Objektbaum',
                                 'name'    => 'VariableLocation',
-                                'onClick' => self::MODULE_PREFIX . '_ModifyTriggerListButton($id, "MotionDetectorsConfigurationButton", $MotionDetectors["PrimaryCondition"]);',
+                                'save'    => false,
                                 'width'   => '350px',
                                 'add'     => ''
                             ],
@@ -978,7 +1106,7 @@ trait AZ_ConfigurationForm
                                 'name'    => 'Designation',
                                 'width'   => '400px',
                                 'add'     => '',
-                                'onClick' => self::MODULE_PREFIX . '_ModifyTriggerListButton($id, "MotionDetectorsConfigurationButton", $MotionDetectors["PrimaryCondition"]);',
+                                'visible' => true,
                                 'edit'    => [
                                     'type' => 'ValidationTextBox'
                                 ]
@@ -986,7 +1114,6 @@ trait AZ_ConfigurationForm
                             [
                                 'caption' => 'Bemerkung',
                                 'name'    => 'Comment',
-                                'onClick' => self::MODULE_PREFIX . '_ModifyTriggerListButton($id, "MotionDetectorsConfigurationButton", $MotionDetectors["PrimaryCondition"]);',
                                 'visible' => true,
                                 'width'   => '300px',
                                 'add'     => '',
@@ -1000,6 +1127,7 @@ trait AZ_ConfigurationForm
                                 'width'   => '200px',
                                 'add'     => '',
                                 'visible' => false,
+                                'save'    => false,
                                 'edit'    => [
                                     'type' => 'Label'
                                 ]
@@ -1010,6 +1138,7 @@ trait AZ_ConfigurationForm
                                 'width'   => '200px',
                                 'add'     => '',
                                 'visible' => false,
+                                'save'    => false,
                                 'edit'    => [
                                     'type' => 'Label',
                                     'bold' => true
@@ -1040,6 +1169,7 @@ trait AZ_ConfigurationForm
                                 'width'   => '200px',
                                 'add'     => '',
                                 'visible' => false,
+                                'save'    => false,
                                 'edit'    => [
                                     'type' => 'Label'
                                 ]
@@ -1050,6 +1180,7 @@ trait AZ_ConfigurationForm
                                 'width'   => '200px',
                                 'add'     => '',
                                 'visible' => false,
+                                'save'    => false,
                                 'edit'    => [
                                     'type' => 'Label',
                                     'bold' => true
@@ -1072,6 +1203,7 @@ trait AZ_ConfigurationForm
                                 'width'   => '200px',
                                 'add'     => '',
                                 'visible' => false,
+                                'save'    => false,
                                 'edit'    => [
                                     'type' => 'Label'
                                 ]
@@ -1082,6 +1214,7 @@ trait AZ_ConfigurationForm
                                 'width'   => '200px',
                                 'add'     => '',
                                 'visible' => false,
+                                'save'    => false,
                                 'edit'    => [
                                     'type' => 'Label',
                                     'bold' => true
@@ -1123,6 +1256,7 @@ trait AZ_ConfigurationForm
                                 'width'   => '200px',
                                 'add'     => '',
                                 'visible' => false,
+                                'save'    => false,
                                 'edit'    => [
                                     'type' => 'Label'
                                 ]
@@ -1133,6 +1267,7 @@ trait AZ_ConfigurationForm
                                 'width'   => '200px',
                                 'add'     => '',
                                 'visible' => false,
+                                'save'    => false,
                                 'edit'    => [
                                     'type' => 'Label',
                                     'bold' => true
@@ -1154,6 +1289,7 @@ trait AZ_ConfigurationForm
                                 'width'   => '200px',
                                 'add'     => '',
                                 'visible' => false,
+                                'save'    => false,
                                 'edit'    => [
                                     'type' => 'Label'
                                 ]
@@ -1164,6 +1300,7 @@ trait AZ_ConfigurationForm
                                 'width'   => '200px',
                                 'add'     => '',
                                 'visible' => false,
+                                'save'    => false,
                                 'edit'    => [
                                     'type' => 'Label',
                                     'bold' => true
@@ -7995,7 +8132,7 @@ trait AZ_ConfigurationForm
                                     'name'    => 'ApplyPreDoorWindowTriggerValues',
                                     'caption' => 'Übernehmen',
                                     'visible' => false,
-                                    'onClick' => self::MODULE_PREFIX . '_ApplyDeterminedDoorWindowVariables($id, $DeterminedDoorWindowVariableList, OverwriteDoorWindowVariableProfiles);'
+                                    'onClick' => self::MODULE_PREFIX . '_ApplyDeterminedDoorWindowVariables($id, $DeterminedDoorWindowVariableList, $OverwriteDoorWindowVariableProfiles);'
                                 ]
                             ]
                         ]
@@ -8262,6 +8399,10 @@ trait AZ_ConfigurationForm
         //Blacklist
         $blacklistedVariables = [];
         $blacklist = json_decode($this->ReadAttributeString('Blacklist'), true);
+        $amountBlacklist = count($blacklist);
+        if ($amountBlacklist == 0) {
+            $amountBlacklist = 1;
+        }
         if (is_array($blacklist)) {
             foreach ($blacklist as $element) {
                 $variable = json_decode($element, true);
@@ -8270,9 +8411,14 @@ trait AZ_ConfigurationForm
                     'Designation' => $variable['sensorDesignation']];
             }
         }
+
         //Registered references
         $registeredReferences = [];
         $references = $this->GetReferenceList();
+        $amountReferences = count($references);
+        if ($amountReferences == 0) {
+            $amountReferences = 1;
+        }
         foreach ($references as $reference) {
             $name = 'Objekt #' . $reference . ' existiert nicht';
             $rowColor = '#FFC0C0'; //red
@@ -8289,6 +8435,10 @@ trait AZ_ConfigurationForm
         //Registered messages
         $registeredMessages = [];
         $messages = $this->GetMessageList();
+        $amountMessages = count($messages);
+        if ($amountMessages == 0) {
+            $amountMessages = 1;
+        }
         foreach ($messages as $id => $messageID) {
             $name = 'Objekt #' . $id . ' existiert nicht';
             $rowColor = '#FFC0C0'; //red
@@ -8322,10 +8472,17 @@ trait AZ_ConfigurationForm
             'expanded' => false,
             'items'    => [
                 [
+                    'type'    => 'Label',
+                    'caption' => 'Sperrliste',
+                    'bold'    => true,
+                    'italic'  => true
+                ],
+                [
                     'type'     => 'List',
                     'name'     => 'Blacklist',
-                    'caption'  => 'Sperrliste',
-                    'rowCount' => 15,
+                    'rowCount' => $amountBlacklist,
+                    'delete'   => true,
+                    'onDelete' => self::MODULE_PREFIX . '_DeleteElementFromBlacklist($id, $Blacklist["SensorID"]);',
                     'sort'     => [
                         'column'    => 'SensorID',
                         'direction' => 'ascending'
@@ -8340,8 +8497,7 @@ trait AZ_ConfigurationForm
                         [
                             'caption' => 'Bezeichnung',
                             'name'    => 'Designation',
-                            'width'   => '300px',
-                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "BlacklistConfigurationButton", "ID " . $Blacklist["SensorID"] . " bearbeiten", $Blacklist["SensorID"]);'
+                            'width'   => '300px'
                         ]
                     ],
                     'values' => $blacklistedVariables
@@ -8377,10 +8533,15 @@ trait AZ_ConfigurationForm
                     'caption' => ' '
                 ],
                 [
+                    'type'    => 'Label',
+                    'caption' => 'Registrierte Referenzen',
+                    'bold'    => true,
+                    'italic'  => true
+                ],
+                [
                     'type'     => 'List',
                     'name'     => 'RegisteredReferences',
-                    'caption'  => 'Registrierte Referenzen',
-                    'rowCount' => 10,
+                    'rowCount' => $amountReferences,
                     'sort'     => [
                         'column'    => 'ObjectID',
                         'direction' => 'ascending'
@@ -8413,10 +8574,15 @@ trait AZ_ConfigurationForm
                     'caption' => ' '
                 ],
                 [
+                    'type'    => 'Label',
+                    'caption' => 'Registrierte Nachrichten',
+                    'bold'    => true,
+                    'italic'  => true
+                ],
+                [
                     'type'     => 'List',
                     'name'     => 'RegisteredMessages',
-                    'caption'  => 'Registrierte Nachrichten',
-                    'rowCount' => 10,
+                    'rowCount' => $amountMessages,
                     'sort'     => [
                         'column'    => 'ObjectID',
                         'direction' => 'ascending'

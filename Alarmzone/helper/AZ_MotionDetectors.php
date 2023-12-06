@@ -363,6 +363,72 @@ trait AZ_MotionDetectors
         $this->UpdateFormfield('MotionDetectorDeterminationValue', 'visible', $determinationValue);
     }
 
+    /**
+     * Gets the actual motion detector states
+     *
+     * @return void
+     * @throws Exception
+     */
+    public function GetActualMotionDetectorStates(): void
+    {
+        $this->SendDebug(__FUNCTION__, 'wird ausgeführt', 0);
+        $this->UpdateFormField('ActualMotionDetectorStateConfigurationButton', 'visible', false);
+        $actualVariableStates = [];
+        $variables = json_decode($this->ReadPropertyString('MotionDetectors'), true);
+        foreach ($variables as $variable) {
+            if (!$variable['Use']) {
+                continue;
+            }
+            $conditions = true;
+            if ($variable['PrimaryCondition'] != '') {
+                $primaryCondition = json_decode($variable['PrimaryCondition'], true);
+                if (array_key_exists(0, $primaryCondition)) {
+                    if (array_key_exists(0, $primaryCondition[0]['rules']['variable'])) {
+                        $sensorID = $primaryCondition[0]['rules']['variable'][0]['variableID'];
+                        if ($sensorID <= 1 || @!IPS_ObjectExists($sensorID)) {
+                            $conditions = false;
+                        }
+                    }
+                }
+            }
+            if ($variable['SecondaryCondition'] != '') {
+                $secondaryConditions = json_decode($variable['SecondaryCondition'], true);
+                if (array_key_exists(0, $secondaryConditions)) {
+                    if (array_key_exists('rules', $secondaryConditions[0])) {
+                        $rules = $secondaryConditions[0]['rules']['variable'];
+                        foreach ($rules as $rule) {
+                            if (array_key_exists('variableID', $rule)) {
+                                $id = $rule['variableID'];
+                                if ($id <= 1 || @!IPS_ObjectExists($id)) {
+                                    $conditions = false;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            if ($conditions && isset($sensorID)) {
+                $stateName = '🟢 Untätig';
+                if (IPS_IsConditionPassing($variable['PrimaryCondition']) && IPS_IsConditionPassing($variable['SecondaryCondition'])) {
+                    $stateName = '🔴  Bewegung erkannt';
+                }
+                $variableUpdate = IPS_GetVariable($sensorID)['VariableUpdated']; //timestamp or 0 = never
+                $lastUpdate = 'Nie';
+                if ($variableUpdate != 0) {
+                    $lastUpdate = date('d.m.Y H:i:s', $variableUpdate);
+                }
+                $actualVariableStates[] = ['ActualStatus' => $stateName, 'SensorID' => $sensorID, 'Designation' =>  $variable['Designation'], 'Comment' => $variable['Comment'], 'LastUpdate' => $lastUpdate];
+            }
+        }
+        $amount = count($actualVariableStates);
+        if ($amount == 0) {
+            $amount = 1;
+        }
+        $this->UpdateFormField('ActualMotionDetectorStateList', 'visible', true);
+        $this->UpdateFormField('ActualMotionDetectorStateList', 'rowCount', $amount);
+        $this->UpdateFormField('ActualMotionDetectorStateList', 'values', json_encode($actualVariableStates));
+    }
+
     public function AssignMotionDetectorVariableProfile(): void
     {
         //Only assign a standard profile, a reversed profile must be assigned manually by the user!
