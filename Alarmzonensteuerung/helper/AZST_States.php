@@ -1,13 +1,14 @@
 <?php
 
 /**
- * @project       Alarmzone/Alarmzonensteuerung
+ * @project       Alarmzone/Alarmzonensteuerung/helper/
  * @file          AZST_States.php
  * @author        Ulrich Bittner
- * @copyright     2022 Ulrich Bittner
+ * @copyright     2023 Ulrich Bittner
  * @license       https://creativecommons.org/licenses/by-nc-sa/4.0/ CC BY-NC-SA 4.0
  */
 
+/** @noinspection SpellCheckingInspection */
 /** @noinspection DuplicatedCode */
 
 declare(strict_types=1);
@@ -34,9 +35,10 @@ trait AZST_States
         $update5 = $this->UpdateAlertingSensor();
         $update6 = $this->UpdateDoorWindowState();
         $update7 = $this->UpdateMotionDetectorState();
-        $update8 = $this->UpdateAlarmSiren();
-        $update9 = $this->UpdateAlarmLight();
-        $update10 = $this->UpdateAlarmCall();
+        $update8 = $this->UpdateGlassBreakageDetectorState();
+        $update9 = $this->UpdateAlarmSiren();
+        $update10 = $this->UpdateAlarmLight();
+        $update11 = $this->UpdateAlarmCall();
         if (!$update1 ||
             !$update2 ||
             !$update3 ||
@@ -46,7 +48,8 @@ trait AZST_States
             !$update7 ||
             !$update8 ||
             !$update9 ||
-            !$update10) {
+            !$update10 ||
+            !$update11) {
             $result = false;
         }
         return $result;
@@ -355,6 +358,12 @@ trait AZST_States
             }
         }
         $this->SetValue('AlarmState', $state);
+        if ($state == 0) {
+            $this->SetValue('AlarmSwitch', false);
+        }
+        if ($state == 1) {
+            $this->SetValue('AlarmSwitch', true);
+        }
         return $result;
     }
 
@@ -465,6 +474,43 @@ trait AZST_States
             }
         }
         $this->SetValue('MotionDetectorState', $state);
+        return $result;
+    }
+
+    /**
+     * Updates the glass breakage detector state.
+     *
+     * @return bool
+     * false =  an error occurred,
+     * true =   successful
+     *
+     * @throws Exception
+     */
+    public function UpdateGlassBreakageDetectorState(): bool
+    {
+        $this->SendDebug(__FUNCTION__, 'wird ausgeführt', 0);
+        if ($this->CheckMaintenance()) {
+            return false;
+        }
+        $variables = json_decode($this->ReadPropertyString('GlassBreakageDetectorState'), true);
+        if (empty($variables)) {
+            return false;
+        }
+        $result = false;
+        $state = false;
+        foreach ($variables as $variable) {
+            if ($variable['Use']) {
+                $id = $variable['ID'];
+                if ($id > 1 && @IPS_ObjectExists($id)) {
+                    $result = true;
+                    $actualValue = GetValueBoolean($variable['ID']);
+                    if ($actualValue) {
+                        $state = true; //glass breakage detected
+                    }
+                }
+            }
+        }
+        $this->SetValue('GlassBreakageDetectorState', $state);
         return $result;
     }
 

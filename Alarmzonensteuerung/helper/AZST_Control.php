@@ -1,14 +1,16 @@
 <?php
 
 /**
- * @project       Alarmzone/Alarmzonensteuerung
+ * @project       Alarmzone/Alarmzonensteuerung/helper/
  * @file          AZST_Control.php
  * @author        Ulrich Bittner
- * @copyright     2022 Ulrich Bittner
+ * @copyright     2023 Ulrich Bittner
  * @license       https://creativecommons.org/licenses/by-nc-sa/4.0/ CC BY-NC-SA 4.0
  */
 
 /** @noinspection PhpUndefinedFunctionInspection */
+/** @noinspection SpellCheckingInspection */
+/** @noinspection DuplicatedCode */
 
 declare(strict_types=1);
 
@@ -24,25 +26,12 @@ trait AZST_Control
     {
         $this->SendDebug(__FUNCTION__, 'wird ausgeführt', 0);
         $alarmZones = IPS_GetInstanceListByModuleID(self::ALARMZONE_MODULE_GUID);
-        if (empty($alarmZones)) {
-            return;
-        }
-        $zones = [];
-        $protectionMode = [];
-        $systemState = [];
-        $systemDetailedState = [];
-        $alarmState = [];
-        $alertingSensor = [];
-        $doorWindowState = [];
-        $motionDetectorState = [];
-        $alarmSiren = [];
-        $alarmLight = [];
-        $alarmCall = [];
         $this->UpdateFormField('DetermineAlarmZoneVariablesProgress', 'minimum', 0);
         $maximumZones = count($alarmZones);
         $this->UpdateFormField('DetermineAlarmZoneVariablesProgress', 'maximum', $maximumZones);
         $this->UpdateFormField('DetermineAlarmZoneVariablesProgress', 'visible', true);
         $this->UpdateFormField('DetermineAlarmZoneVariablesProgressInfo', 'visible', true);
+        $determinedVariables = [];
         $passedZones = 0;
         foreach ($alarmZones as $alarmZone) {
             $passedZones++;
@@ -55,7 +44,119 @@ trait AZST_Control
             if ($id <= 1 || !@IPS_ObjectExists($id)) {
                 continue;
             }
-            $zones[] = ['Use' => true, 'ID' => $id, 'Designation' => IPS_GetName($id), 'IndividualProtectionMode' => 4];
+            $determinedVariables[] = [
+                'Use'      => false,
+                'ID'       => $id,
+                'Location' => @IPS_GetLocation($id)];
+        }
+        $amount = count($determinedVariables);
+        //Get already listed variables
+        $listedVariables = json_decode($this->ReadPropertyString('AlarmZones'), true);
+        foreach ($listedVariables as $listedVariable) {
+            $listedVariableID = $listedVariable['ID'];
+            if ($listedVariableID > 1 && @IPS_ObjectExists($listedVariableID)) {
+                foreach ($determinedVariables as $key => $determinedVariable) {
+                    $determinedVariableID = $determinedVariable['ID'];
+                    if ($determinedVariableID > 1 && @IPS_ObjectExists($determinedVariableID)) {
+                        //Check if variable id is already a listed variable id
+                        if ($determinedVariableID == $listedVariableID) {
+                            unset($determinedVariables[$key]);
+                        }
+                    }
+                }
+            }
+        }
+        if (empty($determinedVariables)) {
+            $this->UpdateFormField('DetermineAlarmZoneVariablesProgress', 'visible', false);
+            $this->UpdateFormField('DetermineAlarmZoneVariablesProgressInfo', 'visible', false);
+            if ($amount > 0) {
+                $infoText = 'Es wurden keine weiteren Variablen gefunden!';
+            } else {
+                $infoText = 'Es wurden keine Variablen gefunden!';
+            }
+            $this->UpdateFormField('InfoMessage', 'visible', true);
+            $this->UpdateFormField('InfoMessageLabel', 'caption', $infoText);
+            return;
+        }
+        $determinedVariables = array_values($determinedVariables);
+        $this->UpdateFormField('DeterminedAlarmZoneList', 'visible', true);
+        $this->UpdateFormField('DeterminedAlarmZoneList', 'rowCount', count($determinedVariables));
+        $this->UpdateFormField('DeterminedAlarmZoneList', 'values', json_encode($determinedVariables));
+        $this->UpdateFormField('ApplyPreAlarmZoneTriggerValues', 'visible', true);
+    }
+
+    /**
+     * Applies the determined variables to the alarm zone list.
+     *
+     * @param object $ListValues
+     * @return void
+     * @throws ReflectionException
+     * @throws Exception
+     */
+    public function ApplyDeterminedAlarmZoneVariables(object $ListValues): void
+    {
+        $determinedVariables = [];
+        $zones = [];
+        $protectionMode = [];
+        $systemState = [];
+        $systemDetailedState = [];
+        $alarmState = [];
+        $alertingSensor = [];
+        $doorWindowState = [];
+        $motionDetectorState = [];
+        $glassBreakageDetectorState = [];
+        $alarmSiren = [];
+        $alarmLight = [];
+        $alarmCall = [];
+        $reflection = new ReflectionObject($ListValues);
+        $property = $reflection->getProperty('array');
+        $property->setAccessible(true);
+        $variables = $property->getValue($ListValues);
+        foreach ($variables as $variable) {
+            if (!$variable['Use']) {
+                continue;
+            }
+            $id = $variable['ID'];
+            $name = @IPS_GetName($id);
+            $determinedVariables[] = [
+                'Use'                       => true,
+                'ID'                        => $id,
+                'Designation'               => $name,
+                'IndividualProtectionMode'  => 4];
+        }
+        //Get already listed variables
+        $listedVariables = json_decode($this->ReadPropertyString('AlarmZones'), true);
+        foreach ($determinedVariables as $determinedVariable) {
+            $determinedVariableID = $determinedVariable['ID'];
+            if ($determinedVariableID > 1 && @IPS_ObjectExists($determinedVariableID)) {
+                //Check variable id with already listed variable ids
+                $add = true;
+                foreach ($listedVariables as $listedVariable) {
+                    $listedVariableID = $listedVariable['ID'];
+                    if ($listedVariableID > 1 && @IPS_ObjectExists($determinedVariableID)) {
+                        if ($determinedVariableID == $listedVariableID) {
+                            $add = false;
+                        }
+                    }
+                }
+                //Add new variable to already listed variables
+                if ($add) {
+                    $listedVariables[] = $determinedVariable;
+                }
+            }
+        }
+        if (empty($determinedVariables)) {
+            return;
+        }
+        $this->UpdateFormField('ApplyNewConfigurationProgress', 'minimum', 0);
+        $maximumConfiguration = 12 * count($listedVariables);
+        $this->UpdateFormField('ApplyNewConfigurationProgress', 'maximum', $maximumConfiguration);
+        $passedConfiguration = 0;
+        foreach ($listedVariables as $listedVariable) {
+            $passedConfiguration++;
+            $this->ApplyNewConfigurationUpdateProgressState($passedConfiguration, $maximumConfiguration);
+            $id = $listedVariable['ID'];
+            $zones[] = ['Use' => true, 'ID' => $id, 'Designation' => $listedVariable['Designation'], 'IndividualProtectionMode' => $listedVariable['IndividualProtectionMode']];
             $children = IPS_GetChildrenIDs($id);
             if (empty($children)) {
                 continue;
@@ -69,48 +170,76 @@ trait AZST_Control
                 $ident = IPS_GetObject($child)['ObjectIdent'];
                 switch ($ident) {
                     case 'Mode':
+                        $passedConfiguration++;
+                        $this->ApplyNewConfigurationUpdateProgressState($passedConfiguration, $maximumConfiguration);
                         $protectionMode[] = ['Use' => true, 'ID' => $child, 'Designation' => $description];
                         break;
 
                     case 'AlarmZoneState':
+                        $passedConfiguration++;
+                        $this->ApplyNewConfigurationUpdateProgressState($passedConfiguration, $maximumConfiguration);
                         $systemState[] = ['Use' => true, 'ID' => $child, 'Designation' => $description];
                         break;
 
                     case 'AlarmZoneDetailedState':
+                        $passedConfiguration++;
+                        $this->ApplyNewConfigurationUpdateProgressState($passedConfiguration, $maximumConfiguration);
                         $systemDetailedState[] = ['Use' => true, 'ID' => $child, 'Designation' => $description];
                         break;
 
                     case 'AlarmState':
+                        $passedConfiguration++;
+                        $this->ApplyNewConfigurationUpdateProgressState($passedConfiguration, $maximumConfiguration);
                         $alarmState[] = ['Use' => true, 'ID' => $child, 'Designation' => $description];
                         break;
 
                     case 'AlertingSensor':
+                        $passedConfiguration++;
+                        $this->ApplyNewConfigurationUpdateProgressState($passedConfiguration, $maximumConfiguration);
                         $alertingSensor[] = ['Use' => true, 'ID' => $child, 'Designation' => $description];
                         break;
 
                     case 'DoorWindowState':
+                        $passedConfiguration++;
+                        $this->ApplyNewConfigurationUpdateProgressState($passedConfiguration, $maximumConfiguration);
                         $doorWindowState[] = ['Use' => true, 'ID' => $child, 'Designation' => $description];
                         break;
 
                     case 'MotionDetectorState':
+                        $passedConfiguration++;
+                        $this->ApplyNewConfigurationUpdateProgressState($passedConfiguration, $maximumConfiguration);
                         $motionDetectorState[] = ['Use' => true, 'ID' => $child, 'Designation' => $description];
                         break;
 
+                    case 'GlassBreakageDetectorState':
+                        $passedConfiguration++;
+                        $this->ApplyNewConfigurationUpdateProgressState($passedConfiguration, $maximumConfiguration);
+                        $glassBreakageDetectorState[] = ['Use' => true, 'ID' => $child, 'Designation' => $description];
+                        break;
+
                     case 'AlarmSiren':
+                        $passedConfiguration++;
+                        $this->ApplyNewConfigurationUpdateProgressState($passedConfiguration, $maximumConfiguration);
                         $alarmSiren[] = ['Use' => true, 'ID' => $child, 'Designation' => $description];
                         break;
 
                     case 'AlarmLight':
+                        $passedConfiguration++;
+                        $this->ApplyNewConfigurationUpdateProgressState($passedConfiguration, $maximumConfiguration);
                         $alarmLight[] = ['Use' => true, 'ID' => $child, 'Designation' => $description];
                         break;
 
                     case 'AlarmCall':
+                        $passedConfiguration++;
+                        $this->ApplyNewConfigurationUpdateProgressState($passedConfiguration++, $maximumConfiguration);
                         $alarmCall[] = ['Use' => true, 'ID' => $child, 'Designation' => $description];
                         break;
 
                 }
             }
         }
+        //Sort variables by name
+        array_multisort(array_column($listedVariables, 'Designation'), SORT_ASC, $listedVariables);
         @IPS_SetProperty($this->InstanceID, 'AlarmZones', json_encode($zones));
         @IPS_SetProperty($this->InstanceID, 'ProtectionMode', json_encode($protectionMode));
         @IPS_SetProperty($this->InstanceID, 'SystemState', json_encode($systemState));
@@ -119,11 +248,69 @@ trait AZST_Control
         @IPS_SetProperty($this->InstanceID, 'AlertingSensor', json_encode($alertingSensor));
         @IPS_SetProperty($this->InstanceID, 'DoorWindowState', json_encode($doorWindowState));
         @IPS_SetProperty($this->InstanceID, 'MotionDetectorState', json_encode($motionDetectorState));
+        @IPS_SetProperty($this->InstanceID, 'GlassBreakageDetectorState', json_encode($glassBreakageDetectorState));
         @IPS_SetProperty($this->InstanceID, 'AlarmSiren', json_encode($alarmSiren));
         @IPS_SetProperty($this->InstanceID, 'AlarmLight', json_encode($alarmLight));
         @IPS_SetProperty($this->InstanceID, 'AlarmCall', json_encode($alarmCall));
         if (@IPS_HasChanges($this->InstanceID)) {
             @IPS_ApplyChanges($this->InstanceID);
+        }
+    }
+
+    /**
+     * Sets an alarm.
+     *
+     * @param bool $State
+     * false =  no alarm,
+     * true =   alarm
+     *
+     * @return void
+     * @throws Exception
+     */
+    public function SetAlarm(bool $State): void
+    {
+        if (!$State) {
+            $this->SetValue('AlarmSwitch', false);
+            $alarmZones = json_decode($this->ReadPropertyString('AlarmZones'), true);
+            if (empty($alarmZones)) {
+                return;
+            }
+            foreach ($alarmZones as $alarmZone) {
+                if (!$alarmZone['Use']) {
+                    continue;
+                }
+                $id = $alarmZone['ID'];
+                if ($id == 0 || @!IPS_ObjectExists($id)) {
+                    continue;
+                }
+                if ($this->ReadPropertyBoolean('UseDisarmAlarmZonesWhenAlarmSwitchIsOff')) {
+                    $this->SelectProtectionMode(0, (string) $this->GetIDForIdent('AlarmSwitch'));
+                } else {
+                    @AZ_SetAlarm($id, false);
+                }
+            }
+        } else {
+            $alarm = false;
+            $useAlarmSiren = $this->ReadPropertyBoolean('UseAlarmSirenWhenAlarmSwitchIsOn');
+            $useAlarmLight = $this->ReadPropertyBoolean('UseAlarmLightWhenAlarmSwitchIsOn');
+            $useAlarmCall = $this->ReadPropertyBoolean('UseAlarmCallWhenAlarmSwitchIsOn');
+            if ($useAlarmSiren || $useAlarmLight || $useAlarmCall) {
+                $alarm = true;
+            }
+            if ($alarm) {
+                $this->SetValue('AlarmSwitch', true);
+                $this->SetValue('AlarmState', 1);
+                $this->SetValue('AlertingSensor', $this->ReadPropertyString('AlertingSensorNameWhenAlarmSwitchIsOn'));
+                if ($useAlarmSiren) {
+                    $this->SetValue('AlarmSiren', true);
+                }
+                if ($useAlarmLight) {
+                    $this->SetValue('AlarmLight', true);
+                }
+                if ($useAlarmCall) {
+                    $this->SetValue('AlarmCall', true);
+                }
+            }
         }
     }
 
@@ -140,7 +327,7 @@ trait AZST_Control
      * @param string $SenderID
      *
      * @return bool
-     * false =  an error occurred
+     * false =  an error occurred,
      * true =   successful
      *
      * @throws Exception
@@ -300,6 +487,15 @@ trait AZST_Control
 
     ########## Private
 
+    private function ApplyNewConfigurationUpdateProgressState(int $PassedConfiguration, int $MaximumConfiguration): void
+    {
+        $this->UpdateFormField('ApplyNewConfigurationProgress', 'visible', true);
+        $this->UpdateFormField('ApplyNewConfigurationProgress', 'current', $PassedConfiguration);
+        $this->UpdateFormField('ApplyNewConfigurationProgressInfo', 'visible', true);
+        $this->UpdateFormField('ApplyNewConfigurationProgressInfo', 'caption', $PassedConfiguration . '/' . $MaximumConfiguration);
+        IPS_Sleep(50);
+    }
+
     /**
      * Executes an action.
      *
@@ -323,6 +519,7 @@ trait AZST_Control
         switch ($Mode) {
             case 0: # disarmed
                 switch ($SenderID) {
+                    case $this->GetIDForIdent('AlarmSwitch'):
                     case $this->GetIDForIdent('FullProtectionControlSwitch'):
                     case $this->GetIDForIdent('HullProtectionControlSwitch'):
                     case $this->GetIDForIdent('PartialProtectionControlSwitch'):
