@@ -1,13 +1,14 @@
 <?php
 
 /**
- * @project       Alarmzone/Alarmzonensteuerung
+ * @project       Alarmzone/Alarmzonensteuerung/helper/
  * @file          AZST_ConfigurationForm.php
  * @author        Ulrich Bittner
- * @copyright     2022 Ulrich Bittner
+ * @copyright     2023 Ulrich Bittner
  * @license       https://creativecommons.org/licenses/by-nc-sa/4.0/ CC BY-NC-SA 4.0
  */
 
+/** @noinspection SpellCheckingInspection */
 /** @noinspection DuplicatedCode */
 
 declare(strict_types=1);
@@ -57,6 +58,18 @@ trait AZST_ConfigurationForm
         $this->UpdateFormField($Field, 'caption', $Caption);
         $this->UpdateFormField($Field, 'visible', $state);
         $this->UpdateFormField($Field, 'objectID', $ObjectID);
+    }
+
+    /**
+     * Hides or shows an action element.
+     *
+     * @param string $ActionName
+     * @param bool $State
+     * @return void
+     */
+    public function HideAction(string $ActionName, bool $State): void
+    {
+        $this->UpdateFormField($ActionName, 'visible', $State);
     }
 
     /**
@@ -158,6 +171,52 @@ trait AZST_ConfigurationForm
             'items'   => [
                 [
                     'type'    => 'Label',
+                    'caption' => 'Alarm Aus',
+                    'bold'    => true,
+                    'italic'  => true
+                ],
+                [
+                    'type'    => 'CheckBox',
+                    'name'    => 'UseDisarmAlarmZonesWhenAlarmSwitchIsOff',
+                    'caption' => 'Alarmzone unscharf'
+                ],
+                [
+                    'type'    => 'Label',
+                    'caption' => ' '
+                ],
+                [
+                    'type'    => 'Label',
+                    'caption' => 'Alarm An',
+                    'bold'    => true,
+                    'italic'  => true
+                ],
+                [
+                    'type'    => 'ValidationTextBox',
+                    'name'    => 'AlertingSensorNameWhenAlarmSwitchIsOn',
+                    'caption' => 'Alarmbezeichnung',
+                    'width'   => '600px'
+                ],
+                [
+                    'type'    => 'CheckBox',
+                    'name'    => 'UseAlarmSirenWhenAlarmSwitchIsOn',
+                    'caption' => 'Alarmsirene'
+                ],
+                [
+                    'type'    => 'CheckBox',
+                    'name'    => 'UseAlarmLightWhenAlarmSwitchIsOn',
+                    'caption' => 'Alarmbeleuchtung'
+                ],
+                [
+                    'type'    => 'CheckBox',
+                    'name'    => 'UseAlarmCallWhenAlarmSwitchIsOn',
+                    'caption' => 'Alarmanruf'
+                ],
+                [
+                    'type'    => 'Label',
+                    'caption' => ' '
+                ],
+                [
+                    'type'    => 'Label',
                     'caption' => 'Unscharf',
                     'bold'    => true,
                     'italic'  => true
@@ -195,10 +254,19 @@ trait AZST_ConfigurationForm
                     'caption' => ' '
                 ],
                 [
-                    'type'    => 'Label',
-                    'caption' => 'Vollschutz',
-                    'bold'    => true,
-                    'italic'  => true
+                    'type'  => 'RowLayout',
+                    'items' => [
+                        [
+                            'type' => 'CheckBox',
+                            'name' => 'UseFullProtectionMode'
+                        ],
+                        [
+                            'type'    => 'Label',
+                            'caption' => 'Vollschutz',
+                            'bold'    => true,
+                            'italic'  => true
+                        ]
+                    ]
                 ],
                 [
                     'type'  => 'RowLayout',
@@ -229,19 +297,23 @@ trait AZST_ConfigurationForm
                     ]
                 ],
                 [
-                    'type'    => 'CheckBox',
-                    'name'    => 'UseFullProtectionMode',
-                    'caption' => 'Aktiv'
-                ],
-                [
                     'type'    => 'Label',
                     'caption' => ' '
                 ],
                 [
-                    'type'    => 'Label',
-                    'caption' => 'Hüllschutz',
-                    'bold'    => true,
-                    'italic'  => true
+                    'type'  => 'RowLayout',
+                    'items' => [
+                        [
+                            'type' => 'CheckBox',
+                            'name' => 'UseHullProtectionMode'
+                        ],
+                        [
+                            'type'    => 'Label',
+                            'caption' => 'Hüllschutz',
+                            'bold'    => true,
+                            'italic'  => true
+                        ]
+                    ]
                 ],
                 [
                     'type'  => 'RowLayout',
@@ -273,19 +345,23 @@ trait AZST_ConfigurationForm
                     ]
                 ],
                 [
-                    'type'    => 'CheckBox',
-                    'name'    => 'UseHullProtectionMode',
-                    'caption' => 'Aktiv'
-                ],
-                [
                     'type'    => 'Label',
                     'caption' => ' '
                 ],
                 [
-                    'type'    => 'Label',
-                    'caption' => 'Teilschutz',
-                    'bold'    => true,
-                    'italic'  => true
+                    'type'  => 'RowLayout',
+                    'items' => [
+                        [
+                            'type' => 'CheckBox',
+                            'name' => 'UsePartialProtectionMode'
+                        ],
+                        [
+                            'type'    => 'Label',
+                            'caption' => 'Teilschutz',
+                            'bold'    => true,
+                            'italic'  => true
+                        ]
+                    ]
                 ],
                 [
                     'type'  => 'RowLayout',
@@ -316,19 +392,23 @@ trait AZST_ConfigurationForm
                     ]
                 ],
                 [
-                    'type'    => 'CheckBox',
-                    'name'    => 'UsePartialProtectionMode',
-                    'caption' => 'Aktiv'
-                ],
-                [
                     'type'    => 'Label',
                     'caption' => ' '
                 ],
                 [
-                    'type'    => 'Label',
-                    'caption' => 'Individualschutz',
-                    'bold'    => true,
-                    'italic'  => true
+                    'type'  => 'RowLayout',
+                    'items' => [
+                        [
+                            'type' => 'CheckBox',
+                            'name' => 'UseIndividualProtectionMode'
+                        ],
+                        [
+                            'type'    => 'Label',
+                            'caption' => 'Individualschutz',
+                            'bold'    => true,
+                            'italic'  => true
+                        ]
+                    ]
                 ],
                 [
                     'type'  => 'RowLayout',
@@ -357,11 +437,6 @@ trait AZST_ConfigurationForm
                             'caption' => 'Farbe'
                         ]
                     ]
-                ],
-                [
-                    'type'    => 'CheckBox',
-                    'name'    => 'UseIndividualProtectionMode',
-                    'caption' => 'Aktiv'
                 ]
             ]
         ];
@@ -369,6 +444,7 @@ trait AZST_ConfigurationForm
         //Alarm zones
         $alarmZoneValues = [];
         $alarmZones = json_decode($this->ReadPropertyString('AlarmZones'), true);
+        $amountAlarmZones = count($alarmZones) + 1;
         foreach ($alarmZones as $alarmZone) {
             if (!$alarmZone['Use']) {
                 continue;
@@ -384,6 +460,7 @@ trait AZST_ConfigurationForm
         //Protection mode
         $protectionModeValues = [];
         $variables = json_decode($this->ReadPropertyString('ProtectionMode'), true);
+        $amountProtectionMode = count($variables) + 1;
         foreach ($variables as $variable) {
             $rowColor = '#FFC0C0'; //red
             $id = $variable['ID'];
@@ -399,6 +476,7 @@ trait AZST_ConfigurationForm
         //System state
         $systemStateValues = [];
         $variables = json_decode($this->ReadPropertyString('SystemState'), true);
+        $amountSystemState = count($variables) + 1;
         foreach ($variables as $variable) {
             $rowColor = '#FFC0C0'; //red
             $id = $variable['ID'];
@@ -414,6 +492,7 @@ trait AZST_ConfigurationForm
         //System detailed state
         $systemDetailedStateValues = [];
         $variables = json_decode($this->ReadPropertyString('SystemDetailedState'), true);
+        $amountDetailedSystemState = count($variables) + 1;
         foreach ($variables as $variable) {
             $rowColor = '#FFC0C0'; //red
             $id = $variable['ID'];
@@ -429,6 +508,7 @@ trait AZST_ConfigurationForm
         //Alarm state
         $alarmStateValues = [];
         $variables = json_decode($this->ReadPropertyString('AlarmState'), true);
+        $amountAlarmState = count($variables) + 1;
         foreach ($variables as $variable) {
             $rowColor = '#FFC0C0'; //red
             $id = $variable['ID'];
@@ -444,6 +524,7 @@ trait AZST_ConfigurationForm
         //Alerting sensors
         $alertingSensorValues = [];
         $variables = json_decode($this->ReadPropertyString('AlertingSensor'), true);
+        $amountAlertingSensors = count($variables) + 1;
         foreach ($variables as $variable) {
             $rowColor = '#FFC0C0'; //red
             $id = $variable['ID'];
@@ -459,6 +540,7 @@ trait AZST_ConfigurationForm
         //Door and window states
         $doorWindowStateValues = [];
         $variables = json_decode($this->ReadPropertyString('DoorWindowState'), true);
+        $amountDoorWindowSensors = count($variables) + 1;
         foreach ($variables as $variable) {
             $rowColor = '#FFC0C0'; //red
             $id = $variable['ID'];
@@ -474,6 +556,7 @@ trait AZST_ConfigurationForm
         //Motion detector states
         $motionDetectorStateValues = [];
         $variables = json_decode($this->ReadPropertyString('MotionDetectorState'), true);
+        $amountMotionDetectors = count($variables) + 1;
         foreach ($variables as $variable) {
             $rowColor = '#FFC0C0'; //red
             $id = $variable['ID'];
@@ -486,9 +569,26 @@ trait AZST_ConfigurationForm
             $motionDetectorStateValues[] = ['rowColor' => $rowColor];
         }
 
+        //Glass breakage detector states
+        $glassBreakageDetectorStateValues = [];
+        $glassBreakageDetectors = json_decode($this->ReadPropertyString('GlassBreakageDetectorState'), true);
+        $amountGlassBreakageDetectors = count($glassBreakageDetectors) + 1;
+        foreach ($glassBreakageDetectors as $glassBreakageDetector) {
+            $rowColor = '#FFC0C0'; //red
+            $id = $glassBreakageDetector['ID'];
+            if ($id > 1 && @IPS_ObjectExists($id)) {
+                $rowColor = '#DFDFDF'; # grey
+                if ($glassBreakageDetector['Use']) {
+                    $rowColor = '#C0FFC0'; //light green
+                }
+            }
+            $glassBreakageDetectorStateValues[] = ['rowColor' => $rowColor];
+        }
+
         //Alarm sirens
         $alarmSirenValues = [];
         $variables = json_decode($this->ReadPropertyString('AlarmSiren'), true);
+        $amountAlarmSirens = count($variables) + 1;
         foreach ($variables as $variable) {
             $rowColor = '#FFC0C0'; //red
             $id = $variable['ID'];
@@ -504,6 +604,7 @@ trait AZST_ConfigurationForm
         //Alarm lights
         $alarmLightValues = [];
         $variables = json_decode($this->ReadPropertyString('AlarmLight'), true);
+        $amountAlarmLights = count($variables) + 1;
         foreach ($variables as $variable) {
             $rowColor = '#FFC0C0'; //red
             $id = $variable['ID'];
@@ -519,6 +620,7 @@ trait AZST_ConfigurationForm
         //Alarm calls
         $alarmCallValues = [];
         $variables = json_decode($this->ReadPropertyString('AlarmCall'), true);
+        $amountAlarmCalls = count($variables) + 1;
         foreach ($variables as $variable) {
             $rowColor = '#FFC0C0'; //red
             $id = $variable['ID'];
@@ -537,10 +639,105 @@ trait AZST_ConfigurationForm
             'caption' => 'Alarmzonen',
             'items'   => [
                 [
+                    'type'  => 'RowLayout',
+                    'items' => [
+                        [
+
+                            'type'    => 'PopupButton',
+                            'caption' => 'Alarmzonen ermitteln',
+                            'popup'   => [
+                                'caption' => 'Alarmzonen wirklich automatisch ermitteln?',
+                                'items'   => [
+                                    [
+                                        'type'    => 'Button',
+                                        'caption' => 'Ermitteln',
+                                        'onClick' => self::MODULE_PREFIX . '_DetermineAlarmZoneVariables($id);'
+                                    ],
+                                    [
+                                        'type'    => 'ProgressBar',
+                                        'name'    => 'DetermineAlarmZoneVariablesProgress',
+                                        'caption' => 'Fortschritt',
+                                        'minimum' => 0,
+                                        'maximum' => 100,
+                                        'visible' => false
+                                    ],
+                                    [
+                                        'type'    => 'Label',
+                                        'name'    => 'DetermineAlarmZoneVariablesProgressInfo',
+                                        'caption' => 'Alarmzone',
+                                        'visible' => false
+                                    ],
+                                    [
+                                        'type'     => 'List',
+                                        'name'     => 'DeterminedAlarmZoneList',
+                                        'caption'  => 'Alarmzonen',
+                                        'visible'  => false,
+                                        'rowCount' => 5,
+                                        'delete'   => true,
+                                        'sort'     => [
+                                            'column'    => 'ID',
+                                            'direction' => 'ascending'
+                                        ],
+                                        'columns' => [
+                                            [
+                                                'caption' => 'Übernehmen',
+                                                'name'    => 'Use',
+                                                'width'   => '100px',
+                                                'add'     => true,
+                                                'edit'    => [
+                                                    'type' => 'CheckBox'
+                                                ]
+                                            ],
+                                            [
+                                                'name'    => 'ID',
+                                                'caption' => 'ID',
+                                                'width'   => '80px',
+                                                'add'     => ''
+                                            ],
+                                            [
+                                                'caption' => 'Objektbaum',
+                                                'name'    => 'Location',
+                                                'width'   => '800px',
+                                                'add'     => ''
+                                            ]
+                                        ]
+                                    ],
+                                    [
+                                        'type'    => 'Button',
+                                        'name'    => 'ApplyPreAlarmZoneTriggerValues',
+                                        'caption' => 'Übernehmen',
+                                        'visible' => false,
+                                        'onClick' => self::MODULE_PREFIX . '_ApplyDeterminedAlarmZoneVariables($id, $DeterminedAlarmZoneList);'
+                                    ],
+                                    [
+                                        'type'    => 'ProgressBar',
+                                        'name'    => 'ApplyNewConfigurationProgress',
+                                        'caption' => 'Fortschritt',
+                                        'minimum' => 0,
+                                        'maximum' => 100,
+                                        'visible' => false
+                                    ],
+                                    [
+                                        'type'    => 'Label',
+                                        'name'    => 'ApplyNewConfigurationProgressInfo',
+                                        'caption' => 'Konfiguration',
+                                        'visible' => false
+                                    ]
+                                ]
+                            ]
+                        ],
+                        [
+                            'type'    => 'Button',
+                            'caption' => 'Neue Alarmzone erstellen',
+                            'onClick' => self::MODULE_PREFIX . '_CreateAlarmZoneInstance($id);'
+                        ]
+                    ]
+                ],
+                [
                     'type'     => 'List',
                     'name'     => 'AlarmZones',
                     'caption'  => 'Alarmzonen',
-                    'rowCount' => 6,
+                    'rowCount' => $amountAlarmZones,
                     'add'      => true,
                     'delete'   => true,
                     'columns'  => [
@@ -621,9 +818,60 @@ trait AZST_ConfigurationForm
                 ],
                 [
                     'type'     => 'List',
+                    'name'     => 'AlertingSensor',
+                    'caption'  => 'Auslösender Alarmmelder',
+                    'rowCount' => $amountAlertingSensors,
+                    'add'      => true,
+                    'delete'   => true,
+                    'columns'  => [
+                        [
+                            'name'    => 'Use',
+                            'caption' => 'Aktiviert',
+                            'width'   => '100px',
+                            'add'     => true,
+                            'edit'    => [
+                                'type' => 'CheckBox'
+                            ]
+                        ],
+                        [
+                            'name'    => 'ID',
+                            'caption' => 'Variable',
+                            'width'   => '450px',
+                            'add'     => 0,
+                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "AlertingSensorConfigurationButton", "ID " . $AlertingSensor["ID"] . " bearbeiten", $AlertingSensor["ID"]);',
+                            'edit'    => [
+                                'type' => 'SelectVariable'
+                            ]
+                        ],
+                        [
+                            'caption' => 'Bezeichnung',
+                            'name'    => 'Designation',
+                            'width'   => '400px',
+                            'add'     => '',
+                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "AlertingSensorConfigurationButton", "ID " . $AlertingSensor["ID"] . " bearbeiten", $AlertingSensor["ID"]);',
+                            'edit'    => [
+                                'type' => 'ValidationTextBox'
+                            ]
+                        ]
+                    ],
+                    'values' => $alertingSensorValues,
+                ],
+                [
+                    'type'     => 'OpenObjectButton',
+                    'caption'  => 'Bearbeiten',
+                    'name'     => 'AlertingSensorConfigurationButton',
+                    'visible'  => false,
+                    'objectID' => 0
+                ],
+                [
+                    'type'    => 'Label',
+                    'caption' => ' '
+                ],
+                [
+                    'type'     => 'List',
                     'name'     => 'ProtectionMode',
                     'caption'  => 'Modus',
-                    'rowCount' => 6,
+                    'rowCount' => $amountProtectionMode,
                     'add'      => true,
                     'delete'   => true,
                     'columns'  => [
@@ -674,7 +922,7 @@ trait AZST_ConfigurationForm
                     'type'     => 'List',
                     'name'     => 'SystemState',
                     'caption'  => 'Systemstatus',
-                    'rowCount' => 6,
+                    'rowCount' => $amountSystemState,
                     'add'      => true,
                     'delete'   => true,
                     'columns'  => [
@@ -725,7 +973,7 @@ trait AZST_ConfigurationForm
                     'type'     => 'List',
                     'name'     => 'SystemDetailedState',
                     'caption'  => 'Detaillierter Systemstatus',
-                    'rowCount' => 6,
+                    'rowCount' => $amountDetailedSystemState,
                     'add'      => true,
                     'delete'   => true,
                     'columns'  => [
@@ -776,7 +1024,7 @@ trait AZST_ConfigurationForm
                     'type'     => 'List',
                     'name'     => 'AlarmState',
                     'caption'  => 'Alarmstatus',
-                    'rowCount' => 6,
+                    'rowCount' => $amountAlarmState,
                     'add'      => true,
                     'delete'   => true,
                     'columns'  => [
@@ -825,60 +1073,9 @@ trait AZST_ConfigurationForm
                 ],
                 [
                     'type'     => 'List',
-                    'name'     => 'AlertingSensor',
-                    'caption'  => 'Auslösender Alarmsensor',
-                    'rowCount' => 6,
-                    'add'      => true,
-                    'delete'   => true,
-                    'columns'  => [
-                        [
-                            'name'    => 'Use',
-                            'caption' => 'Aktiviert',
-                            'width'   => '100px',
-                            'add'     => true,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'name'    => 'ID',
-                            'caption' => 'Variable',
-                            'width'   => '450px',
-                            'add'     => 0,
-                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "AlertingSensorConfigurationButton", "ID " . $AlertingSensor["ID"] . " bearbeiten", $AlertingSensor["ID"]);',
-                            'edit'    => [
-                                'type' => 'SelectVariable'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Bezeichnung',
-                            'name'    => 'Designation',
-                            'width'   => '400px',
-                            'add'     => '',
-                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "AlertingSensorConfigurationButton", "ID " . $AlertingSensor["ID"] . " bearbeiten", $AlertingSensor["ID"]);',
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ]
-                    ],
-                    'values' => $alertingSensorValues,
-                ],
-                [
-                    'type'     => 'OpenObjectButton',
-                    'caption'  => 'Bearbeiten',
-                    'name'     => 'AlertingSensorConfigurationButton',
-                    'visible'  => false,
-                    'objectID' => 0
-                ],
-                [
-                    'type'    => 'Label',
-                    'caption' => ' '
-                ],
-                [
-                    'type'     => 'List',
                     'name'     => 'DoorWindowState',
                     'caption'  => 'Tür- und Fensterstatus',
-                    'rowCount' => 6,
+                    'rowCount' => $amountDoorWindowSensors,
                     'add'      => true,
                     'delete'   => true,
                     'columns'  => [
@@ -929,7 +1126,7 @@ trait AZST_ConfigurationForm
                     'type'     => 'List',
                     'name'     => 'MotionDetectorState',
                     'caption'  => 'Bewegungsmelderstatus',
-                    'rowCount' => 6,
+                    'rowCount' => $amountMotionDetectors,
                     'add'      => true,
                     'delete'   => true,
                     'columns'  => [
@@ -978,9 +1175,59 @@ trait AZST_ConfigurationForm
                 ],
                 [
                     'type'     => 'List',
+                    'name'     => 'GlassBreakageDetectorState',
+                    'caption'  => 'Glasbruchmelderstatus',
+                    'rowCount' => $amountGlassBreakageDetectors,
+                    'add'      => true,
+                    'delete'   => true,
+                    'columns'  => [
+                        [
+                            'name'    => 'Use',
+                            'caption' => 'Aktiviert',
+                            'width'   => '100px',
+                            'add'     => true,
+                            'edit'    => [
+                                'type' => 'CheckBox'
+                            ]
+                        ],
+                        [
+                            'name'    => 'ID',
+                            'caption' => 'Variable',
+                            'width'   => '450px',
+                            'add'     => 0,
+                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "GlassBreakageDetectorStateConfigurationButton", "ID " . $GlassBreakageDetectorState["ID"] . " bearbeiten", $GlassBreakageDetectorState["ID"]);',
+                            'edit'    => [
+                                'type' => 'SelectVariable'
+                            ]
+                        ],
+                        [
+                            'caption' => 'Bezeichnung',
+                            'name'    => 'Designation',
+                            'width'   => '400px',
+                            'add'     => '',
+                            'edit'    => [
+                                'type' => 'ValidationTextBox'
+                            ]
+                        ]
+                    ],
+                    'values' => $glassBreakageDetectorStateValues,
+                ],
+                [
+                    'type'     => 'OpenObjectButton',
+                    'caption'  => 'Bearbeiten',
+                    'name'     => 'GlassBreakageDetectorStateConfigurationButton',
+                    'visible'  => false,
+                    'objectID' => 0
+                ],
+                [
+                    'type'    => 'Label',
+                    'caption' => ' '
+                ],
+                [
+                    'type'     => 'List',
                     'name'     => 'AlarmSiren',
                     'caption'  => 'Alarmsirene',
-                    'rowCount' => 6,
+                    'rowCount' => $amountAlarmSirens,
                     'add'      => true,
                     'delete'   => true,
                     'columns'  => [
@@ -1031,7 +1278,7 @@ trait AZST_ConfigurationForm
                     'type'     => 'List',
                     'name'     => 'AlarmLight',
                     'caption'  => 'Alarmbeleuchtung',
-                    'rowCount' => 6,
+                    'rowCount' => $amountAlarmLights,
                     'add'      => true,
                     'delete'   => true,
                     'columns'  => [
@@ -1082,7 +1329,7 @@ trait AZST_ConfigurationForm
                     'type'     => 'List',
                     'name'     => 'AlarmCall',
                     'caption'  => 'Alarmanruf',
-                    'rowCount' => 6,
+                    'rowCount' => $amountAlarmCalls,
                     'add'      => true,
                     'delete'   => true,
                     'columns'  => [
@@ -1128,6 +1375,12 @@ trait AZST_ConfigurationForm
             ]
         ];
 
+        $disarmedActionVisible = $this->ReadPropertyBoolean('UseDisarmedAction');
+        $fullProtectionActionVisible = $this->ReadPropertyBoolean('UseFullProtectionAction');
+        $hullProtectionActionVisible = $this->ReadPropertyBoolean('UseHullProtectionAction');
+        $partialProtectionActionVisible = $this->ReadPropertyBoolean('UsePartialProtectionAction');
+        $individualProtectionActionVisible = $this->ReadPropertyBoolean('UseIndividualProtectionAction');
+
         //Actions
         $form['elements'][] = [
             'type'    => 'ExpansionPanel',
@@ -1135,95 +1388,109 @@ trait AZST_ConfigurationForm
             'caption' => 'Aktionen',
             'items'   => [
                 [
-                    'type'    => 'Label',
-                    'caption' => 'Unscharf',
-                    'bold'    => true,
-                    'italic'  => true
+                    'type'  => 'RowLayout',
+                    'items' => [
+                        [
+                            'type'     => 'CheckBox',
+                            'name'     => 'UseDisarmedAction',
+                            'onChange' => self::MODULE_PREFIX . '_HideAction($id, "DisarmedAction", $UseDisarmedAction);'
+                        ],
+                        [
+                            'type'    => 'Label',
+                            'caption' => 'Unscharf',
+                            'bold'    => true,
+                            'italic'  => true
+                        ]
+                    ]
                 ],
                 [
-                    'type'    => 'CheckBox',
-                    'name'    => 'UseDisarmedAction',
-                    'caption' => 'Aktiv'
+                    'type'    => 'SelectAction',
+                    'name'    => 'DisarmedAction',
+                    'visible' => $disarmedActionVisible
                 ],
                 [
-                    'type' => 'SelectAction',
-                    'name' => 'DisarmedAction'
+                    'type'  => 'RowLayout',
+                    'items' => [
+                        [
+                            'type'     => 'CheckBox',
+                            'name'     => 'UseFullProtectionAction',
+                            'onChange' => self::MODULE_PREFIX . '_HideAction($id, "FullProtectionAction", $UseFullProtectionAction);'
+                        ],
+                        [
+                            'type'    => 'Label',
+                            'caption' => 'Vollschutz',
+                            'bold'    => true,
+                            'italic'  => true
+                        ]
+                    ]
                 ],
                 [
-                    'type'    => 'Label',
-                    'caption' => ' '
+                    'type'    => 'SelectAction',
+                    'name'    => 'FullProtectionAction',
+                    'visible' => $fullProtectionActionVisible
                 ],
                 [
-                    'type'    => 'Label',
-                    'caption' => 'Vollschutz',
-                    'bold'    => true,
-                    'italic'  => true
+                    'type'  => 'RowLayout',
+                    'items' => [
+                        [
+                            'type'     => 'CheckBox',
+                            'name'     => 'UseHullProtectionAction',
+                            'onChange' => self::MODULE_PREFIX . '_HideAction($id, "HullProtectionAction", $UseHullProtectionAction);'
+                        ],
+                        [
+                            'type'    => 'Label',
+                            'caption' => 'Hüllschutz',
+                            'bold'    => true,
+                            'italic'  => true
+                        ]
+                    ]
                 ],
                 [
-                    'type'    => 'CheckBox',
-                    'name'    => 'UseFullProtectionAction',
-                    'caption' => 'Aktiv'
+                    'type'    => 'SelectAction',
+                    'name'    => 'HullProtectionAction',
+                    'visible' => $hullProtectionActionVisible
                 ],
                 [
-                    'type' => 'SelectAction',
-                    'name' => 'FullProtectionAction'
+                    'type'  => 'RowLayout',
+                    'items' => [
+                        [
+                            'type'     => 'CheckBox',
+                            'name'     => 'UsePartialProtectionAction',
+                            'onChange' => self::MODULE_PREFIX . '_HideAction($id, "PartialProtectionAction", $UsePartialProtectionAction);'
+                        ],
+                        [
+                            'type'    => 'Label',
+                            'caption' => 'Teilschutz',
+                            'bold'    => true,
+                            'italic'  => true
+                        ]
+                    ]
                 ],
                 [
-                    'type'    => 'Label',
-                    'caption' => ' '
+                    'type'    => 'SelectAction',
+                    'name'    => 'PartialProtectionAction',
+                    'visible' => $partialProtectionActionVisible
                 ],
                 [
-                    'type'    => 'Label',
-                    'caption' => 'Hüllschutz',
-                    'bold'    => true,
-                    'italic'  => true
+                    'type'  => 'RowLayout',
+                    'items' => [
+                        [
+                            'type'     => 'CheckBox',
+                            'name'     => 'UseIndividualProtectionAction',
+                            'onChange' => self::MODULE_PREFIX . '_HideAction($id, "IndividualProtectionAction", $UseIndividualProtectionAction);'
+                        ],
+                        [
+                            'type'    => 'Label',
+                            'caption' => 'Individualschutz',
+                            'bold'    => true,
+                            'italic'  => true
+                        ]
+                    ]
                 ],
                 [
-                    'type'    => 'CheckBox',
-                    'name'    => 'UseHullProtectionAction',
-                    'caption' => 'Aktiv'
-                ],
-                [
-                    'type' => 'SelectAction',
-                    'name' => 'HullProtectionAction'
-                ],
-                [
-                    'type'    => 'Label',
-                    'caption' => ' '
-                ],
-                [
-                    'type'    => 'Label',
-                    'caption' => 'Teilschutz',
-                    'bold'    => true,
-                    'italic'  => true
-                ],
-                [
-                    'type'    => 'CheckBox',
-                    'name'    => 'UsePartialProtectionAction',
-                    'caption' => 'Aktiv'
-                ],
-                [
-                    'type' => 'SelectAction',
-                    'name' => 'PartialProtectionAction'
-                ],
-                [
-                    'type'    => 'Label',
-                    'caption' => ' '
-                ],
-                [
-                    'type'    => 'Label',
-                    'caption' => 'Individualschutz',
-                    'bold'    => true,
-                    'italic'  => true
-                ],
-                [
-                    'type'    => 'CheckBox',
-                    'name'    => 'UseIndividualProtectionAction',
-                    'caption' => 'Aktiv'
-                ],
-                [
-                    'type' => 'SelectAction',
-                    'name' => 'IndividualProtectionAction'
+                    'type'    => 'SelectAction',
+                    'name'    => 'IndividualProtectionAction',
+                    'visible' => $individualProtectionActionVisible
                 ]
             ]
         ];
@@ -1259,6 +1526,26 @@ trait AZST_ConfigurationForm
                     'type'    => 'CheckBox',
                     'name'    => 'EnableLocation',
                     'caption' => 'Standortbezeichnung'
+                ],
+                [
+                    'type'    => 'Label',
+                    'caption' => ' '
+                ],
+                [
+                    'type'    => 'Label',
+                    'caption' => 'Alarm',
+                    'bold'    => true,
+                    'italic'  => true
+                ],
+                [
+                    'type'    => 'CheckBox',
+                    'name'    => 'EnableAlarmSwitch',
+                    'caption' => 'Alarm'
+                ],
+                [
+                    'type'    => 'CheckBox',
+                    'name'    => 'EnableAlertingSensor',
+                    'caption' => 'Auslösender Alarmmelder'
                 ],
                 [
                     'type'    => 'Label',
@@ -1337,13 +1624,23 @@ trait AZST_ConfigurationForm
                 ],
                 [
                     'type'    => 'CheckBox',
+                    'name'    => 'EnableGlassBreakageDetectorState',
+                    'caption' => 'Glasbruchmelderstatus'
+                ],
+                [
+                    'type'    => 'CheckBox',
                     'name'    => 'EnableAlarmState',
                     'caption' => 'Alarmstatus'
                 ],
                 [
-                    'type'    => 'CheckBox',
-                    'name'    => 'EnableAlertingSensor',
-                    'caption' => 'Auslösender Alarmsensor'
+                    'type'    => 'Label',
+                    'caption' => ' '
+                ],
+                [
+                    'type'    => 'Label',
+                    'caption' => 'Alarmauslösung',
+                    'bold'    => true,
+                    'italic'  => true
                 ],
                 [
                     'type'    => 'CheckBox',
@@ -1367,53 +1664,6 @@ trait AZST_ConfigurationForm
 
         $form['actions'][] =
             [
-                'type'  => 'RowLayout',
-                'items' => [
-                    [
-
-                        'type'    => 'PopupButton',
-                        'caption' => 'Alarmzonen ermitteln',
-                        'popup'   => [
-                            'caption' => 'Alarmzonen wirklich automatisch ermitteln?',
-                            'items'   => [
-                                [
-                                    'type'    => 'Button',
-                                    'caption' => 'Ermitteln',
-                                    'onClick' => self::MODULE_PREFIX . '_DetermineAlarmZoneVariables($id);'
-                                ],
-                                [
-                                    'type'    => 'ProgressBar',
-                                    'name'    => 'DetermineAlarmZoneVariablesProgress',
-                                    'caption' => 'Fortschritt',
-                                    'minimum' => 0,
-                                    'maximum' => 100,
-                                    'visible' => false
-                                ],
-                                [
-                                    'type'    => 'Label',
-                                    'name'    => 'DetermineAlarmZoneVariablesProgressInfo',
-                                    'caption' => 'Alarmzone',
-                                    'visible' => false
-                                ]
-                            ]
-                        ]
-                    ],
-                    [
-                        'type'    => 'Button',
-                        'caption' => 'Neue Alarmzone erstellen',
-                        'onClick' => self::MODULE_PREFIX . '_CreateAlarmZoneInstance($id);'
-                    ]
-                ]
-            ];
-
-        $form['actions'][] =
-            [
-                'type'    => 'Label',
-                'caption' => ' '
-            ];
-
-        $form['actions'][] =
-            [
                 'type'    => 'Label',
                 'caption' => 'Schaltelemente'
             ];
@@ -1434,27 +1684,34 @@ trait AZST_ConfigurationForm
         //Registered references
         $registeredReferences = [];
         $references = $this->GetReferenceList();
+        $amountReferences = count($references) + 1;
         foreach ($references as $reference) {
             $name = 'Objekt #' . $reference . ' existiert nicht';
+            $location = '';
             $rowColor = '#FFC0C0'; //red
             if (@IPS_ObjectExists($reference)) {
                 $name = IPS_GetName($reference);
+                $location = IPS_GetLocation($reference);
                 $rowColor = '#C0FFC0'; //light green
             }
             $registeredReferences[] = [
-                'ObjectID' => $reference,
-                'Name'     => $name,
-                'rowColor' => $rowColor];
+                'ObjectID'         => $reference,
+                'Name'             => $name,
+                'VariableLocation' => $location,
+                'rowColor'         => $rowColor];
         }
 
         //Registered messages
         $registeredMessages = [];
         $messages = $this->GetMessageList();
+        $amountMessages = count($messages) + 1;
         foreach ($messages as $id => $messageID) {
             $name = 'Objekt #' . $id . ' existiert nicht';
+            $location = '';
             $rowColor = '#FFC0C0'; //red
             if (@IPS_ObjectExists($id)) {
                 $name = IPS_GetName($id);
+                $location = IPS_GetLocation($id);
                 $rowColor = '#C0FFC0'; //light green
             }
             switch ($messageID) {
@@ -1472,6 +1729,7 @@ trait AZST_ConfigurationForm
             $registeredMessages[] = [
                 'ObjectID'           => $id,
                 'Name'               => $name,
+                'VariableLocation'   => $location,
                 'MessageID'          => $messageID,
                 'MessageDescription' => $messageDescription,
                 'rowColor'           => $rowColor];
@@ -1483,10 +1741,15 @@ trait AZST_ConfigurationForm
             'expanded' => false,
             'items'    => [
                 [
+                    'type'    => 'Label',
+                    'caption' => 'Registrierte Referenzen',
+                    'bold'    => true,
+                    'italic'  => true
+                ],
+                [
                     'type'     => 'List',
                     'name'     => 'RegisteredReferences',
-                    'caption'  => 'Registrierte Referenzen',
-                    'rowCount' => 10,
+                    'rowCount' => $amountReferences,
                     'sort'     => [
                         'column'    => 'ObjectID',
                         'direction' => 'ascending'
@@ -1501,8 +1764,12 @@ trait AZST_ConfigurationForm
                         [
                             'caption' => 'Name',
                             'name'    => 'Name',
-                            'width'   => '300px',
-                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "RegisteredReferencesConfigurationButton", "ID " . $RegisteredReferences["ObjectID"] . " bearbeiten", $RegisteredReferences["ObjectID"]);'
+                            'width'   => '300px'
+                        ],
+                        [
+                            'caption' => 'Objektbaum',
+                            'name'    => 'VariableLocation',
+                            'width'   => '700px'
                         ]
                     ],
                     'values' => $registeredReferences
@@ -1519,10 +1786,15 @@ trait AZST_ConfigurationForm
                     'caption' => ' '
                 ],
                 [
+                    'type'    => 'Label',
+                    'caption' => 'Registrierte Nachrichten',
+                    'bold'    => true,
+                    'italic'  => true
+                ],
+                [
                     'type'     => 'List',
                     'name'     => 'RegisteredMessages',
-                    'caption'  => 'Registrierte Nachrichten',
-                    'rowCount' => 10,
+                    'rowCount' => $amountMessages,
                     'sort'     => [
                         'column'    => 'ObjectID',
                         'direction' => 'ascending'
@@ -1537,8 +1809,12 @@ trait AZST_ConfigurationForm
                         [
                             'caption' => 'Name',
                             'name'    => 'Name',
-                            'width'   => '300px',
-                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "RegisteredMessagesConfigurationButton", "ID " . $RegisteredMessages["ObjectID"] . " bearbeiten", $RegisteredMessages["ObjectID"]);'
+                            'width'   => '300px'
+                        ],
+                        [
+                            'caption' => 'Objektbaum',
+                            'name'    => 'VariableLocation',
+                            'width'   => '700px'
                         ],
                         [
                             'caption' => 'Nachrichten ID',

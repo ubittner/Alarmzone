@@ -1,13 +1,14 @@
 <?php
 
 /**
- * @project       Alarmzone/Alarmzone
+ * @project       Alarmzone/Alarmzone/helper/
  * @file          AZ_Control.php
  * @author        Ulrich Bittner
- * @copyright     2022 Ulrich Bittner
+ * @copyright     2023 Ulrich Bittner
  * @license       https://creativecommons.org/licenses/by-nc-sa/4.0/ CC BY-NC-SA 4.0
  */
 
+/** @noinspection SpellCheckingInspection */
 /** @noinspection DuplicatedCode */
 
 declare(strict_types=1);
@@ -121,6 +122,54 @@ trait AZ_Control
             }
             //Action
             $this->ExecuteAction($mode, (string) $this->InstanceID);
+        }
+    }
+
+    /**
+     * Sets an alarm.
+     *
+     * @param bool $State
+     * false =  no alarm
+     * true =   alarm
+     *
+     * @return void
+     * @throws Exception
+     */
+    public function SetAlarm(bool $State): void
+    {
+        if (!$State) {
+            if ($this->ReadPropertyBoolean('UseDisarmAlarmZoneWhenAlarmSwitchIsOff')) {
+                $this->SelectProtectionMode(0, (string) $this->GetIDForIdent('AlarmSwitch'));
+            } else {
+                $this->SetValue('AlarmSwitch', false);
+                $this->SetValue('AlarmState', 0);
+                $this->SetValue('AlertingSensor', '');
+                $this->SetValue('AlarmSiren', false);
+                $this->SetValue('AlarmLight', false);
+                $this->SetValue('AlarmCall', false);
+            }
+        } else {
+            $alarm = false;
+            $useAlarmSiren = $this->ReadPropertyBoolean('UseAlarmSirenWhenAlarmSwitchIsOn');
+            $useAlarmLight = $this->ReadPropertyBoolean('UseAlarmLightWhenAlarmSwitchIsOn');
+            $useAlarmCall = $this->ReadPropertyBoolean('UseAlarmCallWhenAlarmSwitchIsOn');
+            if ($useAlarmSiren || $useAlarmLight || $useAlarmCall) {
+                $alarm = true;
+            }
+            if ($alarm) {
+                $this->SetValue('AlarmSwitch', true);
+                $this->SetValue('AlarmState', 1);
+                $this->SetValue('AlertingSensor', $this->ReadPropertyString('AlertingSensorNameWhenAlarmSwitchIsOn'));
+                if ($useAlarmSiren) {
+                    $this->SetValue('AlarmSiren', true);
+                }
+                if ($useAlarmLight) {
+                    $this->SetValue('AlarmLight', true);
+                }
+                if ($useAlarmCall) {
+                    $this->SetValue('AlarmCall', true);
+                }
+            }
         }
     }
 
@@ -333,6 +382,8 @@ trait AZ_Control
     {
         $this->SendDebug(__FUNCTION__, 'wird ausgeführt', 0);
         $this->ResetBlacklist();
+        $this->SetValue('AlarmSwitch', false);
+        $this->SetValue('AlertingSensor', '');
         $this->SetValue('FullProtectionControlSwitch', false);
         $this->SetValue('HullProtectionControlSwitch', false);
         $this->SetValue('PartialProtectionControlSwitch', false);
@@ -340,7 +391,6 @@ trait AZ_Control
         $this->SetValue('AlarmZoneState', 0);
         $this->SetValue('AlarmZoneDetailedState', 0);
         $this->SetValue('AlarmState', 0);
-        $this->SetValue('AlertingSensor', '');
         $this->SetValue('AlarmSiren', false);
         $this->SetValue('AlarmLight', false);
         $this->SetValue('AlarmCall', false);
@@ -369,6 +419,7 @@ trait AZ_Control
             case 0: # disarmed
                 switch ($SenderID) {
                     case $this->InstanceID:
+                    case $this->GetIDForIdent('AlarmSwitch'):
                     case $this->GetIDForIdent('FullProtectionControlSwitch'):
                     case $this->GetIDForIdent('HullProtectionControlSwitch'):
                     case $this->GetIDForIdent('PartialProtectionControlSwitch'):

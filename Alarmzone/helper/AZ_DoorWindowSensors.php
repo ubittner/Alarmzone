@@ -1,15 +1,16 @@
 <?php
 
 /**
- * @project       Alarmzone/Alarmzone
+ * @project       Alarmzone/Alarmzone/helper/
  * @file          AZ_DoorWindowSensors.php
  * @author        Ulrich Bittner
- * @copyright     2022 Ulrich Bittner
+ * @copyright     2023 Ulrich Bittner
  * @license       https://creativecommons.org/licenses/by-nc-sa/4.0/ CC BY-NC-SA 4.0
  */
 
 /** @noinspection PhpUnhandledExceptionInspection */
 /** @noinspection PhpUndefinedFunctionInspection */
+/** @noinspection SpellCheckingInspection */
 /** @noinspection DuplicatedCode */
 
 declare(strict_types=1);
@@ -17,11 +18,193 @@ declare(strict_types=1);
 trait AZ_DoorWindowSensors
 {
     /**
+     * Checks the determination value.
+     *
+     * @param int $DoorWindowDeterminationType
+     * @return void
+     */
+    public function CheckDoorWindowDeterminationValue(int $DoorWindowDeterminationType): void
+    {
+        $profileSelection = false;
+        $determinationValue = false;
+        //Profile selection
+        if ($DoorWindowDeterminationType == 0) {
+            $profileSelection = true;
+        }
+        //Custom ident
+        if ($DoorWindowDeterminationType == 2) {
+            $this->UpdateFormfield('DoorWindowDeterminationValue', 'caption', 'Identifikator');
+            $determinationValue = true;
+        }
+        $this->UpdateFormfield('DoorWindowSensorDeterminationProfileSelection', 'visible', $profileSelection);
+        $this->UpdateFormfield('DoorWindowDeterminationValue', 'visible', $determinationValue);
+    }
+
+    /**
+     * Determines the variables.
+     *
+     * @param int $DeterminationType
+     * @param string $DeterminationValue
+     * @param string $ProfileSelection
+     * @return void
+     * @throws Exception
+     */
+    public function DetermineDoorWindowVariables(int $DeterminationType, string $DeterminationValue, string $ProfileSelection = ''): void
+    {
+        $this->SendDebug(__FUNCTION__, 'wird ausgeführt', 0);
+        $this->SendDebug(__FUNCTION__, 'Auswahl: ' . $DeterminationType, 0);
+        $this->SendDebug(__FUNCTION__, 'Identifikator: ' . $DeterminationValue, 0);
+        //Set minimum an d maximum of existing variables
+        $this->UpdateFormField('DoorWindowSensorDeterminationProgress', 'minimum', 0);
+        $maximumVariables = count(IPS_GetVariableList());
+        $this->UpdateFormField('DoorWindowSensorDeterminationProgress', 'maximum', $maximumVariables);
+        //Determine variables first
+        $determineIdent = false;
+        $determineProfile = false;
+        $determinedVariables = [];
+        $passedVariables = 0;
+        foreach (@IPS_GetVariableList() as $variable) {
+            switch ($DeterminationType) {
+                case 0: //Profile: Select profile
+                    if ($ProfileSelection == '') {
+                        $infoText = 'Abbruch, es wurde kein Profil ausgewählt!';
+                        $this->UpdateFormField('InfoMessage', 'visible', true);
+                        $this->UpdateFormField('InfoMessageLabel', 'caption', $infoText);
+                        return;
+                    } else {
+                        $determineProfile = true;
+                    }
+                    break;
+
+                case 1: //Ident: STATE
+                    $determineIdent = true;
+                    break;
+
+                case 2: //Custom Ident
+                    if ($DeterminationValue == '') {
+                        $infoText = 'Abbruch, es wurde kein Identifikator angegeben!';
+                        $this->UpdateFormField('InfoMessage', 'visible', true);
+                        $this->UpdateFormField('InfoMessageLabel', 'caption', $infoText);
+                        return;
+                    } else {
+                        $determineIdent = true;
+                    }
+                    break;
+
+            }
+            $passedVariables++;
+            $this->UpdateFormField('DoorWindowSensorDeterminationProgress', 'visible', true);
+            $this->UpdateFormField('DoorWindowSensorDeterminationProgress', 'current', $passedVariables);
+            $this->UpdateFormField('DoorWindowSensorDeterminationProgressInfo', 'visible', true);
+            $this->UpdateFormField('DoorWindowSensorDeterminationProgressInfo', 'caption', $passedVariables . '/' . $maximumVariables);
+            IPS_Sleep(10);
+
+            ##### Profile
+
+            //Determine via profile
+            if ($determineProfile && !$determineIdent) {
+                //Select profile
+                if ($DeterminationType == 0) {
+                    $profileNames = $ProfileSelection;
+                }
+                if (isset($profileNames)) {
+                    $profileNames = str_replace(' ', '', $profileNames);
+                    $profileNames = explode(',', $profileNames);
+                    foreach ($profileNames as $profileName) {
+                        $variableData = IPS_GetVariable($variable);
+                        if ($variableData['VariableCustomProfile'] == $profileName || $variableData['VariableProfile'] == $profileName) {
+                            $location = @IPS_GetLocation($variable);
+                            $determinedVariables[] = [
+                                'Use'      => false,
+                                'ID'       => $variable,
+                                'Location' => $location];
+                        }
+                    }
+                }
+            }
+
+            ##### Ident
+
+            //Determine via ident
+            if ($determineIdent && !$determineProfile) {
+                switch ($DeterminationType) {
+                    case 1: //State
+                        $objectIdents = 'STATE';
+                        break;
+
+                    case 2: //Custom ident
+                        $objectIdents = $DeterminationValue;
+                        break;
+
+                }
+                if (isset($objectIdents)) {
+                    $objectIdents = str_replace(' ', '', $objectIdents);
+                    $objectIdents = explode(',', $objectIdents);
+                    foreach ($objectIdents as $objectIdent) {
+                        $object = @IPS_GetObject($variable);
+                        if ($object['ObjectIdent'] == $objectIdent) {
+                            $location = @IPS_GetLocation($variable);
+                            $determinedVariables[] = [
+                                'Use'      => false,
+                                'ID'       => $variable,
+                                'Location' => $location];
+                        }
+                    }
+                }
+            }
+        }
+        $amount = count($determinedVariables);
+        //Get already listed variables
+        $listedVariables = json_decode($this->ReadPropertyString('DoorWindowSensors'), true);
+        foreach ($listedVariables as $listedVariable) {
+            if (array_key_exists('PrimaryCondition', $listedVariable)) {
+                $primaryCondition = json_decode($listedVariable['PrimaryCondition'], true);
+                if ($primaryCondition != '') {
+                    if (array_key_exists(0, $primaryCondition)) {
+                        if (array_key_exists(0, $primaryCondition[0]['rules']['variable'])) {
+                            $listedVariableID = $primaryCondition[0]['rules']['variable'][0]['variableID'];
+                            if ($listedVariableID > 1 && @IPS_ObjectExists($listedVariableID)) {
+                                foreach ($determinedVariables as $key => $determinedVariable) {
+                                    $determinedVariableID = $determinedVariable['ID'];
+                                    if ($determinedVariableID > 1 && @IPS_ObjectExists($determinedVariableID)) {
+                                        //Check if variable id is already a listed variable id
+                                        if ($determinedVariableID == $listedVariableID) {
+                                            unset($determinedVariables[$key]);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if (empty($determinedVariables)) {
+            $this->UpdateFormField('DoorWindowSensorDeterminationProgress', 'visible', false);
+            $this->UpdateFormField('DoorWindowSensorDeterminationProgressInfo', 'visible', false);
+            if ($amount > 0) {
+                $infoText = 'Es wurden keine weiteren Variablen gefunden!';
+            } else {
+                $infoText = 'Es wurden keine Variablen gefunden!';
+            }
+            $this->UpdateFormField('InfoMessage', 'visible', true);
+            $this->UpdateFormField('InfoMessageLabel', 'caption', $infoText);
+            return;
+        }
+        $determinedVariables = array_values($determinedVariables);
+        $this->UpdateFormField('DeterminedDoorWindowVariableList', 'visible', true);
+        $this->UpdateFormField('DeterminedDoorWindowVariableList', 'rowCount', count($determinedVariables));
+        $this->UpdateFormField('DeterminedDoorWindowVariableList', 'values', json_encode($determinedVariables));
+        $this->UpdateFormField('OverwriteDoorWindowVariableProfiles', 'visible', true);
+        $this->UpdateFormField('ApplyPreDoorWindowTriggerValues', 'visible', true);
+    }
+
+    /**
      * Applies the determined variables to the trigger list.
      *
      * @param object $ListValues
      * @param bool $OverwriteVariableProfiles
-     * false =  don't overwrite
+     * false =  don't overwrite,
      * true =   overwrite
      *
      * @return void
@@ -105,19 +288,19 @@ trait AZ_DoorWindowSensors
                 'PrimaryCondition'                      => json_encode($primaryCondition),
                 'SecondaryCondition'                    => '[]',
                 'FullProtectionModeActive'              => true,
-                'HullProtectionModeActive'              => false,
-                'PartialProtectionModeActive'           => false,
                 'CheckFullProtectionActivation'         => false,
+                'HullProtectionModeActive'              => false,
                 'CheckHullProtectionActivation'         => false,
+                'PartialProtectionModeActive'           => false,
                 'CheckPartialProtectionActivation'      => false,
-                'UseAlarmProtocol'                      => true,
                 'OpenDoorWindowStatusVerificationDelay' => 0,
                 'UseNotification'                       => true,
                 'UseAlarmSiren'                         => true,
                 'UseAlarmLight'                         => false,
                 'UseAlarmCall'                          => false,
                 'UseAlertingAction'                     => false,
-                'AlertingAction'                        => '[]'];
+                'AlertingAction'                        => '[]',
+                'UseAlarmProtocol'                      => true];
         }
         //Get already listed variables
         $listedVariables = json_decode($this->ReadPropertyString('DoorWindowSensors'), true);
@@ -168,203 +351,6 @@ trait AZ_DoorWindowSensors
         if (@IPS_HasChanges($this->InstanceID)) {
             @IPS_ApplyChanges($this->InstanceID);
         }
-    }
-
-    /**
-     * Determines the variables.
-     *
-     * @param int $DeterminationType
-     * @param string $DeterminationValue
-     * @param string $ProfileSelection
-     * @return void
-     * @throws Exception
-     */
-    public function DetermineDoorWindowVariables(int $DeterminationType, string $DeterminationValue, string $ProfileSelection = ''): void
-    {
-        $this->SendDebug(__FUNCTION__, 'wird ausgeführt', 0);
-        $this->SendDebug(__FUNCTION__, 'Auswahl: ' . $DeterminationType, 0);
-        $this->SendDebug(__FUNCTION__, 'Identifikator: ' . $DeterminationValue, 0);
-        //Set minimum an d maximum of existing variables
-        $this->UpdateFormField('DoorWindowSensorDeterminationProgress', 'minimum', 0);
-        $maximumVariables = count(IPS_GetVariableList());
-        $this->UpdateFormField('DoorWindowSensorDeterminationProgress', 'maximum', $maximumVariables);
-        //Determine variables first
-        $determineIdent = false;
-        $determineProfile = false;
-        $determinedVariables = [];
-        $passedVariables = 0;
-        foreach (@IPS_GetVariableList() as $variable) {
-            switch ($DeterminationType) {
-                case 0: //Profile: Select profile
-                    if ($ProfileSelection == '') {
-                        $infoText = 'Abbruch, es wurde kein Profil ausgewählt!';
-                        $this->UpdateFormField('InfoMessage', 'visible', true);
-                        $this->UpdateFormField('InfoMessageLabel', 'caption', $infoText);
-                        return;
-                    } else {
-                        $determineProfile = true;
-                    }
-                    break;
-
-                case 1: //Profile: ~Window
-                case 2: //Profile: ~Window.Reversed
-                case 3: //Profile: ~Window.HM
-                    $determineProfile = true;
-                    break;
-
-                case 4: //Ident: STATE
-                    $determineIdent = true;
-                    break;
-
-                case 5: //Custom Ident
-                    if ($DeterminationValue == '') {
-                        $infoText = 'Abbruch, es wurde kein Identifikator angegeben!';
-                        $this->UpdateFormField('InfoMessage', 'visible', true);
-                        $this->UpdateFormField('InfoMessageLabel', 'caption', $infoText);
-                        return;
-                    } else {
-                        $determineIdent = true;
-                    }
-                    break;
-
-            }
-            $passedVariables++;
-            $this->UpdateFormField('DoorWindowSensorDeterminationProgress', 'visible', true);
-            $this->UpdateFormField('DoorWindowSensorDeterminationProgress', 'current', $passedVariables);
-            $this->UpdateFormField('DoorWindowSensorDeterminationProgressInfo', 'visible', true);
-            $this->UpdateFormField('DoorWindowSensorDeterminationProgressInfo', 'caption', $passedVariables . '/' . $maximumVariables);
-            IPS_Sleep(10);
-
-            ##### Profile
-
-            //Determine via profile
-            if ($determineProfile && !$determineIdent) {
-                switch ($DeterminationType) {
-
-                    case 0: //Select profile
-                        $profileNames = $ProfileSelection;
-                        break;
-
-                    case 1:
-                        $profileNames = '~Window';
-                        break;
-
-                    case 2:
-                        $profileNames = '~Window.Reversed';
-                        break;
-
-                    case 3:
-                        $profileNames = '~Window.HM';
-                        break;
-
-                }
-                if (isset($profileNames)) {
-                    $profileNames = str_replace(' ', '', $profileNames);
-                    $profileNames = explode(',', $profileNames);
-                    foreach ($profileNames as $profileName) {
-                        $variableData = IPS_GetVariable($variable);
-                        if ($variableData['VariableCustomProfile'] == $profileName || $variableData['VariableProfile'] == $profileName) {
-                            $location = @IPS_GetLocation($variable);
-                            $determinedVariables[] = [
-                                'Use'      => true,
-                                'ID'       => $variable,
-                                'Location' => $location];
-                        }
-                    }
-                }
-            }
-
-            ##### Ident
-
-            //Determine via ident
-            if ($determineIdent && !$determineProfile) {
-                switch ($DeterminationType) {
-                    case 4: //State
-                        $objectIdents = 'STATE';
-                        break;
-
-                    case 5: //Custom ident
-                        $objectIdents = $DeterminationValue;
-                        break;
-
-                }
-                if (isset($objectIdents)) {
-                    $objectIdents = str_replace(' ', '', $objectIdents);
-                    $objectIdents = explode(',', $objectIdents);
-                    foreach ($objectIdents as $objectIdent) {
-                        $object = @IPS_GetObject($variable);
-                        if ($object['ObjectIdent'] == $objectIdent) {
-                            $location = @IPS_GetLocation($variable);
-                            $determinedVariables[] = [
-                                'Use'      => true,
-                                'ID'       => $variable,
-                                'Location' => $location];
-                        }
-                    }
-                }
-            }
-        }
-        $amount = count($determinedVariables);
-        //Get already listed variables
-        $listedVariables = json_decode($this->ReadPropertyString('DoorWindowSensors'), true);
-        foreach ($listedVariables as $listedVariable) {
-            if (array_key_exists('PrimaryCondition', $listedVariable)) {
-                $primaryCondition = json_decode($listedVariable['PrimaryCondition'], true);
-                if ($primaryCondition != '') {
-                    if (array_key_exists(0, $primaryCondition)) {
-                        if (array_key_exists(0, $primaryCondition[0]['rules']['variable'])) {
-                            $listedVariableID = $primaryCondition[0]['rules']['variable'][0]['variableID'];
-                            if ($listedVariableID > 1 && @IPS_ObjectExists($listedVariableID)) {
-                                foreach ($determinedVariables as $key => $determinedVariable) {
-                                    $determinedVariableID = $determinedVariable['ID'];
-                                    if ($determinedVariableID > 1 && @IPS_ObjectExists($determinedVariableID)) {
-                                        //Check if variable id is already a listed variable id
-                                        if ($determinedVariableID == $listedVariableID) {
-                                            unset($determinedVariables[$key]);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        if (empty($determinedVariables)) {
-            $this->UpdateFormField('DoorWindowSensorDeterminationProgress', 'visible', false);
-            $this->UpdateFormField('DoorWindowSensorDeterminationProgressInfo', 'visible', false);
-            if ($amount > 0) {
-                $infoText = 'Es wurden keine weiteren Variablen gefunden!';
-            } else {
-                $infoText = 'Es wurden keine Variablen gefunden!';
-            }
-            $this->UpdateFormField('InfoMessage', 'visible', true);
-            $this->UpdateFormField('InfoMessageLabel', 'caption', $infoText);
-            return;
-        }
-        $determinedVariables = array_values($determinedVariables);
-        $this->UpdateFormField('DeterminedDoorWindowVariableList', 'visible', true);
-        $this->UpdateFormField('DeterminedDoorWindowVariableList', 'rowCount', count($determinedVariables));
-        $this->UpdateFormField('DeterminedDoorWindowVariableList', 'values', json_encode($determinedVariables));
-        $this->UpdateFormField('OverwriteDoorWindowVariableProfiles', 'visible', true);
-        $this->UpdateFormField('ApplyPreDoorWindowTriggerValues', 'visible', true);
-    }
-
-    public function CheckDoorWindowDeterminationValue(int $DoorWindowDeterminationType): void
-    {
-        $profileSelection = false;
-        $determinationValue = false;
-        //Profile selection
-        if ($DoorWindowDeterminationType == 0) {
-            $profileSelection = true;
-        }
-        //Custom ident
-        if ($DoorWindowDeterminationType == 5) {
-            $this->UpdateFormfield('DoorWindowDeterminationValue', 'caption', 'Identifikator');
-            $determinationValue = true;
-        }
-        $this->UpdateFormfield('DoorWindowSensorDeterminationProfileSelection', 'visible', $profileSelection);
-        $this->UpdateFormfield('DoorWindowDeterminationValue', 'visible', $determinationValue);
     }
 
     /**
@@ -445,31 +431,6 @@ trait AZ_DoorWindowSensors
         $this->UpdateFormField('ActualDoorWindowStateList', 'visible', true);
         $this->UpdateFormField('ActualDoorWindowStateList', 'rowCount', $amount);
         $this->UpdateFormField('ActualDoorWindowStateList', 'values', json_encode($actualVariableStates));
-    }
-
-    /**
-     * Deletes an element from the blacklist.
-     *
-     * @param int $VariableID
-     * @return void
-     * @throws Exception
-     */
-    public function DeleteElementFromBlacklist(int $VariableID): void
-    {
-        $elements = json_decode($this->ReadAttributeString('Blacklist'), true);
-        foreach ($elements as $key => $element) {
-            $data = json_decode($element, true);
-            if ($data['sensorID'] == $VariableID) {
-                unset($elements[$key]);
-            }
-        }
-        $elements = array_values($elements);
-        $amountBlacklist = count($elements);
-        if ($amountBlacklist == 0) {
-            $amountBlacklist = 1;
-        }
-        $this->UpdateFormField('Blacklist', 'rowCount', $amountBlacklist);
-        $this->WriteAttributeString('Blacklist', json_encode($elements));
     }
 
     public function AssignDoorWindowVariableProfile(): void
@@ -647,13 +608,14 @@ trait AZ_DoorWindowSensors
                                                 $timeStamp = time();
                                                 //Status verification
                                                 if ($variable['OpenDoorWindowStatusVerificationDelay'] > 0) {
-                                                    $this->SendDebug(__FUNCTION__, 'Status wird in ' . $variable['OpenDoorWindowStatusVerificationDelay'] . ' Sekunden erneut geprüft!', 0);
+                                                    $this->SendDebug(__FUNCTION__, 'Status wird in ' . $variable['OpenDoorWindowStatusVerificationDelay'] . ' Millisekunden erneut geprüft!', 0);
                                                     $scriptText = self::MODULE_PREFIX . '_VerifyOpenDoorWindowStatus(' . $this->InstanceID . ', ' . $SenderID . ', ' . $variable['OpenDoorWindowStatusVerificationDelay'] . ');';
                                                     @IPS_RunScriptText($scriptText);
                                                     return false;
                                                 }
                                                 $result = true;
                                                 //Alarm state
+                                                $this->SetValue('AlarmSwitch', true);
                                                 $this->SetValue('AlarmState', 1);
                                                 $this->SetValue('AlertingSensor', $variable['Designation']);
                                                 //Protocol
@@ -723,9 +685,9 @@ trait AZ_DoorWindowSensors
         $this->SendDebug(__FUNCTION__, 'wird ausgeführt', 0);
         $this->SendDebug(__FUNCTION__, 'Sender: ' . $SenderID, 0);
         $this->SendDebug(__FUNCTION__, 'Sender: ' . $SenderID, 0);
-        $sensors = json_decode($this->ReadAttributeString('VerificationSensors'));
+        $sensors = json_decode($this->ReadAttributeString('VerificationDoorWindowSensors'));
         $sensors[] = $SenderID;
-        $this->WriteAttributeString('VerificationSensors', json_encode($sensors));
+        $this->WriteAttributeString('VerificationDoorWindowSensors', json_encode($sensors));
         IPS_Sleep($Delay);
         $variables = json_decode($this->ReadPropertyString('DoorWindowSensors'), true);
         foreach ($variables as $variable) {
@@ -737,7 +699,7 @@ trait AZ_DoorWindowSensors
                             $id = $primaryCondition[0]['rules']['variable'][0]['variableID'];
                             if ($id == $SenderID) {
                                 if (!$variable['Use']) {
-                                    $this->RemoveVerificationSensor($SenderID);
+                                    $this->RemoveDoorWindowVerificationSensor($SenderID);
                                     return;
                                 }
                                 $open = false;
@@ -779,6 +741,7 @@ trait AZ_DoorWindowSensors
                                             }
                                             if ($alerting) { //open is verified
                                                 //Alarm state
+                                                $this->SetValue('AlarmSwitch', true);
                                                 $this->SetValue('AlarmState', 1);
                                                 $this->SetValue('AlertingSensor', $variable['Designation']);
                                                 //Protocol
@@ -816,7 +779,7 @@ trait AZ_DoorWindowSensors
                 }
             }
         }
-        $this->RemoveVerificationSensor($SenderID);
+        $this->RemoveDoorWindowVerificationSensor($SenderID);
     }
 
     /**
@@ -899,16 +862,16 @@ trait AZ_DoorWindowSensors
      * @return void
      * @throws Exception
      */
-    private function RemoveVerificationSensor(int $SensorID): void
+    private function RemoveDoorWindowVerificationSensor(int $SensorID): void
     {
-        $sensors = json_decode($this->ReadAttributeString('VerificationSensors'), true);
+        $sensors = json_decode($this->ReadAttributeString('VerificationDoorWindowSensors'), true);
         foreach ($sensors as $key => $sensor) {
             if ($sensor == $SensorID) {
                 unset($sensors[$key]);
             }
         }
         $sensors = array_values($sensors);
-        $this->WriteAttributeString('VerificationSensors', json_encode($sensors));
+        $this->WriteAttributeString('VerificationDoorWindowSensors', json_encode($sensors));
     }
 
     /**
@@ -916,8 +879,8 @@ trait AZ_DoorWindowSensors
      *
      * @param int $Mode
      * 0 =      disarmed,
-     * 1 =      full protection mode
-     * 2 =      hull protection mode
+     * 1 =      full protection mode,
+     * 2 =      hull protection mode,
      * 3 =      partial protection mode
      *
      * @param bool $UseBlacklist
