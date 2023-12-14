@@ -26,6 +26,8 @@ class Alarmzone extends IPSModule
     use AZ_DoorWindowSensors;
     use AZ_GlassBreakageDetectors;
     use AZ_MotionDetectors;
+    use AZ_SmokeDetectors;
+    use AZ_WaterDetectors;
     use AZ_Notification;
 
     //Constants
@@ -103,6 +105,14 @@ class Alarmzone extends IPSModule
 
         $this->RegisterPropertyString('GlassBreakageDetectors', '[]');
 
+        ##### Smoke detectors
+
+        $this->RegisterPropertyString('SmokeDetectors', '[]');
+
+        ##### Water detectors
+
+        $this->RegisterPropertyString('WaterDetectors', '[]');
+
         ##### Alarm protocol
 
         $this->RegisterPropertyInteger('AlarmProtocol', 0);
@@ -140,6 +150,8 @@ class Alarmzone extends IPSModule
         $this->RegisterPropertyString('DoorWindowAlarmNotification', '[{"Use":false,"Designation":"Tür/Fenster Alarm","SpacerNotification":"","LabelMessageText":"","MessageText":"❗️%1$s hat einen Alarm ausgelöst!","UseTimestamp":true,"SpacerWebFrontNotification":"","LabelWebFrontNotification":"","UseWebFrontNotification":false,"WebFrontNotificationTitle":"","WebFrontNotificationIcon":"","WebFrontNotificationDisplayDuration":0,"SpacerWebFrontPushNotification":"","LabelWebFrontPushNotification":"","UseWebFrontPushNotification":false,"WebFrontPushNotificationTitle":"","WebFrontPushNotificationSound":"alarm","WebFrontPushNotificationTargetID":0,"SpacerMail":"","LabelMail":"","UseMailer":false,"Subject":"","SpacerSMS":"","LabelSMS":"","UseSMS":false,"SMSTitle":"","SpacerTelegram":"","LabelTelegram":"","UseTelegram":false,"TelegramTitle":""}]');
         $this->RegisterPropertyString('MotionDetectorAlarmNotification', '[{"Use":false,"Designation":"Bewegungsmelder Alarm","SpacerNotification":"","LabelMessageText":"","MessageText":"❗%1$s hat einen Alarm ausgelöst!","UseTimestamp":true,"SpacerWebFrontNotification":"","LabelWebFrontNotification":"","UseWebFrontNotification":false,"WebFrontNotificationTitle":"","WebFrontNotificationIcon":"","WebFrontNotificationDisplayDuration":0,"SpacerWebFrontPushNotification":"","LabelWebFrontPushNotification":"","UseWebFrontPushNotification":false,"WebFrontPushNotificationTitle":"","WebFrontPushNotificationSound":"alarm","WebFrontPushNotificationTargetID":0,"SpacerMail":"","LabelMail":"","UseMailer":false,"Subject":"","SpacerSMS":"","LabelSMS":"","UseSMS":false,"SMSTitle":"","SpacerTelegram":"","LabelTelegram":"","UseTelegram":false,"TelegramTitle":""}]');
         $this->RegisterPropertyString('GlassBreakageDetectorAlarmNotification', '[{"Use":false,"Designation":"Glasbruchmelder Alarm","SpacerNotification":"","LabelMessageText":"","MessageText":"❗%1$s hat einen Alarm ausgelöst!","UseTimestamp":true,"SpacerWebFrontNotification":"","LabelWebFrontNotification":"","UseWebFrontNotification":false,"WebFrontNotificationTitle":"","WebFrontNotificationIcon":"","WebFrontNotificationDisplayDuration":0,"SpacerWebFrontPushNotification":"","LabelWebFrontPushNotification":"","UseWebFrontPushNotification":false,"WebFrontPushNotificationTitle":"","WebFrontPushNotificationSound":"alarm","WebFrontPushNotificationTargetID":0,"SpacerMail":"","LabelMail":"","UseMailer":false,"Subject":"","SpacerSMS":"","LabelSMS":"","UseSMS":false,"SMSTitle":"","SpacerTelegram":"","LabelTelegram":"","UseTelegram":false,"TelegramTitle":""}]');
+        $this->RegisterPropertyString('SmokeDetectorAlarmNotification', '[{"Use":false,"Designation":"Rauchmelder Alarm","SpacerNotification":"","LabelMessageText":"","MessageText":"🔥%1$s hat Rauch erkannt!","UseTimestamp":true,"SpacerWebFrontNotification":"","LabelWebFrontNotification":"","UseWebFrontNotification":false,"WebFrontNotificationTitle":"","WebFrontNotificationIcon":"","WebFrontNotificationDisplayDuration":0,"SpacerWebFrontPushNotification":"","LabelWebFrontPushNotification":"","UseWebFrontPushNotification":false,"WebFrontPushNotificationTitle":"","WebFrontPushNotificationSound":"alarm","WebFrontPushNotificationTargetID":0,"SpacerMail":"","LabelMail":"","UseMailer":false,"Subject":"","SpacerSMS":"","LabelSMS":"","UseSMS":false,"SMSTitle":"","SpacerTelegram":"","LabelTelegram":"","UseTelegram":false,"TelegramTitle":""}]');
+        $this->RegisterPropertyString('WaterDetectorAlarmNotification', '[{"Use":false,"Designation":"Rauchmelder Alarm","SpacerNotification":"","LabelMessageText":"","MessageText":"💧%1$s hat Wasser erkannt!","UseTimestamp":true,"SpacerWebFrontNotification":"","LabelWebFrontNotification":"","UseWebFrontNotification":false,"WebFrontNotificationTitle":"","WebFrontNotificationIcon":"","WebFrontNotificationDisplayDuration":0,"SpacerWebFrontPushNotification":"","LabelWebFrontPushNotification":"","UseWebFrontPushNotification":false,"WebFrontPushNotificationTitle":"","WebFrontPushNotificationSound":"alarm","WebFrontPushNotificationTargetID":0,"SpacerMail":"","LabelMail":"","UseMailer":false,"Subject":"","SpacerSMS":"","LabelSMS":"","UseSMS":false,"SMSTitle":"","SpacerTelegram":"","LabelTelegram":"","UseTelegram":false,"TelegramTitle":""}]');
 
         ##### Actions
 
@@ -169,6 +181,8 @@ class Alarmzone extends IPSModule
         $this->RegisterPropertyBoolean('EnableDoorWindowState', true);
         $this->RegisterPropertyBoolean('EnableMotionDetectorState', true);
         $this->RegisterPropertyBoolean('EnableGlassBreakageDetectorState', true);
+        $this->RegisterPropertyBoolean('EnableSmokeDetectorState', true);
+        $this->RegisterPropertyBoolean('EnableWaterDetectorState', true);
         $this->RegisterPropertyBoolean('EnableAlarmState', true);
         $this->RegisterPropertyBoolean('EnableAlarmSirenState', false);
         $this->RegisterPropertyBoolean('EnableAlarmLightState', false);
@@ -297,8 +311,25 @@ class Alarmzone extends IPSModule
         IPS_SetVariableProfileAssociation($profile, 1, 'Glasbruch erkannt', '', 0xFF0000);
         $this->RegisterVariableBoolean('GlassBreakageDetectorState', 'Glasbruchmelderstatus', $profile, 140);
 
-        //Smoke detector state: 150
-        //Water detector state: 160
+        //Smoke detector state
+        $profile = self::MODULE_PREFIX . '.' . $this->InstanceID . '.SmokeDetectorState';
+        if (!IPS_VariableProfileExists($profile)) {
+            IPS_CreateVariableProfile($profile, 0);
+        }
+        IPS_SetVariableProfileIcon($profile, 'Flame');
+        IPS_SetVariableProfileAssociation($profile, 0, 'OK', '', 0x00FF00);
+        IPS_SetVariableProfileAssociation($profile, 1, 'Rauch erkannt', '', 0xFF0000);
+        $this->RegisterVariableBoolean('SmokeDetectorState', 'Rauchmelderstatus', $profile, 150);
+
+        //Water detector state
+        $profile = self::MODULE_PREFIX . '.' . $this->InstanceID . '.WaterDetectorState';
+        if (!IPS_VariableProfileExists($profile)) {
+            IPS_CreateVariableProfile($profile, 0);
+        }
+        IPS_SetVariableProfileIcon($profile, 'Tap');
+        IPS_SetVariableProfileAssociation($profile, 0, 'OK', '', 0x00FF00);
+        IPS_SetVariableProfileAssociation($profile, 1, 'Wasser erkannt', '', 0xFF0000);
+        $this->RegisterVariableBoolean('WaterDetectorState', 'Wassermelderstatus', $profile, 150);
 
         //Alarm state
         $profile = self::MODULE_PREFIX . '.' . $this->InstanceID . '.AlarmState';
@@ -346,6 +377,8 @@ class Alarmzone extends IPSModule
         $this->RegisterAttributeString('VerificationDoorWindowSensors', '[]');
         $this->RegisterAttributeString('VerificationMotionDetectors', '[]');
         $this->RegisterAttributeString('VerificationGlassBreakageDetectors', '[]');
+        $this->RegisterAttributeString('VerificationSmokeDetectors', '[]');
+        $this->RegisterAttributeString('VerificationWaterDetectors', '[]');
 
         ########## Timer
 
@@ -356,6 +389,8 @@ class Alarmzone extends IPSModule
         $this->CreateDoorWindowVariableProfiles();
         $this->CreateMotionDetectorVariableProfiles();
         $this->CreateGlassBreakageDetectorVariableProfiles();
+        $this->CreateSmokeDetectorVariableProfiles();
+        $this->CreateWaterDetectorVariableProfiles();
     }
 
     public function ApplyChanges()
@@ -437,6 +472,12 @@ class Alarmzone extends IPSModule
         //Glass breakage detector state
         IPS_SetHidden($this->GetIDForIdent('GlassBreakageDetectorState'), !$this->ReadPropertyBoolean('EnableGlassBreakageDetectorState'));
 
+        //Smoke detector state
+        IPS_SetHidden($this->GetIDForIdent('SmokeDetectorState'), !$this->ReadPropertyBoolean('EnableSmokeDetectorState'));
+
+        //Water detector state
+        IPS_SetHidden($this->GetIDForIdent('WaterDetectorState'), !$this->ReadPropertyBoolean('EnableWaterDetectorState'));
+
         //Alarm state
         IPS_SetHidden($this->GetIDForIdent('AlarmState'), !$this->ReadPropertyBoolean('EnableAlarmState'));
 
@@ -454,6 +495,8 @@ class Alarmzone extends IPSModule
         $this->WriteAttributeString('VerificationDoorWindowSensors', '[]');
         $this->WriteAttributeString('VerificationMotionDetectors', '[]');
         $this->WriteAttributeString('VerificationGlassBreakageDetectors', '[]');
+        $this->WriteAttributeString('VerificationSmokeDetectors', '[]');
+        $this->WriteAttributeString('VerificationWaterDetectors', '[]');
 
         ########## Timer
 
@@ -469,6 +512,8 @@ class Alarmzone extends IPSModule
         }
         $this->CheckMotionDetectorState();
         $this->CheckGlassBreakageDetectorState();
+        $this->CheckSmokeDetectorState();
+        $this->CheckWaterDetectorState();
 
         ########## References
 
@@ -656,6 +701,109 @@ class Alarmzone extends IPSModule
             }
         }
 
+        //Smoke detector
+        $variables = json_decode($this->ReadPropertyString('SmokeDetectors'), true);
+        foreach ($variables as $variable) {
+            if (!$variable['Use']) {
+                continue;
+            }
+            //Primary condition
+            if ($variable['PrimaryCondition'] != '') {
+                $primaryCondition = json_decode($variable['PrimaryCondition'], true);
+                if (array_key_exists(0, $primaryCondition)) {
+                    if (array_key_exists(0, $primaryCondition[0]['rules']['variable'])) {
+                        $id = $primaryCondition[0]['rules']['variable'][0]['variableID'];
+                        if ($id > 1 && @IPS_ObjectExists($id)) {
+                            $this->RegisterReference($id);
+                            $this->RegisterMessage($id, VM_UPDATE);
+                        }
+                    }
+                }
+            }
+            //Secondary condition, multi
+            if ($variable['SecondaryCondition'] != '') {
+                $secondaryConditions = json_decode($variable['SecondaryCondition'], true);
+                if (array_key_exists(0, $secondaryConditions)) {
+                    if (array_key_exists('rules', $secondaryConditions[0])) {
+                        $rules = $secondaryConditions[0]['rules']['variable'];
+                        foreach ($rules as $rule) {
+                            if (array_key_exists('variableID', $rule)) {
+                                $id = $rule['variableID'];
+                                if ($id > 1 && @IPS_ObjectExists($id)) {
+                                    $this->RegisterReference($id);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            //Alerting action
+            if ($variable['UseAlertingAction']) {
+                if ($variable['AlertingAction'] != '') {
+                    $action = json_decode($variable['AlertingAction'], true);
+                    if (array_key_exists('parameters', $action)) {
+                        if (array_key_exists('TARGET', $action['parameters'])) {
+                            $id = $action['parameters']['TARGET'];
+                            if ($id > 1 && @IPS_ObjectExists($id)) {
+                                $this->RegisterReference($id);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        //Water detector
+        $variables = json_decode($this->ReadPropertyString('WaterDetectors'), true);
+        foreach ($variables as $variable) {
+            if (!$variable['Use']) {
+                continue;
+            }
+            //Primary condition
+            if ($variable['PrimaryCondition'] != '') {
+                $primaryCondition = json_decode($variable['PrimaryCondition'], true);
+                if (array_key_exists(0, $primaryCondition)) {
+                    if (array_key_exists(0, $primaryCondition[0]['rules']['variable'])) {
+                        $id = $primaryCondition[0]['rules']['variable'][0]['variableID'];
+                        if ($id > 1 && @IPS_ObjectExists($id)) {
+                            $this->RegisterReference($id);
+                            $this->RegisterMessage($id, VM_UPDATE);
+                        }
+                    }
+                }
+            }
+            //Secondary condition, multi
+            if ($variable['SecondaryCondition'] != '') {
+                $secondaryConditions = json_decode($variable['SecondaryCondition'], true);
+                if (array_key_exists(0, $secondaryConditions)) {
+                    if (array_key_exists('rules', $secondaryConditions[0])) {
+                        $rules = $secondaryConditions[0]['rules']['variable'];
+                        foreach ($rules as $rule) {
+                            if (array_key_exists('variableID', $rule)) {
+                                $id = $rule['variableID'];
+                                if ($id > 1 && @IPS_ObjectExists($id)) {
+                                    $this->RegisterReference($id);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            //Alerting action
+            if ($variable['UseAlertingAction']) {
+                if ($variable['AlertingAction'] != '') {
+                    $action = json_decode($variable['AlertingAction'], true);
+                    if (array_key_exists('parameters', $action)) {
+                        if (array_key_exists('TARGET', $action['parameters'])) {
+                            $id = $action['parameters']['TARGET'];
+                            if ($id > 1 && @IPS_ObjectExists($id)) {
+                                $this->RegisterReference($id);
+                            }
+                        }
+                    }
+                }
+            }
+        }
         $this->ValidateConfiguration();
     }
 
@@ -665,7 +813,7 @@ class Alarmzone extends IPSModule
         parent::Destroy();
 
         //Delete profiles
-        $profiles = ['Mode', 'AlarmZoneState', 'AlarmZoneDetailedState', 'AlarmState', 'DoorWindowState', 'MotionDetectorState', 'GlassBreakageDetectorState', 'AlarmSirenStatus', 'AlarmLightStatus', 'AlarmCallStatus'];
+        $profiles = ['Mode', 'AlarmZoneState', 'AlarmZoneDetailedState', 'AlarmState', 'DoorWindowState', 'MotionDetectorState', 'GlassBreakageDetectorState', 'SmokeDetectorState', 'WaterDetectorState', 'AlarmSirenStatus', 'AlarmLightStatus', 'AlarmCallStatus'];
         if (!empty($profiles)) {
             foreach ($profiles as $profile) {
                 $profileName = self::MODULE_PREFIX . '.' . $this->InstanceID . '.' . $profile;
@@ -756,6 +904,52 @@ class Alarmzone extends IPSModule
                                             $valueChanged = 'true';
                                         }
                                         $scriptText = self::MODULE_PREFIX . '_CheckGlassBreakageDetectorAlerting(' . $this->InstanceID . ', ' . $SenderID . ', ' . $valueChanged . ');';
+                                        @IPS_RunScriptText($scriptText);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                //Check smoke detector
+                $variables = json_decode($this->ReadPropertyString('SmokeDetectors'), true);
+                foreach ($variables as $variable) {
+                    if (array_key_exists('PrimaryCondition', $variable)) {
+                        $primaryCondition = json_decode($variable['PrimaryCondition'], true);
+                        if ($primaryCondition != '') {
+                            if (array_key_exists(0, $primaryCondition)) {
+                                if (array_key_exists(0, $primaryCondition[0]['rules']['variable'])) {
+                                    $id = $primaryCondition[0]['rules']['variable'][0]['variableID'];
+                                    if ($id == $SenderID) {
+                                        $valueChanged = 'false';
+                                        if ($Data[1]) {
+                                            $valueChanged = 'true';
+                                        }
+                                        $scriptText = self::MODULE_PREFIX . '_CheckSmokeDetectorAlerting(' . $this->InstanceID . ', ' . $SenderID . ', ' . $valueChanged . ');';
+                                        @IPS_RunScriptText($scriptText);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                //Check water detector
+                $variables = json_decode($this->ReadPropertyString('WaterDetectors'), true);
+                foreach ($variables as $variable) {
+                    if (array_key_exists('PrimaryCondition', $variable)) {
+                        $primaryCondition = json_decode($variable['PrimaryCondition'], true);
+                        if ($primaryCondition != '') {
+                            if (array_key_exists(0, $primaryCondition)) {
+                                if (array_key_exists(0, $primaryCondition[0]['rules']['variable'])) {
+                                    $id = $primaryCondition[0]['rules']['variable'][0]['variableID'];
+                                    if ($id == $SenderID) {
+                                        $valueChanged = 'false';
+                                        if ($Data[1]) {
+                                            $valueChanged = 'true';
+                                        }
+                                        $scriptText = self::MODULE_PREFIX . '_CheckWaterDetectorAlerting(' . $this->InstanceID . ', ' . $SenderID . ', ' . $valueChanged . ');';
                                         @IPS_RunScriptText($scriptText);
                                     }
                                 }

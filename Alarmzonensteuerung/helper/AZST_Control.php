@@ -105,6 +105,8 @@ trait AZST_Control
         $doorWindowState = [];
         $motionDetectorState = [];
         $glassBreakageDetectorState = [];
+        $smokeDetectorState = [];
+        $waterDetectorState = [];
         $alarmSiren = [];
         $alarmLight = [];
         $alarmCall = [];
@@ -149,7 +151,7 @@ trait AZST_Control
             return;
         }
         $this->UpdateFormField('ApplyNewConfigurationProgress', 'minimum', 0);
-        $maximumConfiguration = 12 * count($listedVariables);
+        $maximumConfiguration = 14 * count($listedVariables);
         $this->UpdateFormField('ApplyNewConfigurationProgress', 'maximum', $maximumConfiguration);
         $passedConfiguration = 0;
         foreach ($listedVariables as $listedVariable) {
@@ -217,6 +219,18 @@ trait AZST_Control
                         $glassBreakageDetectorState[] = ['Use' => true, 'ID' => $child, 'Designation' => $description];
                         break;
 
+                    case 'SmokeDetectorState':
+                        $passedConfiguration++;
+                        $this->ApplyNewConfigurationUpdateProgressState($passedConfiguration, $maximumConfiguration);
+                        $smokeDetectorState[] = ['Use' => true, 'ID' => $child, 'Designation' => $description];
+                        break;
+
+                    case 'WaterDetectorState':
+                        $passedConfiguration++;
+                        $this->ApplyNewConfigurationUpdateProgressState($passedConfiguration, $maximumConfiguration);
+                        $waterDetectorState[] = ['Use' => true, 'ID' => $child, 'Designation' => $description];
+                        break;
+
                     case 'AlarmSiren':
                         $passedConfiguration++;
                         $this->ApplyNewConfigurationUpdateProgressState($passedConfiguration, $maximumConfiguration);
@@ -249,6 +263,8 @@ trait AZST_Control
         @IPS_SetProperty($this->InstanceID, 'DoorWindowState', json_encode($doorWindowState));
         @IPS_SetProperty($this->InstanceID, 'MotionDetectorState', json_encode($motionDetectorState));
         @IPS_SetProperty($this->InstanceID, 'GlassBreakageDetectorState', json_encode($glassBreakageDetectorState));
+        @IPS_SetProperty($this->InstanceID, 'SmokeDetectorState', json_encode($smokeDetectorState));
+        @IPS_SetProperty($this->InstanceID, 'WaterDetectorState', json_encode($waterDetectorState));
         @IPS_SetProperty($this->InstanceID, 'AlarmSiren', json_encode($alarmSiren));
         @IPS_SetProperty($this->InstanceID, 'AlarmLight', json_encode($alarmLight));
         @IPS_SetProperty($this->InstanceID, 'AlarmCall', json_encode($alarmCall));
