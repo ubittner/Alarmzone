@@ -36,9 +36,11 @@ trait AZST_States
         $update6 = $this->UpdateDoorWindowState();
         $update7 = $this->UpdateMotionDetectorState();
         $update8 = $this->UpdateGlassBreakageDetectorState();
-        $update9 = $this->UpdateAlarmSiren();
-        $update10 = $this->UpdateAlarmLight();
-        $update11 = $this->UpdateAlarmCall();
+        $update9 = $this->UpdateSmokeDetectorState();
+        $update10 = $this->UpdateWaterDetectorState();
+        $update11 = $this->UpdateAlarmSiren();
+        $update12 = $this->UpdateAlarmLight();
+        $update13 = $this->UpdateAlarmCall();
         if (!$update1 ||
             !$update2 ||
             !$update3 ||
@@ -49,7 +51,9 @@ trait AZST_States
             !$update8 ||
             !$update9 ||
             !$update10 ||
-            !$update11) {
+            !$update11 ||
+            !$update12 ||
+            !$update13) {
             $result = false;
         }
         return $result;
@@ -511,6 +515,80 @@ trait AZST_States
             }
         }
         $this->SetValue('GlassBreakageDetectorState', $state);
+        return $result;
+    }
+
+    /**
+     * Updates the state of the smoke detector state.
+     *
+     * @return bool
+     * false =  an error occurred,
+     * true =   successful
+     *
+     * @throws Exception
+     */
+    public function UpdateSmokeDetectorState(): bool
+    {
+        $this->SendDebug(__FUNCTION__, 'wird ausgeführt', 0);
+        if ($this->CheckMaintenance()) {
+            return false;
+        }
+        $variables = json_decode($this->ReadPropertyString('SmokeDetectorState'), true);
+        if (empty($variables)) {
+            return false;
+        }
+        $result = false;
+        $state = false;
+        foreach ($variables as $variable) {
+            if ($variable['Use']) {
+                $id = $variable['ID'];
+                if ($id > 1 && @IPS_ObjectExists($id)) {
+                    $result = true;
+                    $actualValue = GetValueBoolean($variable['ID']);
+                    if ($actualValue) {
+                        $state = true; //smoke detected
+                    }
+                }
+            }
+        }
+        $this->SetValue('SmokeDetectorState', $state);
+        return $result;
+    }
+
+    /**
+     * Updates the state of the water detector state.
+     *
+     * @return bool
+     * false =  an error occurred,
+     * true =   successful
+     *
+     * @throws Exception
+     */
+    public function UpdateWaterDetectorState(): bool
+    {
+        $this->SendDebug(__FUNCTION__, 'wird ausgeführt', 0);
+        if ($this->CheckMaintenance()) {
+            return false;
+        }
+        $variables = json_decode($this->ReadPropertyString('WaterDetectorState'), true);
+        if (empty($variables)) {
+            return false;
+        }
+        $result = false;
+        $state = false;
+        foreach ($variables as $variable) {
+            if ($variable['Use']) {
+                $id = $variable['ID'];
+                if ($id > 1 && @IPS_ObjectExists($id)) {
+                    $result = true;
+                    $actualValue = GetValueBoolean($variable['ID']);
+                    if ($actualValue) {
+                        $state = true; //water detected
+                    }
+                }
+            }
+        }
+        $this->SetValue('WaterDetectorState', $state);
         return $result;
     }
 

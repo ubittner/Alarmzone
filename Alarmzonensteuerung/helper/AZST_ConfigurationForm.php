@@ -178,7 +178,7 @@ trait AZST_ConfigurationForm
                 [
                     'type'    => 'CheckBox',
                     'name'    => 'UseDisarmAlarmZonesWhenAlarmSwitchIsOff',
-                    'caption' => 'Alarmzone unscharf'
+                    'caption' => 'Alarmzonen unscharf'
                 ],
                 [
                     'type'    => 'Label',
@@ -454,7 +454,7 @@ trait AZST_ConfigurationForm
             if ($id > 1 && @IPS_ObjectExists($id)) {
                 $rowColor = '#C0FFC0'; //light green
             }
-            $alarmZoneValues[] = ['rowColor' => $rowColor];
+            $alarmZoneValues[] = ['VariableID' => $id, 'rowColor' => $rowColor];
         }
 
         //Protection mode
@@ -470,7 +470,7 @@ trait AZST_ConfigurationForm
                     $rowColor = '#C0FFC0'; //light green
                 }
             }
-            $protectionModeValues[] = ['rowColor' => $rowColor];
+            $protectionModeValues[] = ['VariableID' => $id, 'rowColor' => $rowColor];
         }
 
         //System state
@@ -486,7 +486,7 @@ trait AZST_ConfigurationForm
                     $rowColor = '#C0FFC0'; //light green
                 }
             }
-            $systemStateValues[] = ['rowColor' => $rowColor];
+            $systemStateValues[] = ['VariableID' => $id, 'rowColor' => $rowColor];
         }
 
         //System detailed state
@@ -502,7 +502,7 @@ trait AZST_ConfigurationForm
                     $rowColor = '#C0FFC0'; //light green
                 }
             }
-            $systemDetailedStateValues[] = ['rowColor' => $rowColor];
+            $systemDetailedStateValues[] = ['VariableID' => $id, 'rowColor' => $rowColor];
         }
 
         //Alarm state
@@ -518,7 +518,7 @@ trait AZST_ConfigurationForm
                     $rowColor = '#C0FFC0'; //light green
                 }
             }
-            $alarmStateValues[] = ['rowColor' => $rowColor];
+            $alarmStateValues[] = ['VariableID' => $id, 'rowColor' => $rowColor];
         }
 
         //Alerting sensors
@@ -534,7 +534,7 @@ trait AZST_ConfigurationForm
                     $rowColor = '#C0FFC0'; //light green
                 }
             }
-            $alertingSensorValues[] = ['rowColor' => $rowColor];
+            $alertingSensorValues[] = ['VariableID' => $id, 'rowColor' => $rowColor];
         }
 
         //Door and window states
@@ -550,7 +550,7 @@ trait AZST_ConfigurationForm
                     $rowColor = '#C0FFC0'; //light green
                 }
             }
-            $doorWindowStateValues[] = ['rowColor' => $rowColor];
+            $doorWindowStateValues[] = ['VariableID' => $id, 'rowColor' => $rowColor];
         }
 
         //Motion detector states
@@ -566,7 +566,7 @@ trait AZST_ConfigurationForm
                     $rowColor = '#C0FFC0'; //light green
                 }
             }
-            $motionDetectorStateValues[] = ['rowColor' => $rowColor];
+            $motionDetectorStateValues[] = ['VariableID' => $id, 'rowColor' => $rowColor];
         }
 
         //Glass breakage detector states
@@ -582,7 +582,39 @@ trait AZST_ConfigurationForm
                     $rowColor = '#C0FFC0'; //light green
                 }
             }
-            $glassBreakageDetectorStateValues[] = ['rowColor' => $rowColor];
+            $glassBreakageDetectorStateValues[] = ['VariableID' => $id, 'rowColor' => $rowColor];
+        }
+
+        //Smoke detector states
+        $smokeDetectorStateValues = [];
+        $smokeDetectors = json_decode($this->ReadPropertyString('SmokeDetectorState'), true);
+        $amountSmokeDetectors = count($smokeDetectors) + 1;
+        foreach ($smokeDetectors as $smokeDetector) {
+            $rowColor = '#FFC0C0'; //red
+            $id = $smokeDetector['ID'];
+            if ($id > 1 && @IPS_ObjectExists($id)) {
+                $rowColor = '#DFDFDF'; # grey
+                if ($smokeDetector['Use']) {
+                    $rowColor = '#C0FFC0'; //light green
+                }
+            }
+            $smokeDetectorStateValues[] = ['VariableID' => $id, 'rowColor' => $rowColor];
+        }
+
+        //Water detector states
+        $waterDetectorStateValues = [];
+        $waterDetectors = json_decode($this->ReadPropertyString('WaterDetectorState'), true);
+        $amountWaterDetectors = count($waterDetectors) + 1;
+        foreach ($waterDetectors as $waterDetector) {
+            $rowColor = '#FFC0C0'; //red
+            $id = $waterDetector['ID'];
+            if ($id > 1 && @IPS_ObjectExists($id)) {
+                $rowColor = '#DFDFDF'; # grey
+                if ($waterDetector['Use']) {
+                    $rowColor = '#C0FFC0'; //light green
+                }
+            }
+            $waterDetectorStateValues[] = ['VariableID' => $id, 'rowColor' => $rowColor];
         }
 
         //Alarm sirens
@@ -598,7 +630,7 @@ trait AZST_ConfigurationForm
                     $rowColor = '#C0FFC0'; //light green
                 }
             }
-            $alarmSirenValues[] = ['rowColor' => $rowColor];
+            $alarmSirenValues[] = ['VariableID' => $id, 'rowColor' => $rowColor];
         }
 
         //Alarm lights
@@ -614,7 +646,7 @@ trait AZST_ConfigurationForm
                     $rowColor = '#C0FFC0'; //light green
                 }
             }
-            $alarmLightValues[] = ['rowColor' => $rowColor];
+            $alarmLightValues[] = ['VariableID' => $id, 'rowColor' => $rowColor];
         }
 
         //Alarm calls
@@ -630,7 +662,7 @@ trait AZST_ConfigurationForm
                     $rowColor = '#C0FFC0'; //light green
                 }
             }
-            $alarmCallValues[] = ['rowColor' => $rowColor];
+            $alarmCallValues[] = ['VariableID' => $id, 'rowColor' => $rowColor];
         }
 
         $form['elements'][] = [
@@ -751,11 +783,18 @@ trait AZST_ConfigurationForm
                             ]
                         ],
                         [
+                            'caption' => 'ID',
+                            'name'    => 'VariableID',
+                            'width'   => '100px',
+                            'add'     => 0,
+                            'save'    => false,
+                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "AlarmZoneConfigurationButton", "ID " . $AlarmZones["ID"] . " konfigurieren", $AlarmZones["ID"]);',
+                        ],
+                        [
                             'caption' => 'Alarmzone',
                             'name'    => 'ID',
                             'width'   => '450px',
                             'add'     => 0,
-                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "AlarmZoneConfigurationButton", "ID " . $AlarmZones["ID"] . " konfigurieren", $AlarmZones["ID"]);',
                             'edit'    => [
                                 'type'     => 'SelectModule',
                                 'moduleID' => self::ALARMZONE_MODULE_GUID
@@ -766,7 +805,6 @@ trait AZST_ConfigurationForm
                             'caption' => 'Bezeichnung',
                             'width'   => '400px',
                             'add'     => '',
-                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "AlarmZoneConfigurationButton", "ID " . $AlarmZones["ID"] . " konfigurieren", $AlarmZones["ID"]);',
                             'edit'    => [
                                 'type' => 'ValidationTextBox'
                             ]
@@ -834,11 +872,18 @@ trait AZST_ConfigurationForm
                             ]
                         ],
                         [
+                            'caption' => 'ID',
+                            'name'    => 'VariableID',
+                            'width'   => '100px',
+                            'add'     => 0,
+                            'save'    => false,
+                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "AlertingSensorConfigurationButton", "ID " . $AlertingSensor["ID"] . " bearbeiten", $AlertingSensor["ID"]);',
+                        ],
+                        [
                             'name'    => 'ID',
                             'caption' => 'Variable',
-                            'width'   => '450px',
+                            'width'   => '650px',
                             'add'     => 0,
-                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "AlertingSensorConfigurationButton", "ID " . $AlertingSensor["ID"] . " bearbeiten", $AlertingSensor["ID"]);',
                             'edit'    => [
                                 'type' => 'SelectVariable'
                             ]
@@ -848,7 +893,6 @@ trait AZST_ConfigurationForm
                             'name'    => 'Designation',
                             'width'   => '400px',
                             'add'     => '',
-                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "AlertingSensorConfigurationButton", "ID " . $AlertingSensor["ID"] . " bearbeiten", $AlertingSensor["ID"]);',
                             'edit'    => [
                                 'type' => 'ValidationTextBox'
                             ]
@@ -885,11 +929,18 @@ trait AZST_ConfigurationForm
                             ]
                         ],
                         [
+                            'caption' => 'ID',
+                            'name'    => 'VariableID',
+                            'width'   => '100px',
+                            'add'     => 0,
+                            'save'    => false,
+                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "ProtectionModeConfigurationButton", "ID " . $ProtectionMode["ID"] . " bearbeiten", $ProtectionMode["ID"]);',
+                        ],
+                        [
                             'name'    => 'ID',
                             'caption' => 'Variable',
-                            'width'   => '450px',
+                            'width'   => '650px',
                             'add'     => 0,
-                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "ProtectionModeConfigurationButton", "ID " . $ProtectionMode["ID"] . " bearbeiten", $ProtectionMode["ID"]);',
                             'edit'    => [
                                 'type' => 'SelectVariable'
                             ]
@@ -899,7 +950,6 @@ trait AZST_ConfigurationForm
                             'name'    => 'Designation',
                             'width'   => '400px',
                             'add'     => '',
-                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "ProtectionModeConfigurationButton", "ID " . $ProtectionMode["ID"] . " bearbeiten", $ProtectionMode["ID"]);',
                             'edit'    => [
                                 'type' => 'ValidationTextBox'
                             ]
@@ -936,11 +986,18 @@ trait AZST_ConfigurationForm
                             ]
                         ],
                         [
+                            'caption' => 'ID',
+                            'name'    => 'VariableID',
+                            'width'   => '100px',
+                            'add'     => 0,
+                            'save'    => false,
+                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "SystemStateConfigurationButton", "ID " . $SystemState["ID"] . " bearbeiten", $SystemState["ID"]);',
+                        ],
+                        [
                             'name'    => 'ID',
                             'caption' => 'Variable',
-                            'width'   => '450px',
+                            'width'   => '650px',
                             'add'     => 0,
-                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "SystemStateConfigurationButton", "ID " . $SystemState["ID"] . " bearbeiten", $SystemState["ID"]);',
                             'edit'    => [
                                 'type' => 'SelectVariable'
                             ]
@@ -950,7 +1007,6 @@ trait AZST_ConfigurationForm
                             'name'    => 'Designation',
                             'width'   => '400px',
                             'add'     => '',
-                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "SystemStateConfigurationButton", "ID " . $SystemState["ID"] . " bearbeiten", $SystemState["ID"]);',
                             'edit'    => [
                                 'type' => 'ValidationTextBox'
                             ]
@@ -987,11 +1043,18 @@ trait AZST_ConfigurationForm
                             ]
                         ],
                         [
+                            'caption' => 'ID',
+                            'name'    => 'VariableID',
+                            'width'   => '100px',
+                            'add'     => 0,
+                            'save'    => false,
+                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "SystemDetailedStateConfigurationButton", "ID " . $SystemDetailedState["ID"] . " bearbeiten", $SystemDetailedState["ID"]);',
+                        ],
+                        [
                             'name'    => 'ID',
                             'caption' => 'Variable',
-                            'width'   => '450px',
+                            'width'   => '650px',
                             'add'     => 0,
-                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "SystemDetailedStateConfigurationButton", "ID " . $SystemDetailedState["ID"] . " bearbeiten", $SystemDetailedState["ID"]);',
                             'edit'    => [
                                 'type' => 'SelectVariable'
                             ]
@@ -1001,7 +1064,6 @@ trait AZST_ConfigurationForm
                             'name'    => 'Designation',
                             'width'   => '400px',
                             'add'     => '',
-                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "SystemDetailedStateConfigurationButton", "ID " . $SystemDetailedState["ID"] . " bearbeiten", $SystemDetailedState["ID"]);',
                             'edit'    => [
                                 'type' => 'ValidationTextBox'
                             ]
@@ -1038,11 +1100,18 @@ trait AZST_ConfigurationForm
                             ]
                         ],
                         [
+                            'caption' => 'ID',
+                            'name'    => 'VariableID',
+                            'width'   => '100px',
+                            'add'     => 0,
+                            'save'    => false,
+                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "AlarmStateConfigurationButton", "ID " . $AlarmState["ID"] . " bearbeiten", $AlarmState["ID"]);',
+                        ],
+                        [
                             'name'    => 'ID',
                             'caption' => 'Variable',
-                            'width'   => '450px',
+                            'width'   => '650px',
                             'add'     => 0,
-                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "AlarmStateConfigurationButton", "ID " . $AlarmState["ID"] . " bearbeiten", $AlarmState["ID"]);',
                             'edit'    => [
                                 'type' => 'SelectVariable'
                             ]
@@ -1052,7 +1121,6 @@ trait AZST_ConfigurationForm
                             'name'    => 'Designation',
                             'width'   => '400px',
                             'add'     => '',
-                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "AlarmStateConfigurationButton", "ID " . $AlarmState["ID"] . " bearbeiten", $AlarmState["ID"]);',
                             'edit'    => [
                                 'type' => 'ValidationTextBox'
                             ]
@@ -1089,11 +1157,18 @@ trait AZST_ConfigurationForm
                             ]
                         ],
                         [
+                            'caption' => 'ID',
+                            'name'    => 'VariableID',
+                            'width'   => '100px',
+                            'add'     => 0,
+                            'save'    => false,
+                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "DoorWindowStateConfigurationButton", "ID " . $DoorWindowState["ID"] . " bearbeiten", $DoorWindowState["ID"]);',
+                        ],
+                        [
                             'name'    => 'ID',
                             'caption' => 'Variable',
-                            'width'   => '450px',
+                            'width'   => '650px',
                             'add'     => 0,
-                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "DoorWindowStateConfigurationButton", "ID " . $DoorWindowState["ID"] . " bearbeiten", $DoorWindowState["ID"]);',
                             'edit'    => [
                                 'type' => 'SelectVariable'
                             ]
@@ -1103,7 +1178,6 @@ trait AZST_ConfigurationForm
                             'name'    => 'Designation',
                             'width'   => '400px',
                             'add'     => '',
-                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "DoorWindowStateConfigurationButton", "ID " . $DoorWindowState["ID"] . " bearbeiten", $DoorWindowState["ID"]);',
                             'edit'    => [
                                 'type' => 'ValidationTextBox'
                             ]
@@ -1140,11 +1214,18 @@ trait AZST_ConfigurationForm
                             ]
                         ],
                         [
+                            'caption' => 'ID',
+                            'name'    => 'VariableID',
+                            'width'   => '100px',
+                            'add'     => 0,
+                            'save'    => false,
+                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "MotionDetectorStateConfigurationButton", "ID " . $MotionDetectorState["ID"] . " bearbeiten", $MotionDetectorState["ID"]);',
+                        ],
+                        [
                             'name'    => 'ID',
                             'caption' => 'Variable',
-                            'width'   => '450px',
+                            'width'   => '650px',
                             'add'     => 0,
-                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "MotionDetectorStateConfigurationButton", "ID " . $MotionDetectorState["ID"] . " bearbeiten", $MotionDetectorState["ID"]);',
                             'edit'    => [
                                 'type' => 'SelectVariable'
                             ]
@@ -1154,7 +1235,6 @@ trait AZST_ConfigurationForm
                             'name'    => 'Designation',
                             'width'   => '400px',
                             'add'     => '',
-                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "MotionDetectorStateConfigurationButton", "ID " . $MotionDetectorState["ID"] . " bearbeiten", $MotionDetectorState["ID"]);',
                             'edit'    => [
                                 'type' => 'ValidationTextBox'
                             ]
@@ -1191,11 +1271,18 @@ trait AZST_ConfigurationForm
                             ]
                         ],
                         [
+                            'caption' => 'ID',
+                            'name'    => 'VariableID',
+                            'width'   => '100px',
+                            'add'     => 0,
+                            'save'    => false,
+                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "GlassBreakageDetectorStateConfigurationButton", "ID " . $GlassBreakageDetectorState["ID"] . " bearbeiten", $GlassBreakageDetectorState["ID"]);',
+                        ],
+                        [
                             'name'    => 'ID',
                             'caption' => 'Variable',
-                            'width'   => '450px',
+                            'width'   => '650px',
                             'add'     => 0,
-                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "GlassBreakageDetectorStateConfigurationButton", "ID " . $GlassBreakageDetectorState["ID"] . " bearbeiten", $GlassBreakageDetectorState["ID"]);',
                             'edit'    => [
                                 'type' => 'SelectVariable'
                             ]
@@ -1225,6 +1312,120 @@ trait AZST_ConfigurationForm
                 ],
                 [
                     'type'     => 'List',
+                    'name'     => 'SmokeDetectorState',
+                    'caption'  => 'Rauchmelderstatus',
+                    'rowCount' => $amountSmokeDetectors,
+                    'add'      => true,
+                    'delete'   => true,
+                    'columns'  => [
+                        [
+                            'name'    => 'Use',
+                            'caption' => 'Aktiviert',
+                            'width'   => '100px',
+                            'add'     => true,
+                            'edit'    => [
+                                'type' => 'CheckBox'
+                            ]
+                        ],
+                        [
+                            'caption' => 'ID',
+                            'name'    => 'VariableID',
+                            'width'   => '100px',
+                            'add'     => 0,
+                            'save'    => false,
+                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "SmokeDetectorStateConfigurationButton", "ID " . $SmokeDetectorState["ID"] . " bearbeiten", $SmokeDetectorState["ID"]);',
+                        ],
+                        [
+                            'name'    => 'ID',
+                            'caption' => 'Variable',
+                            'width'   => '650px',
+                            'add'     => 0,
+                            'edit'    => [
+                                'type' => 'SelectVariable'
+                            ]
+                        ],
+                        [
+                            'caption' => 'Bezeichnung',
+                            'name'    => 'Designation',
+                            'width'   => '400px',
+                            'add'     => '',
+                            'edit'    => [
+                                'type' => 'ValidationTextBox'
+                            ]
+                        ]
+                    ],
+                    'values' => $smokeDetectorStateValues,
+                ],
+                [
+                    'type'     => 'OpenObjectButton',
+                    'caption'  => 'Bearbeiten',
+                    'name'     => 'SmokeDetectorStateConfigurationButton',
+                    'visible'  => false,
+                    'objectID' => 0
+                ],
+                [
+                    'type'    => 'Label',
+                    'caption' => ' '
+                ],
+                [
+                    'type'     => 'List',
+                    'name'     => 'WaterDetectorState',
+                    'caption'  => 'Wassermelderstatus',
+                    'rowCount' => $amountWaterDetectors,
+                    'add'      => true,
+                    'delete'   => true,
+                    'columns'  => [
+                        [
+                            'name'    => 'Use',
+                            'caption' => 'Aktiviert',
+                            'width'   => '100px',
+                            'add'     => true,
+                            'edit'    => [
+                                'type' => 'CheckBox'
+                            ]
+                        ],
+                        [
+                            'caption' => 'ID',
+                            'name'    => 'VariableID',
+                            'width'   => '100px',
+                            'add'     => 0,
+                            'save'    => false,
+                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "WaterDetectorStateConfigurationButton", "ID " . $WaterDetectorState["ID"] . " bearbeiten", $WaterDetectorState["ID"]);',
+                        ],
+                        [
+                            'name'    => 'ID',
+                            'caption' => 'Variable',
+                            'width'   => '650px',
+                            'add'     => 0,
+                            'edit'    => [
+                                'type' => 'SelectVariable'
+                            ]
+                        ],
+                        [
+                            'caption' => 'Bezeichnung',
+                            'name'    => 'Designation',
+                            'width'   => '400px',
+                            'add'     => '',
+                            'edit'    => [
+                                'type' => 'ValidationTextBox'
+                            ]
+                        ]
+                    ],
+                    'values' => $waterDetectorStateValues,
+                ],
+                [
+                    'type'     => 'OpenObjectButton',
+                    'caption'  => 'Bearbeiten',
+                    'name'     => 'WaterDetectorStateConfigurationButton',
+                    'visible'  => false,
+                    'objectID' => 0
+                ],
+                [
+                    'type'    => 'Label',
+                    'caption' => ' '
+                ],
+                [
+                    'type'     => 'List',
                     'name'     => 'AlarmSiren',
                     'caption'  => 'Alarmsirene',
                     'rowCount' => $amountAlarmSirens,
@@ -1241,11 +1442,18 @@ trait AZST_ConfigurationForm
                             ]
                         ],
                         [
+                            'caption' => 'ID',
+                            'name'    => 'VariableID',
+                            'width'   => '100px',
+                            'add'     => 0,
+                            'save'    => false,
+                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "AlarmSirenConfigurationButton", "ID " . $AlarmSiren["ID"] . " bearbeiten", $AlarmSiren["ID"]);',
+                        ],
+                        [
                             'name'    => 'ID',
                             'caption' => 'Variable',
-                            'width'   => '450px',
+                            'width'   => '650px',
                             'add'     => 0,
-                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "AlarmSirenConfigurationButton", "ID " . $AlarmSiren["ID"] . " bearbeiten", $AlarmSiren["ID"]);',
                             'edit'    => [
                                 'type' => 'SelectVariable'
                             ]
@@ -1255,7 +1463,6 @@ trait AZST_ConfigurationForm
                             'name'    => 'Designation',
                             'width'   => '400px',
                             'add'     => '',
-                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "AlarmSirenConfigurationButton", "ID " . $AlarmSiren["ID"] . " bearbeiten", $AlarmSiren["ID"]);',
                             'edit'    => [
                                 'type' => 'ValidationTextBox'
                             ]
@@ -1292,11 +1499,18 @@ trait AZST_ConfigurationForm
                             ]
                         ],
                         [
+                            'caption' => 'ID',
+                            'name'    => 'VariableID',
+                            'width'   => '100px',
+                            'add'     => 0,
+                            'save'    => false,
+                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "AlarmLightConfigurationButton", "ID " . $AlarmLight["ID"] . " bearbeiten", $AlarmLight["ID"]);',
+                        ],
+                        [
                             'name'    => 'ID',
                             'caption' => 'Variable',
-                            'width'   => '450px',
+                            'width'   => '650px',
                             'add'     => 0,
-                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "AlarmLightConfigurationButton", "ID " . $AlarmLight["ID"] . " bearbeiten", $AlarmLight["ID"]);',
                             'edit'    => [
                                 'type' => 'SelectVariable'
                             ]
@@ -1306,7 +1520,6 @@ trait AZST_ConfigurationForm
                             'name'    => 'Designation',
                             'width'   => '400px',
                             'add'     => '',
-                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "AlarmLightConfigurationButton", "ID " . $AlarmLight["ID"] . " bearbeiten", $AlarmLight["ID"]);',
                             'edit'    => [
                                 'type' => 'ValidationTextBox'
                             ]
@@ -1343,11 +1556,18 @@ trait AZST_ConfigurationForm
                             ]
                         ],
                         [
+                            'caption' => 'ID',
+                            'name'    => 'VariableID',
+                            'width'   => '100px',
+                            'add'     => 0,
+                            'save'    => false,
+                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "AlarmCallConfigurationButton", "ID " . $AlarmCall["ID"] . " bearbeiten", $AlarmCall["ID"]);',
+                        ],
+                        [
                             'name'    => 'ID',
                             'caption' => 'Variable',
-                            'width'   => '450px',
+                            'width'   => '650px',
                             'add'     => 0,
-                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "AlarmCallConfigurationButton", "ID " . $AlarmCall["ID"] . " bearbeiten", $AlarmCall["ID"]);',
                             'edit'    => [
                                 'type' => 'SelectVariable'
                             ]
@@ -1357,7 +1577,6 @@ trait AZST_ConfigurationForm
                             'name'    => 'Designation',
                             'width'   => '400px',
                             'add'     => '',
-                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "AlarmCallConfigurationButton", "ID " . $AlarmCall["ID"] . " bearbeiten", $AlarmCall["ID"]);',
                             'edit'    => [
                                 'type' => 'ValidationTextBox'
                             ]
@@ -1626,6 +1845,16 @@ trait AZST_ConfigurationForm
                     'type'    => 'CheckBox',
                     'name'    => 'EnableGlassBreakageDetectorState',
                     'caption' => 'Glasbruchmelderstatus'
+                ],
+                [
+                    'type'    => 'CheckBox',
+                    'name'    => 'EnableSmokeDetectorState',
+                    'caption' => 'Rauchmelderstatus'
+                ],
+                [
+                    'type'    => 'CheckBox',
+                    'name'    => 'EnableWaterDetectorState',
+                    'caption' => 'Wassermelderstatus'
                 ],
                 [
                     'type'    => 'CheckBox',
