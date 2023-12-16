@@ -39,7 +39,7 @@ trait AZ_Control
                 $activationNotificationName = 'FullProtectionActivationNotification';
                 break;
 
-            //Hull protection
+                //Hull protection
             case 2:
                 $useProtectionModeName = 'UseHullProtectionMode';
                 $abortActivationNotificationName = 'HullProtectionAbortActivationNotification';
@@ -48,7 +48,7 @@ trait AZ_Control
                 $activationNotificationName = 'HullProtectionActivationNotification';
                 break;
 
-            //Partial protection
+                //Partial protection
             case 3:
                 $useProtectionModeName = 'UsePartialProtectionMode';
                 $abortActivationNotificationName = 'PartialProtectionAbortActivationNotification';
@@ -234,7 +234,7 @@ trait AZ_Control
                 $this->ExecuteAction(0, $SenderID);
                 return true;
 
-            //Full protection mode
+                //Full protection mode
             case 1:
                 $fullProtectionControlSwitch = true;
                 $hullProtectionControlSwitch = false;
@@ -248,7 +248,7 @@ trait AZ_Control
                 $activationWithOpenDoorWindowNotificationName = 'FullProtectionActivationWithOpenDoorWindowNotification';
                 break;
 
-            //Hull protection mode
+                //Hull protection mode
             case 2:
                 $fullProtectionControlSwitch = false;
                 $hullProtectionControlSwitch = true;
@@ -262,7 +262,7 @@ trait AZ_Control
                 $activationWithOpenDoorWindowNotificationName = 'HullProtectionActivationWithOpenDoorWindowNotification';
                 break;
 
-            //Partial protection mode
+                //Partial protection mode
             case 3:
                 $fullProtectionControlSwitch = false;
                 $hullProtectionControlSwitch = false;

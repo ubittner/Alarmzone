@@ -498,10 +498,14 @@ trait AZ_ConfigurationForm
 
         //Door window sensors
         $doorWindowSensorValues = [];
+        $doorWindowVariableProfileListValues = [];
         $doorWindowSensors = json_decode($this->ReadPropertyString('DoorWindowSensors'), true);
-        $amountDoorWindowSensors = count($doorWindowSensors) + 1;
+        $amountDoorWindowSensors = count($doorWindowSensors);
+        $amountDoorWindowSensorRows = count($doorWindowSensors) + 1;
         foreach ($doorWindowSensors as $doorWindowSensor) {
             $sensorID = 0;
+            $primaryDoorWindowTriggerValue = '';
+            $secondaryDoorWindowTriggerValues = 'nein';
             $sensorLocation = '';
             $rowColor = '#C0FFC0'; //light green
             $conditions = true;
@@ -510,6 +514,7 @@ trait AZ_ConfigurationForm
                 if (array_key_exists(0, $primaryCondition)) {
                     if (array_key_exists(0, $primaryCondition[0]['rules']['variable'])) {
                         $sensorID = $primaryCondition[0]['rules']['variable'][0]['variableID'];
+                        $primaryDoorWindowTriggerValue = GetValueFormattedEx($sensorID, $primaryCondition[0]['rules']['variable'][0]['value']);
                         if ($sensorID <= 1 || @!IPS_ObjectExists($sensorID)) {
                             $conditions = false;
                         }
@@ -524,6 +529,7 @@ trait AZ_ConfigurationForm
                         foreach ($rules as $rule) {
                             if (array_key_exists('variableID', $rule)) {
                                 $id = $rule['variableID'];
+                                $secondaryDoorWindowTriggerValues = 'ja';
                                 if ($id <= 1 || @!IPS_ObjectExists($id)) {
                                     $conditions = false;
                                 }
@@ -564,7 +570,8 @@ trait AZ_ConfigurationForm
             if (!$conditions) {
                 $rowColor = '#FFC0C0'; //red
             }
-            $doorWindowSensorValues[] = ['ID' => $sensorID, 'VariableLocation' => $sensorLocation, 'rowColor' => $rowColor];
+            $doorWindowSensorValues[] = ['ID' => $sensorID, 'VariableLocation' => $sensorLocation, 'PrimaryTriggerValue' => $primaryDoorWindowTriggerValue, 'SecondaryTriggerValues' => $secondaryDoorWindowTriggerValues, 'rowColor' => $rowColor];
+            $doorWindowVariableProfileListValues[] = ['SensorID' => $sensorID, 'VariableLocation' => $sensorLocation, 'Designation' => $doorWindowSensor['Designation'], 'Comment' => $doorWindowSensor['Comment']];
         }
 
         $form['elements'][] =
@@ -750,7 +757,7 @@ trait AZ_ConfigurationForm
                         'type'     => 'List',
                         'name'     => 'DoorWindowSensors',
                         'caption'  => 'Tür- und Fenstersensoren',
-                        'rowCount' => $amountDoorWindowSensors,
+                        'rowCount' => $amountDoorWindowSensorRows,
                         'add'      => true,
                         'delete'   => true,
                         'columns'  => [
@@ -828,6 +835,20 @@ trait AZ_ConfigurationForm
                                 'edit'    => [
                                     'type' => 'CheckBox'
                                 ]
+                            ],
+                            [
+                                'caption' => 'Primäre Bedingung',
+                                'name'    => 'PrimaryTriggerValue',
+                                'width'   => '250px',
+                                'add'     => '',
+                                'save'    => false
+                            ],
+                            [
+                                'caption' => 'Weitere Bedingungen',
+                                'name'    => 'SecondaryTriggerValues',
+                                'width'   => '200px',
+                                'add'     => '',
+                                'save'    => false
                             ],
                             [
                                 'caption' => ' ',
@@ -1088,6 +1109,10 @@ trait AZ_ConfigurationForm
                         'values' => $doorWindowSensorValues,
                     ],
                     [
+                        'type'    => 'Label',
+                        'caption' => 'Anzahl Auslöser: ' . $amountDoorWindowSensors
+                    ],
+                    [
                         'type'     => 'OpenObjectButton',
                         'name'     => 'DoorWindowSensorsConfigurationButton',
                         'caption'  => 'Bearbeiten',
@@ -1137,9 +1162,66 @@ trait AZ_ConfigurationForm
                             'caption' => 'Variablenprofil wirklich automatisch zuweisen?',
                             'items'   => [
                                 [
+                                    'type'     => 'List',
+                                    'name'     => 'DoorWindowVariableProfileList',
+                                    'caption'  => 'Variablen',
+                                    'add'      => false,
+                                    'rowCount' => $amountDoorWindowSensors,
+                                    'sort'     => [
+                                        'column'    => 'SensorID',
+                                        'direction' => 'ascending'
+                                    ],
+                                    'columns' => [
+                                        [
+                                            'caption' => 'Auswahl',
+                                            'name'    => 'Use',
+                                            'width'   => '100px',
+                                            'add'     => true,
+                                            'edit'    => [
+                                                'type' => 'CheckBox'
+                                            ]
+                                        ],
+                                        [
+                                            'caption' => 'Profil umkehren',
+                                            'name'    => 'UseReversedProfile',
+                                            'width'   => '150px',
+                                            'add'     => false,
+                                            'edit'    => [
+                                                'type' => 'CheckBox'
+                                            ]
+                                        ],
+                                        [
+                                            'name'    => 'SensorID',
+                                            'caption' => 'ID',
+                                            'width'   => '80px',
+                                            'save'    => false
+                                        ],
+                                        [
+                                            'caption' => 'Objektbaum',
+                                            'name'    => 'VariableLocation',
+                                            'width'   => '350px',
+                                            'add'     => '',
+                                            'save'    => false
+                                        ],
+                                        [
+                                            'name'    => 'Designation',
+                                            'caption' => 'Name',
+                                            'width'   => '400px',
+                                            'save'    => false
+                                        ],
+                                        [
+                                            'name'    => 'Comment',
+                                            'caption' => 'Bemerkung',
+                                            'width'   => '400px',
+                                            'save'    => false
+                                        ]
+                                    ],
+                                    'values' => $doorWindowVariableProfileListValues,
+                                ],
+                                [
                                     'type'    => 'Button',
                                     'caption' => 'Zuweisen',
-                                    'onClick' => self::MODULE_PREFIX . '_AssignDoorWindowVariableProfile($id);'
+                                    'onClick' => self::MODULE_PREFIX . '_AssignDoorWindowVariableProfile($id, $DoorWindowVariableProfileList);'
                                 ],
                                 [
                                     'type'    => 'ProgressBar',
@@ -1163,38 +1245,44 @@ trait AZ_ConfigurationForm
 
         //Motion detectors
         $motionDetectorsValues = [];
-        $variables = json_decode($this->ReadPropertyString('MotionDetectors'), true);
-        $amount = count($variables) + 1;
-        foreach ($variables as $variable) {
+        $motionDetectorVariableProfileListValues = [];
+        $motionDetectors = json_decode($this->ReadPropertyString('MotionDetectors'), true);
+        $amountMotionDetectors = count($motionDetectors);
+        $amountMotionDetectorRows = count($motionDetectors) + 1;
+        foreach ($motionDetectors as $motionDetector) {
             $sensorID = 0;
-            $variableLocation = '';
+            $primaryMotionDetectorTriggerValue = '';
+            $secondaryMotionDetectorTriggerValues = 'nein';
+            $motionDetectorLocation = '';
             $rowColor = '#C0FFC0'; //light green
-            if (!$variable['Use']) {
+            if (!$motionDetector['Use']) {
                 $rowColor = '#DFDFDF'; //grey
             }
             //Primary condition
-            if ($variable['PrimaryCondition'] != '') {
-                $primaryCondition = json_decode($variable['PrimaryCondition'], true);
+            if ($motionDetector['PrimaryCondition'] != '') {
+                $primaryCondition = json_decode($motionDetector['PrimaryCondition'], true);
                 if (array_key_exists(0, $primaryCondition)) {
                     if (array_key_exists(0, $primaryCondition[0]['rules']['variable'])) {
                         $sensorID = $primaryCondition[0]['rules']['variable'][0]['variableID'];
+                        $primaryMotionDetectorTriggerValue = GetValueFormattedEx($sensorID, $primaryCondition[0]['rules']['variable'][0]['value']);
                         if ($sensorID <= 1 || !@IPS_ObjectExists($sensorID)) {
                             $rowColor = '#FFC0C0'; //red
                         } else {
-                            $variableLocation = IPS_GetLocation($sensorID);
+                            $motionDetectorLocation = IPS_GetLocation($sensorID);
                         }
                     }
                 }
             }
             //Secondary condition, multi
-            if ($variable['SecondaryCondition'] != '') {
-                $secondaryConditions = json_decode($variable['SecondaryCondition'], true);
+            if ($motionDetector['SecondaryCondition'] != '') {
+                $secondaryConditions = json_decode($motionDetector['SecondaryCondition'], true);
                 if (array_key_exists(0, $secondaryConditions)) {
                     if (array_key_exists('rules', $secondaryConditions[0])) {
                         $rules = $secondaryConditions[0]['rules']['variable'];
                         foreach ($rules as $rule) {
                             if (array_key_exists('variableID', $rule)) {
                                 $id = $rule['variableID'];
+                                $secondaryMotionDetectorTriggerValues = 'ja';
                                 if ($id <= 1 || !@IPS_ObjectExists($id)) {
                                     $rowColor = '#FFC0C0'; //red
                                 }
@@ -1204,9 +1292,9 @@ trait AZ_ConfigurationForm
                 }
             }
             //Alerting action
-            if ($variable['UseAlertingAction']) {
-                if ($variable['AlertingAction'] != '') {
-                    $action = json_decode($variable['AlertingAction'], true);
+            if ($motionDetector['UseAlertingAction']) {
+                if ($motionDetector['AlertingAction'] != '') {
+                    $action = json_decode($motionDetector['AlertingAction'], true);
                     if (array_key_exists('parameters', $action)) {
                         if (array_key_exists('TARGET', $action['parameters'])) {
                             $id = $action['parameters']['TARGET'];
@@ -1217,7 +1305,8 @@ trait AZ_ConfigurationForm
                     }
                 }
             }
-            $motionDetectorsValues[] = ['ID' => $sensorID, 'VariableLocation' => $variableLocation, 'rowColor' => $rowColor];
+            $motionDetectorsValues[] = ['ID' => $sensorID, 'VariableLocation' => $motionDetectorLocation, 'PrimaryTriggerValue' => $primaryMotionDetectorTriggerValue, 'SecondaryTriggerValues' => $secondaryMotionDetectorTriggerValues, 'rowColor' => $rowColor];
+            $motionDetectorVariableProfileListValues[] = ['SensorID' => $sensorID, 'VariableLocation' => $motionDetectorLocation, 'Designation' => $motionDetector['Designation'], 'Comment' => $motionDetector['Comment']];
         }
 
         $form['elements'][] =
@@ -1403,7 +1492,7 @@ trait AZ_ConfigurationForm
                         'type'     => 'List',
                         'name'     => 'MotionDetectors',
                         'caption'  => 'Bewegungsmelder',
-                        'rowCount' => $amount,
+                        'rowCount' => $amountMotionDetectorRows,
                         'add'      => true,
                         'delete'   => true,
                         'columns'  => [
@@ -1482,6 +1571,20 @@ trait AZ_ConfigurationForm
                                 'edit'    => [
                                     'type' => 'CheckBox'
                                 ]
+                            ],
+                            [
+                                'caption' => 'Primäre Bedingung',
+                                'name'    => 'PrimaryTriggerValue',
+                                'width'   => '250px',
+                                'add'     => '',
+                                'save'    => false
+                            ],
+                            [
+                                'caption' => 'Weitere Bedingungen',
+                                'name'    => 'SecondaryTriggerValues',
+                                'width'   => '200px',
+                                'add'     => '',
+                                'save'    => false
                             ],
                             [
                                 'caption' => ' ',
@@ -1712,6 +1815,10 @@ trait AZ_ConfigurationForm
                         'values' => $motionDetectorsValues,
                     ],
                     [
+                        'type'    => 'Label',
+                        'caption' => 'Anzahl Auslöser: ' . $amountMotionDetectors
+                    ],
+                    [
                         'type'     => 'OpenObjectButton',
                         'name'     => 'MotionDetectorsConfigurationButton',
                         'caption'  => 'Bearbeiten',
@@ -1761,9 +1868,66 @@ trait AZ_ConfigurationForm
                             'caption' => 'Variablenprofil wirklich automatisch zuweisen?',
                             'items'   => [
                                 [
+                                    'type'     => 'List',
+                                    'name'     => 'MotionDetectorVariableProfileList',
+                                    'caption'  => 'Variablen',
+                                    'add'      => false,
+                                    'rowCount' => $amountMotionDetectors,
+                                    'sort'     => [
+                                        'column'    => 'SensorID',
+                                        'direction' => 'ascending'
+                                    ],
+                                    'columns' => [
+                                        [
+                                            'caption' => 'Auswahl',
+                                            'name'    => 'Use',
+                                            'width'   => '100px',
+                                            'add'     => true,
+                                            'edit'    => [
+                                                'type' => 'CheckBox'
+                                            ]
+                                        ],
+                                        [
+                                            'caption' => 'Profil umkehren',
+                                            'name'    => 'UseReversedProfile',
+                                            'width'   => '150px',
+                                            'add'     => false,
+                                            'edit'    => [
+                                                'type' => 'CheckBox'
+                                            ]
+                                        ],
+                                        [
+                                            'name'    => 'SensorID',
+                                            'caption' => 'ID',
+                                            'width'   => '80px',
+                                            'save'    => false
+                                        ],
+                                        [
+                                            'caption' => 'Objektbaum',
+                                            'name'    => 'VariableLocation',
+                                            'width'   => '350px',
+                                            'add'     => '',
+                                            'save'    => false
+                                        ],
+                                        [
+                                            'name'    => 'Designation',
+                                            'caption' => 'Name',
+                                            'width'   => '400px',
+                                            'save'    => false
+                                        ],
+                                        [
+                                            'name'    => 'Comment',
+                                            'caption' => 'Bemerkung',
+                                            'width'   => '400px',
+                                            'save'    => false
+                                        ]
+                                    ],
+                                    'values' => $motionDetectorVariableProfileListValues,
+                                ],
+                                [
                                     'type'    => 'Button',
                                     'caption' => 'Zuweisen',
-                                    'onClick' => self::MODULE_PREFIX . '_AssignMotionDetectorVariableProfile($id);'
+                                    'onClick' => self::MODULE_PREFIX . '_AssignMotionDetectorVariableProfile($id, $MotionDetectorVariableProfileList);'
                                 ],
                                 [
                                     'type'    => 'ProgressBar',
@@ -1788,10 +1952,14 @@ trait AZ_ConfigurationForm
         //Glass breakage sensors
         $glassBreakageDetectorValues = [];
         $glassBreakageDetectors = json_decode($this->ReadPropertyString('GlassBreakageDetectors'), true);
-        $amountGlassBreakageDetectors = count($glassBreakageDetectors) + 1;
+        $glassBreakageDetectorVariableProfileListValues = [];
+        $amountGlassBreakageDetectors = count($glassBreakageDetectors);
+        $amountGlassBreakageDetectorRows = count($glassBreakageDetectors) + 1;
         foreach ($glassBreakageDetectors as $glassBreakageDetector) {
             $sensorID = 0;
-            $variableLocation = '';
+            $primaryGlassBreakageDetectorTriggerValue = '';
+            $secondaryGlassBreakageDetectorTriggerValues = 'nein';
+            $glassBreakageDetectorLocation = '';
             $rowColor = '#C0FFC0'; //light green
             if (!$glassBreakageDetector['Use']) {
                 $rowColor = '#DFDFDF'; //grey
@@ -1802,10 +1970,11 @@ trait AZ_ConfigurationForm
                 if (array_key_exists(0, $primaryCondition)) {
                     if (array_key_exists(0, $primaryCondition[0]['rules']['variable'])) {
                         $sensorID = $primaryCondition[0]['rules']['variable'][0]['variableID'];
+                        $primaryGlassBreakageDetectorTriggerValue = GetValueFormattedEx($sensorID, $primaryCondition[0]['rules']['variable'][0]['value']);
                         if ($sensorID <= 1 || !@IPS_ObjectExists($sensorID)) {
                             $rowColor = '#FFC0C0'; //red
                         } else {
-                            $variableLocation = IPS_GetLocation($sensorID);
+                            $glassBreakageDetectorLocation = IPS_GetLocation($sensorID);
                         }
                     }
                 }
@@ -1819,6 +1988,7 @@ trait AZ_ConfigurationForm
                         foreach ($rules as $rule) {
                             if (array_key_exists('variableID', $rule)) {
                                 $id = $rule['variableID'];
+                                $secondaryGlassBreakageDetectorTriggerValues = 'ja';
                                 if ($id <= 1 || !@IPS_ObjectExists($id)) {
                                     $rowColor = '#FFC0C0'; //red
                                 }
@@ -1841,7 +2011,8 @@ trait AZ_ConfigurationForm
                     }
                 }
             }
-            $glassBreakageDetectorValues[] = ['ID' => $sensorID, 'VariableLocation' => $variableLocation, 'rowColor' => $rowColor];
+            $glassBreakageDetectorValues[] = ['ID' => $sensorID, 'VariableLocation' => $glassBreakageDetectorLocation, 'PrimaryTriggerValue' => $primaryGlassBreakageDetectorTriggerValue, 'SecondaryTriggerValues' => $secondaryGlassBreakageDetectorTriggerValues, 'rowColor' => $rowColor];
+            $glassBreakageDetectorVariableProfileListValues[] = ['SensorID' => $sensorID, 'VariableLocation' => $glassBreakageDetectorLocation, 'Designation' => $glassBreakageDetector['Designation'], 'Comment' => $glassBreakageDetector['Comment']];
         }
 
         $form['elements'][] =
@@ -2027,7 +2198,7 @@ trait AZ_ConfigurationForm
                         'type'     => 'List',
                         'name'     => 'GlassBreakageDetectors',
                         'caption'  => 'Glasbruchmelder',
-                        'rowCount' => $amountGlassBreakageDetectors,
+                        'rowCount' => $amountGlassBreakageDetectorRows,
                         'add'      => true,
                         'delete'   => true,
                         'columns'  => [
@@ -2105,6 +2276,20 @@ trait AZ_ConfigurationForm
                                 'edit'    => [
                                     'type' => 'CheckBox'
                                 ]
+                            ],
+                            [
+                                'caption' => 'Primäre Bedingung',
+                                'name'    => 'PrimaryTriggerValue',
+                                'width'   => '250px',
+                                'add'     => '',
+                                'save'    => false
+                            ],
+                            [
+                                'caption' => 'Weitere Bedingungen',
+                                'name'    => 'SecondaryTriggerValues',
+                                'width'   => '200px',
+                                'add'     => '',
+                                'save'    => false,
                             ],
                             [
                                 'caption' => ' ',
@@ -2345,6 +2530,10 @@ trait AZ_ConfigurationForm
                         'values' => $glassBreakageDetectorValues,
                     ],
                     [
+                        'type'    => 'Label',
+                        'caption' => 'Anzahl Auslöser: ' . $amountGlassBreakageDetectors
+                    ],
+                    [
                         'type'     => 'OpenObjectButton',
                         'name'     => 'GlassBreakageDetectorsConfigurationButton',
                         'caption'  => 'Bearbeiten',
@@ -2394,9 +2583,66 @@ trait AZ_ConfigurationForm
                             'caption' => 'Variablenprofil wirklich automatisch zuweisen?',
                             'items'   => [
                                 [
+                                    'type'     => 'List',
+                                    'name'     => 'GlassBreakageDetectorVariableProfileList',
+                                    'caption'  => 'Variablen',
+                                    'add'      => false,
+                                    'rowCount' => $amountGlassBreakageDetectors,
+                                    'sort'     => [
+                                        'column'    => 'SensorID',
+                                        'direction' => 'ascending'
+                                    ],
+                                    'columns' => [
+                                        [
+                                            'caption' => 'Auswahl',
+                                            'name'    => 'Use',
+                                            'width'   => '100px',
+                                            'add'     => true,
+                                            'edit'    => [
+                                                'type' => 'CheckBox'
+                                            ]
+                                        ],
+                                        [
+                                            'caption' => 'Profil umkehren',
+                                            'name'    => 'UseReversedProfile',
+                                            'width'   => '150px',
+                                            'add'     => false,
+                                            'edit'    => [
+                                                'type' => 'CheckBox'
+                                            ]
+                                        ],
+                                        [
+                                            'name'    => 'SensorID',
+                                            'caption' => 'ID',
+                                            'width'   => '80px',
+                                            'save'    => false
+                                        ],
+                                        [
+                                            'caption' => 'Objektbaum',
+                                            'name'    => 'VariableLocation',
+                                            'width'   => '350px',
+                                            'add'     => '',
+                                            'save'    => false
+                                        ],
+                                        [
+                                            'name'    => 'Designation',
+                                            'caption' => 'Name',
+                                            'width'   => '400px',
+                                            'save'    => false
+                                        ],
+                                        [
+                                            'name'    => 'Comment',
+                                            'caption' => 'Bemerkung',
+                                            'width'   => '400px',
+                                            'save'    => false
+                                        ]
+                                    ],
+                                    'values' => $glassBreakageDetectorVariableProfileListValues,
+                                ],
+                                [
                                     'type'    => 'Button',
                                     'caption' => 'Zuweisen',
-                                    'onClick' => self::MODULE_PREFIX . '_AssignGlassBreakageDetectorVariableProfile($id);'
+                                    'onClick' => self::MODULE_PREFIX . '_AssignGlassBreakageDetectorVariableProfile($id, $GlassBreakageDetectorVariableProfileList);'
                                 ],
                                 [
                                     'type'    => 'ProgressBar',
@@ -2420,11 +2666,15 @@ trait AZ_ConfigurationForm
 
         //Smoke detectors
         $smokeDetectorValues = [];
+        $smokeDetectorVariableProfileListValues = [];
         $smokeDetectors = json_decode($this->ReadPropertyString('SmokeDetectors'), true);
-        $amountSmokeDetectors = count($smokeDetectors) + 1;
+        $amountSmokeDetectors = count($smokeDetectors);
+        $amountSmokeDetectorRows = count($smokeDetectors) + 1;
         foreach ($smokeDetectors as $smokeDetector) {
             $sensorID = 0;
-            $variableLocation = '';
+            $primarySmokeDetectorTriggerValue = '';
+            $secondarySmokeDetectorTriggerValues = 'nein';
+            $smokeDetectorLocation = '';
             $rowColor = '#C0FFC0'; //light green
             if (!$smokeDetector['Use']) {
                 $rowColor = '#DFDFDF'; //grey
@@ -2435,10 +2685,11 @@ trait AZ_ConfigurationForm
                 if (array_key_exists(0, $primaryCondition)) {
                     if (array_key_exists(0, $primaryCondition[0]['rules']['variable'])) {
                         $sensorID = $primaryCondition[0]['rules']['variable'][0]['variableID'];
+                        $primarySmokeDetectorTriggerValue = GetValueFormattedEx($sensorID, $primaryCondition[0]['rules']['variable'][0]['value']);
                         if ($sensorID <= 1 || !@IPS_ObjectExists($sensorID)) {
                             $rowColor = '#FFC0C0'; //red
                         } else {
-                            $variableLocation = IPS_GetLocation($sensorID);
+                            $smokeDetectorLocation = IPS_GetLocation($sensorID);
                         }
                     }
                 }
@@ -2452,6 +2703,7 @@ trait AZ_ConfigurationForm
                         foreach ($rules as $rule) {
                             if (array_key_exists('variableID', $rule)) {
                                 $id = $rule['variableID'];
+                                $secondarySmokeDetectorTriggerValues = 'ja';
                                 if ($id <= 1 || !@IPS_ObjectExists($id)) {
                                     $rowColor = '#FFC0C0'; //red
                                 }
@@ -2474,7 +2726,8 @@ trait AZ_ConfigurationForm
                     }
                 }
             }
-            $smokeDetectorValues[] = ['ID' => $sensorID, 'VariableLocation' => $variableLocation, 'rowColor' => $rowColor];
+            $smokeDetectorValues[] = ['ID' => $sensorID, 'VariableLocation' => $smokeDetectorLocation, 'PrimaryTriggerValue' => $primarySmokeDetectorTriggerValue, 'SecondaryTriggerValues' => $secondarySmokeDetectorTriggerValues, 'rowColor' => $rowColor];
+            $smokeDetectorVariableProfileListValues[] = ['SensorID' => $sensorID, 'VariableLocation' => $smokeDetectorLocation, 'Designation' => $smokeDetector['Designation'], 'Comment' => $smokeDetector['Comment']];
         }
 
         $form['elements'][] =
@@ -2660,7 +2913,7 @@ trait AZ_ConfigurationForm
                         'type'     => 'List',
                         'name'     => 'SmokeDetectors',
                         'caption'  => 'Rauchmelder',
-                        'rowCount' => $amountSmokeDetectors,
+                        'rowCount' => $amountSmokeDetectorRows,
                         'add'      => true,
                         'delete'   => true,
                         'columns'  => [
@@ -2738,6 +2991,20 @@ trait AZ_ConfigurationForm
                                 'edit'    => [
                                     'type' => 'CheckBox'
                                 ]
+                            ],
+                            [
+                                'caption' => 'Primäre Bedingung',
+                                'name'    => 'PrimaryTriggerValue',
+                                'width'   => '250px',
+                                'add'     => '',
+                                'save'    => false
+                            ],
+                            [
+                                'caption' => 'Weitere Bedingungen',
+                                'name'    => 'SecondaryTriggerValues',
+                                'width'   => '200px',
+                                'add'     => '',
+                                'save'    => false
                             ],
                             [
                                 'caption' => ' ',
@@ -2978,6 +3245,10 @@ trait AZ_ConfigurationForm
                         'values' => $smokeDetectorValues,
                     ],
                     [
+                        'type'    => 'Label',
+                        'caption' => 'Anzahl Auslöser: ' . $amountSmokeDetectors
+                    ],
+                    [
                         'type'     => 'OpenObjectButton',
                         'name'     => 'SmokeDetectorsConfigurationButton',
                         'caption'  => 'Bearbeiten',
@@ -3027,9 +3298,66 @@ trait AZ_ConfigurationForm
                             'caption' => 'Variablenprofil wirklich automatisch zuweisen?',
                             'items'   => [
                                 [
+                                    'type'     => 'List',
+                                    'name'     => 'SmokeDetectorVariableProfileList',
+                                    'caption'  => 'Variablen',
+                                    'add'      => false,
+                                    'rowCount' => $amountSmokeDetectors,
+                                    'sort'     => [
+                                        'column'    => 'SensorID',
+                                        'direction' => 'ascending'
+                                    ],
+                                    'columns' => [
+                                        [
+                                            'caption' => 'Auswahl',
+                                            'name'    => 'Use',
+                                            'width'   => '100px',
+                                            'add'     => true,
+                                            'edit'    => [
+                                                'type' => 'CheckBox'
+                                            ]
+                                        ],
+                                        [
+                                            'caption' => 'Profil umkehren',
+                                            'name'    => 'UseReversedProfile',
+                                            'width'   => '150px',
+                                            'add'     => false,
+                                            'edit'    => [
+                                                'type' => 'CheckBox'
+                                            ]
+                                        ],
+                                        [
+                                            'name'    => 'SensorID',
+                                            'caption' => 'ID',
+                                            'width'   => '80px',
+                                            'save'    => false
+                                        ],
+                                        [
+                                            'caption' => 'Objektbaum',
+                                            'name'    => 'VariableLocation',
+                                            'width'   => '350px',
+                                            'add'     => '',
+                                            'save'    => false
+                                        ],
+                                        [
+                                            'name'    => 'Designation',
+                                            'caption' => 'Name',
+                                            'width'   => '400px',
+                                            'save'    => false
+                                        ],
+                                        [
+                                            'name'    => 'Comment',
+                                            'caption' => 'Bemerkung',
+                                            'width'   => '400px',
+                                            'save'    => false
+                                        ]
+                                    ],
+                                    'values' => $smokeDetectorVariableProfileListValues,
+                                ],
+                                [
                                     'type'    => 'Button',
                                     'caption' => 'Zuweisen',
-                                    'onClick' => self::MODULE_PREFIX . '_AssignSmokeDetectorVariableProfile($id);'
+                                    'onClick' => self::MODULE_PREFIX . '_AssignSmokeDetectorVariableProfile($id, $SmokeDetectorVariableProfileList);'
                                 ],
                                 [
                                     'type'    => 'ProgressBar',
@@ -3053,11 +3381,15 @@ trait AZ_ConfigurationForm
 
         //Water detectors
         $waterDetectorValues = [];
+        $waterDetectorVariableProfileListValues = [];
         $waterDetectors = json_decode($this->ReadPropertyString('WaterDetectors'), true);
-        $amountWaterDetectors = count($waterDetectors) + 1;
+        $amountWaterDetectors = count($waterDetectors);
+        $amountWaterDetectorRows = count($waterDetectors) + 1;
         foreach ($waterDetectors as $waterDetector) {
             $sensorID = 0;
-            $variableLocation = '';
+            $primaryWaterDetectorTriggerValue = '';
+            $secondaryWaterDetectorTriggerValues = 'nein';
+            $waterDetectorLocation = '';
             $rowColor = '#C0FFC0'; //light green
             if (!$waterDetector['Use']) {
                 $rowColor = '#DFDFDF'; //grey
@@ -3068,10 +3400,11 @@ trait AZ_ConfigurationForm
                 if (array_key_exists(0, $primaryCondition)) {
                     if (array_key_exists(0, $primaryCondition[0]['rules']['variable'])) {
                         $sensorID = $primaryCondition[0]['rules']['variable'][0]['variableID'];
+                        $primaryWaterDetectorTriggerValue = GetValueFormattedEx($sensorID, $primaryCondition[0]['rules']['variable'][0]['value']);
                         if ($sensorID <= 1 || !@IPS_ObjectExists($sensorID)) {
                             $rowColor = '#FFC0C0'; //red
                         } else {
-                            $variableLocation = IPS_GetLocation($sensorID);
+                            $waterDetectorLocation = IPS_GetLocation($sensorID);
                         }
                     }
                 }
@@ -3085,6 +3418,7 @@ trait AZ_ConfigurationForm
                         foreach ($rules as $rule) {
                             if (array_key_exists('variableID', $rule)) {
                                 $id = $rule['variableID'];
+                                $secondaryWaterDetectorTriggerValues = 'ja';
                                 if ($id <= 1 || !@IPS_ObjectExists($id)) {
                                     $rowColor = '#FFC0C0'; //red
                                 }
@@ -3107,7 +3441,8 @@ trait AZ_ConfigurationForm
                     }
                 }
             }
-            $waterDetectorValues[] = ['ID' => $sensorID, 'VariableLocation' => $variableLocation, 'rowColor' => $rowColor];
+            $waterDetectorValues[] = ['ID' => $sensorID, 'VariableLocation' => $waterDetectorLocation, 'PrimaryTriggerValue' => $primaryWaterDetectorTriggerValue, 'SecondaryTriggerValues' => $secondaryWaterDetectorTriggerValues, 'rowColor' => $rowColor];
+            $waterDetectorVariableProfileListValues[] = ['SensorID' => $sensorID, 'VariableLocation' => $waterDetectorLocation, 'Designation' => $waterDetector['Designation'], 'Comment' => $waterDetector['Comment']];
         }
 
         $form['elements'][] =
@@ -3293,7 +3628,7 @@ trait AZ_ConfigurationForm
                         'type'     => 'List',
                         'name'     => 'WaterDetectors',
                         'caption'  => 'Wassermelder',
-                        'rowCount' => $amountWaterDetectors,
+                        'rowCount' => $amountWaterDetectorRows,
                         'add'      => true,
                         'delete'   => true,
                         'columns'  => [
@@ -3371,6 +3706,20 @@ trait AZ_ConfigurationForm
                                 'edit'    => [
                                     'type' => 'CheckBox'
                                 ]
+                            ],
+                            [
+                                'caption' => 'Primäre Bedingung',
+                                'name'    => 'PrimaryTriggerValue',
+                                'width'   => '250px',
+                                'add'     => '',
+                                'save'    => false
+                            ],
+                            [
+                                'caption' => 'Weitere Bedingungen',
+                                'name'    => 'SecondaryTriggerValues',
+                                'width'   => '200px',
+                                'add'     => '',
+                                'save'    => false
                             ],
                             [
                                 'caption' => ' ',
@@ -3611,6 +3960,10 @@ trait AZ_ConfigurationForm
                         'values' => $waterDetectorValues,
                     ],
                     [
+                        'type'    => 'Label',
+                        'caption' => 'Anzahl Auslöser: ' . $amountWaterDetectors
+                    ],
+                    [
                         'type'     => 'OpenObjectButton',
                         'name'     => 'WaterDetectorsConfigurationButton',
                         'caption'  => 'Bearbeiten',
@@ -3660,9 +4013,66 @@ trait AZ_ConfigurationForm
                             'caption' => 'Variablenprofil wirklich automatisch zuweisen?',
                             'items'   => [
                                 [
+                                    'type'     => 'List',
+                                    'name'     => 'WaterDetectorVariableProfileList',
+                                    'caption'  => 'Variablen',
+                                    'add'      => false,
+                                    'rowCount' => $amountWaterDetectors,
+                                    'sort'     => [
+                                        'column'    => 'SensorID',
+                                        'direction' => 'ascending'
+                                    ],
+                                    'columns' => [
+                                        [
+                                            'caption' => 'Auswahl',
+                                            'name'    => 'Use',
+                                            'width'   => '100px',
+                                            'add'     => true,
+                                            'edit'    => [
+                                                'type' => 'CheckBox'
+                                            ]
+                                        ],
+                                        [
+                                            'caption' => 'Profil umkehren',
+                                            'name'    => 'UseReversedProfile',
+                                            'width'   => '150px',
+                                            'add'     => false,
+                                            'edit'    => [
+                                                'type' => 'CheckBox'
+                                            ]
+                                        ],
+                                        [
+                                            'name'    => 'SensorID',
+                                            'caption' => 'ID',
+                                            'width'   => '80px',
+                                            'save'    => false
+                                        ],
+                                        [
+                                            'caption' => 'Objektbaum',
+                                            'name'    => 'VariableLocation',
+                                            'width'   => '350px',
+                                            'add'     => '',
+                                            'save'    => false
+                                        ],
+                                        [
+                                            'name'    => 'Designation',
+                                            'caption' => 'Name',
+                                            'width'   => '400px',
+                                            'save'    => false
+                                        ],
+                                        [
+                                            'name'    => 'Comment',
+                                            'caption' => 'Bemerkung',
+                                            'width'   => '400px',
+                                            'save'    => false
+                                        ]
+                                    ],
+                                    'values' => $waterDetectorVariableProfileListValues,
+                                ],
+                                [
                                     'type'    => 'Button',
                                     'caption' => 'Zuweisen',
-                                    'onClick' => self::MODULE_PREFIX . '_AssignWaterDetectorVariableProfile($id);'
+                                    'onClick' => self::MODULE_PREFIX . '_AssignWaterDetectorVariableProfile($id, $WaterDetectorVariableProfileList);'
                                 ],
                                 [
                                     'type'    => 'ProgressBar',

@@ -417,49 +417,63 @@ trait AZ_GlassBreakageDetectors
     }
 
     /**
-     * Assigns variable profiles to the glass breakage detector variables.
+     * Assigns the variable profile to the glass breakage detectors.
      *
+     * @param object $ListValues
      * @return void
      * @throws Exception
      */
-    public function AssignGlassBreakageDetectorVariableProfile(): void
+    public function AssignGlassBreakageDetectorVariableProfile(object $ListValues): void
     {
-        //Only assign a standard profile, a reversed profile must be assigned manually by the user!
-        $listedVariables = json_decode($this->ReadPropertyString('GlassBreakageDetectors'), true);
-        $maximumVariables = count($listedVariables);
+        $reflection = new ReflectionObject($ListValues);
+        $property = $reflection->getProperty('array');
+        $property->setAccessible(true);
+        $variables = $property->getValue($ListValues);
+        $amountVariables = 0;
+        foreach ($variables as $variable) {
+            if ($variable['Use']) {
+                $amountVariables++;
+            }
+        }
+        if ($amountVariables == 0) {
+            $this->UpdateFormField('InfoMessage', 'visible', true);
+            $this->UpdateFormField('InfoMessageLabel', 'caption', 'Es wurden keine Variablen ausgewählt!');
+            return;
+        }
+        $maximumVariables = $amountVariables;
         $this->UpdateFormField('AssignGlassBreakageDetectorVariableProfileProgress', 'minimum', 0);
         $this->UpdateFormField('AssignGlassBreakageDetectorVariableProfileProgress', 'maximum', $maximumVariables);
         $passedVariables = 0;
-        foreach ($listedVariables as $variable) {
+        foreach ($variables as $variable) {
+            if (!$variable['Use']) {
+                continue;
+            }
             $passedVariables++;
             $this->UpdateFormField('AssignGlassBreakageDetectorVariableProfileProgress', 'visible', true);
             $this->UpdateFormField('AssignGlassBreakageDetectorVariableProfileProgress', 'current', $passedVariables);
             $this->UpdateFormField('AssignGlassBreakageDetectorVariableProfileProgressInfo', 'visible', true);
             $this->UpdateFormField('AssignGlassBreakageDetectorVariableProfileProgressInfo', 'caption', $passedVariables . '/' . $maximumVariables);
             IPS_Sleep(250);
-            $id = 0;
-            //Primary condition
-            if ($variable['PrimaryCondition'] != '') {
-                $primaryCondition = json_decode($variable['PrimaryCondition'], true);
-                if (array_key_exists(0, $primaryCondition)) {
-                    if (array_key_exists(0, $primaryCondition[0]['rules']['variable'])) {
-                        $id = $primaryCondition[0]['rules']['variable'][0]['variableID'];
-                    }
-                }
-            }
+            $id = $variable['SensorID'];
             if ($id > 1 && @IPS_ObjectExists($id)) {
                 $object = IPS_GetObject($id)['ObjectType'];
                 //0: Category, 1: Instance, 2: Variable, 3: Script, 4: Event, 5: Media, 6: Link
                 if ($object == 2) {
-                    $variable = IPS_GetVariable($id)['VariableType'];
-                    switch ($variable) {
+                    $variableType = IPS_GetVariable($id)['VariableType'];
+                    switch ($variableType) {
                         //0: Boolean, 1: Integer, 2: Float, 3: String
                         case 0:
                             $profileName = 'GlassBreakageDetector.Bool';
+                            if ($variable['UseReversedProfile']) {
+                                $profileName = 'GlassBreakageDetector.Bool.Reversed';
+                            }
                             break;
 
                         case 1:
                             $profileName = 'GlassBreakageDetector.Integer';
+                            if ($variable['UseReversedProfile']) {
+                                $profileName = 'GlassBreakageDetector.Integer.Reversed';
+                            }
                             break;
 
                         default:
@@ -474,15 +488,9 @@ trait AZ_GlassBreakageDetectors
                 }
             }
         }
-        if ($maximumVariables == 0) {
-            $infoText = 'Es sind keine Variablen vorhanden!';
-        } else {
-            $this->UpdateFormField('AssignGlassBreakageDetectorVariableProfileProgress', 'visible', false);
-            $this->UpdateFormField('AssignGlassBreakageDetectorVariableProfileProgressInfo', 'visible', false);
-            $infoText = 'Variablenprofil wurde erfolgreich zugewiesen!';
-        }
-        $this->UpdateFormField('InfoMessage', 'visible', true);
-        $this->UpdateFormField('InfoMessageLabel', 'caption', $infoText);
+        $this->UpdateFormField('AssignMotionDetectorVariableProfileProgress', 'visible', false);
+        $this->UpdateFormField('AssignMotionDetectorVariableProfileProgressInfo', 'visible', false);
+        $this->ReloadConfig();
     }
 
     /**
@@ -551,37 +559,37 @@ trait AZ_GlassBreakageDetectors
 
                                         case 1: //armed
                                         case 3: //partial armed
-                                                if ($open) {
-                                                    switch ($mode) {
-                                                        //Check if sensor is activated for full protection mode
-                                                        case 1:
-                                                            if ($variable['FullProtectionModeActive']) {
-                                                                $alerting = true;
-                                                            }
-                                                            break;
+                                            if ($open) {
+                                                switch ($mode) {
+                                                    //Check if sensor is activated for full protection mode
+                                                    case 1:
+                                                        if ($variable['FullProtectionModeActive']) {
+                                                            $alerting = true;
+                                                        }
+                                                        break;
 
                                                         //Check if sensor is activated for hull protection mode
-                                                        case 2:
-                                                            if ($variable['HullProtectionModeActive']) {
-                                                                $alerting = true;
-                                                            }
-                                                            break;
+                                                    case 2:
+                                                        if ($variable['HullProtectionModeActive']) {
+                                                            $alerting = true;
+                                                        }
+                                                        break;
 
                                                         //Check if sensor is activated for partial protection mode
-                                                        case 3:
-                                                            if ($variable['PartialProtectionModeActive']) {
-                                                                $alerting = true;
-                                                            }
-                                                            break;
-                                                    }
+                                                    case 3:
+                                                        if ($variable['PartialProtectionModeActive']) {
+                                                            $alerting = true;
+                                                        }
+                                                        break;
                                                 }
+                                            }
 
                                             break;
 
                                         case 2: //delayed armed
                                         case 4: //delayed partial armed
                                             $this->SendDebug(__FUNCTION__, 'Alarmzone ist verzögert scharf! Glasbruchmelder ohne Auslösefunktion!', 0);
-                                        break;
+                                            break;
 
                                     }
                                 }
@@ -689,14 +697,14 @@ trait AZ_GlassBreakageDetectors
                                                         }
                                                         break;
 
-                                                    //Check if sensor is activated for hull protection mode
+                                                        //Check if sensor is activated for hull protection mode
                                                     case 2:
                                                         if ($variable['HullProtectionModeActive']) {
                                                             $alerting = true;
                                                         }
                                                         break;
 
-                                                    //Check if sensor is activated for partial protection mode
+                                                        //Check if sensor is activated for partial protection mode
                                                     case 3:
                                                         if ($variable['PartialProtectionModeActive']) {
                                                             $alerting = true;
@@ -796,8 +804,8 @@ trait AZ_GlassBreakageDetectors
             IPS_CreateVariableProfile($profile, 0);
         }
         IPS_SetVariableProfileIcon($profile, 'Window');
-        IPS_SetVariableProfileAssociation($profile, 0, 'Geschlossen', '', 0x00FF00);
-        IPS_SetVariableProfileAssociation($profile, 1, 'Geöffnet', '', 0xFF0000);
+        IPS_SetVariableProfileAssociation($profile, 0, 'OK', '', 0x00FF00);
+        IPS_SetVariableProfileAssociation($profile, 1, 'Glasbruch erkannt', '', 0xFF0000);
 
         //Bool variable reversed
         $profile = 'GlassBreakageDetector.Bool.Reversed';
@@ -805,8 +813,8 @@ trait AZ_GlassBreakageDetectors
             IPS_CreateVariableProfile($profile, 0);
         }
         IPS_SetVariableProfileIcon($profile, 'Window');
-        IPS_SetVariableProfileAssociation($profile, 0, 'Geöffnet', '', 0xFF0000);
-        IPS_SetVariableProfileAssociation($profile, 1, 'Geschlossen', '', 0x00FF00);
+        IPS_SetVariableProfileAssociation($profile, 0, 'Glasbruch erkannt', '', 0xFF0000);
+        IPS_SetVariableProfileAssociation($profile, 1, 'OK', '', 0x00FF00);
 
         //Integer variable
         $profile = 'GlassBreakageDetector.Integer';
@@ -814,8 +822,8 @@ trait AZ_GlassBreakageDetectors
             IPS_CreateVariableProfile($profile, 1);
         }
         IPS_SetVariableProfileIcon($profile, 'Window');
-        IPS_SetVariableProfileAssociation($profile, 0, 'Geschlossen', '', 0x00FF00);
-        IPS_SetVariableProfileAssociation($profile, 1, 'Geöffnet', '', 0xFF0000);
+        IPS_SetVariableProfileAssociation($profile, 0, 'OK', '', 0x00FF00);
+        IPS_SetVariableProfileAssociation($profile, 1, 'Glasbruch erkannt', '', 0xFF0000);
 
         //Integer variable reversed
         $profile = 'GlassBreakageDetector.Integer.Reversed';
@@ -823,8 +831,8 @@ trait AZ_GlassBreakageDetectors
             IPS_CreateVariableProfile($profile, 1);
         }
         IPS_SetVariableProfileIcon($profile, 'Window');
-        IPS_SetVariableProfileAssociation($profile, 0, 'Geöffnet', '', 0xFF0000);
-        IPS_SetVariableProfileAssociation($profile, 1, 'Geschlossen', '', 0x00FF00);
+        IPS_SetVariableProfileAssociation($profile, 0, 'Glasbruch erkannt', '', 0xFF0000);
+        IPS_SetVariableProfileAssociation($profile, 1, 'OK', '', 0x00FF00);
     }
 
     /**

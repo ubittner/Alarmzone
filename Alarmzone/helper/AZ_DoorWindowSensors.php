@@ -433,44 +433,64 @@ trait AZ_DoorWindowSensors
         $this->UpdateFormField('ActualDoorWindowStateList', 'values', json_encode($actualVariableStates));
     }
 
-    public function AssignDoorWindowVariableProfile(): void
+    /**
+     * Assigns the variable profile to the door and window sensors.
+     *
+     * @param object $ListValues
+     * @return void
+     * @throws Exception
+     */
+    public function AssignDoorWindowVariableProfile(object $ListValues): void
     {
-        //Only assign a standard profile, a reversed profile must be assigned manually by the user!
-        $listedVariables = json_decode($this->ReadPropertyString('DoorWindowSensors'), true);
-        $maximumVariables = count($listedVariables);
+        $reflection = new ReflectionObject($ListValues);
+        $property = $reflection->getProperty('array');
+        $property->setAccessible(true);
+        $variables = $property->getValue($ListValues);
+        $amountVariables = 0;
+        foreach ($variables as $variable) {
+            if ($variable['Use']) {
+                $amountVariables++;
+            }
+        }
+        if ($amountVariables == 0) {
+            $this->UpdateFormField('InfoMessage', 'visible', true);
+            $this->UpdateFormField('InfoMessageLabel', 'caption', 'Es wurden keine Variablen ausgewählt!');
+            return;
+        }
+        $maximumVariables = $amountVariables;
         $this->UpdateFormField('AssignDoorWindowVariableProfileProgress', 'minimum', 0);
         $this->UpdateFormField('AssignDoorWindowVariableProfileProgress', 'maximum', $maximumVariables);
         $passedVariables = 0;
-        foreach ($listedVariables as $variable) {
+        foreach ($variables as $variable) {
+            if (!$variable['Use']) {
+                continue;
+            }
             $passedVariables++;
             $this->UpdateFormField('AssignDoorWindowVariableProfileProgress', 'visible', true);
             $this->UpdateFormField('AssignDoorWindowVariableProfileProgress', 'current', $passedVariables);
             $this->UpdateFormField('AssignDoorWindowVariableProfileProgressInfo', 'visible', true);
             $this->UpdateFormField('AssignDoorWindowVariableProfileProgressInfo', 'caption', $passedVariables . '/' . $maximumVariables);
             IPS_Sleep(250);
-            $id = 0;
-            //Primary condition
-            if ($variable['PrimaryCondition'] != '') {
-                $primaryCondition = json_decode($variable['PrimaryCondition'], true);
-                if (array_key_exists(0, $primaryCondition)) {
-                    if (array_key_exists(0, $primaryCondition[0]['rules']['variable'])) {
-                        $id = $primaryCondition[0]['rules']['variable'][0]['variableID'];
-                    }
-                }
-            }
+            $id = $variable['SensorID'];
             if ($id > 1 && @IPS_ObjectExists($id)) {
                 $object = IPS_GetObject($id)['ObjectType'];
                 //0: Category, 1: Instance, 2: Variable, 3: Script, 4: Event, 5: Media, 6: Link
                 if ($object == 2) {
-                    $variable = IPS_GetVariable($id)['VariableType'];
-                    switch ($variable) {
+                    $variableType = IPS_GetVariable($id)['VariableType'];
+                    switch ($variableType) {
                         //0: Boolean, 1: Integer, 2: Float, 3: String
                         case 0:
                             $profileName = 'DoorWindow.Bool';
+                            if ($variable['UseReversedProfile']) {
+                                $profileName = 'DoorWindow.Bool.Reversed';
+                            }
                             break;
 
                         case 1:
                             $profileName = 'DoorWindow.Integer';
+                            if ($variable['UseReversedProfile']) {
+                                $profileName = 'DoorWindow.Integer.Reversed';
+                            }
                             break;
 
                         default:
@@ -485,15 +505,9 @@ trait AZ_DoorWindowSensors
                 }
             }
         }
-        if ($maximumVariables == 0) {
-            $infoText = 'Es sind keine Variablen vorhanden!';
-        } else {
-            $this->UpdateFormField('AssignDoorWindowVariableProfileProgress', 'visible', false);
-            $this->UpdateFormField('AssignDoorWindowVariableProfileProgressInfo', 'visible', false);
-            $infoText = 'Variablenprofil wurde erfolgreich zugewiesen!';
-        }
-        $this->UpdateFormField('InfoMessage', 'visible', true);
-        $this->UpdateFormField('InfoMessageLabel', 'caption', $infoText);
+        $this->UpdateFormField('AssignDoorWindowVariableProfileProgress', 'visible', false);
+        $this->UpdateFormField('AssignDoorWindowVariableProfileProgressInfo', 'visible', false);
+        $this->ReloadConfig();
     }
 
     /**
@@ -589,14 +603,14 @@ trait AZ_DoorWindowSensors
                                                         }
                                                         break;
 
-                                                    //Check if sensor is activated for hull protection mode
+                                                        //Check if sensor is activated for hull protection mode
                                                     case 2:
                                                         if ($variable['HullProtectionModeActive']) {
                                                             $alerting = true;
                                                         }
                                                         break;
 
-                                                    //Check if sensor is activated for partial protection mode
+                                                        //Check if sensor is activated for partial protection mode
                                                     case 3:
                                                         if ($variable['PartialProtectionModeActive']) {
                                                             $alerting = true;
@@ -724,14 +738,14 @@ trait AZ_DoorWindowSensors
                                                         }
                                                         break;
 
-                                                    //Check if sensor is activated for hull protection mode
+                                                        //Check if sensor is activated for hull protection mode
                                                     case 2:
                                                         if ($variable['HullProtectionModeActive']) {
                                                             $alerting = true;
                                                         }
                                                         break;
 
-                                                    //Check if sensor is activated for partial protection mode
+                                                        //Check if sensor is activated for partial protection mode
                                                     case 3:
                                                         if ($variable['PartialProtectionModeActive']) {
                                                             $alerting = true;
@@ -957,7 +971,7 @@ trait AZ_DoorWindowSensors
                     }
                     break;
 
-                //Full protection
+                    //Full protection
                 case 1:
                     $checkProtectionModeActivation = 'CheckFullProtectionModeActivation';
                     $protectionModeActive = 'FullProtectionModeActive';
