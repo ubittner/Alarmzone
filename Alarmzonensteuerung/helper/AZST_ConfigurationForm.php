@@ -2048,6 +2048,24 @@ trait AZST_ConfigurationForm
             'expanded' => false,
             'items'    => [
                 [
+                    'type'    => 'PopupButton',
+                    'caption' => 'Variablen neu anordnen',
+                    'popup'   => [
+                        'caption' => 'Variablen wirklich neu anordnen?',
+                        'items'   => [
+                            [
+                                'type'    => 'Button',
+                                'caption' => 'Neu anordnen',
+                                'onClick' => self::MODULE_PREFIX . '_ReorderVariables($id);' . self::MODULE_PREFIX . '_UIShowMessage($id, "Variablen wurden neu angeordnet!");'
+                            ]
+                        ]
+                    ]
+                ],
+                [
+                    'type'    => 'Label',
+                    'caption' => ' '
+                ],
+                [
                     'type'    => 'Label',
                     'caption' => 'Registrierte Referenzen',
                     'bold'    => true,

@@ -582,6 +582,37 @@ class Alarmzonensteuerung extends IPSModule
         $this->UpdateFormField('InfoMessageLabel', 'caption', $infoText);
     }
 
+    public function UIShowMessage(string $Message): void
+    {
+        $this->UpdateFormField('InfoMessage', 'visible', true);
+        $this->UpdateFormField('InfoMessageLabel', 'caption', $Message);
+    }
+
+    public function ReorderVariables(): void
+    {
+        IPS_SetPosition($this->GetIDForIdent('Active'), 10);
+        IPS_SetPosition($this->GetIDForIdent('Location'), 20);
+        IPS_SetPosition($this->GetIDForIdent('AlarmSwitch'), 30);
+        IPS_SetPosition($this->GetIDForIdent('AlertingSensor'), 40);
+        IPS_SetPosition($this->GetIDForIdent('FullProtectionControlSwitch'), 50);
+        IPS_SetPosition($this->GetIDForIdent('HullProtectionControlSwitch'), 60);
+        IPS_SetPosition($this->GetIDForIdent('PartialProtectionControlSwitch'), 70);
+        IPS_SetPosition($this->GetIDForIdent('IndividualProtectionControlSwitch'), 80);
+        IPS_SetPosition($this->GetIDForIdent('GlassBreakageDetectorControlSwitch'), 90);
+        IPS_SetPosition($this->GetIDForIdent('Mode'), 100);
+        IPS_SetPosition($this->GetIDForIdent('SystemState'), 110);
+        IPS_SetPosition($this->GetIDForIdent('SystemDetailedState'), 120);
+        IPS_SetPosition($this->GetIDForIdent('DoorWindowState'), 130);
+        IPS_SetPosition($this->GetIDForIdent('MotionDetectorState'), 140);
+        IPS_SetPosition($this->GetIDForIdent('GlassBreakageDetectorState'), 150);
+        IPS_SetPosition($this->GetIDForIdent('SmokeDetectorState'), 160);
+        IPS_SetPosition($this->GetIDForIdent('WaterDetectorState'), 170);
+        IPS_SetPosition($this->GetIDForIdent('AlarmState'), 180);
+        IPS_SetPosition($this->GetIDForIdent('AlarmSiren'), 190);
+        IPS_SetPosition($this->GetIDForIdent('AlarmLight'), 200);
+        IPS_SetPosition($this->GetIDForIdent('AlarmCall'), 210);
+    }
+
     #################### Request Action
 
     public function RequestAction($Ident, $Value)
