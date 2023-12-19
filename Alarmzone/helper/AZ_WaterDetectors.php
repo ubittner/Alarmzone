@@ -803,7 +803,7 @@ trait AZ_WaterDetectors
         if (!IPS_VariableProfileExists($profile)) {
             IPS_CreateVariableProfile($profile, 0);
         }
-        IPS_SetVariableProfileIcon($profile, 'Flame');
+        IPS_SetVariableProfileIcon($profile, 'Tap');
         IPS_SetVariableProfileAssociation($profile, 0, 'OK', '', 0x00FF00);
         IPS_SetVariableProfileAssociation($profile, 1, 'Wasser erkannt', '', 0xFF0000);
 
@@ -812,7 +812,7 @@ trait AZ_WaterDetectors
         if (!IPS_VariableProfileExists($profile)) {
             IPS_CreateVariableProfile($profile, 0);
         }
-        IPS_SetVariableProfileIcon($profile, 'Flame');
+        IPS_SetVariableProfileIcon($profile, 'Tap');
         IPS_SetVariableProfileAssociation($profile, 0, 'Wasser erkannt', '', 0xFF0000);
         IPS_SetVariableProfileAssociation($profile, 1, 'OK', '', 0x00FF00);
 
@@ -821,7 +821,7 @@ trait AZ_WaterDetectors
         if (!IPS_VariableProfileExists($profile)) {
             IPS_CreateVariableProfile($profile, 1);
         }
-        IPS_SetVariableProfileIcon($profile, 'Window');
+        IPS_SetVariableProfileIcon($profile, 'Tap');
         IPS_SetVariableProfileAssociation($profile, 0, 'OK', '', 0x00FF00);
         IPS_SetVariableProfileAssociation($profile, 1, 'Wasser erkannt', '', 0xFF0000);
 
@@ -830,7 +830,7 @@ trait AZ_WaterDetectors
         if (!IPS_VariableProfileExists($profile)) {
             IPS_CreateVariableProfile($profile, 1);
         }
-        IPS_SetVariableProfileIcon($profile, 'Window');
+        IPS_SetVariableProfileIcon($profile, 'Tap');
         IPS_SetVariableProfileAssociation($profile, 0, 'Wasser erkannt', '', 0xFF0000);
         IPS_SetVariableProfileAssociation($profile, 1, 'OK', '', 0x00FF00);
     }
