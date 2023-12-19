@@ -98,6 +98,7 @@ trait AZST_Control
         $determinedVariables = [];
         $zones = [];
         $protectionMode = [];
+        $glassBreakageDetectorControl = [];
         $systemState = [];
         $systemDetailedState = [];
         $alarmState = [];
@@ -151,7 +152,7 @@ trait AZST_Control
             return;
         }
         $this->UpdateFormField('ApplyNewConfigurationProgress', 'minimum', 0);
-        $maximumConfiguration = 14 * count($listedVariables);
+        $maximumConfiguration = 15 * count($listedVariables);
         $this->UpdateFormField('ApplyNewConfigurationProgress', 'maximum', $maximumConfiguration);
         $passedConfiguration = 0;
         foreach ($listedVariables as $listedVariable) {
@@ -175,6 +176,12 @@ trait AZST_Control
                         $passedConfiguration++;
                         $this->ApplyNewConfigurationUpdateProgressState($passedConfiguration, $maximumConfiguration);
                         $protectionMode[] = ['Use' => true, 'ID' => $child, 'Designation' => $description];
+                        break;
+
+                    case 'GlassBreakageDetectorControlSwitch':
+                        $passedConfiguration++;
+                        $this->ApplyNewConfigurationUpdateProgressState($passedConfiguration, $maximumConfiguration);
+                        $glassBreakageDetectorControl[] = ['Use' => true, 'ID' => $child, 'Designation' => $description];
                         break;
 
                     case 'AlarmZoneState':
@@ -256,6 +263,7 @@ trait AZST_Control
         array_multisort(array_column($listedVariables, 'Designation'), SORT_ASC, $listedVariables);
         @IPS_SetProperty($this->InstanceID, 'AlarmZones', json_encode($zones));
         @IPS_SetProperty($this->InstanceID, 'ProtectionMode', json_encode($protectionMode));
+        @IPS_SetProperty($this->InstanceID, 'GlassBreakageDetectorControl', json_encode($glassBreakageDetectorControl));
         @IPS_SetProperty($this->InstanceID, 'SystemState', json_encode($systemState));
         @IPS_SetProperty($this->InstanceID, 'SystemDetailedState', json_encode($systemDetailedState));
         @IPS_SetProperty($this->InstanceID, 'AlarmState', json_encode($alarmState));
@@ -328,6 +336,38 @@ trait AZST_Control
                 }
             }
         }
+    }
+
+    /**
+     * Switches the glass breakage detector control off or on.
+     *
+     * @param bool $State
+     * false =  off = no detection,
+     * true =   on = detection
+     *
+     * @return void
+     * @throws Exception
+     */
+    public function SwitchGlassBreakageDetectorControl(bool $State): void
+    {
+        $this->WriteAttributeBoolean('DisableUpdateGlassBreakageDetectorControl', true);
+        $this->SetValue('GlassBreakageDetectorControlSwitch', $State);
+        $alarmZones = json_decode($this->ReadPropertyString('AlarmZones'), true);
+        if (empty($alarmZones)) {
+            return;
+        }
+        foreach ($alarmZones as $alarmZone) {
+            if (!$alarmZone['Use']) {
+                continue;
+            }
+            $id = $alarmZone['ID'];
+            if ($id == 0 || @!IPS_ObjectExists($id)) {
+                continue;
+            }
+            @AZ_SwicthGlassBreakageControl($id, $State);
+        }
+        $this->WriteAttributeBoolean('DisableUpdateGlassBreakageDetectorControl', false);
+        $this->UpdateGlassBreakageDetectorControl();
     }
 
     /**

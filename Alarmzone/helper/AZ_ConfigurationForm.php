@@ -12038,6 +12038,11 @@ trait AZ_ConfigurationForm
                     'caption' => 'Teilschutz'
                 ],
                 [
+                    'type'    => 'CheckBox',
+                    'name'    => 'EnableGlassBreakageDetectorControlSwitch',
+                    'caption' => 'Glasbruchmelder'
+                ],
+                [
                     'type'    => 'Label',
                     'caption' => ' '
                 ],

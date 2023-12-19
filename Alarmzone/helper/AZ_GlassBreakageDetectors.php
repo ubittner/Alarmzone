@@ -548,7 +548,9 @@ trait AZ_GlassBreakageDetectors
                                 }
                                 if ($variable['PermanentMonitoring']) {
                                     if ($open) {
-                                        $alerting = true;
+                                        if ($this->GetValue('GlassBreakageDetectorControlSwitch')) {
+                                            $alerting = true;
+                                        }
                                     }
                                 } else {
                                     $mode = $this->GetValue('Mode');

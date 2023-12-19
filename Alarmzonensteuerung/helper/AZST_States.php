@@ -29,18 +29,19 @@ trait AZST_States
         $this->SendDebug(__FUNCTION__, 'wird ausgeführt', 0);
         $result = true;
         $update1 = $this->UpdateProtectionMode();
-        $update2 = $this->UpdateSystemState();
-        $update3 = $this->UpdateSystemDetailedState();
-        $update4 = $this->UpdateAlarmState();
-        $update5 = $this->UpdateAlertingSensor();
-        $update6 = $this->UpdateDoorWindowState();
-        $update7 = $this->UpdateMotionDetectorState();
-        $update8 = $this->UpdateGlassBreakageDetectorState();
-        $update9 = $this->UpdateSmokeDetectorState();
-        $update10 = $this->UpdateWaterDetectorState();
-        $update11 = $this->UpdateAlarmSiren();
-        $update12 = $this->UpdateAlarmLight();
-        $update13 = $this->UpdateAlarmCall();
+        $update2 = $this->UpdateGlassBreakageDetectorControl();
+        $update3 = $this->UpdateSystemState();
+        $update4 = $this->UpdateSystemDetailedState();
+        $update5 = $this->UpdateAlarmState();
+        $update6 = $this->UpdateAlertingSensor();
+        $update7 = $this->UpdateDoorWindowState();
+        $update8 = $this->UpdateMotionDetectorState();
+        $update9 = $this->UpdateGlassBreakageDetectorState();
+        $update10 = $this->UpdateSmokeDetectorState();
+        $update11 = $this->UpdateWaterDetectorState();
+        $update12 = $this->UpdateAlarmSiren();
+        $update13 = $this->UpdateAlarmLight();
+        $update14 = $this->UpdateAlarmCall();
         if (!$update1 ||
             !$update2 ||
             !$update3 ||
@@ -53,7 +54,8 @@ trait AZST_States
             !$update10 ||
             !$update11 ||
             !$update12 ||
-            !$update13) {
+            !$update13 ||
+            !$update14) {
             $result = false;
         }
         return $result;
@@ -179,6 +181,43 @@ trait AZST_States
             $this->SetValue('Mode', $mode);
             $this->SendDebug(__FUNCTION__, 'Modus: ' . $mode . ' = ' . $stateText, 0);
         }
+        return $result;
+    }
+
+    /**
+     * Updates the state of the glass breakage detector control.
+     *
+     * @return bool
+     * false =  an error occurred,
+     * true =   successful
+     *
+     * @throws Exception
+     */
+    public function UpdateGlassBreakageDetectorControl(): bool
+    {
+        $this->SendDebug(__FUNCTION__, 'wird ausgeführt', 0);
+        if ($this->CheckMaintenance()) {
+            return false;
+        }
+        $variables = json_decode($this->ReadPropertyString('GlassBreakageDetectorControl'), true);
+        if (empty($variables)) {
+            return false;
+        }
+        $result = false;
+        $state = false;
+        foreach ($variables as $variable) {
+            if ($variable['Use']) {
+                $id = $variable['ID'];
+                if ($id > 1 && @IPS_ObjectExists($id)) {
+                    $result = true;
+                    $actualValue = GetValueBoolean($variable['ID']);
+                    if ($actualValue) {
+                        $state = true; //on
+                    }
+                }
+            }
+        }
+        $this->SetValue('GlassBreakageDetectorControlSwitch', $state);
         return $result;
     }
 

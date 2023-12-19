@@ -457,6 +457,22 @@ trait AZST_ConfigurationForm
             $alarmZoneValues[] = ['VariableID' => $id, 'rowColor' => $rowColor];
         }
 
+        //Glass breakage detector control switch
+        $glassBreakageDetectorControlSwitchValues = [];
+        $glassBreakageDetectorControlSwitches = json_decode($this->ReadPropertyString('GlassBreakageDetectorControl'), true);
+        $amountGlassBreakageDetectorControl = count($glassBreakageDetectorControlSwitches) + 1;
+        foreach ($glassBreakageDetectorControlSwitches as $glassBreakageDetectorControlSwitch) {
+            if (!$glassBreakageDetectorControlSwitch['Use']) {
+                continue;
+            }
+            $rowColor = '#FFC0C0'; //red
+            $id = $glassBreakageDetectorControlSwitch['ID'];
+            if ($id > 1 && @IPS_ObjectExists($id)) {
+                $rowColor = '#C0FFC0'; //light green
+            }
+            $glassBreakageDetectorControlSwitchValues[] = ['VariableID' => $id, 'rowColor' => $rowColor];
+        }
+
         //Protection mode
         $protectionModeValues = [];
         $variables = json_decode($this->ReadPropertyString('ProtectionMode'), true);
@@ -961,6 +977,63 @@ trait AZST_ConfigurationForm
                     'type'     => 'OpenObjectButton',
                     'caption'  => 'Bearbeiten',
                     'name'     => 'ProtectionModeConfigurationButton',
+                    'visible'  => false,
+                    'objectID' => 0
+                ],
+                [
+                    'type'    => 'Label',
+                    'caption' => ' '
+                ],
+                [
+                    'type'     => 'List',
+                    'name'     => 'GlassBreakageDetectorControl',
+                    'caption'  => 'Glasbruchmelder',
+                    'rowCount' => $amountGlassBreakageDetectorControl,
+                    'add'      => true,
+                    'delete'   => true,
+                    'columns'  => [
+                        [
+                            'name'    => 'Use',
+                            'caption' => 'Aktiviert',
+                            'width'   => '100px',
+                            'add'     => true,
+                            'edit'    => [
+                                'type' => 'CheckBox'
+                            ]
+                        ],
+                        [
+                            'caption' => 'ID',
+                            'name'    => 'VariableID',
+                            'width'   => '100px',
+                            'add'     => 0,
+                            'save'    => false,
+                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "GlassBreakageDetectorControlSwitchConfigurationButton", "ID " . $GlassBreakageDetectorControl["ID"] . " bearbeiten", $GlassBreakageDetectorControl["ID"]);',
+                        ],
+                        [
+                            'name'    => 'ID',
+                            'caption' => 'Variable',
+                            'width'   => '650px',
+                            'add'     => 0,
+                            'edit'    => [
+                                'type' => 'SelectVariable'
+                            ]
+                        ],
+                        [
+                            'caption' => 'Bezeichnung',
+                            'name'    => 'Designation',
+                            'width'   => '400px',
+                            'add'     => '',
+                            'edit'    => [
+                                'type' => 'ValidationTextBox'
+                            ]
+                        ]
+                    ],
+                    'values' => $glassBreakageDetectorControlSwitchValues,
+                ],
+                [
+                    'type'     => 'OpenObjectButton',
+                    'caption'  => 'Bearbeiten',
+                    'name'     => 'GlassBreakageDetectorControlSwitchConfigurationButton',
                     'visible'  => false,
                     'objectID' => 0
                 ],
@@ -1795,6 +1868,11 @@ trait AZST_ConfigurationForm
                     'type'    => 'CheckBox',
                     'name'    => 'EnableIndividualProtectionControlSwitch',
                     'caption' => 'Individualschutz'
+                ],
+                [
+                    'type'    => 'CheckBox',
+                    'name'    => 'EnableGlassBreakageDetectorControlSwitch',
+                    'caption' => 'Glasbruchmelder'
                 ],
                 [
                     'type'    => 'Label',

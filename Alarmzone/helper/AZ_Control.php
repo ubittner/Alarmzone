@@ -174,6 +174,21 @@ trait AZ_Control
     }
 
     /**
+     * Switches the glass breakage detector control off or on.
+     *
+     * @param bool $State
+     * false =  off = no detection,
+     * true =   on = detection
+     *
+     * @return void
+     * @throws Exception
+     */
+    public function SwicthGlassBreakageControl(bool $State): void
+    {
+        $this->SetValue('GlassBreakageDetectorControlSwitch', $State);
+    }
+
+    /**
      * Selects the protection mode.
      *
      * @param int $Mode

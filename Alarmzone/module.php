@@ -175,14 +175,15 @@ class Alarmzone extends IPSModule
         $this->RegisterPropertyBoolean('EnableFullProtectionControlSwitch', true);
         $this->RegisterPropertyBoolean('EnableHullProtectionControlSwitch', true);
         $this->RegisterPropertyBoolean('EnablePartialProtectionControlSwitch', true);
+        $this->RegisterPropertyBoolean('EnableGlassBreakageDetectorControlSwitch', false);
         $this->RegisterPropertyBoolean('EnableMode', true);
         $this->RegisterPropertyBoolean('EnableAlarmZoneState', true);
         $this->RegisterPropertyBoolean('EnableAlarmZoneDetailedState', false);
         $this->RegisterPropertyBoolean('EnableDoorWindowState', true);
-        $this->RegisterPropertyBoolean('EnableMotionDetectorState', true);
-        $this->RegisterPropertyBoolean('EnableGlassBreakageDetectorState', true);
-        $this->RegisterPropertyBoolean('EnableSmokeDetectorState', true);
-        $this->RegisterPropertyBoolean('EnableWaterDetectorState', true);
+        $this->RegisterPropertyBoolean('EnableMotionDetectorState', false);
+        $this->RegisterPropertyBoolean('EnableGlassBreakageDetectorState', false);
+        $this->RegisterPropertyBoolean('EnableSmokeDetectorState', false);
+        $this->RegisterPropertyBoolean('EnableWaterDetectorState', false);
         $this->RegisterPropertyBoolean('EnableAlarmState', true);
         $this->RegisterPropertyBoolean('EnableAlarmSirenState', false);
         $this->RegisterPropertyBoolean('EnableAlarmLightState', false);
@@ -257,6 +258,14 @@ class Alarmzone extends IPSModule
             IPS_SetIcon($this->GetIDForIdent('PartialProtectionControlSwitch'), 'Moon');
         }
 
+        //Glass breakage detector control switch
+        $id = @$this->GetIDForIdent('GlassBreakageDetectorControlSwitch');
+        $this->RegisterVariableBoolean('GlassBreakageDetectorControlSwitch', 'Glasbruchmelder', '~Switch', 90);
+        $this->EnableAction('GlassBreakageDetectorControlSwitch');
+        if (!$id) {
+            IPS_SetIcon($this->GetIDForIdent('GlassBreakageDetectorControlSwitch'), 'Window');
+        }
+
         //Alarm zone state
         $profile = self::MODULE_PREFIX . '.' . $this->InstanceID . '.AlarmZoneState';
         if (!IPS_VariableProfileExists($profile)) {
@@ -266,7 +275,7 @@ class Alarmzone extends IPSModule
         IPS_SetVariableProfileAssociation($profile, 0, 'Unscharf', 'IPS', 0x00FF00);
         IPS_SetVariableProfileAssociation($profile, 1, 'Scharf', 'Warning', 0xFF0000);
         IPS_SetVariableProfileAssociation($profile, 2, 'Verzögert Scharf', 'Clock', 0xFFFF00);
-        $this->RegisterVariableInteger('AlarmZoneState', 'Alarmzonenstatus', $profile, 100);
+        $this->RegisterVariableInteger('AlarmZoneState', 'Alarmzonenstatus', $profile, 110);
 
         //Alarm zone detailed state
         $profile = self::MODULE_PREFIX . '.' . $this->InstanceID . '.AlarmZoneDetailedState';
@@ -279,7 +288,7 @@ class Alarmzone extends IPSModule
         IPS_SetVariableProfileAssociation($profile, 2, 'Verzögert Scharf', 'Clock', 0xFFFF00);
         IPS_SetVariableProfileAssociation($profile, 3, 'Teilscharf', 'Warning', 0xFFFF00);
         IPS_SetVariableProfileAssociation($profile, 4, 'Verzögert Teilscharf', 'Warning', 0xFFFF00);
-        $this->RegisterVariableInteger('AlarmZoneDetailedState', 'Detaillierter Alarmzonenstatus', $profile, 110);
+        $this->RegisterVariableInteger('AlarmZoneDetailedState', 'Detaillierter Alarmzonenstatus', $profile, 120);
 
         //Door and window state
         $profile = self::MODULE_PREFIX . '.' . $this->InstanceID . '.DoorWindowState';
@@ -289,7 +298,7 @@ class Alarmzone extends IPSModule
         IPS_SetVariableProfileIcon($profile, 'Window');
         IPS_SetVariableProfileAssociation($profile, 0, 'Geschlossen', '', 0x00FF00);
         IPS_SetVariableProfileAssociation($profile, 1, 'Geöffnet', '', 0xFF0000);
-        $this->RegisterVariableBoolean('DoorWindowState', 'Tür- und Fensterstatus', $profile, 120);
+        $this->RegisterVariableBoolean('DoorWindowState', 'Tür- und Fensterstatus', $profile, 130);
 
         //Motion detector state
         $profile = self::MODULE_PREFIX . '.' . $this->InstanceID . '.MotionDetectorState';
@@ -299,7 +308,7 @@ class Alarmzone extends IPSModule
         IPS_SetVariableProfileIcon($profile, 'Motion');
         IPS_SetVariableProfileAssociation($profile, 0, 'OK', '', 0x00FF00);
         IPS_SetVariableProfileAssociation($profile, 1, 'Bewegung erkannt', '', 0xFF0000);
-        $this->RegisterVariableBoolean('MotionDetectorState', 'Bewegungsmelderstatus', $profile, 130);
+        $this->RegisterVariableBoolean('MotionDetectorState', 'Bewegungsmelderstatus', $profile, 140);
 
         //Glass breakage detector state
         $profile = self::MODULE_PREFIX . '.' . $this->InstanceID . '.GlassBreakageDetectorState';
@@ -309,7 +318,7 @@ class Alarmzone extends IPSModule
         IPS_SetVariableProfileIcon($profile, 'Window');
         IPS_SetVariableProfileAssociation($profile, 0, 'OK', '', 0x00FF00);
         IPS_SetVariableProfileAssociation($profile, 1, 'Glasbruch erkannt', '', 0xFF0000);
-        $this->RegisterVariableBoolean('GlassBreakageDetectorState', 'Glasbruchmelderstatus', $profile, 140);
+        $this->RegisterVariableBoolean('GlassBreakageDetectorState', 'Glasbruchmelderstatus', $profile, 150);
 
         //Smoke detector state
         $profile = self::MODULE_PREFIX . '.' . $this->InstanceID . '.SmokeDetectorState';
@@ -319,7 +328,7 @@ class Alarmzone extends IPSModule
         IPS_SetVariableProfileIcon($profile, 'Flame');
         IPS_SetVariableProfileAssociation($profile, 0, 'OK', '', 0x00FF00);
         IPS_SetVariableProfileAssociation($profile, 1, 'Rauch erkannt', '', 0xFF0000);
-        $this->RegisterVariableBoolean('SmokeDetectorState', 'Rauchmelderstatus', $profile, 150);
+        $this->RegisterVariableBoolean('SmokeDetectorState', 'Rauchmelderstatus', $profile, 160);
 
         //Water detector state
         $profile = self::MODULE_PREFIX . '.' . $this->InstanceID . '.WaterDetectorState';
@@ -329,7 +338,7 @@ class Alarmzone extends IPSModule
         IPS_SetVariableProfileIcon($profile, 'Tap');
         IPS_SetVariableProfileAssociation($profile, 0, 'OK', '', 0x00FF00);
         IPS_SetVariableProfileAssociation($profile, 1, 'Wasser erkannt', '', 0xFF0000);
-        $this->RegisterVariableBoolean('WaterDetectorState', 'Wassermelderstatus', $profile, 150);
+        $this->RegisterVariableBoolean('WaterDetectorState', 'Wassermelderstatus', $profile, 170);
 
         //Alarm state
         $profile = self::MODULE_PREFIX . '.' . $this->InstanceID . '.AlarmState';
@@ -339,7 +348,7 @@ class Alarmzone extends IPSModule
         IPS_SetVariableProfileIcon($profile, '');
         IPS_SetVariableProfileAssociation($profile, 0, 'OK', 'Warning', 0x00FF00);
         IPS_SetVariableProfileAssociation($profile, 1, 'Alarm', 'Alert', 0xFF0000);
-        $this->RegisterVariableInteger('AlarmState', 'Alarmstatus', $profile, 170);
+        $this->RegisterVariableInteger('AlarmState', 'Alarmstatus', $profile, 180);
 
         //Alarm siren
         $profile = self::MODULE_PREFIX . '.' . $this->InstanceID . '.AlarmSirenStatus';
@@ -349,7 +358,7 @@ class Alarmzone extends IPSModule
         IPS_SetVariableProfileIcon($profile, 'Alert');
         IPS_SetVariableProfileAssociation($profile, 0, 'Aus', '', 0x00FF00);
         IPS_SetVariableProfileAssociation($profile, 1, 'An', '', 0xFF0000);
-        $this->RegisterVariableBoolean('AlarmSiren', 'Alarmsirene', $profile, 180);
+        $this->RegisterVariableBoolean('AlarmSiren', 'Alarmsirene', $profile, 190);
 
         //Alarm light
         $profile = self::MODULE_PREFIX . '.' . $this->InstanceID . '.AlarmLightStatus';
@@ -359,7 +368,7 @@ class Alarmzone extends IPSModule
         IPS_SetVariableProfileIcon($profile, 'Bulb');
         IPS_SetVariableProfileAssociation($profile, 0, 'Aus', '', 0x00FF00);
         IPS_SetVariableProfileAssociation($profile, 1, 'An', '', 0xFF0000);
-        $this->RegisterVariableBoolean('AlarmLight', 'Alarmbeleuchtung', $profile, 190);
+        $this->RegisterVariableBoolean('AlarmLight', 'Alarmbeleuchtung', $profile, 200);
 
         //Alarm call
         $profile = self::MODULE_PREFIX . '.' . $this->InstanceID . '.AlarmCallStatus';
@@ -369,7 +378,7 @@ class Alarmzone extends IPSModule
         IPS_SetVariableProfileIcon($profile, 'Mobile');
         IPS_SetVariableProfileAssociation($profile, 0, 'Aus', '', 0x00FF00);
         IPS_SetVariableProfileAssociation($profile, 1, 'An', '', 0xFF0000);
-        $this->RegisterVariableBoolean('AlarmCall', 'Alarmanruf', $profile, 200);
+        $this->RegisterVariableBoolean('AlarmCall', 'Alarmanruf', $profile, 210);
 
         ########## Attributes
 
@@ -426,8 +435,8 @@ class Alarmzone extends IPSModule
         if ($this->ReadPropertyBoolean('UsePartialProtectionMode')) {
             IPS_SetVariableProfileAssociation($profile, 3, $this->ReadPropertyString('PartialProtectionName'), $this->ReadPropertyString('PartialProtectionIcon'), $this->ReadPropertyInteger('PartialProtectionColor'));
         }
-        $this->RegisterVariableInteger('Mode', 'Modus', $profile, 90);
-        $this->MaintainVariable('Mode', 'Modus', 1, $profile, 90, true);
+        $this->RegisterVariableInteger('Mode', 'Modus', $profile, 100);
+        $this->MaintainVariable('Mode', 'Modus', 1, $profile, 100, true);
         $this->EnableAction('Mode');
 
         ########## Options
@@ -453,6 +462,7 @@ class Alarmzone extends IPSModule
         IPS_SetHidden($this->GetIDForIdent('FullProtectionControlSwitch'), !$this->ReadPropertyBoolean('EnableFullProtectionControlSwitch'));
         IPS_SetHidden($this->GetIDForIdent('HullProtectionControlSwitch'), !$this->ReadPropertyBoolean('EnableHullProtectionControlSwitch'));
         IPS_SetHidden($this->GetIDForIdent('PartialProtectionControlSwitch'), !$this->ReadPropertyBoolean('EnablePartialProtectionControlSwitch'));
+        IPS_SetHidden($this->GetIDForIdent('GlassBreakageDetectorControlSwitch'), !$this->ReadPropertyBoolean('EnableGlassBreakageDetectorControlSwitch'));
 
         //Mode
         IPS_SetHidden($this->GetIDForIdent('Mode'), !$this->ReadPropertyBoolean('EnableMode'));
@@ -1048,6 +1058,10 @@ class Alarmzone extends IPSModule
                 }
                 $id = $this->GetIDForIdent('PartialProtectionControlSwitch');
                 $this->SelectProtectionMode($mode, (string) $id);
+                break;
+
+            case 'GlassBreakageDetectorControlSwitch':
+                $this->SwicthGlassBreakageControl($Value);
                 break;
 
             case 'Mode':
