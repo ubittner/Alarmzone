@@ -229,7 +229,7 @@ trait AZ_DoorWindowSensors
                 $profileName = '';
                 switch ($variableType) {
                     case 0: //Boolean
-                        $profileName = 'DoorWindow.Bool';
+                        $profileName = 'DoorWindow.Boolean';
                         break;
 
                     case 1: //Integer
@@ -299,7 +299,7 @@ trait AZ_DoorWindowSensors
                 'UseAlarmLight'                         => false,
                 'UseAlarmCall'                          => false,
                 'UseAlertingAction'                     => false,
-                'AlertingAction'                        => '[]',
+                'AlertingAction'                        => '{"actionID":"{346AA8C1-30E0-1663-78EF-93EFADFAC650}","parameters":{"SCRIPT":"<?php\n\n//Skript hier einfügen","ENVIRONMENT":"Default","PARENT":' . $this->InstanceID . ',"TARGET":0}}',
                 'UseAlarmProtocol'                      => true];
         }
         //Get already listed variables
@@ -428,9 +428,9 @@ trait AZ_DoorWindowSensors
         if ($amount == 0) {
             $amount = 1;
         }
-        $this->UpdateFormField('ActualDoorWindowStateList', 'visible', true);
         $this->UpdateFormField('ActualDoorWindowStateList', 'rowCount', $amount);
         $this->UpdateFormField('ActualDoorWindowStateList', 'values', json_encode($actualVariableStates));
+        $this->UpdateFormField('ActualDoorWindowStateList', 'visible', true);
     }
 
     /**
@@ -480,9 +480,9 @@ trait AZ_DoorWindowSensors
                     switch ($variableType) {
                         //0: Boolean, 1: Integer, 2: Float, 3: String
                         case 0:
-                            $profileName = 'DoorWindow.Bool';
+                            $profileName = 'DoorWindow.Boolean';
                             if ($variable['UseReversedProfile']) {
-                                $profileName = 'DoorWindow.Bool.Reversed';
+                                $profileName = 'DoorWindow.Boolean.Reversed';
                             }
                             break;
 
@@ -831,7 +831,7 @@ trait AZ_DoorWindowSensors
     private function CreateDoorWindowVariableProfiles(): void
     {
         //Bool variable
-        $profile = 'DoorWindow.Bool';
+        $profile = 'DoorWindow.Boolean';
         if (!IPS_VariableProfileExists($profile)) {
             IPS_CreateVariableProfile($profile, 0);
         }
@@ -840,7 +840,7 @@ trait AZ_DoorWindowSensors
         IPS_SetVariableProfileAssociation($profile, 1, 'Geöffnet', '', 0xFF0000);
 
         //Bool variable reversed
-        $profile = 'DoorWindow.Bool.Reversed';
+        $profile = 'DoorWindow.Boolean.Reversed';
         if (!IPS_VariableProfileExists($profile)) {
             IPS_CreateVariableProfile($profile, 0);
         }
