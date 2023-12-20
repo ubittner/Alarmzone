@@ -795,7 +795,7 @@ trait AZ_ConfigurationForm
                             [
                                 'caption' => 'Primäre Bedingung',
                                 'name'    => 'PrimaryCondition',
-                                'width'   => '600px',
+                                'width'   => '1000px',
                                 'add'     => '',
                                 'edit'    => [
                                     'type' => 'SelectCondition'
@@ -804,7 +804,7 @@ trait AZ_ConfigurationForm
                             [
                                 'caption' => 'Weitere Bedingungen',
                                 'name'    => 'SecondaryCondition',
-                                'width'   => '600px',
+                                'width'   => '1000px',
                                 'add'     => '',
                                 'edit'    => [
                                     'type'  => 'SelectCondition',
@@ -934,7 +934,7 @@ trait AZ_ConfigurationForm
                             [
                                 'caption' => 'Aktionsausführung',
                                 'name'    => 'AlertingAction',
-                                'width'   => '600px',
+                                'width'   => '1000px',
                                 'add'     => '',
                                 'edit'    => [
                                     'type' => 'SelectAction'
@@ -1357,7 +1357,7 @@ trait AZ_ConfigurationForm
                             [
                                 'caption' => 'Primäre Bedingung',
                                 'name'    => 'PrimaryCondition',
-                                'width'   => '600px',
+                                'width'   => '1000px',
                                 'add'     => '',
                                 'edit'    => [
                                     'type' => 'SelectCondition'
@@ -1366,7 +1366,7 @@ trait AZ_ConfigurationForm
                             [
                                 'caption' => 'Weitere Bedingungen',
                                 'name'    => 'SecondaryCondition',
-                                'width'   => '600px',
+                                'width'   => '1000px',
                                 'add'     => '',
                                 'edit'    => [
                                     'type'  => 'SelectCondition',
@@ -1473,7 +1473,7 @@ trait AZ_ConfigurationForm
                             [
                                 'caption' => 'Aktionsausführung',
                                 'name'    => 'AlertingAction',
-                                'width'   => '600px',
+                                'width'   => '1000px',
                                 'add'     => '',
                                 'edit'    => [
                                     'type' => 'SelectAction'
@@ -1896,7 +1896,7 @@ trait AZ_ConfigurationForm
                             [
                                 'caption' => 'Primäre Bedingung',
                                 'name'    => 'PrimaryCondition',
-                                'width'   => '600px',
+                                'width'   => '1000px',
                                 'add'     => '',
                                 'edit'    => [
                                     'type' => 'SelectCondition'
@@ -1905,7 +1905,7 @@ trait AZ_ConfigurationForm
                             [
                                 'caption' => 'Weitere Bedingungen',
                                 'name'    => 'SecondaryCondition',
-                                'width'   => '600px',
+                                'width'   => '1000px',
                                 'add'     => '',
                                 'edit'    => [
                                     'type'  => 'SelectCondition',
@@ -2018,7 +2018,7 @@ trait AZ_ConfigurationForm
                             [
                                 'caption' => 'Aktionsausführung',
                                 'name'    => 'AlertingAction',
-                                'width'   => '600px',
+                                'width'   => '1000px',
                                 'add'     => '',
                                 'edit'    => [
                                     'type' => 'SelectAction'
@@ -2441,7 +2441,7 @@ trait AZ_ConfigurationForm
                             [
                                 'caption' => 'Primäre Bedingung',
                                 'name'    => 'PrimaryCondition',
-                                'width'   => '600px',
+                                'width'   => '1000px',
                                 'add'     => '',
                                 'edit'    => [
                                     'type' => 'SelectCondition'
@@ -2450,7 +2450,7 @@ trait AZ_ConfigurationForm
                             [
                                 'caption' => 'Weitere Bedingungen',
                                 'name'    => 'SecondaryCondition',
-                                'width'   => '600px',
+                                'width'   => '1000px',
                                 'add'     => '',
                                 'edit'    => [
                                     'type'  => 'SelectCondition',
@@ -2562,7 +2562,7 @@ trait AZ_ConfigurationForm
                             [
                                 'caption' => 'Aktionsausführung',
                                 'name'    => 'AlertingAction',
-                                'width'   => '600px',
+                                'width'   => '1000px',
                                 'add'     => '',
                                 'edit'    => [
                                     'type' => 'SelectAction'
@@ -2985,7 +2985,7 @@ trait AZ_ConfigurationForm
                             [
                                 'caption' => 'Primäre Bedingung',
                                 'name'    => 'PrimaryCondition',
-                                'width'   => '600px',
+                                'width'   => '1000px',
                                 'add'     => '',
                                 'edit'    => [
                                     'type' => 'SelectCondition'
@@ -2994,7 +2994,7 @@ trait AZ_ConfigurationForm
                             [
                                 'caption' => 'Weitere Bedingungen',
                                 'name'    => 'SecondaryCondition',
-                                'width'   => '600px',
+                                'width'   => '1000px',
                                 'add'     => '',
                                 'edit'    => [
                                     'type'  => 'SelectCondition',
@@ -3106,7 +3106,7 @@ trait AZ_ConfigurationForm
                             [
                                 'caption' => 'Aktionsausführung',
                                 'name'    => 'AlertingAction',
-                                'width'   => '600px',
+                                'width'   => '1000px',
                                 'add'     => '',
                                 'edit'    => [
                                     'type' => 'SelectAction'
@@ -3263,7 +3263,7 @@ trait AZ_ConfigurationForm
                             'name'     => 'AlarmProtocol',
                             'caption'  => 'Instanz',
                             'moduleID' => self::ALARMPROTOCOL_MODULE_GUID,
-                            'width'    => '600px',
+                            'width'    => '1000px',
                             'onChange' => self::MODULE_PREFIX . '_ModifyButton($id, "AlarmProtocolConfigurationButton", "ID " . $AlarmProtocol . " konfigurieren", $AlarmProtocol);'
                         ],
                         [
@@ -3303,7 +3303,7 @@ trait AZ_ConfigurationForm
                             'name'     => 'Notification',
                             'caption'  => 'Instanz',
                             'moduleID' => self::NOTIFICATION_MODULE_GUID,
-                            'width'    => '600px',
+                            'width'    => '1000px',
                             'onChange' => self::MODULE_PREFIX . '_ModifyButton($id, "NotificationConfigurationButton", "ID " . $Notification . " konfigurieren", $Notification);'
                         ],
                         [
