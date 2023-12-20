@@ -504,19 +504,15 @@ trait AZ_ConfigurationForm
         $amountDoorWindowSensorRows = count($doorWindowSensors) + 1;
         foreach ($doorWindowSensors as $doorWindowSensor) {
             $sensorID = 0;
-            $primaryDoorWindowTriggerValue = '';
-            $secondaryDoorWindowTriggerValues = 'nein';
-            $sensorLocation = '';
             $rowColor = '#C0FFC0'; //light green
-            $conditions = true;
+            $error = false;
             if ($doorWindowSensor['PrimaryCondition'] != '') {
                 $primaryCondition = json_decode($doorWindowSensor['PrimaryCondition'], true);
                 if (array_key_exists(0, $primaryCondition)) {
                     if (array_key_exists(0, $primaryCondition[0]['rules']['variable'])) {
                         $sensorID = $primaryCondition[0]['rules']['variable'][0]['variableID'];
-                        $primaryDoorWindowTriggerValue = GetValueFormattedEx($sensorID, $primaryCondition[0]['rules']['variable'][0]['value']);
                         if ($sensorID <= 1 || @!IPS_ObjectExists($sensorID)) {
-                            $conditions = false;
+                            $error = true;
                         }
                     }
                 }
@@ -529,9 +525,8 @@ trait AZ_ConfigurationForm
                         foreach ($rules as $rule) {
                             if (array_key_exists('variableID', $rule)) {
                                 $id = $rule['variableID'];
-                                $secondaryDoorWindowTriggerValues = 'ja';
                                 if ($id <= 1 || @!IPS_ObjectExists($id)) {
-                                    $conditions = false;
+                                    $error = true;
                                 }
                             }
                         }
@@ -546,14 +541,13 @@ trait AZ_ConfigurationForm
                         if (array_key_exists('TARGET', $action['parameters'])) {
                             $id = $action['parameters']['TARGET'];
                             if (@!IPS_ObjectExists($id)) {
-                                $conditions = false;
+                                $error = true;
                             }
                         }
                     }
                 }
             }
-            if ($conditions && isset($sensorID)) {
-                $sensorLocation = IPS_GetLocation($sensorID);
+            if (!$error && isset($sensorID)) {
                 $blacklist = json_decode($this->ReadAttributeString('Blacklist'), true);
                 if (is_array($blacklist)) {
                     foreach ($blacklist as $element) {
@@ -567,11 +561,11 @@ trait AZ_ConfigurationForm
                     $rowColor = '#DFDFDF'; //grey
                 }
             }
-            if (!$conditions) {
+            if ($error) {
                 $rowColor = '#FFC0C0'; //red
             }
-            $doorWindowSensorValues[] = ['ID' => $sensorID, 'VariableLocation' => $sensorLocation, 'PrimaryTriggerValue' => $primaryDoorWindowTriggerValue, 'SecondaryTriggerValues' => $secondaryDoorWindowTriggerValues, 'rowColor' => $rowColor];
-            $doorWindowVariableProfileListValues[] = ['SensorID' => $sensorID, 'VariableLocation' => $sensorLocation, 'Designation' => $doorWindowSensor['Designation'], 'Comment' => $doorWindowSensor['Comment']];
+            $doorWindowSensorValues[] = ['rowColor' => $rowColor];
+            $doorWindowVariableProfileListValues[] = ['SensorID' => $sensorID, 'Designation' => $doorWindowSensor['Designation'], 'Comment' => $doorWindowSensor['Comment']];
         }
 
         $form['elements'][] =
@@ -671,7 +665,7 @@ trait AZ_ConfigurationForm
                                             'name'    => 'Location',
                                             'width'   => '800px',
                                             'add'     => ''
-                                        ],
+                                        ]
                                     ]
                                 ],
                                 [
@@ -771,25 +765,11 @@ trait AZ_ConfigurationForm
                                 ]
                             ],
                             [
-                                'name'    => 'ID',
-                                'caption' => 'ID',
-                                'width'   => '80px',
-                                'add'     => '',
-                                'save'    => false,
-                                'onClick' => self::MODULE_PREFIX . '_ModifyTriggerListButton($id, "DoorWindowSensorsConfigurationButton", $DoorWindowSensors["PrimaryCondition"]);',
-                            ],
-                            [
-                                'caption' => 'Objektbaum',
-                                'name'    => 'VariableLocation',
-                                'width'   => '350px',
-                                'add'     => '',
-                                'save'    => false
-                            ],
-                            [
                                 'caption' => 'Name',
                                 'name'    => 'Designation',
                                 'width'   => '400px',
                                 'add'     => '',
+                                'onClick' => self::MODULE_PREFIX . '_ModifyTriggerListButton($id, "DoorWindowSensorsConfigurationButton", $DoorWindowSensors["PrimaryCondition"]);',
                                 'edit'    => [
                                     'type' => 'ValidationTextBox'
                                 ]
@@ -797,34 +777,10 @@ trait AZ_ConfigurationForm
                             [
                                 'caption' => 'Bemerkung',
                                 'name'    => 'Comment',
-                                'visible' => true,
                                 'width'   => '300px',
                                 'add'     => '',
                                 'edit'    => [
                                     'type' => 'ValidationTextBox'
-                                ]
-                            ],
-                            [
-                                'caption' => ' ',
-                                'name'    => 'SpacerPrimaryCondition',
-                                'width'   => '200px',
-                                'add'     => '',
-                                'visible' => false,
-                                'save'    => false,
-                                'edit'    => [
-                                    'type' => 'Label'
-                                ]
-                            ],
-                            [
-                                'caption' => 'Bedingung:',
-                                'name'    => 'LabelPrimaryCondition',
-                                'width'   => '200px',
-                                'add'     => '',
-                                'visible' => false,
-                                'save'    => false,
-                                'edit'    => [
-                                    'type' => 'Label',
-                                    'bold' => true
                                 ]
                             ],
                             [
@@ -838,83 +794,21 @@ trait AZ_ConfigurationForm
                             ],
                             [
                                 'caption' => 'Primäre Bedingung',
-                                'name'    => 'PrimaryTriggerValue',
-                                'width'   => '250px',
-                                'add'     => '',
-                                'save'    => false
-                            ],
-                            [
-                                'caption' => 'Weitere Bedingungen',
-                                'name'    => 'SecondaryTriggerValues',
-                                'width'   => '200px',
-                                'add'     => '',
-                                'save'    => false
-                            ],
-                            [
-                                'caption' => ' ',
                                 'name'    => 'PrimaryCondition',
-                                'width'   => '200px',
+                                'width'   => '600px',
                                 'add'     => '',
-                                'visible' => false,
                                 'edit'    => [
                                     'type' => 'SelectCondition'
                                 ]
                             ],
                             [
-                                'caption' => ' ',
-                                'name'    => 'SpacerSecondaryCondition',
-                                'width'   => '200px',
-                                'add'     => '',
-                                'visible' => false,
-                                'save'    => false,
-                                'edit'    => [
-                                    'type' => 'Label'
-                                ]
-                            ],
-                            [
-                                'caption' => 'Weitere Bedingung(en):',
-                                'name'    => 'LabelSecondaryCondition',
-                                'width'   => '200px',
-                                'add'     => '',
-                                'visible' => false,
-                                'save'    => false,
-                                'edit'    => [
-                                    'type' => 'Label',
-                                    'bold' => true
-                                ]
-                            ],
-                            [
-                                'caption' => ' ',
+                                'caption' => 'Weitere Bedingungen',
                                 'name'    => 'SecondaryCondition',
-                                'width'   => '200px',
+                                'width'   => '600px',
                                 'add'     => '',
-                                'visible' => false,
                                 'edit'    => [
                                     'type'  => 'SelectCondition',
                                     'multi' => true
-                                ]
-                            ],
-                            [
-                                'caption' => ' ',
-                                'name'    => 'SpacerMode',
-                                'width'   => '200px',
-                                'add'     => '',
-                                'visible' => false,
-                                'save'    => false,
-                                'edit'    => [
-                                    'type' => 'Label'
-                                ]
-                            ],
-                            [
-                                'caption' => 'Modus:',
-                                'name'    => 'LabelMode',
-                                'width'   => '200px',
-                                'add'     => '',
-                                'visible' => false,
-                                'save'    => false,
-                                'edit'    => [
-                                    'type' => 'Label',
-                                    'bold' => true
                                 ]
                             ],
                             [
@@ -922,7 +816,6 @@ trait AZ_ConfigurationForm
                                 'name'    => 'FullProtectionModeActive',
                                 'width'   => '110px',
                                 'add'     => true,
-                                'visible' => true,
                                 'edit'    => [
                                     'type' => 'CheckBox'
                                 ]
@@ -930,9 +823,8 @@ trait AZ_ConfigurationForm
                             [
                                 'caption' => 'Aktivierungsprüfung Vollschutz',
                                 'name'    => 'CheckFullProtectionActivation',
-                                'width'   => '300px',
+                                'width'   => '260px',
                                 'add'     => false,
-                                'visible' => true,
                                 'edit'    => [
                                     'type' => 'CheckBox'
                                 ]
@@ -942,7 +834,6 @@ trait AZ_ConfigurationForm
                                 'name'    => 'HullProtectionModeActive',
                                 'width'   => '110px',
                                 'add'     => false,
-                                'visible' => true,
                                 'edit'    => [
                                     'type' => 'CheckBox'
                                 ]
@@ -950,9 +841,8 @@ trait AZ_ConfigurationForm
                             [
                                 'caption' => 'Aktivierungsprüfung Hüllschutz',
                                 'name'    => 'CheckHullProtectionActivation',
-                                'width'   => '300px',
+                                'width'   => '260px',
                                 'add'     => false,
-                                'visible' => true,
                                 'edit'    => [
                                     'type' => 'CheckBox'
                                 ]
@@ -962,7 +852,6 @@ trait AZ_ConfigurationForm
                                 'name'    => 'PartialProtectionModeActive',
                                 'width'   => '110px',
                                 'add'     => false,
-                                'visible' => true,
                                 'edit'    => [
                                     'type' => 'CheckBox'
                                 ]
@@ -970,34 +859,10 @@ trait AZ_ConfigurationForm
                             [
                                 'caption' => 'Aktivierungsprüfung Teilschutz',
                                 'name'    => 'CheckPartialProtectionActivation',
-                                'width'   => '300px',
+                                'width'   => '260px',
                                 'add'     => false,
-                                'visible' => true,
                                 'edit'    => [
                                     'type' => 'CheckBox'
-                                ]
-                            ],
-                            [
-                                'caption' => ' ',
-                                'name'    => 'SpacerAlarmActivation',
-                                'width'   => '200px',
-                                'add'     => '',
-                                'visible' => false,
-                                'save'    => false,
-                                'edit'    => [
-                                    'type' => 'Label'
-                                ]
-                            ],
-                            [
-                                'caption' => 'Alarmauslösung:',
-                                'name'    => 'LabelAlarmActivation',
-                                'width'   => '200px',
-                                'add'     => '',
-                                'visible' => false,
-                                'save'    => false,
-                                'edit'    => [
-                                    'type' => 'Label',
-                                    'bold' => true
                                 ]
                             ],
                             [
@@ -1005,7 +870,6 @@ trait AZ_ConfigurationForm
                                 'name'    => 'OpenDoorWindowStatusVerificationDelay',
                                 'width'   => '220px',
                                 'add'     => 0,
-                                'visible' => true,
                                 'edit'    => [
                                     'type'    => 'NumberSpinner',
                                     'suffix'  => ' Millisekunden',
@@ -1014,11 +878,19 @@ trait AZ_ConfigurationForm
                                 ]
                             ],
                             [
+                                'caption' => 'Alarmprotokoll',
+                                'name'    => 'UseAlarmProtocol',
+                                'width'   => '140px',
+                                'add'     => true,
+                                'edit'    => [
+                                    'type' => 'CheckBox'
+                                ]
+                            ],
+                            [
                                 'caption' => 'Benachrichtigung',
                                 'name'    => 'UseNotification',
-                                'width'   => '200px',
+                                'width'   => '160px',
                                 'add'     => true,
-                                'visible' => true,
                                 'edit'    => [
                                     'type' => 'CheckBox'
                                 ]
@@ -1028,7 +900,6 @@ trait AZ_ConfigurationForm
                                 'name'    => 'UseAlarmSiren',
                                 'width'   => '120px',
                                 'add'     => true,
-                                'visible' => true,
                                 'edit'    => [
                                     'type' => 'CheckBox'
                                 ]
@@ -1038,7 +909,6 @@ trait AZ_ConfigurationForm
                                 'name'    => 'UseAlarmLight',
                                 'width'   => '170px',
                                 'add'     => false,
-                                'visible' => true,
                                 'edit'    => [
                                     'type' => 'CheckBox'
                                 ]
@@ -1048,7 +918,6 @@ trait AZ_ConfigurationForm
                                 'name'    => 'UseAlarmCall',
                                 'width'   => '120px',
                                 'add'     => false,
-                                'visible' => true,
                                 'edit'    => [
                                     'type' => 'CheckBox'
                                 ]
@@ -1058,51 +927,17 @@ trait AZ_ConfigurationForm
                                 'name'    => 'UseAlertingAction',
                                 'width'   => '80px',
                                 'add'     => false,
-                                'visible' => true,
                                 'edit'    => [
                                     'type' => 'CheckBox'
                                 ]
                             ],
                             [
+                                'caption' => 'Aktionsausführung',
                                 'name'    => 'AlertingAction',
-                                'width'   => '200px',
+                                'width'   => '600px',
                                 'add'     => '',
-                                'visible' => false,
                                 'edit'    => [
                                     'type' => 'SelectAction'
-                                ]
-                            ],
-                            [
-                                'caption' => ' ',
-                                'name'    => 'SpacerAlarmProtocol',
-                                'width'   => '200px',
-                                'add'     => '',
-                                'visible' => false,
-                                'save'    => false,
-                                'edit'    => [
-                                    'type' => 'Label'
-                                ]
-                            ],
-                            [
-                                'caption' => 'Alarmprotokoll:',
-                                'name'    => 'LabelAlarmProtocol',
-                                'width'   => '200px',
-                                'add'     => '',
-                                'visible' => false,
-                                'save'    => false,
-                                'edit'    => [
-                                    'type' => 'Label',
-                                    'bold' => true
-                                ]
-                            ],
-                            [
-                                'caption' => 'Alarmprotokoll',
-                                'name'    => 'UseAlarmProtocol',
-                                'width'   => '200px',
-                                'add'     => true,
-                                'visible' => true,
-                                'edit'    => [
-                                    'type' => 'CheckBox'
                                 ]
                             ]
                         ],
@@ -1111,13 +946,6 @@ trait AZ_ConfigurationForm
                     [
                         'type'    => 'Label',
                         'caption' => 'Anzahl Auslöser: ' . $amountDoorWindowSensors
-                    ],
-                    [
-                        'type'     => 'OpenObjectButton',
-                        'name'     => 'DoorWindowSensorsConfigurationButton',
-                        'caption'  => 'Bearbeiten',
-                        'visible'  => false,
-                        'objectID' => 0
                     ],
                     [
                         'type'    => 'PopupButton',
@@ -1197,13 +1025,6 @@ trait AZ_ConfigurationForm
                                             'save'    => false
                                         ],
                                         [
-                                            'caption' => 'Objektbaum',
-                                            'name'    => 'VariableLocation',
-                                            'width'   => '350px',
-                                            'add'     => '',
-                                            'save'    => false
-                                        ],
-                                        [
                                             'name'    => 'Designation',
                                             'caption' => 'Name',
                                             'width'   => '400px',
@@ -1239,6 +1060,13 @@ trait AZ_ConfigurationForm
                                 ]
                             ]
                         ]
+                    ],
+                    [
+                        'type'     => 'OpenObjectButton',
+                        'name'     => 'DoorWindowSensorsConfigurationButton',
+                        'caption'  => 'Bearbeiten',
+                        'visible'  => false,
+                        'objectID' => 0
                     ]
                 ]
             ];
@@ -1251,9 +1079,6 @@ trait AZ_ConfigurationForm
         $amountMotionDetectorRows = count($motionDetectors) + 1;
         foreach ($motionDetectors as $motionDetector) {
             $sensorID = 0;
-            $primaryMotionDetectorTriggerValue = '';
-            $secondaryMotionDetectorTriggerValues = 'nein';
-            $motionDetectorLocation = '';
             $rowColor = '#C0FFC0'; //light green
             if (!$motionDetector['Use']) {
                 $rowColor = '#DFDFDF'; //grey
@@ -1264,11 +1089,8 @@ trait AZ_ConfigurationForm
                 if (array_key_exists(0, $primaryCondition)) {
                     if (array_key_exists(0, $primaryCondition[0]['rules']['variable'])) {
                         $sensorID = $primaryCondition[0]['rules']['variable'][0]['variableID'];
-                        $primaryMotionDetectorTriggerValue = GetValueFormattedEx($sensorID, $primaryCondition[0]['rules']['variable'][0]['value']);
                         if ($sensorID <= 1 || !@IPS_ObjectExists($sensorID)) {
                             $rowColor = '#FFC0C0'; //red
-                        } else {
-                            $motionDetectorLocation = IPS_GetLocation($sensorID);
                         }
                     }
                 }
@@ -1282,7 +1104,6 @@ trait AZ_ConfigurationForm
                         foreach ($rules as $rule) {
                             if (array_key_exists('variableID', $rule)) {
                                 $id = $rule['variableID'];
-                                $secondaryMotionDetectorTriggerValues = 'ja';
                                 if ($id <= 1 || !@IPS_ObjectExists($id)) {
                                     $rowColor = '#FFC0C0'; //red
                                 }
@@ -1305,8 +1126,8 @@ trait AZ_ConfigurationForm
                     }
                 }
             }
-            $motionDetectorsValues[] = ['ID' => $sensorID, 'VariableLocation' => $motionDetectorLocation, 'PrimaryTriggerValue' => $primaryMotionDetectorTriggerValue, 'SecondaryTriggerValues' => $secondaryMotionDetectorTriggerValues, 'rowColor' => $rowColor];
-            $motionDetectorVariableProfileListValues[] = ['SensorID' => $sensorID, 'VariableLocation' => $motionDetectorLocation, 'Designation' => $motionDetector['Designation'], 'Comment' => $motionDetector['Comment']];
+            $motionDetectorsValues[] = ['rowColor' => $rowColor];
+            $motionDetectorVariableProfileListValues[] = ['SensorID' => $sensorID, 'Designation' => $motionDetector['Designation'], 'Comment' => $motionDetector['Comment']];
         }
 
         $form['elements'][] =
@@ -1406,7 +1227,7 @@ trait AZ_ConfigurationForm
                                             'name'    => 'Location',
                                             'width'   => '800px',
                                             'add'     => ''
-                                        ],
+                                        ]
                                     ]
                                 ],
                                 [
@@ -1506,26 +1327,11 @@ trait AZ_ConfigurationForm
                                 ]
                             ],
                             [
-                                'name'    => 'ID',
-                                'caption' => 'ID',
-                                'width'   => '80px',
-                                'add'     => '',
-                                'save'    => false,
-                                'onClick' => self::MODULE_PREFIX . '_ModifyTriggerListButton($id, "MotionDetectorsConfigurationButton", $MotionDetectors["PrimaryCondition"]);',
-                            ],
-                            [
-                                'caption' => 'Objektbaum',
-                                'name'    => 'VariableLocation',
-                                'save'    => false,
-                                'width'   => '350px',
-                                'add'     => ''
-                            ],
-                            [
                                 'caption' => 'Name',
                                 'name'    => 'Designation',
                                 'width'   => '400px',
                                 'add'     => '',
-                                'visible' => true,
+                                'onClick' => self::MODULE_PREFIX . '_ModifyTriggerListButton($id, "MotionDetectorsConfigurationButton", $MotionDetectors["PrimaryCondition"]);',
                                 'edit'    => [
                                     'type' => 'ValidationTextBox'
                                 ]
@@ -1533,34 +1339,10 @@ trait AZ_ConfigurationForm
                             [
                                 'caption' => 'Bemerkung',
                                 'name'    => 'Comment',
-                                'visible' => true,
                                 'width'   => '300px',
                                 'add'     => '',
                                 'edit'    => [
                                     'type' => 'ValidationTextBox'
-                                ]
-                            ],
-                            [
-                                'caption' => ' ',
-                                'name'    => 'SpacerPrimaryCondition',
-                                'width'   => '200px',
-                                'add'     => '',
-                                'visible' => false,
-                                'save'    => false,
-                                'edit'    => [
-                                    'type' => 'Label'
-                                ]
-                            ],
-                            [
-                                'caption' => 'Bedingung:',
-                                'name'    => 'LabelPrimaryCondition',
-                                'width'   => '200px',
-                                'add'     => '',
-                                'visible' => false,
-                                'save'    => false,
-                                'edit'    => [
-                                    'type' => 'Label',
-                                    'bold' => true
                                 ]
                             ],
                             [
@@ -1574,83 +1356,21 @@ trait AZ_ConfigurationForm
                             ],
                             [
                                 'caption' => 'Primäre Bedingung',
-                                'name'    => 'PrimaryTriggerValue',
-                                'width'   => '250px',
-                                'add'     => '',
-                                'save'    => false
-                            ],
-                            [
-                                'caption' => 'Weitere Bedingungen',
-                                'name'    => 'SecondaryTriggerValues',
-                                'width'   => '200px',
-                                'add'     => '',
-                                'save'    => false
-                            ],
-                            [
-                                'caption' => ' ',
                                 'name'    => 'PrimaryCondition',
-                                'width'   => '200px',
+                                'width'   => '600px',
                                 'add'     => '',
-                                'visible' => false,
                                 'edit'    => [
                                     'type' => 'SelectCondition'
                                 ]
                             ],
                             [
-                                'caption' => ' ',
-                                'name'    => 'SpacerSecondaryCondition',
-                                'width'   => '200px',
-                                'add'     => '',
-                                'visible' => false,
-                                'save'    => false,
-                                'edit'    => [
-                                    'type' => 'Label'
-                                ]
-                            ],
-                            [
-                                'caption' => 'Weitere Bedingung(en):',
-                                'name'    => 'LabelSecondaryCondition',
-                                'width'   => '200px',
-                                'add'     => '',
-                                'visible' => false,
-                                'save'    => false,
-                                'edit'    => [
-                                    'type' => 'Label',
-                                    'bold' => true
-                                ]
-                            ],
-                            [
-                                'caption' => ' ',
+                                'caption' => 'Weitere Bedingungen',
                                 'name'    => 'SecondaryCondition',
-                                'width'   => '200px',
+                                'width'   => '600px',
                                 'add'     => '',
-                                'visible' => false,
                                 'edit'    => [
                                     'type'  => 'SelectCondition',
                                     'multi' => true
-                                ]
-                            ],
-                            [
-                                'caption' => ' ',
-                                'name'    => 'SpacerMode',
-                                'width'   => '200px',
-                                'add'     => '',
-                                'visible' => false,
-                                'save'    => false,
-                                'edit'    => [
-                                    'type' => 'Label'
-                                ]
-                            ],
-                            [
-                                'caption' => 'Modus:',
-                                'name'    => 'LabelMode',
-                                'width'   => '200px',
-                                'add'     => '',
-                                'visible' => false,
-                                'save'    => false,
-                                'edit'    => [
-                                    'type' => 'Label',
-                                    'bold' => true
                                 ]
                             ],
                             [
@@ -1684,29 +1404,6 @@ trait AZ_ConfigurationForm
                                 ]
                             ],
                             [
-                                'caption' => ' ',
-                                'name'    => 'SpacerAlarmActivation',
-                                'width'   => '200px',
-                                'add'     => '',
-                                'visible' => false,
-                                'save'    => false,
-                                'edit'    => [
-                                    'type' => 'Label'
-                                ]
-                            ],
-                            [
-                                'caption' => 'Alarmauslösung:',
-                                'name'    => 'LabelAlarmActivation',
-                                'width'   => '200px',
-                                'add'     => '',
-                                'visible' => false,
-                                'save'    => false,
-                                'edit'    => [
-                                    'type' => 'Label',
-                                    'bold' => true
-                                ]
-                            ],
-                            [
                                 'caption' => 'Erneute Überprüfung nach',
                                 'name'    => 'MotionDetectorStatusVerificationDelay',
                                 'width'   => '220px',
@@ -1720,11 +1417,19 @@ trait AZ_ConfigurationForm
                                 ]
                             ],
                             [
+                                'caption' => 'Alarmprotokoll',
+                                'name'    => 'UseAlarmProtocol',
+                                'width'   => '140px',
+                                'add'     => true,
+                                'edit'    => [
+                                    'type' => 'CheckBox'
+                                ]
+                            ],
+                            [
                                 'caption' => 'Benachrichtigung',
                                 'name'    => 'UseNotification',
-                                'width'   => '200px',
+                                'width'   => '160px',
                                 'add'     => true,
-                                'visible' => true,
                                 'edit'    => [
                                     'type' => 'CheckBox'
                                 ]
@@ -1734,7 +1439,6 @@ trait AZ_ConfigurationForm
                                 'name'    => 'UseAlarmSiren',
                                 'width'   => '120px',
                                 'add'     => true,
-                                'visible' => true,
                                 'edit'    => [
                                     'type' => 'CheckBox'
                                 ]
@@ -1744,7 +1448,6 @@ trait AZ_ConfigurationForm
                                 'name'    => 'UseAlarmLight',
                                 'width'   => '170px',
                                 'add'     => false,
-                                'visible' => true,
                                 'edit'    => [
                                     'type' => 'CheckBox'
                                 ]
@@ -1754,7 +1457,6 @@ trait AZ_ConfigurationForm
                                 'name'    => 'UseAlarmCall',
                                 'width'   => '120px',
                                 'add'     => false,
-                                'visible' => true,
                                 'edit'    => [
                                     'type' => 'CheckBox'
                                 ]
@@ -1764,51 +1466,17 @@ trait AZ_ConfigurationForm
                                 'name'    => 'UseAlertingAction',
                                 'width'   => '80px',
                                 'add'     => false,
-                                'visible' => true,
                                 'edit'    => [
                                     'type' => 'CheckBox'
                                 ]
                             ],
                             [
+                                'caption' => 'Aktionsausführung',
                                 'name'    => 'AlertingAction',
-                                'width'   => '200px',
+                                'width'   => '600px',
                                 'add'     => '',
-                                'visible' => false,
                                 'edit'    => [
                                     'type' => 'SelectAction'
-                                ]
-                            ],
-                            [
-                                'caption' => ' ',
-                                'name'    => 'SpacerAlarmProtocol',
-                                'width'   => '200px',
-                                'add'     => '',
-                                'visible' => false,
-                                'save'    => false,
-                                'edit'    => [
-                                    'type' => 'Label'
-                                ]
-                            ],
-                            [
-                                'caption' => 'Alarmprotokoll:',
-                                'name'    => 'LabelAlarmProtocol',
-                                'width'   => '200px',
-                                'add'     => '',
-                                'visible' => false,
-                                'save'    => false,
-                                'edit'    => [
-                                    'type' => 'Label',
-                                    'bold' => true
-                                ]
-                            ],
-                            [
-                                'caption' => 'Alarmprotokoll',
-                                'name'    => 'UseAlarmProtocol',
-                                'width'   => '200px',
-                                'add'     => true,
-                                'visible' => true,
-                                'edit'    => [
-                                    'type' => 'CheckBox'
                                 ]
                             ]
                         ],
@@ -1817,13 +1485,6 @@ trait AZ_ConfigurationForm
                     [
                         'type'    => 'Label',
                         'caption' => 'Anzahl Auslöser: ' . $amountMotionDetectors
-                    ],
-                    [
-                        'type'     => 'OpenObjectButton',
-                        'name'     => 'MotionDetectorsConfigurationButton',
-                        'caption'  => 'Bearbeiten',
-                        'visible'  => false,
-                        'objectID' => 0
                     ],
                     [
                         'type'    => 'PopupButton',
@@ -1903,13 +1564,6 @@ trait AZ_ConfigurationForm
                                             'save'    => false
                                         ],
                                         [
-                                            'caption' => 'Objektbaum',
-                                            'name'    => 'VariableLocation',
-                                            'width'   => '350px',
-                                            'add'     => '',
-                                            'save'    => false
-                                        ],
-                                        [
                                             'name'    => 'Designation',
                                             'caption' => 'Name',
                                             'width'   => '400px',
@@ -1945,6 +1599,13 @@ trait AZ_ConfigurationForm
                                 ]
                             ]
                         ]
+                    ],
+                    [
+                        'type'     => 'OpenObjectButton',
+                        'name'     => 'MotionDetectorsConfigurationButton',
+                        'caption'  => 'Bearbeiten',
+                        'visible'  => false,
+                        'objectID' => 0
                     ]
                 ]
             ];
@@ -1957,9 +1618,6 @@ trait AZ_ConfigurationForm
         $amountGlassBreakageDetectorRows = count($glassBreakageDetectors) + 1;
         foreach ($glassBreakageDetectors as $glassBreakageDetector) {
             $sensorID = 0;
-            $primaryGlassBreakageDetectorTriggerValue = '';
-            $secondaryGlassBreakageDetectorTriggerValues = 'nein';
-            $glassBreakageDetectorLocation = '';
             $rowColor = '#C0FFC0'; //light green
             if (!$glassBreakageDetector['Use']) {
                 $rowColor = '#DFDFDF'; //grey
@@ -1970,11 +1628,8 @@ trait AZ_ConfigurationForm
                 if (array_key_exists(0, $primaryCondition)) {
                     if (array_key_exists(0, $primaryCondition[0]['rules']['variable'])) {
                         $sensorID = $primaryCondition[0]['rules']['variable'][0]['variableID'];
-                        $primaryGlassBreakageDetectorTriggerValue = GetValueFormattedEx($sensorID, $primaryCondition[0]['rules']['variable'][0]['value']);
                         if ($sensorID <= 1 || !@IPS_ObjectExists($sensorID)) {
                             $rowColor = '#FFC0C0'; //red
-                        } else {
-                            $glassBreakageDetectorLocation = IPS_GetLocation($sensorID);
                         }
                     }
                 }
@@ -1988,7 +1643,6 @@ trait AZ_ConfigurationForm
                         foreach ($rules as $rule) {
                             if (array_key_exists('variableID', $rule)) {
                                 $id = $rule['variableID'];
-                                $secondaryGlassBreakageDetectorTriggerValues = 'ja';
                                 if ($id <= 1 || !@IPS_ObjectExists($id)) {
                                     $rowColor = '#FFC0C0'; //red
                                 }
@@ -2011,8 +1665,8 @@ trait AZ_ConfigurationForm
                     }
                 }
             }
-            $glassBreakageDetectorValues[] = ['ID' => $sensorID, 'VariableLocation' => $glassBreakageDetectorLocation, 'PrimaryTriggerValue' => $primaryGlassBreakageDetectorTriggerValue, 'SecondaryTriggerValues' => $secondaryGlassBreakageDetectorTriggerValues, 'rowColor' => $rowColor];
-            $glassBreakageDetectorVariableProfileListValues[] = ['SensorID' => $sensorID, 'VariableLocation' => $glassBreakageDetectorLocation, 'Designation' => $glassBreakageDetector['Designation'], 'Comment' => $glassBreakageDetector['Comment']];
+            $glassBreakageDetectorValues[] = ['rowColor' => $rowColor];
+            $glassBreakageDetectorVariableProfileListValues[] = ['SensorID' => $sensorID, 'Designation' => $glassBreakageDetector['Designation'], 'Comment' => $glassBreakageDetector['Comment']];
         }
 
         $form['elements'][] =
@@ -2212,25 +1866,11 @@ trait AZ_ConfigurationForm
                                 ]
                             ],
                             [
-                                'name'    => 'ID',
-                                'caption' => 'ID',
-                                'width'   => '80px',
-                                'add'     => '',
-                                'save'    => false,
-                                'onClick' => self::MODULE_PREFIX . '_ModifyTriggerListButton($id, "GlassBreakageDetectorsConfigurationButton", $GlassBreakageDetectors["PrimaryCondition"]);',
-                            ],
-                            [
-                                'caption' => 'Objektbaum',
-                                'name'    => 'VariableLocation',
-                                'width'   => '350px',
-                                'add'     => '',
-                                'save'    => false
-                            ],
-                            [
                                 'caption' => 'Name',
                                 'name'    => 'Designation',
                                 'width'   => '400px',
                                 'add'     => '',
+                                'onClick' => self::MODULE_PREFIX . '_ModifyTriggerListButton($id, "GlassBreakageDetectorsConfigurationButton", $GlassBreakageDetectors["PrimaryCondition"]);',
                                 'edit'    => [
                                     'type' => 'ValidationTextBox'
                                 ]
@@ -2238,34 +1878,10 @@ trait AZ_ConfigurationForm
                             [
                                 'caption' => 'Bemerkung',
                                 'name'    => 'Comment',
-                                'visible' => true,
                                 'width'   => '300px',
                                 'add'     => '',
                                 'edit'    => [
                                     'type' => 'ValidationTextBox'
-                                ]
-                            ],
-                            [
-                                'caption' => ' ',
-                                'name'    => 'SpacerPrimaryCondition',
-                                'width'   => '200px',
-                                'add'     => '',
-                                'visible' => false,
-                                'save'    => false,
-                                'edit'    => [
-                                    'type' => 'Label'
-                                ]
-                            ],
-                            [
-                                'caption' => 'Bedingung:',
-                                'name'    => 'LabelPrimaryCondition',
-                                'width'   => '200px',
-                                'add'     => '',
-                                'visible' => false,
-                                'save'    => false,
-                                'edit'    => [
-                                    'type' => 'Label',
-                                    'bold' => true
                                 ]
                             ],
                             [
@@ -2279,83 +1895,21 @@ trait AZ_ConfigurationForm
                             ],
                             [
                                 'caption' => 'Primäre Bedingung',
-                                'name'    => 'PrimaryTriggerValue',
-                                'width'   => '250px',
-                                'add'     => '',
-                                'save'    => false
-                            ],
-                            [
-                                'caption' => 'Weitere Bedingungen',
-                                'name'    => 'SecondaryTriggerValues',
-                                'width'   => '200px',
-                                'add'     => '',
-                                'save'    => false,
-                            ],
-                            [
-                                'caption' => ' ',
                                 'name'    => 'PrimaryCondition',
-                                'width'   => '200px',
+                                'width'   => '600px',
                                 'add'     => '',
-                                'visible' => false,
                                 'edit'    => [
                                     'type' => 'SelectCondition'
                                 ]
                             ],
                             [
-                                'caption' => ' ',
-                                'name'    => 'SpacerSecondaryCondition',
-                                'width'   => '200px',
-                                'add'     => '',
-                                'visible' => false,
-                                'save'    => false,
-                                'edit'    => [
-                                    'type' => 'Label'
-                                ]
-                            ],
-                            [
-                                'caption' => 'Weitere Bedingung(en):',
-                                'name'    => 'LabelSecondaryCondition',
-                                'width'   => '200px',
-                                'add'     => '',
-                                'visible' => false,
-                                'save'    => false,
-                                'edit'    => [
-                                    'type' => 'Label',
-                                    'bold' => true
-                                ]
-                            ],
-                            [
-                                'caption' => ' ',
+                                'caption' => 'Weitere Bedingungen',
                                 'name'    => 'SecondaryCondition',
-                                'width'   => '200px',
+                                'width'   => '600px',
                                 'add'     => '',
-                                'visible' => false,
                                 'edit'    => [
                                     'type'  => 'SelectCondition',
                                     'multi' => true
-                                ]
-                            ],
-                            [
-                                'caption' => ' ',
-                                'name'    => 'SpacerMode',
-                                'width'   => '200px',
-                                'add'     => '',
-                                'visible' => false,
-                                'save'    => false,
-                                'edit'    => [
-                                    'type' => 'Label'
-                                ]
-                            ],
-                            [
-                                'caption' => 'Modus:',
-                                'name'    => 'LabelMode',
-                                'width'   => '200px',
-                                'add'     => '',
-                                'visible' => false,
-                                'save'    => false,
-                                'edit'    => [
-                                    'type' => 'Label',
-                                    'bold' => true
                                 ]
                             ],
                             [
@@ -2363,7 +1917,6 @@ trait AZ_ConfigurationForm
                                 'name'    => 'PermanentMonitoring',
                                 'width'   => '230px',
                                 'add'     => true,
-                                'visible' => true,
                                 'edit'    => [
                                     'type' => 'CheckBox'
                                 ]
@@ -2373,7 +1926,6 @@ trait AZ_ConfigurationForm
                                 'name'    => 'FullProtectionModeActive',
                                 'width'   => '110px',
                                 'add'     => false,
-                                'visible' => true,
                                 'edit'    => [
                                     'type' => 'CheckBox'
                                 ]
@@ -2383,7 +1935,6 @@ trait AZ_ConfigurationForm
                                 'name'    => 'HullProtectionModeActive',
                                 'width'   => '110px',
                                 'add'     => false,
-                                'visible' => true,
                                 'edit'    => [
                                     'type' => 'CheckBox'
                                 ]
@@ -2393,32 +1944,8 @@ trait AZ_ConfigurationForm
                                 'name'    => 'PartialProtectionModeActive',
                                 'width'   => '110px',
                                 'add'     => false,
-                                'visible' => true,
                                 'edit'    => [
                                     'type' => 'CheckBox'
-                                ]
-                            ],
-                            [
-                                'caption' => ' ',
-                                'name'    => 'SpacerAlarmActivation',
-                                'width'   => '200px',
-                                'add'     => '',
-                                'visible' => false,
-                                'save'    => false,
-                                'edit'    => [
-                                    'type' => 'Label'
-                                ]
-                            ],
-                            [
-                                'caption' => 'Alarmauslösung:',
-                                'name'    => 'LabelAlarmActivation',
-                                'width'   => '200px',
-                                'add'     => '',
-                                'visible' => false,
-                                'save'    => false,
-                                'edit'    => [
-                                    'type' => 'Label',
-                                    'bold' => true
                                 ]
                             ],
                             [
@@ -2435,11 +1962,19 @@ trait AZ_ConfigurationForm
                                 ]
                             ],
                             [
+                                'caption' => 'Alarmprotokoll',
+                                'name'    => 'UseAlarmProtocol',
+                                'width'   => '140px',
+                                'add'     => true,
+                                'edit'    => [
+                                    'type' => 'CheckBox'
+                                ]
+                            ],
+                            [
                                 'caption' => 'Benachrichtigung',
                                 'name'    => 'UseNotification',
                                 'width'   => '160px',
                                 'add'     => true,
-                                'visible' => true,
                                 'edit'    => [
                                     'type' => 'CheckBox'
                                 ]
@@ -2449,7 +1984,6 @@ trait AZ_ConfigurationForm
                                 'name'    => 'UseAlarmSiren',
                                 'width'   => '120px',
                                 'add'     => true,
-                                'visible' => true,
                                 'edit'    => [
                                     'type' => 'CheckBox'
                                 ]
@@ -2459,7 +1993,6 @@ trait AZ_ConfigurationForm
                                 'name'    => 'UseAlarmLight',
                                 'width'   => '170px',
                                 'add'     => false,
-                                'visible' => true,
                                 'edit'    => [
                                     'type' => 'CheckBox'
                                 ]
@@ -2469,7 +2002,6 @@ trait AZ_ConfigurationForm
                                 'name'    => 'UseAlarmCall',
                                 'width'   => '120px',
                                 'add'     => false,
-                                'visible' => true,
                                 'edit'    => [
                                     'type' => 'CheckBox'
                                 ]
@@ -2479,51 +2011,17 @@ trait AZ_ConfigurationForm
                                 'name'    => 'UseAlertingAction',
                                 'width'   => '80px',
                                 'add'     => false,
-                                'visible' => true,
                                 'edit'    => [
                                     'type' => 'CheckBox'
                                 ]
                             ],
                             [
+                                'caption' => 'Aktionsausführung',
                                 'name'    => 'AlertingAction',
-                                'width'   => '200px',
+                                'width'   => '600px',
                                 'add'     => '',
-                                'visible' => false,
                                 'edit'    => [
                                     'type' => 'SelectAction'
-                                ]
-                            ],
-                            [
-                                'caption' => ' ',
-                                'name'    => 'SpacerAlarmProtocol',
-                                'width'   => '200px',
-                                'add'     => '',
-                                'visible' => false,
-                                'save'    => false,
-                                'edit'    => [
-                                    'type' => 'Label'
-                                ]
-                            ],
-                            [
-                                'caption' => 'Alarmprotokoll:',
-                                'name'    => 'LabelAlarmProtocol',
-                                'width'   => '200px',
-                                'add'     => '',
-                                'visible' => false,
-                                'save'    => false,
-                                'edit'    => [
-                                    'type' => 'Label',
-                                    'bold' => true
-                                ]
-                            ],
-                            [
-                                'caption' => 'Alarmprotokoll',
-                                'name'    => 'UseAlarmProtocol',
-                                'width'   => '140px',
-                                'add'     => true,
-                                'visible' => true,
-                                'edit'    => [
-                                    'type' => 'CheckBox'
                                 ]
                             ]
                         ],
@@ -2532,13 +2030,6 @@ trait AZ_ConfigurationForm
                     [
                         'type'    => 'Label',
                         'caption' => 'Anzahl Auslöser: ' . $amountGlassBreakageDetectors
-                    ],
-                    [
-                        'type'     => 'OpenObjectButton',
-                        'name'     => 'GlassBreakageDetectorsConfigurationButton',
-                        'caption'  => 'Bearbeiten',
-                        'visible'  => false,
-                        'objectID' => 0
                     ],
                     [
                         'type'    => 'PopupButton',
@@ -2618,13 +2109,6 @@ trait AZ_ConfigurationForm
                                             'save'    => false
                                         ],
                                         [
-                                            'caption' => 'Objektbaum',
-                                            'name'    => 'VariableLocation',
-                                            'width'   => '350px',
-                                            'add'     => '',
-                                            'save'    => false
-                                        ],
-                                        [
                                             'name'    => 'Designation',
                                             'caption' => 'Name',
                                             'width'   => '400px',
@@ -2660,6 +2144,13 @@ trait AZ_ConfigurationForm
                                 ]
                             ]
                         ]
+                    ],
+                    [
+                        'type'     => 'OpenObjectButton',
+                        'name'     => 'GlassBreakageDetectorsConfigurationButton',
+                        'caption'  => 'Bearbeiten',
+                        'visible'  => false,
+                        'objectID' => 0
                     ]
                 ]
             ];
@@ -2672,9 +2163,6 @@ trait AZ_ConfigurationForm
         $amountSmokeDetectorRows = count($smokeDetectors) + 1;
         foreach ($smokeDetectors as $smokeDetector) {
             $sensorID = 0;
-            $primarySmokeDetectorTriggerValue = '';
-            $secondarySmokeDetectorTriggerValues = 'nein';
-            $smokeDetectorLocation = '';
             $rowColor = '#C0FFC0'; //light green
             if (!$smokeDetector['Use']) {
                 $rowColor = '#DFDFDF'; //grey
@@ -2685,11 +2173,8 @@ trait AZ_ConfigurationForm
                 if (array_key_exists(0, $primaryCondition)) {
                     if (array_key_exists(0, $primaryCondition[0]['rules']['variable'])) {
                         $sensorID = $primaryCondition[0]['rules']['variable'][0]['variableID'];
-                        $primarySmokeDetectorTriggerValue = GetValueFormattedEx($sensorID, $primaryCondition[0]['rules']['variable'][0]['value']);
                         if ($sensorID <= 1 || !@IPS_ObjectExists($sensorID)) {
                             $rowColor = '#FFC0C0'; //red
-                        } else {
-                            $smokeDetectorLocation = IPS_GetLocation($sensorID);
                         }
                     }
                 }
@@ -2703,7 +2188,6 @@ trait AZ_ConfigurationForm
                         foreach ($rules as $rule) {
                             if (array_key_exists('variableID', $rule)) {
                                 $id = $rule['variableID'];
-                                $secondarySmokeDetectorTriggerValues = 'ja';
                                 if ($id <= 1 || !@IPS_ObjectExists($id)) {
                                     $rowColor = '#FFC0C0'; //red
                                 }
@@ -2726,8 +2210,8 @@ trait AZ_ConfigurationForm
                     }
                 }
             }
-            $smokeDetectorValues[] = ['ID' => $sensorID, 'VariableLocation' => $smokeDetectorLocation, 'PrimaryTriggerValue' => $primarySmokeDetectorTriggerValue, 'SecondaryTriggerValues' => $secondarySmokeDetectorTriggerValues, 'rowColor' => $rowColor];
-            $smokeDetectorVariableProfileListValues[] = ['SensorID' => $sensorID, 'VariableLocation' => $smokeDetectorLocation, 'Designation' => $smokeDetector['Designation'], 'Comment' => $smokeDetector['Comment']];
+            $smokeDetectorValues[] = ['rowColor' => $rowColor];
+            $smokeDetectorVariableProfileListValues[] = ['SensorID' => $sensorID, 'Designation' => $smokeDetector['Designation'], 'Comment' => $smokeDetector['Comment']];
         }
 
         $form['elements'][] =
@@ -2927,25 +2411,11 @@ trait AZ_ConfigurationForm
                                 ]
                             ],
                             [
-                                'name'    => 'ID',
-                                'caption' => 'ID',
-                                'width'   => '80px',
-                                'add'     => '',
-                                'save'    => false,
-                                'onClick' => self::MODULE_PREFIX . '_ModifyTriggerListButton($id, "SmokeDetectorsConfigurationButton", $SmokeDetectors["PrimaryCondition"]);',
-                            ],
-                            [
-                                'caption' => 'Objektbaum',
-                                'name'    => 'VariableLocation',
-                                'width'   => '350px',
-                                'add'     => '',
-                                'save'    => false
-                            ],
-                            [
                                 'caption' => 'Name',
                                 'name'    => 'Designation',
                                 'width'   => '400px',
                                 'add'     => '',
+                                'onClick' => self::MODULE_PREFIX . '_ModifyTriggerListButton($id, "SmokeDetectorsConfigurationButton", $SmokeDetectors["PrimaryCondition"]);',
                                 'edit'    => [
                                     'type' => 'ValidationTextBox'
                                 ]
@@ -2953,34 +2423,10 @@ trait AZ_ConfigurationForm
                             [
                                 'caption' => 'Bemerkung',
                                 'name'    => 'Comment',
-                                'visible' => true,
                                 'width'   => '300px',
                                 'add'     => '',
                                 'edit'    => [
                                     'type' => 'ValidationTextBox'
-                                ]
-                            ],
-                            [
-                                'caption' => ' ',
-                                'name'    => 'SpacerPrimaryCondition',
-                                'width'   => '200px',
-                                'add'     => '',
-                                'visible' => false,
-                                'save'    => false,
-                                'edit'    => [
-                                    'type' => 'Label'
-                                ]
-                            ],
-                            [
-                                'caption' => 'Bedingung:',
-                                'name'    => 'LabelPrimaryCondition',
-                                'width'   => '200px',
-                                'add'     => '',
-                                'visible' => false,
-                                'save'    => false,
-                                'edit'    => [
-                                    'type' => 'Label',
-                                    'bold' => true
                                 ]
                             ],
                             [
@@ -2994,83 +2440,21 @@ trait AZ_ConfigurationForm
                             ],
                             [
                                 'caption' => 'Primäre Bedingung',
-                                'name'    => 'PrimaryTriggerValue',
-                                'width'   => '250px',
-                                'add'     => '',
-                                'save'    => false
-                            ],
-                            [
-                                'caption' => 'Weitere Bedingungen',
-                                'name'    => 'SecondaryTriggerValues',
-                                'width'   => '200px',
-                                'add'     => '',
-                                'save'    => false
-                            ],
-                            [
-                                'caption' => ' ',
                                 'name'    => 'PrimaryCondition',
-                                'width'   => '200px',
+                                'width'   => '600px',
                                 'add'     => '',
-                                'visible' => false,
                                 'edit'    => [
                                     'type' => 'SelectCondition'
                                 ]
                             ],
                             [
-                                'caption' => ' ',
-                                'name'    => 'SpacerSecondaryCondition',
-                                'width'   => '200px',
-                                'add'     => '',
-                                'visible' => false,
-                                'save'    => false,
-                                'edit'    => [
-                                    'type' => 'Label'
-                                ]
-                            ],
-                            [
-                                'caption' => 'Weitere Bedingung(en):',
-                                'name'    => 'LabelSecondaryCondition',
-                                'width'   => '200px',
-                                'add'     => '',
-                                'visible' => false,
-                                'save'    => false,
-                                'edit'    => [
-                                    'type' => 'Label',
-                                    'bold' => true
-                                ]
-                            ],
-                            [
-                                'caption' => ' ',
+                                'caption' => 'Weitere Bedingungen',
                                 'name'    => 'SecondaryCondition',
-                                'width'   => '200px',
+                                'width'   => '600px',
                                 'add'     => '',
-                                'visible' => false,
                                 'edit'    => [
                                     'type'  => 'SelectCondition',
                                     'multi' => true
-                                ]
-                            ],
-                            [
-                                'caption' => ' ',
-                                'name'    => 'SpacerMode',
-                                'width'   => '200px',
-                                'add'     => '',
-                                'visible' => false,
-                                'save'    => false,
-                                'edit'    => [
-                                    'type' => 'Label'
-                                ]
-                            ],
-                            [
-                                'caption' => 'Modus:',
-                                'name'    => 'LabelMode',
-                                'width'   => '200px',
-                                'add'     => '',
-                                'visible' => false,
-                                'save'    => false,
-                                'edit'    => [
-                                    'type' => 'Label',
-                                    'bold' => true
                                 ]
                             ],
                             [
@@ -3078,7 +2462,6 @@ trait AZ_ConfigurationForm
                                 'name'    => 'PermanentMonitoring',
                                 'width'   => '230px',
                                 'add'     => true,
-                                'visible' => true,
                                 'edit'    => [
                                     'type' => 'CheckBox'
                                 ]
@@ -3088,7 +2471,6 @@ trait AZ_ConfigurationForm
                                 'name'    => 'FullProtectionModeActive',
                                 'width'   => '110px',
                                 'add'     => false,
-                                'visible' => true,
                                 'edit'    => [
                                     'type' => 'CheckBox'
                                 ]
@@ -3098,7 +2480,6 @@ trait AZ_ConfigurationForm
                                 'name'    => 'HullProtectionModeActive',
                                 'width'   => '110px',
                                 'add'     => false,
-                                'visible' => true,
                                 'edit'    => [
                                     'type' => 'CheckBox'
                                 ]
@@ -3108,32 +2489,8 @@ trait AZ_ConfigurationForm
                                 'name'    => 'PartialProtectionModeActive',
                                 'width'   => '110px',
                                 'add'     => false,
-                                'visible' => true,
                                 'edit'    => [
                                     'type' => 'CheckBox'
-                                ]
-                            ],
-                            [
-                                'caption' => ' ',
-                                'name'    => 'SpacerAlarmActivation',
-                                'width'   => '200px',
-                                'add'     => '',
-                                'visible' => false,
-                                'save'    => false,
-                                'edit'    => [
-                                    'type' => 'Label'
-                                ]
-                            ],
-                            [
-                                'caption' => 'Alarmauslösung:',
-                                'name'    => 'LabelAlarmActivation',
-                                'width'   => '200px',
-                                'add'     => '',
-                                'visible' => false,
-                                'save'    => false,
-                                'edit'    => [
-                                    'type' => 'Label',
-                                    'bold' => true
                                 ]
                             ],
                             [
@@ -3141,7 +2498,6 @@ trait AZ_ConfigurationForm
                                 'name'    => 'AlertingSmokeDetectorStatusVerificationDelay',
                                 'width'   => '220px',
                                 'add'     => 0,
-                                'visible' => true,
                                 'edit'    => [
                                     'type'    => 'NumberSpinner',
                                     'suffix'  => ' Millisekunden',
@@ -3150,11 +2506,19 @@ trait AZ_ConfigurationForm
                                 ]
                             ],
                             [
+                                'caption' => 'Alarmprotokoll',
+                                'name'    => 'UseAlarmProtocol',
+                                'width'   => '140px',
+                                'add'     => true,
+                                'edit'    => [
+                                    'type' => 'CheckBox'
+                                ]
+                            ],
+                            [
                                 'caption' => 'Benachrichtigung',
                                 'name'    => 'UseNotification',
                                 'width'   => '160px',
                                 'add'     => true,
-                                'visible' => true,
                                 'edit'    => [
                                     'type' => 'CheckBox'
                                 ]
@@ -3164,7 +2528,6 @@ trait AZ_ConfigurationForm
                                 'name'    => 'UseAlarmSiren',
                                 'width'   => '120px',
                                 'add'     => true,
-                                'visible' => true,
                                 'edit'    => [
                                     'type' => 'CheckBox'
                                 ]
@@ -3174,7 +2537,6 @@ trait AZ_ConfigurationForm
                                 'name'    => 'UseAlarmLight',
                                 'width'   => '170px',
                                 'add'     => false,
-                                'visible' => true,
                                 'edit'    => [
                                     'type' => 'CheckBox'
                                 ]
@@ -3184,7 +2546,6 @@ trait AZ_ConfigurationForm
                                 'name'    => 'UseAlarmCall',
                                 'width'   => '120px',
                                 'add'     => false,
-                                'visible' => true,
                                 'edit'    => [
                                     'type' => 'CheckBox'
                                 ]
@@ -3194,51 +2555,17 @@ trait AZ_ConfigurationForm
                                 'name'    => 'UseAlertingAction',
                                 'width'   => '80px',
                                 'add'     => false,
-                                'visible' => true,
                                 'edit'    => [
                                     'type' => 'CheckBox'
                                 ]
                             ],
                             [
+                                'caption' => 'Aktionsausführung',
                                 'name'    => 'AlertingAction',
-                                'width'   => '200px',
+                                'width'   => '600px',
                                 'add'     => '',
-                                'visible' => false,
                                 'edit'    => [
                                     'type' => 'SelectAction'
-                                ]
-                            ],
-                            [
-                                'caption' => ' ',
-                                'name'    => 'SpacerAlarmProtocol',
-                                'width'   => '200px',
-                                'add'     => '',
-                                'visible' => false,
-                                'save'    => false,
-                                'edit'    => [
-                                    'type' => 'Label'
-                                ]
-                            ],
-                            [
-                                'caption' => 'Alarmprotokoll:',
-                                'name'    => 'LabelAlarmProtocol',
-                                'width'   => '200px',
-                                'add'     => '',
-                                'visible' => false,
-                                'save'    => false,
-                                'edit'    => [
-                                    'type' => 'Label',
-                                    'bold' => true
-                                ]
-                            ],
-                            [
-                                'caption' => 'Alarmprotokoll',
-                                'name'    => 'UseAlarmProtocol',
-                                'width'   => '140px',
-                                'add'     => true,
-                                'visible' => true,
-                                'edit'    => [
-                                    'type' => 'CheckBox'
                                 ]
                             ]
                         ],
@@ -3247,13 +2574,6 @@ trait AZ_ConfigurationForm
                     [
                         'type'    => 'Label',
                         'caption' => 'Anzahl Auslöser: ' . $amountSmokeDetectors
-                    ],
-                    [
-                        'type'     => 'OpenObjectButton',
-                        'name'     => 'SmokeDetectorsConfigurationButton',
-                        'caption'  => 'Bearbeiten',
-                        'visible'  => false,
-                        'objectID' => 0
                     ],
                     [
                         'type'    => 'PopupButton',
@@ -3333,13 +2653,6 @@ trait AZ_ConfigurationForm
                                             'save'    => false
                                         ],
                                         [
-                                            'caption' => 'Objektbaum',
-                                            'name'    => 'VariableLocation',
-                                            'width'   => '350px',
-                                            'add'     => '',
-                                            'save'    => false
-                                        ],
-                                        [
                                             'name'    => 'Designation',
                                             'caption' => 'Name',
                                             'width'   => '400px',
@@ -3375,6 +2688,13 @@ trait AZ_ConfigurationForm
                                 ]
                             ]
                         ]
+                    ],
+                    [
+                        'type'     => 'OpenObjectButton',
+                        'name'     => 'SmokeDetectorsConfigurationButton',
+                        'caption'  => 'Bearbeiten',
+                        'visible'  => false,
+                        'objectID' => 0
                     ]
                 ]
             ];
@@ -3387,9 +2707,6 @@ trait AZ_ConfigurationForm
         $amountWaterDetectorRows = count($waterDetectors) + 1;
         foreach ($waterDetectors as $waterDetector) {
             $sensorID = 0;
-            $primaryWaterDetectorTriggerValue = '';
-            $secondaryWaterDetectorTriggerValues = 'nein';
-            $waterDetectorLocation = '';
             $rowColor = '#C0FFC0'; //light green
             if (!$waterDetector['Use']) {
                 $rowColor = '#DFDFDF'; //grey
@@ -3400,11 +2717,8 @@ trait AZ_ConfigurationForm
                 if (array_key_exists(0, $primaryCondition)) {
                     if (array_key_exists(0, $primaryCondition[0]['rules']['variable'])) {
                         $sensorID = $primaryCondition[0]['rules']['variable'][0]['variableID'];
-                        $primaryWaterDetectorTriggerValue = GetValueFormattedEx($sensorID, $primaryCondition[0]['rules']['variable'][0]['value']);
                         if ($sensorID <= 1 || !@IPS_ObjectExists($sensorID)) {
                             $rowColor = '#FFC0C0'; //red
-                        } else {
-                            $waterDetectorLocation = IPS_GetLocation($sensorID);
                         }
                     }
                 }
@@ -3418,7 +2732,6 @@ trait AZ_ConfigurationForm
                         foreach ($rules as $rule) {
                             if (array_key_exists('variableID', $rule)) {
                                 $id = $rule['variableID'];
-                                $secondaryWaterDetectorTriggerValues = 'ja';
                                 if ($id <= 1 || !@IPS_ObjectExists($id)) {
                                     $rowColor = '#FFC0C0'; //red
                                 }
@@ -3441,8 +2754,8 @@ trait AZ_ConfigurationForm
                     }
                 }
             }
-            $waterDetectorValues[] = ['ID' => $sensorID, 'VariableLocation' => $waterDetectorLocation, 'PrimaryTriggerValue' => $primaryWaterDetectorTriggerValue, 'SecondaryTriggerValues' => $secondaryWaterDetectorTriggerValues, 'rowColor' => $rowColor];
-            $waterDetectorVariableProfileListValues[] = ['SensorID' => $sensorID, 'VariableLocation' => $waterDetectorLocation, 'Designation' => $waterDetector['Designation'], 'Comment' => $waterDetector['Comment']];
+            $waterDetectorValues[] = ['rowColor' => $rowColor];
+            $waterDetectorVariableProfileListValues[] = ['SensorID' => $sensorID, 'Designation' => $waterDetector['Designation'], 'Comment' => $waterDetector['Comment']];
         }
 
         $form['elements'][] =
@@ -3642,23 +2955,9 @@ trait AZ_ConfigurationForm
                                 ]
                             ],
                             [
-                                'name'    => 'ID',
-                                'caption' => 'ID',
-                                'width'   => '80px',
-                                'add'     => '',
-                                'save'    => false,
-                                'onClick' => self::MODULE_PREFIX . '_ModifyTriggerListButton($id, "WaterDetectorsConfigurationButton", $WaterDetectors["PrimaryCondition"]);',
-                            ],
-                            [
-                                'caption' => 'Objektbaum',
-                                'name'    => 'VariableLocation',
-                                'width'   => '350px',
-                                'add'     => '',
-                                'save'    => false
-                            ],
-                            [
                                 'caption' => 'Name',
                                 'name'    => 'Designation',
+                                'onClick' => self::MODULE_PREFIX . '_ModifyTriggerListButton($id, "WaterDetectorsConfigurationButton", $WaterDetectors["PrimaryCondition"]);',
                                 'width'   => '400px',
                                 'add'     => '',
                                 'edit'    => [
@@ -3668,34 +2967,10 @@ trait AZ_ConfigurationForm
                             [
                                 'caption' => 'Bemerkung',
                                 'name'    => 'Comment',
-                                'visible' => true,
                                 'width'   => '300px',
                                 'add'     => '',
                                 'edit'    => [
                                     'type' => 'ValidationTextBox'
-                                ]
-                            ],
-                            [
-                                'caption' => ' ',
-                                'name'    => 'SpacerPrimaryCondition',
-                                'width'   => '200px',
-                                'add'     => '',
-                                'visible' => false,
-                                'save'    => false,
-                                'edit'    => [
-                                    'type' => 'Label'
-                                ]
-                            ],
-                            [
-                                'caption' => 'Bedingung:',
-                                'name'    => 'LabelPrimaryCondition',
-                                'width'   => '200px',
-                                'add'     => '',
-                                'visible' => false,
-                                'save'    => false,
-                                'edit'    => [
-                                    'type' => 'Label',
-                                    'bold' => true
                                 ]
                             ],
                             [
@@ -3709,83 +2984,21 @@ trait AZ_ConfigurationForm
                             ],
                             [
                                 'caption' => 'Primäre Bedingung',
-                                'name'    => 'PrimaryTriggerValue',
-                                'width'   => '250px',
-                                'add'     => '',
-                                'save'    => false
-                            ],
-                            [
-                                'caption' => 'Weitere Bedingungen',
-                                'name'    => 'SecondaryTriggerValues',
-                                'width'   => '200px',
-                                'add'     => '',
-                                'save'    => false
-                            ],
-                            [
-                                'caption' => ' ',
                                 'name'    => 'PrimaryCondition',
-                                'width'   => '200px',
+                                'width'   => '600px',
                                 'add'     => '',
-                                'visible' => false,
                                 'edit'    => [
                                     'type' => 'SelectCondition'
                                 ]
                             ],
                             [
-                                'caption' => ' ',
-                                'name'    => 'SpacerSecondaryCondition',
-                                'width'   => '200px',
-                                'add'     => '',
-                                'visible' => false,
-                                'save'    => false,
-                                'edit'    => [
-                                    'type' => 'Label'
-                                ]
-                            ],
-                            [
-                                'caption' => 'Weitere Bedingung(en):',
-                                'name'    => 'LabelSecondaryCondition',
-                                'width'   => '200px',
-                                'add'     => '',
-                                'visible' => false,
-                                'save'    => false,
-                                'edit'    => [
-                                    'type' => 'Label',
-                                    'bold' => true
-                                ]
-                            ],
-                            [
-                                'caption' => ' ',
+                                'caption' => 'Weitere Bedingungen',
                                 'name'    => 'SecondaryCondition',
-                                'width'   => '200px',
+                                'width'   => '600px',
                                 'add'     => '',
-                                'visible' => false,
                                 'edit'    => [
                                     'type'  => 'SelectCondition',
                                     'multi' => true
-                                ]
-                            ],
-                            [
-                                'caption' => ' ',
-                                'name'    => 'SpacerMode',
-                                'width'   => '200px',
-                                'add'     => '',
-                                'visible' => false,
-                                'save'    => false,
-                                'edit'    => [
-                                    'type' => 'Label'
-                                ]
-                            ],
-                            [
-                                'caption' => 'Modus:',
-                                'name'    => 'LabelMode',
-                                'width'   => '200px',
-                                'add'     => '',
-                                'visible' => false,
-                                'save'    => false,
-                                'edit'    => [
-                                    'type' => 'Label',
-                                    'bold' => true
                                 ]
                             ],
                             [
@@ -3793,7 +3006,6 @@ trait AZ_ConfigurationForm
                                 'name'    => 'PermanentMonitoring',
                                 'width'   => '230px',
                                 'add'     => true,
-                                'visible' => true,
                                 'edit'    => [
                                     'type' => 'CheckBox'
                                 ]
@@ -3803,7 +3015,6 @@ trait AZ_ConfigurationForm
                                 'name'    => 'FullProtectionModeActive',
                                 'width'   => '110px',
                                 'add'     => false,
-                                'visible' => true,
                                 'edit'    => [
                                     'type' => 'CheckBox'
                                 ]
@@ -3813,7 +3024,6 @@ trait AZ_ConfigurationForm
                                 'name'    => 'HullProtectionModeActive',
                                 'width'   => '110px',
                                 'add'     => false,
-                                'visible' => true,
                                 'edit'    => [
                                     'type' => 'CheckBox'
                                 ]
@@ -3823,32 +3033,8 @@ trait AZ_ConfigurationForm
                                 'name'    => 'PartialProtectionModeActive',
                                 'width'   => '110px',
                                 'add'     => false,
-                                'visible' => true,
                                 'edit'    => [
                                     'type' => 'CheckBox'
-                                ]
-                            ],
-                            [
-                                'caption' => ' ',
-                                'name'    => 'SpacerAlarmActivation',
-                                'width'   => '200px',
-                                'add'     => '',
-                                'visible' => false,
-                                'save'    => false,
-                                'edit'    => [
-                                    'type' => 'Label'
-                                ]
-                            ],
-                            [
-                                'caption' => 'Alarmauslösung:',
-                                'name'    => 'LabelAlarmActivation',
-                                'width'   => '200px',
-                                'add'     => '',
-                                'visible' => false,
-                                'save'    => false,
-                                'edit'    => [
-                                    'type' => 'Label',
-                                    'bold' => true
                                 ]
                             ],
                             [
@@ -3856,7 +3042,6 @@ trait AZ_ConfigurationForm
                                 'name'    => 'AlertingWaterDetectorStatusVerificationDelay',
                                 'width'   => '220px',
                                 'add'     => 0,
-                                'visible' => true,
                                 'edit'    => [
                                     'type'    => 'NumberSpinner',
                                     'suffix'  => ' Millisekunden',
@@ -3865,11 +3050,19 @@ trait AZ_ConfigurationForm
                                 ]
                             ],
                             [
+                                'caption' => 'Alarmprotokoll',
+                                'name'    => 'UseAlarmProtocol',
+                                'width'   => '140px',
+                                'add'     => true,
+                                'edit'    => [
+                                    'type' => 'CheckBox'
+                                ]
+                            ],
+                            [
                                 'caption' => 'Benachrichtigung',
                                 'name'    => 'UseNotification',
                                 'width'   => '160px',
                                 'add'     => true,
-                                'visible' => true,
                                 'edit'    => [
                                     'type' => 'CheckBox'
                                 ]
@@ -3879,7 +3072,6 @@ trait AZ_ConfigurationForm
                                 'name'    => 'UseAlarmSiren',
                                 'width'   => '120px',
                                 'add'     => true,
-                                'visible' => true,
                                 'edit'    => [
                                     'type' => 'CheckBox'
                                 ]
@@ -3889,7 +3081,6 @@ trait AZ_ConfigurationForm
                                 'name'    => 'UseAlarmLight',
                                 'width'   => '170px',
                                 'add'     => false,
-                                'visible' => true,
                                 'edit'    => [
                                     'type' => 'CheckBox'
                                 ]
@@ -3899,7 +3090,6 @@ trait AZ_ConfigurationForm
                                 'name'    => 'UseAlarmCall',
                                 'width'   => '120px',
                                 'add'     => false,
-                                'visible' => true,
                                 'edit'    => [
                                     'type' => 'CheckBox'
                                 ]
@@ -3909,51 +3099,17 @@ trait AZ_ConfigurationForm
                                 'name'    => 'UseAlertingAction',
                                 'width'   => '80px',
                                 'add'     => false,
-                                'visible' => true,
                                 'edit'    => [
                                     'type' => 'CheckBox'
                                 ]
                             ],
                             [
+                                'caption' => 'Aktionsausführung',
                                 'name'    => 'AlertingAction',
-                                'width'   => '200px',
+                                'width'   => '600px',
                                 'add'     => '',
-                                'visible' => false,
                                 'edit'    => [
                                     'type' => 'SelectAction'
-                                ]
-                            ],
-                            [
-                                'caption' => ' ',
-                                'name'    => 'SpacerAlarmProtocol',
-                                'width'   => '200px',
-                                'add'     => '',
-                                'visible' => false,
-                                'save'    => false,
-                                'edit'    => [
-                                    'type' => 'Label'
-                                ]
-                            ],
-                            [
-                                'caption' => 'Alarmprotokoll:',
-                                'name'    => 'LabelAlarmProtocol',
-                                'width'   => '200px',
-                                'add'     => '',
-                                'visible' => false,
-                                'save'    => false,
-                                'edit'    => [
-                                    'type' => 'Label',
-                                    'bold' => true
-                                ]
-                            ],
-                            [
-                                'caption' => 'Alarmprotokoll',
-                                'name'    => 'UseAlarmProtocol',
-                                'width'   => '140px',
-                                'add'     => true,
-                                'visible' => true,
-                                'edit'    => [
-                                    'type' => 'CheckBox'
                                 ]
                             ]
                         ],
@@ -3962,13 +3118,6 @@ trait AZ_ConfigurationForm
                     [
                         'type'    => 'Label',
                         'caption' => 'Anzahl Auslöser: ' . $amountWaterDetectors
-                    ],
-                    [
-                        'type'     => 'OpenObjectButton',
-                        'name'     => 'WaterDetectorsConfigurationButton',
-                        'caption'  => 'Bearbeiten',
-                        'visible'  => false,
-                        'objectID' => 0
                     ],
                     [
                         'type'    => 'PopupButton',
@@ -4048,13 +3197,6 @@ trait AZ_ConfigurationForm
                                             'save'    => false
                                         ],
                                         [
-                                            'caption' => 'Objektbaum',
-                                            'name'    => 'VariableLocation',
-                                            'width'   => '350px',
-                                            'add'     => '',
-                                            'save'    => false
-                                        ],
-                                        [
                                             'name'    => 'Designation',
                                             'caption' => 'Name',
                                             'width'   => '400px',
@@ -4090,6 +3232,13 @@ trait AZ_ConfigurationForm
                                 ]
                             ]
                         ]
+                    ],
+                    [
+                        'type'     => 'OpenObjectButton',
+                        'name'     => 'WaterDetectorsConfigurationButton',
+                        'caption'  => 'Bearbeiten',
+                        'visible'  => false,
+                        'objectID' => 0
                     ]
                 ]
             ];

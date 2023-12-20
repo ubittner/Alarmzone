@@ -228,7 +228,7 @@ trait AZ_WaterDetectors
                 $profileName = '';
                 switch ($variableType) {
                     case 0: //Boolean
-                        $profileName = 'WaterDetector.Bool';
+                        $profileName = 'WaterDetector.Boolean';
                         break;
 
                     case 1: //Integer
@@ -296,7 +296,7 @@ trait AZ_WaterDetectors
                 'UseAlarmLight'                                    => false,
                 'UseAlarmCall'                                     => false,
                 'UseAlertingAction'                                => false,
-                'AlertingAction'                                   => '[]',
+                'AlertingAction'                                   => '{"actionID":"{346AA8C1-30E0-1663-78EF-93EFADFAC650}","parameters":{"SCRIPT":"<?php\n\n//Skript hier einfügen","ENVIRONMENT":"Default","PARENT":' . $this->InstanceID . ',"TARGET":0}}',
                 'UseAlarmProtocol'                                 => true];
         }
         //Get already listed variables
@@ -411,9 +411,9 @@ trait AZ_WaterDetectors
         if ($amount == 0) {
             $amount = 1;
         }
-        $this->UpdateFormField('ActualWaterDetectorStateList', 'visible', true);
         $this->UpdateFormField('ActualWaterDetectorStateList', 'rowCount', $amount);
         $this->UpdateFormField('ActualWaterDetectorStateList', 'values', json_encode($actualVariableStates));
+        $this->UpdateFormField('ActualWaterDetectorStateList', 'visible', true);
     }
 
     /**
@@ -463,9 +463,9 @@ trait AZ_WaterDetectors
                     switch ($variableType) {
                         //0: Boolean, 1: Integer, 2: Float, 3: String
                         case 0:
-                            $profileName = 'WaterDetector.Bool';
+                            $profileName = 'WaterDetector.Boolean';
                             if ($variable['UseReversedProfile']) {
-                                $profileName = 'WaterDetector.Bool.Reversed';
+                                $profileName = 'WaterDetector.Boolean.Reversed';
                             }
                             break;
 
@@ -799,7 +799,7 @@ trait AZ_WaterDetectors
     private function CreateWaterDetectorVariableProfiles(): void
     {
         //Bool variable
-        $profile = 'WaterDetector.Bool';
+        $profile = 'WaterDetector.Boolean';
         if (!IPS_VariableProfileExists($profile)) {
             IPS_CreateVariableProfile($profile, 0);
         }
@@ -808,7 +808,7 @@ trait AZ_WaterDetectors
         IPS_SetVariableProfileAssociation($profile, 1, 'Wasser erkannt', '', 0xFF0000);
 
         //Bool variable reversed
-        $profile = 'WaterDetector.Bool.Reversed';
+        $profile = 'WaterDetector.Boolean.Reversed';
         if (!IPS_VariableProfileExists($profile)) {
             IPS_CreateVariableProfile($profile, 0);
         }

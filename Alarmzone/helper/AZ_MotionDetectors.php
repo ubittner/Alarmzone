@@ -229,7 +229,7 @@ trait AZ_MotionDetectors
                 $profileName = '';
                 switch ($variableType) {
                     case 0: //Boolean
-                        $profileName = 'MotionDetector.Bool';
+                        $profileName = 'MotionDetector.Boolean';
                         break;
 
                     case 1: //Integer
@@ -296,7 +296,7 @@ trait AZ_MotionDetectors
                 'UseAlarmLight'                         => false,
                 'UseAlarmCall'                          => false,
                 'UseAlertingAction'                     => false,
-                'AlertingAction'                        => '[]',
+                'AlertingAction'                        => '{"actionID":"{346AA8C1-30E0-1663-78EF-93EFADFAC650}","parameters":{"SCRIPT":"<?php\n\n//Skript hier einfügen","ENVIRONMENT":"Default","PARENT":' . $this->InstanceID . ',"TARGET":0}}',
                 'UseAlarmProtocol'                      => true];
         }
         //Get already listed variables
@@ -411,9 +411,9 @@ trait AZ_MotionDetectors
         if ($amount == 0) {
             $amount = 1;
         }
-        $this->UpdateFormField('ActualMotionDetectorStateList', 'visible', true);
         $this->UpdateFormField('ActualMotionDetectorStateList', 'rowCount', $amount);
         $this->UpdateFormField('ActualMotionDetectorStateList', 'values', json_encode($actualVariableStates));
+        $this->UpdateFormField('ActualMotionDetectorStateList', 'visible', true);
     }
 
     /**
@@ -463,9 +463,9 @@ trait AZ_MotionDetectors
                     switch ($variableType) {
                         //0: Boolean, 1: Integer, 2: Float, 3: String
                         case 0:
-                            $profileName = 'MotionDetector.Bool';
+                            $profileName = 'MotionDetector.Boolean';
                             if ($variable['UseReversedProfile']) {
-                                $profileName = 'MotionDetector.Bool.Reversed';
+                                $profileName = 'MotionDetector.Boolean.Reversed';
                             }
                             break;
 
@@ -771,7 +771,7 @@ trait AZ_MotionDetectors
     private function CreateMotionDetectorVariableProfiles(): void
     {
         //Bool variable
-        $profile = 'MotionDetector.Bool';
+        $profile = 'MotionDetector.Boolean';
         if (!IPS_VariableProfileExists($profile)) {
             IPS_CreateVariableProfile($profile, 0);
         }
@@ -779,7 +779,7 @@ trait AZ_MotionDetectors
         IPS_SetVariableProfileAssociation($profile, 1, 'Bewegung erkannt', 'Motion', 0xFF0000);
 
         //Bool variable reversed
-        $profile = 'MotionDetector.Bool.Reversed';
+        $profile = 'MotionDetector.Boolean.Reversed';
         if (!IPS_VariableProfileExists($profile)) {
             IPS_CreateVariableProfile($profile, 0);
         }
