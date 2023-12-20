@@ -754,6 +754,10 @@ trait AZ_ConfigurationForm
                         'rowCount' => $amountDoorWindowSensorRows,
                         'add'      => true,
                         'delete'   => true,
+                        'sort'     => [
+                            'column'    => 'Designation',
+                            'direction' => 'ascending'
+                        ],
                         'columns'  => [
                             [
                                 'caption' => 'Aktiviert',
@@ -1316,6 +1320,10 @@ trait AZ_ConfigurationForm
                         'rowCount' => $amountMotionDetectorRows,
                         'add'      => true,
                         'delete'   => true,
+                        'sort'     => [
+                            'column'    => 'Designation',
+                            'direction' => 'ascending'
+                        ],
                         'columns'  => [
                             [
                                 'caption' => 'Aktiviert',
@@ -1855,6 +1863,10 @@ trait AZ_ConfigurationForm
                         'rowCount' => $amountGlassBreakageDetectorRows,
                         'add'      => true,
                         'delete'   => true,
+                        'sort'     => [
+                            'column'    => 'Designation',
+                            'direction' => 'ascending'
+                        ],
                         'columns'  => [
                             [
                                 'caption' => 'Aktiviert',
@@ -2400,6 +2412,10 @@ trait AZ_ConfigurationForm
                         'rowCount' => $amountSmokeDetectorRows,
                         'add'      => true,
                         'delete'   => true,
+                        'sort'     => [
+                            'column'    => 'Designation',
+                            'direction' => 'ascending'
+                        ],
                         'columns'  => [
                             [
                                 'caption' => 'Aktiviert',
@@ -2944,6 +2960,10 @@ trait AZ_ConfigurationForm
                         'rowCount' => $amountWaterDetectorRows,
                         'add'      => true,
                         'delete'   => true,
+                        'sort'     => [
+                            'column'    => 'Designation',
+                            'direction' => 'ascending'
+                        ],
                         'columns'  => [
                             [
                                 'caption' => 'Aktiviert',
