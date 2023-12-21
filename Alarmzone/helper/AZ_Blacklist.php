@@ -65,7 +65,10 @@ trait AZ_Blacklist
         $this->UpdateFormField('BlacklistConfigurationButton', 'visible', false);
         $blacklistedVariables = [];
         $blacklist = json_decode($this->ReadAttributeString('Blacklist'), true);
-        $amount = count($blacklist) + 1;
+        $amount = count($blacklist);
+        if ($amount == 0) {
+            $amount = 1;
+        }
         if (is_array($blacklist)) {
             foreach ($blacklist as $element) {
                 $variable = json_decode($element, true);

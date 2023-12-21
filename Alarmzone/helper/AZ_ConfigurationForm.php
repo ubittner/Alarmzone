@@ -502,6 +502,9 @@ trait AZ_ConfigurationForm
         $doorWindowSensors = json_decode($this->ReadPropertyString('DoorWindowSensors'), true);
         $amountDoorWindowSensors = count($doorWindowSensors);
         $amountDoorWindowSensorRows = count($doorWindowSensors) + 1;
+        if ($amountDoorWindowSensorRows == 1) {
+            $amountDoorWindowSensorRows = 3;
+        }
         foreach ($doorWindowSensors as $doorWindowSensor) {
             $sensorID = 0;
             $rowColor = '#C0FFC0'; //light green
@@ -1081,6 +1084,9 @@ trait AZ_ConfigurationForm
         $motionDetectors = json_decode($this->ReadPropertyString('MotionDetectors'), true);
         $amountMotionDetectors = count($motionDetectors);
         $amountMotionDetectorRows = count($motionDetectors) + 1;
+        if ($amountMotionDetectorRows == 1) {
+            $amountMotionDetectorRows = 3;
+        }
         foreach ($motionDetectors as $motionDetector) {
             $sensorID = 0;
             $rowColor = '#C0FFC0'; //light green
@@ -1624,6 +1630,9 @@ trait AZ_ConfigurationForm
         $glassBreakageDetectorVariableProfileListValues = [];
         $amountGlassBreakageDetectors = count($glassBreakageDetectors);
         $amountGlassBreakageDetectorRows = count($glassBreakageDetectors) + 1;
+        if ($amountGlassBreakageDetectorRows == 1) {
+            $amountGlassBreakageDetectorRows = 3;
+        }
         foreach ($glassBreakageDetectors as $glassBreakageDetector) {
             $sensorID = 0;
             $rowColor = '#C0FFC0'; //light green
@@ -2173,6 +2182,9 @@ trait AZ_ConfigurationForm
         $smokeDetectors = json_decode($this->ReadPropertyString('SmokeDetectors'), true);
         $amountSmokeDetectors = count($smokeDetectors);
         $amountSmokeDetectorRows = count($smokeDetectors) + 1;
+        if ($amountSmokeDetectorRows == 1) {
+            $amountSmokeDetectorRows = 3;
+        }
         foreach ($smokeDetectors as $smokeDetector) {
             $sensorID = 0;
             $rowColor = '#C0FFC0'; //light green
@@ -2721,6 +2733,9 @@ trait AZ_ConfigurationForm
         $waterDetectors = json_decode($this->ReadPropertyString('WaterDetectors'), true);
         $amountWaterDetectors = count($waterDetectors);
         $amountWaterDetectorRows = count($waterDetectors) + 1;
+        if ($amountWaterDetectorRows == 1) {
+            $amountWaterDetectorRows = 3;
+        }
         foreach ($waterDetectors as $waterDetector) {
             $sensorID = 0;
             $rowColor = '#C0FFC0'; //light green
@@ -11326,7 +11341,10 @@ trait AZ_ConfigurationForm
         //Registered references
         $registeredReferences = [];
         $references = $this->GetReferenceList();
-        $amountReferences = count($references) + 1;
+        $amountReferences = count($references);
+        if ($amountReferences == 0) {
+            $amountReferences = 3;
+        }
         foreach ($references as $reference) {
             $name = 'Objekt #' . $reference . ' existiert nicht';
             $location = '';
@@ -11346,7 +11364,10 @@ trait AZ_ConfigurationForm
         //Registered messages
         $registeredMessages = [];
         $messages = $this->GetMessageList();
-        $amountMessages = count($messages) + 1;
+        $amountMessages = count($messages);
+        if ($amountMessages == 0) {
+            $amountMessages = 3;
+        }
         foreach ($messages as $id => $messageID) {
             $name = 'Objekt #' . $id . ' existiert nicht';
             $location = '';
@@ -11478,7 +11499,7 @@ trait AZ_ConfigurationForm
                             'caption' => 'ID',
                             'name'    => 'ObjectID',
                             'width'   => '150px',
-                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "RegisteredReferencesConfigurationButton", "ID " . $RegisteredReferences["ObjectID"] . " aufrufen", $RegisteredReferences["ObjectID"]);'
+                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "RegisteredReferencesConfigurationButton", "ID " . $RegisteredReferences["ObjectID"] . " bearbeiten", $RegisteredReferences["ObjectID"]);'
                         ],
                         [
                             'caption' => 'Name',
@@ -11496,7 +11517,7 @@ trait AZ_ConfigurationForm
                 [
                     'type'     => 'OpenObjectButton',
                     'name'     => 'RegisteredReferencesConfigurationButton',
-                    'caption'  => 'Aufrufen',
+                    'caption'  => 'Bearbeiten',
                     'visible'  => false,
                     'objectID' => 0
                 ],
@@ -11523,7 +11544,7 @@ trait AZ_ConfigurationForm
                             'caption' => 'ID',
                             'name'    => 'ObjectID',
                             'width'   => '150px',
-                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "RegisteredMessagesConfigurationButton", "ID " . $RegisteredMessages["ObjectID"] . " aufrufen", $RegisteredMessages["ObjectID"]);'
+                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "RegisteredMessagesConfigurationButton", "ID " . $RegisteredMessages["ObjectID"] . " bearbeiten", $RegisteredMessages["ObjectID"]);'
                         ],
                         [
                             'caption' => 'Name',
@@ -11551,7 +11572,7 @@ trait AZ_ConfigurationForm
                 [
                     'type'     => 'OpenObjectButton',
                     'name'     => 'RegisteredMessagesConfigurationButton',
-                    'caption'  => 'Aufrufen',
+                    'caption'  => 'Bearbeiten',
                     'visible'  => false,
                     'objectID' => 0
                 ]

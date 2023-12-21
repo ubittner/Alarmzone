@@ -445,6 +445,9 @@ trait AZST_ConfigurationForm
         $alarmZoneValues = [];
         $alarmZones = json_decode($this->ReadPropertyString('AlarmZones'), true);
         $amountAlarmZones = count($alarmZones) + 1;
+        if ($amountAlarmZones == 1) {
+            $amountAlarmZones = 3;
+        }
         foreach ($alarmZones as $alarmZone) {
             if (!$alarmZone['Use']) {
                 continue;
@@ -461,6 +464,9 @@ trait AZST_ConfigurationForm
         $glassBreakageDetectorControlSwitchValues = [];
         $glassBreakageDetectorControlSwitches = json_decode($this->ReadPropertyString('GlassBreakageDetectorControl'), true);
         $amountGlassBreakageDetectorControl = count($glassBreakageDetectorControlSwitches) + 1;
+        if ($amountGlassBreakageDetectorControl == 1) {
+            $amountGlassBreakageDetectorControl = 3;
+        }
         foreach ($glassBreakageDetectorControlSwitches as $glassBreakageDetectorControlSwitch) {
             if (!$glassBreakageDetectorControlSwitch['Use']) {
                 continue;
@@ -477,6 +483,9 @@ trait AZST_ConfigurationForm
         $protectionModeValues = [];
         $variables = json_decode($this->ReadPropertyString('ProtectionMode'), true);
         $amountProtectionMode = count($variables) + 1;
+        if ($amountProtectionMode == 1) {
+            $amountProtectionMode = 3;
+        }
         foreach ($variables as $variable) {
             $rowColor = '#FFC0C0'; //red
             $id = $variable['ID'];
@@ -493,6 +502,9 @@ trait AZST_ConfigurationForm
         $systemStateValues = [];
         $variables = json_decode($this->ReadPropertyString('SystemState'), true);
         $amountSystemState = count($variables) + 1;
+        if ($amountSystemState == 1) {
+            $amountSystemState = 3;
+        }
         foreach ($variables as $variable) {
             $rowColor = '#FFC0C0'; //red
             $id = $variable['ID'];
@@ -509,6 +521,9 @@ trait AZST_ConfigurationForm
         $systemDetailedStateValues = [];
         $variables = json_decode($this->ReadPropertyString('SystemDetailedState'), true);
         $amountDetailedSystemState = count($variables) + 1;
+        if ($amountDetailedSystemState == 1) {
+            $amountDetailedSystemState = 3;
+        }
         foreach ($variables as $variable) {
             $rowColor = '#FFC0C0'; //red
             $id = $variable['ID'];
@@ -525,6 +540,9 @@ trait AZST_ConfigurationForm
         $alarmStateValues = [];
         $variables = json_decode($this->ReadPropertyString('AlarmState'), true);
         $amountAlarmState = count($variables) + 1;
+        if ($amountAlarmState == 1) {
+            $amountAlarmState = 3;
+        }
         foreach ($variables as $variable) {
             $rowColor = '#FFC0C0'; //red
             $id = $variable['ID'];
@@ -541,6 +559,9 @@ trait AZST_ConfigurationForm
         $alertingSensorValues = [];
         $variables = json_decode($this->ReadPropertyString('AlertingSensor'), true);
         $amountAlertingSensors = count($variables) + 1;
+        if ($amountAlertingSensors == 1) {
+            $amountAlertingSensors = 3;
+        }
         foreach ($variables as $variable) {
             $rowColor = '#FFC0C0'; //red
             $id = $variable['ID'];
@@ -557,6 +578,9 @@ trait AZST_ConfigurationForm
         $doorWindowStateValues = [];
         $variables = json_decode($this->ReadPropertyString('DoorWindowState'), true);
         $amountDoorWindowSensors = count($variables) + 1;
+        if ($amountDoorWindowSensors == 1) {
+            $amountDoorWindowSensors = 3;
+        }
         foreach ($variables as $variable) {
             $rowColor = '#FFC0C0'; //red
             $id = $variable['ID'];
@@ -573,6 +597,9 @@ trait AZST_ConfigurationForm
         $motionDetectorStateValues = [];
         $variables = json_decode($this->ReadPropertyString('MotionDetectorState'), true);
         $amountMotionDetectors = count($variables) + 1;
+        if ($amountMotionDetectors == 1) {
+            $amountMotionDetectors = 3;
+        }
         foreach ($variables as $variable) {
             $rowColor = '#FFC0C0'; //red
             $id = $variable['ID'];
@@ -589,6 +616,9 @@ trait AZST_ConfigurationForm
         $glassBreakageDetectorStateValues = [];
         $glassBreakageDetectors = json_decode($this->ReadPropertyString('GlassBreakageDetectorState'), true);
         $amountGlassBreakageDetectors = count($glassBreakageDetectors) + 1;
+        if ($amountGlassBreakageDetectors == 1) {
+            $amountGlassBreakageDetectors = 3;
+        }
         foreach ($glassBreakageDetectors as $glassBreakageDetector) {
             $rowColor = '#FFC0C0'; //red
             $id = $glassBreakageDetector['ID'];
@@ -605,6 +635,9 @@ trait AZST_ConfigurationForm
         $smokeDetectorStateValues = [];
         $smokeDetectors = json_decode($this->ReadPropertyString('SmokeDetectorState'), true);
         $amountSmokeDetectors = count($smokeDetectors) + 1;
+        if ($amountSmokeDetectors == 1) {
+            $amountSmokeDetectors = 3;
+        }
         foreach ($smokeDetectors as $smokeDetector) {
             $rowColor = '#FFC0C0'; //red
             $id = $smokeDetector['ID'];
@@ -621,6 +654,9 @@ trait AZST_ConfigurationForm
         $waterDetectorStateValues = [];
         $waterDetectors = json_decode($this->ReadPropertyString('WaterDetectorState'), true);
         $amountWaterDetectors = count($waterDetectors) + 1;
+        if ($amountWaterDetectors == 1) {
+            $amountWaterDetectors = 3;
+        }
         foreach ($waterDetectors as $waterDetector) {
             $rowColor = '#FFC0C0'; //red
             $id = $waterDetector['ID'];
@@ -637,6 +673,9 @@ trait AZST_ConfigurationForm
         $alarmSirenValues = [];
         $variables = json_decode($this->ReadPropertyString('AlarmSiren'), true);
         $amountAlarmSirens = count($variables) + 1;
+        if ($amountAlarmSirens == 1) {
+            $amountAlarmSirens = 3;
+        }
         foreach ($variables as $variable) {
             $rowColor = '#FFC0C0'; //red
             $id = $variable['ID'];
@@ -653,6 +692,9 @@ trait AZST_ConfigurationForm
         $alarmLightValues = [];
         $variables = json_decode($this->ReadPropertyString('AlarmLight'), true);
         $amountAlarmLights = count($variables) + 1;
+        if ($amountAlarmLights == 1) {
+            $amountAlarmLights = 3;
+        }
         foreach ($variables as $variable) {
             $rowColor = '#FFC0C0'; //red
             $id = $variable['ID'];
@@ -669,6 +711,9 @@ trait AZST_ConfigurationForm
         $alarmCallValues = [];
         $variables = json_decode($this->ReadPropertyString('AlarmCall'), true);
         $amountAlarmCalls = count($variables) + 1;
+        if ($amountAlarmCalls == 1) {
+            $amountAlarmCalls = 3;
+        }
         foreach ($variables as $variable) {
             $rowColor = '#FFC0C0'; //red
             $id = $variable['ID'];
@@ -1991,7 +2036,10 @@ trait AZST_ConfigurationForm
         //Registered references
         $registeredReferences = [];
         $references = $this->GetReferenceList();
-        $amountReferences = count($references) + 1;
+        $amountReferences = count($references);
+        if ($amountReferences == 0) {
+            $amountReferences = 3;
+        }
         foreach ($references as $reference) {
             $name = 'Objekt #' . $reference . ' existiert nicht';
             $location = '';
@@ -2011,7 +2059,10 @@ trait AZST_ConfigurationForm
         //Registered messages
         $registeredMessages = [];
         $messages = $this->GetMessageList();
-        $amountMessages = count($messages) + 1;
+        $amountMessages = count($messages);
+        if ($amountMessages == 0) {
+            $amountMessages = 3;
+        }
         foreach ($messages as $id => $messageID) {
             $name = 'Objekt #' . $id . ' existiert nicht';
             $location = '';
