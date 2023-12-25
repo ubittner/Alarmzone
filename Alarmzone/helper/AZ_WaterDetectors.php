@@ -413,7 +413,6 @@ trait AZ_WaterDetectors
         }
         $this->UpdateFormField('ActualWaterDetectorStateList', 'rowCount', $amount);
         $this->UpdateFormField('ActualWaterDetectorStateList', 'values', json_encode($actualVariableStates));
-        $this->UpdateFormField('ActualWaterDetectorStateList', 'visible', true);
     }
 
     /**

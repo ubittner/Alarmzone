@@ -413,7 +413,6 @@ trait AZ_MotionDetectors
         }
         $this->UpdateFormField('ActualMotionDetectorStateList', 'rowCount', $amount);
         $this->UpdateFormField('ActualMotionDetectorStateList', 'values', json_encode($actualVariableStates));
-        $this->UpdateFormField('ActualMotionDetectorStateList', 'visible', true);
     }
 
     /**

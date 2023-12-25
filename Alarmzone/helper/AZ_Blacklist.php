@@ -79,7 +79,6 @@ trait AZ_Blacklist
                     'VariableLocation'  => IPS_GetLocation($id)];
             }
         }
-        $this->UpdateFormField('Blacklist', 'visible', true);
         $this->UpdateFormField('Blacklist', 'rowCount', $amount);
         $this->UpdateFormField('Blacklist', 'values', json_encode($blacklistedVariables));
     }

@@ -413,7 +413,6 @@ trait AZ_GlassBreakageDetectors
         }
         $this->UpdateFormField('ActualGlassBreakageDetectorStateList', 'rowCount', $amount);
         $this->UpdateFormField('ActualGlassBreakageDetectorStateList', 'values', json_encode($actualVariableStates));
-        $this->UpdateFormField('ActualGlassBreakageDetectorStateList', 'visible', true);
     }
 
     /**

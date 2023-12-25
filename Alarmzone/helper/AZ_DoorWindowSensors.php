@@ -430,7 +430,6 @@ trait AZ_DoorWindowSensors
         }
         $this->UpdateFormField('ActualDoorWindowStateList', 'rowCount', $amount);
         $this->UpdateFormField('ActualDoorWindowStateList', 'values', json_encode($actualVariableStates));
-        $this->UpdateFormField('ActualDoorWindowStateList', 'visible', true);
     }
 
     /**

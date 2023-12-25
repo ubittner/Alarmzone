@@ -699,7 +699,6 @@ trait AZ_ConfigurationForm
                                     'name'     => 'ActualDoorWindowStateList',
                                     'caption'  => 'Tür- und Fenstersensoren',
                                     'add'      => false,
-                                    'visible'  => false,
                                     'rowCount' => 1,
                                     'sort'     => [
                                         'column'    => 'ActualStatus',
@@ -1268,7 +1267,6 @@ trait AZ_ConfigurationForm
                                     'name'     => 'ActualMotionDetectorStateList',
                                     'caption'  => 'Bewegungsmelder',
                                     'add'      => false,
-                                    'visible'  => false,
                                     'rowCount' => 1,
                                     'sort'     => [
                                         'column'    => 'ActualStatus',
@@ -1814,7 +1812,6 @@ trait AZ_ConfigurationForm
                                     'name'     => 'ActualGlassBreakageDetectorStateList',
                                     'caption'  => 'Glasbruchmelder',
                                     'add'      => false,
-                                    'visible'  => false,
                                     'rowCount' => 1,
                                     'sort'     => [
                                         'column'    => 'ActualStatus',
@@ -2366,7 +2363,6 @@ trait AZ_ConfigurationForm
                                     'name'     => 'ActualSmokeDetectorStateList',
                                     'caption'  => 'Rauchmelder',
                                     'add'      => false,
-                                    'visible'  => false,
                                     'rowCount' => 1,
                                     'sort'     => [
                                         'column'    => 'ActualStatus',
@@ -2917,7 +2913,6 @@ trait AZ_ConfigurationForm
                                     'name'     => 'ActualWaterDetectorStateList',
                                     'caption'  => 'Wassermelder',
                                     'add'      => false,
-                                    'visible'  => false,
                                     'rowCount' => 1,
                                     'sort'     => [
                                         'column'    => 'ActualStatus',
@@ -11438,7 +11433,6 @@ trait AZ_ConfigurationForm
                                 'name'     => 'Blacklist',
                                 'caption'  => 'Sperrliste Tür- und Fenstersensoren',
                                 'add'      => false,
-                                'visible'  => false,
                                 'rowCount' => 1,
                                 'delete'   => true,
                                 'onDelete' => self::MODULE_PREFIX . '_DeleteElementFromBlacklist($id, $Blacklist["SensorID"]);',

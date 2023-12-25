@@ -413,7 +413,6 @@ trait AZ_SmokeDetectors
         }
         $this->UpdateFormField('ActualSmokeDetectorStateList', 'rowCount', $amount);
         $this->UpdateFormField('ActualSmokeDetectorStateList', 'values', json_encode($actualVariableStates));
-        $this->UpdateFormField('ActualSmokeDetectorStateList', 'visible', true);
     }
 
     /**
