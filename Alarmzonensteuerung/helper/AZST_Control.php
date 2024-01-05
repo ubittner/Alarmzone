@@ -111,6 +111,7 @@ trait AZST_Control
         $alarmSiren = [];
         $alarmLight = [];
         $alarmCall = [];
+        $panicAlarm = [];
         $reflection = new ReflectionObject($ListValues);
         $property = $reflection->getProperty('array');
         $property->setAccessible(true);
@@ -256,6 +257,12 @@ trait AZST_Control
                         $alarmCall[] = ['Use' => true, 'ID' => $child, 'Designation' => $description];
                         break;
 
+                    case 'PanicAlarm':
+                        $passedConfiguration++;
+                        $this->ApplyNewConfigurationUpdateProgressState($passedConfiguration++, $maximumConfiguration);
+                        $panicAlarm[] = ['Use' => true, 'ID' => $child, 'Designation' => $description];
+                        break;
+
                 }
             }
         }
@@ -276,6 +283,7 @@ trait AZST_Control
         @IPS_SetProperty($this->InstanceID, 'AlarmSiren', json_encode($alarmSiren));
         @IPS_SetProperty($this->InstanceID, 'AlarmLight', json_encode($alarmLight));
         @IPS_SetProperty($this->InstanceID, 'AlarmCall', json_encode($alarmCall));
+        @IPS_SetProperty($this->InstanceID, 'PanicAlarm', json_encode($panicAlarm));
         if (@IPS_HasChanges($this->InstanceID)) {
             @IPS_ApplyChanges($this->InstanceID);
         }
@@ -295,6 +303,7 @@ trait AZST_Control
     {
         if (!$State) {
             $this->SetValue('AlarmSwitch', false);
+            $this->SetValue('PanicAlarm', false);
             $alarmZones = json_decode($this->ReadPropertyString('AlarmZones'), true);
             if (empty($alarmZones)) {
                 return;
@@ -318,7 +327,8 @@ trait AZST_Control
             $useAlarmSiren = $this->ReadPropertyBoolean('UseAlarmSirenWhenAlarmSwitchIsOn');
             $useAlarmLight = $this->ReadPropertyBoolean('UseAlarmLightWhenAlarmSwitchIsOn');
             $useAlarmCall = $this->ReadPropertyBoolean('UseAlarmCallWhenAlarmSwitchIsOn');
-            if ($useAlarmSiren || $useAlarmLight || $useAlarmCall) {
+            $usePanicAlarm = $this->ReadPropertyBoolean('UsePanicAlarmWhenAlarmSwitchIsOn');
+            if ($useAlarmSiren || $useAlarmLight || $useAlarmCall || $usePanicAlarm) {
                 $alarm = true;
             }
             if ($alarm) {
@@ -334,6 +344,10 @@ trait AZST_Control
                 if ($useAlarmCall) {
                     $this->SetValue('AlarmCall', true);
                 }
+                if ($usePanicAlarm) {
+                    $this->SetValue('PanicAlarm', true);
+                }
+                $this->SendNotification('PanicAlarmNotification', (string) $this->ReadPropertyString('AlertingSensorNameWhenAlarmSwitchIsOn'));
             }
         }
     }
