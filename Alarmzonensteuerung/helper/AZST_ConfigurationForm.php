@@ -36,7 +36,7 @@ trait AZST_ConfigurationForm
      */
     public function ExpandExpansionPanels(bool $State): void
     {
-        for ($i = 1; $i <= 6; $i++) {
+        for ($i = 1; $i <= 7; $i++) {
             $this->UpdateFormField('Panel' . $i, 'expanded', $State);
         }
     }
@@ -210,6 +210,11 @@ trait AZST_ConfigurationForm
                     'type'    => 'CheckBox',
                     'name'    => 'UseAlarmCallWhenAlarmSwitchIsOn',
                     'caption' => 'Alarmanruf'
+                ],
+                [
+                    'type'    => 'CheckBox',
+                    'name'    => 'UsePanicAlarmWhenAlarmSwitchIsOn',
+                    'caption' => 'Panikalarm'
                 ],
                 [
                     'type'    => 'Label',
@@ -724,6 +729,25 @@ trait AZST_ConfigurationForm
                 }
             }
             $alarmCallValues[] = ['VariableID' => $id, 'rowColor' => $rowColor];
+        }
+
+        //Panic alarm
+        $panicAlarmValues = [];
+        $variables = json_decode($this->ReadPropertyString('PanicAlarm'), true);
+        $amountPanicAlarms = count($variables) + 1;
+        if ($amountPanicAlarms == 1) {
+            $amountPanicAlarms = 3;
+        }
+        foreach ($variables as $variable) {
+            $rowColor = '#FFC0C0'; //red
+            $id = $variable['ID'];
+            if ($id > 1 && @IPS_ObjectExists($id)) {
+                $rowColor = '#DFDFDF'; # grey
+                if ($variable['Use']) {
+                    $rowColor = '#C0FFC0'; //light green
+                }
+            }
+            $panicAlarmValues[] = ['VariableID' => $id, 'rowColor' => $rowColor];
         }
 
         $form['elements'][] = [
@@ -1708,6 +1732,494 @@ trait AZST_ConfigurationForm
                     'name'     => 'AlarmCallConfigurationButton',
                     'visible'  => false,
                     'objectID' => 0
+                ],
+                [
+                    'type'    => 'Label',
+                    'caption' => ' '
+                ],
+                [
+                    'type'     => 'List',
+                    'name'     => 'PanicAlarm',
+                    'caption'  => 'Panikalarm',
+                    'rowCount' => $amountPanicAlarms,
+                    'add'      => true,
+                    'delete'   => true,
+                    'columns'  => [
+                        [
+                            'name'    => 'Use',
+                            'caption' => 'Aktiviert',
+                            'width'   => '100px',
+                            'add'     => true,
+                            'edit'    => [
+                                'type' => 'CheckBox'
+                            ]
+                        ],
+                        [
+                            'caption' => 'ID',
+                            'name'    => 'VariableID',
+                            'width'   => '100px',
+                            'add'     => 0,
+                            'save'    => false,
+                            'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "PanicAlarmConfigurationButton", "ID " . $PanicAlarm["ID"] . " bearbeiten", $PanicAlarm["ID"]);',
+                        ],
+                        [
+                            'name'    => 'ID',
+                            'caption' => 'Variable',
+                            'width'   => '650px',
+                            'add'     => 0,
+                            'edit'    => [
+                                'type' => 'SelectVariable'
+                            ]
+                        ],
+                        [
+                            'caption' => 'Bezeichnung',
+                            'name'    => 'Designation',
+                            'width'   => '400px',
+                            'add'     => '',
+                            'edit'    => [
+                                'type' => 'ValidationTextBox'
+                            ]
+                        ]
+                    ],
+                    'values' => $panicAlarmValues,
+                ],
+                [
+                    'type'     => 'OpenObjectButton',
+                    'caption'  => 'Bearbeiten',
+                    'name'     => 'PanicAlarmConfigurationButton',
+                    'visible'  => false,
+                    'objectID' => 0
+                ]
+            ]
+        ];
+
+        //Notification
+        $id = $this->ReadPropertyInteger('Notification');
+        $enableButton = false;
+        if ($id > 1 && @IPS_ObjectExists($id)) {
+            $enableButton = true;
+        }
+        $form['elements'][] = [
+            'type'     => 'ExpansionPanel',
+            'caption'  => 'Benachrichtigung',
+            'name'     => 'Panel5',
+            'expanded' => false,
+            'items'    => [
+                [
+                    'type'  => 'RowLayout',
+                    'items' => [
+                        [
+                            'type'     => 'SelectModule',
+                            'name'     => 'Notification',
+                            'caption'  => 'Instanz',
+                            'moduleID' => self::NOTIFICATION_MODULE_GUID,
+                            'width'    => '1000px',
+                            'onChange' => self::MODULE_PREFIX . '_ModifyButton($id, "NotificationConfigurationButton", "ID " . $Notification . " konfigurieren", $Notification);'
+                        ],
+                        [
+                            'type'     => 'OpenObjectButton',
+                            'caption'  => 'ID ' . $id . ' konfigurieren',
+                            'name'     => 'NotificationConfigurationButton',
+                            'visible'  => $enableButton,
+                            'objectID' => $id
+                        ],
+                        [
+                            'type'    => 'Button',
+                            'caption' => 'Neue Instanz erstellen',
+                            'onClick' => self::MODULE_PREFIX . '_CreateNotificationInstance($id);'
+                        ]
+                    ]
+                ],
+                [
+                    'type'    => 'Label',
+                    'caption' => ' '
+                ],
+                //Alarm
+                [
+                    'type'    => 'Label',
+                    'caption' => 'Alarm',
+                    'bold'    => true,
+                    'italic'  => true
+                ],
+                //Panic alarm
+                [
+                    'type'     => 'List',
+                    'name'     => 'PanicAlarmNotification',
+                    'caption'  => 'Panikalarm',
+                    'rowCount' => 1,
+                    'delete'   => false,
+                    'columns'  => [
+                        [
+                            'caption' => 'Aktiviert',
+                            'name'    => 'Use',
+                            'width'   => '100px',
+                            'edit'    => [
+                                'type' => 'CheckBox'
+                            ]
+                        ],
+                        [
+                            'caption' => 'Bezeichnung',
+                            'name'    => 'Designation',
+                            'width'   => '300px',
+                            'edit'    => [
+                                'type' => 'ValidationTextBox'
+                            ]
+                        ],
+                        [
+                            'caption' => ' ',
+                            'name'    => 'SpacerNotification',
+                            'width'   => '200px',
+                            'visible' => false,
+                            'save'    => false,
+                            'edit'    => [
+                                'type' => 'Label'
+                            ]
+                        ],
+                        [
+                            'caption' => 'Meldungstext:',
+                            'name'    => 'LabelMessageText',
+                            'width'   => '200px',
+                            'visible' => false,
+                            'save'    => false,
+                            'edit'    => [
+                                'type' => 'Label',
+                                'bold' => true
+                            ]
+                        ],
+                        [
+                            'caption' => 'Text der Meldung (maximal 256 Zeichen)',
+                            'name'    => 'MessageText',
+                            'width'   => '400px',
+                            'visible' => true,
+                            'edit'    => [
+                                'type'      => 'ValidationTextBox',
+                                'multiline' => true
+                            ]
+                        ],
+                        [
+                            'caption' => 'Zeitstempel',
+                            'name'    => 'UseTimestamp',
+                            'width'   => '100px',
+                            'visible' => false,
+                            'edit'    => [
+                                'type' => 'CheckBox'
+                            ]
+                        ],
+                        [
+                            'caption' => ' ',
+                            'name'    => 'SpacerWebFrontNotification',
+                            'width'   => '200px',
+                            'visible' => false,
+                            'save'    => false,
+                            'edit'    => [
+                                'type' => 'Label'
+                            ]
+                        ],
+                        [
+                            'caption' => 'Nachricht:',
+                            'name'    => 'LabelWebFrontNotification',
+                            'width'   => '200px',
+                            'visible' => false,
+                            'save'    => false,
+                            'edit'    => [
+                                'type' => 'Label',
+                                'bold' => true
+                            ]
+                        ],
+                        [
+                            'caption' => 'WebFront Nachricht',
+                            'name'    => 'UseWebFrontNotification',
+                            'width'   => '200px',
+                            'visible' => false,
+                            'edit'    => [
+                                'type' => 'CheckBox'
+                            ]
+                        ],
+                        [
+                            'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
+                            'name'    => 'WebFrontNotificationTitle',
+                            'width'   => '200px',
+                            'visible' => false,
+                            'edit'    => [
+                                'type' => 'ValidationTextBox'
+                            ]
+                        ],
+                        [
+                            'caption' => 'Icon',
+                            'name'    => 'WebFrontNotificationIcon',
+                            'width'   => '200px',
+                            'visible' => false,
+                            'edit'    => [
+                                'type' => 'SelectIcon'
+                            ]
+                        ],
+                        [
+                            'caption' => 'Anzeigedauer',
+                            'name'    => 'WebFrontNotificationDisplayDuration',
+                            'width'   => '200px',
+                            'visible' => false,
+                            'edit'    => [
+                                'type'   => 'NumberSpinner',
+                                'suffix' => 'Sekunden'
+                            ]
+                        ],
+                        [
+                            'caption' => ' ',
+                            'name'    => 'SpacerWebFrontPushNotification',
+                            'width'   => '200px',
+                            'visible' => false,
+                            'save'    => false,
+                            'edit'    => [
+                                'type' => 'Label'
+                            ]
+                        ],
+                        [
+                            'caption' => 'Push-Nachricht:',
+                            'name'    => 'LabelWebFrontPushNotification',
+                            'width'   => '200px',
+                            'visible' => false,
+                            'save'    => false,
+                            'edit'    => [
+                                'type' => 'Label',
+                                'bold' => true
+                            ]
+                        ],
+                        [
+                            'caption' => 'WebFront Push-Nachricht',
+                            'name'    => 'UseWebFrontPushNotification',
+                            'width'   => '200px',
+                            'visible' => false,
+                            'edit'    => [
+                                'type' => 'CheckBox'
+                            ]
+                        ],
+                        [
+                            'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
+                            'name'    => 'WebFrontPushNotificationTitle',
+                            'width'   => '200px',
+                            'visible' => false,
+                            'edit'    => [
+                                'type' => 'ValidationTextBox'
+                            ]
+                        ],
+                        [
+                            'caption' => 'Sound',
+                            'name'    => 'WebFrontPushNotificationSound',
+                            'width'   => '200px',
+                            'visible' => false,
+                            'edit'    => [
+                                'type'    => 'Select',
+                                'options' => [
+                                    [
+                                        'caption' => 'Standard',
+                                        'value'   => ''
+                                    ],
+                                    [
+                                        'caption' => 'Alarm',
+                                        'value'   => 'alarm'
+                                    ],
+                                    [
+                                        'caption' => 'Bell',
+                                        'value'   => 'bell'
+                                    ],
+                                    [
+                                        'caption' => 'Boom',
+                                        'value'   => 'boom'
+                                    ],
+                                    [
+                                        'caption' => 'Buzzer',
+                                        'value'   => 'buzzer'
+                                    ],
+                                    [
+                                        'caption' => 'Connected',
+                                        'value'   => 'connected'
+                                    ],
+                                    [
+                                        'caption' => 'Dark',
+                                        'value'   => 'dark'
+                                    ],
+                                    [
+                                        'caption' => 'Digital',
+                                        'value'   => 'digital'
+                                    ],
+                                    [
+                                        'caption' => 'Drums',
+                                        'value'   => 'drums'
+                                    ],
+                                    [
+                                        'caption' => 'Duck',
+                                        'value'   => 'duck'
+                                    ],
+                                    [
+                                        'caption' => 'Full',
+                                        'value'   => 'full'
+                                    ],
+                                    [
+                                        'caption' => 'Happy',
+                                        'value'   => 'happy'
+                                    ],
+                                    [
+                                        'caption' => 'Horn',
+                                        'value'   => 'horn'
+                                    ],
+                                    [
+                                        'caption' => 'Inception',
+                                        'value'   => 'inception'
+                                    ],
+                                    [
+                                        'caption' => 'Kazoo',
+                                        'value'   => 'kazoo'
+                                    ],
+                                    [
+                                        'caption' => 'Roll',
+                                        'value'   => 'roll'
+                                    ],
+                                    [
+                                        'caption' => 'Siren',
+                                        'value'   => 'siren'
+                                    ],
+                                    [
+                                        'caption' => 'Space',
+                                        'value'   => 'space'
+                                    ],
+                                    [
+                                        'caption' => 'Trickling',
+                                        'value'   => 'trickling'
+                                    ],
+                                    [
+                                        'caption' => 'Turn',
+                                        'value'   => 'turn'
+                                    ]
+                                ]
+                            ]
+                        ],
+                        [
+                            'caption' => 'Zielscript',
+                            'name'    => 'WebFrontPushNotificationTargetID',
+                            'width'   => '200px',
+                            'visible' => false,
+                            'edit'    => [
+                                'type' => 'SelectScript'
+                            ]
+                        ],
+                        [
+                            'caption' => ' ',
+                            'name'    => 'SpacerMail',
+                            'width'   => '200px',
+                            'visible' => false,
+                            'save'    => false,
+                            'edit'    => [
+                                'type' => 'Label'
+                            ]
+                        ],
+                        [
+                            'caption' => 'E-Mail:',
+                            'name'    => 'LabelMail',
+                            'width'   => '200px',
+                            'visible' => false,
+                            'save'    => false,
+                            'edit'    => [
+                                'type' => 'Label',
+                                'bold' => true
+                            ]
+                        ],
+                        [
+                            'caption' => 'E-Mail',
+                            'name'    => 'UseMailer',
+                            'width'   => '200px',
+                            'visible' => false,
+                            'edit'    => [
+                                'type' => 'CheckBox'
+                            ]
+                        ],
+                        [
+                            'caption' => 'Betreff',
+                            'name'    => 'Subject',
+                            'width'   => '200px',
+                            'visible' => false,
+                            'edit'    => [
+                                'type' => 'ValidationTextBox'
+                            ]
+                        ],
+                        [
+                            'caption' => ' ',
+                            'name'    => 'SpacerSMS',
+                            'width'   => '200px',
+                            'visible' => false,
+                            'save'    => false,
+                            'edit'    => [
+                                'type' => 'Label'
+                            ]
+                        ],
+                        [
+                            'caption' => 'SMS:',
+                            'name'    => 'LabelSMS',
+                            'width'   => '200px',
+                            'visible' => false,
+                            'save'    => false,
+                            'edit'    => [
+                                'type' => 'Label',
+                                'bold' => true
+                            ]
+                        ],
+                        [
+                            'caption' => 'SMS',
+                            'name'    => 'UseSMS',
+                            'width'   => '200px',
+                            'visible' => false,
+                            'edit'    => [
+                                'type' => 'CheckBox'
+                            ]
+                        ],
+                        [
+                            'caption' => 'Titel',
+                            'name'    => 'SMSTitle',
+                            'width'   => '200px',
+                            'visible' => false,
+                            'edit'    => [
+                                'type' => 'ValidationTextBox'
+                            ]
+                        ],
+                        [
+                            'caption' => ' ',
+                            'name'    => 'SpacerTelegram',
+                            'width'   => '200px',
+                            'visible' => false,
+                            'save'    => false,
+                            'edit'    => [
+                                'type' => 'Label'
+                            ]
+                        ],
+                        [
+                            'caption' => 'Telegram:',
+                            'name'    => 'LabelTelegram',
+                            'width'   => '200px',
+                            'visible' => false,
+                            'save'    => false,
+                            'edit'    => [
+                                'type' => 'Label',
+                                'bold' => true
+                            ]
+                        ],
+                        [
+                            'caption' => 'Telegram',
+                            'name'    => 'UseTelegram',
+                            'width'   => '200px',
+                            'visible' => false,
+                            'edit'    => [
+                                'type' => 'CheckBox'
+                            ]
+                        ],
+                        [
+                            'caption' => 'Titel',
+                            'name'    => 'TelegramTitle',
+                            'width'   => '200px',
+                            'visible' => false,
+                            'edit'    => [
+                                'type' => 'ValidationTextBox'
+                            ]
+                        ]
+                    ]
                 ]
             ]
         ];
@@ -1721,7 +2233,7 @@ trait AZST_ConfigurationForm
         //Actions
         $form['elements'][] = [
             'type'    => 'ExpansionPanel',
-            'name'    => 'Panel5',
+            'name'    => 'Panel6',
             'caption' => 'Aktionen',
             'items'   => [
                 [
@@ -1835,7 +2347,7 @@ trait AZST_ConfigurationForm
         //Visualisation
         $form['elements'][] = [
             'type'    => 'ExpansionPanel',
-            'name'    => 'Panel6',
+            'name'    => 'Panel7',
             'caption' => 'Visualisierung',
             'items'   => [
                 [
@@ -2008,6 +2520,11 @@ trait AZST_ConfigurationForm
                     'type'    => 'CheckBox',
                     'name'    => 'EnableAlarmCallState',
                     'caption' => 'Alarmanruf'
+                ],
+                [
+                    'type'    => 'CheckBox',
+                    'name'    => 'EnablePanicAlarmState',
+                    'caption' => 'Panikalarm'
                 ]
             ]
         ];

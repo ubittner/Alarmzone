@@ -9,6 +9,7 @@
  */
 
 /** @noinspection PhpUnhandledExceptionInspection */
+/** @noinspection SpellCheckingInspection */
 /** @noinspection DuplicatedCode */
 /** @noinspection PhpUnused */
 
@@ -63,6 +64,7 @@ class Alarmzone extends IPSModule
         $this->RegisterPropertyBoolean('UseAlarmSirenWhenAlarmSwitchIsOn', false);
         $this->RegisterPropertyBoolean('UseAlarmLightWhenAlarmSwitchIsOn', false);
         $this->RegisterPropertyBoolean('UseAlarmCallWhenAlarmSwitchIsOn', false);
+        $this->RegisterPropertyBoolean('UsePanicAlarmWhenAlarmSwitchIsOn', false);
 
         //Disarmed
         $this->RegisterPropertyString('DisarmedIcon', 'Warning');
@@ -148,10 +150,11 @@ class Alarmzone extends IPSModule
 
         //Notification alarm
         $this->RegisterPropertyString('DoorWindowAlarmNotification', '[{"Use":false,"Designation":"Tür/Fenster Alarm","SpacerNotification":"","LabelMessageText":"","MessageText":"❗️%1$s hat einen Alarm ausgelöst!","UseTimestamp":true,"SpacerWebFrontNotification":"","LabelWebFrontNotification":"","UseWebFrontNotification":false,"WebFrontNotificationTitle":"","WebFrontNotificationIcon":"","WebFrontNotificationDisplayDuration":0,"SpacerWebFrontPushNotification":"","LabelWebFrontPushNotification":"","UseWebFrontPushNotification":false,"WebFrontPushNotificationTitle":"","WebFrontPushNotificationSound":"alarm","WebFrontPushNotificationTargetID":0,"SpacerMail":"","LabelMail":"","UseMailer":false,"Subject":"","SpacerSMS":"","LabelSMS":"","UseSMS":false,"SMSTitle":"","SpacerTelegram":"","LabelTelegram":"","UseTelegram":false,"TelegramTitle":""}]');
-        $this->RegisterPropertyString('MotionDetectorAlarmNotification', '[{"Use":false,"Designation":"Bewegungsmelder Alarm","SpacerNotification":"","LabelMessageText":"","MessageText":"❗%1$s hat einen Alarm ausgelöst!","UseTimestamp":true,"SpacerWebFrontNotification":"","LabelWebFrontNotification":"","UseWebFrontNotification":false,"WebFrontNotificationTitle":"","WebFrontNotificationIcon":"","WebFrontNotificationDisplayDuration":0,"SpacerWebFrontPushNotification":"","LabelWebFrontPushNotification":"","UseWebFrontPushNotification":false,"WebFrontPushNotificationTitle":"","WebFrontPushNotificationSound":"alarm","WebFrontPushNotificationTargetID":0,"SpacerMail":"","LabelMail":"","UseMailer":false,"Subject":"","SpacerSMS":"","LabelSMS":"","UseSMS":false,"SMSTitle":"","SpacerTelegram":"","LabelTelegram":"","UseTelegram":false,"TelegramTitle":""}]');
-        $this->RegisterPropertyString('GlassBreakageDetectorAlarmNotification', '[{"Use":false,"Designation":"Glasbruchmelder Alarm","SpacerNotification":"","LabelMessageText":"","MessageText":"❗%1$s hat einen Alarm ausgelöst!","UseTimestamp":true,"SpacerWebFrontNotification":"","LabelWebFrontNotification":"","UseWebFrontNotification":false,"WebFrontNotificationTitle":"","WebFrontNotificationIcon":"","WebFrontNotificationDisplayDuration":0,"SpacerWebFrontPushNotification":"","LabelWebFrontPushNotification":"","UseWebFrontPushNotification":false,"WebFrontPushNotificationTitle":"","WebFrontPushNotificationSound":"alarm","WebFrontPushNotificationTargetID":0,"SpacerMail":"","LabelMail":"","UseMailer":false,"Subject":"","SpacerSMS":"","LabelSMS":"","UseSMS":false,"SMSTitle":"","SpacerTelegram":"","LabelTelegram":"","UseTelegram":false,"TelegramTitle":""}]');
-        $this->RegisterPropertyString('SmokeDetectorAlarmNotification', '[{"Use":false,"Designation":"Rauchmelder Alarm","SpacerNotification":"","LabelMessageText":"","MessageText":"🔥%1$s hat Rauch erkannt!","UseTimestamp":true,"SpacerWebFrontNotification":"","LabelWebFrontNotification":"","UseWebFrontNotification":false,"WebFrontNotificationTitle":"","WebFrontNotificationIcon":"","WebFrontNotificationDisplayDuration":0,"SpacerWebFrontPushNotification":"","LabelWebFrontPushNotification":"","UseWebFrontPushNotification":false,"WebFrontPushNotificationTitle":"","WebFrontPushNotificationSound":"alarm","WebFrontPushNotificationTargetID":0,"SpacerMail":"","LabelMail":"","UseMailer":false,"Subject":"","SpacerSMS":"","LabelSMS":"","UseSMS":false,"SMSTitle":"","SpacerTelegram":"","LabelTelegram":"","UseTelegram":false,"TelegramTitle":""}]');
-        $this->RegisterPropertyString('WaterDetectorAlarmNotification', '[{"Use":false,"Designation":"Rauchmelder Alarm","SpacerNotification":"","LabelMessageText":"","MessageText":"💧%1$s hat Wasser erkannt!","UseTimestamp":true,"SpacerWebFrontNotification":"","LabelWebFrontNotification":"","UseWebFrontNotification":false,"WebFrontNotificationTitle":"","WebFrontNotificationIcon":"","WebFrontNotificationDisplayDuration":0,"SpacerWebFrontPushNotification":"","LabelWebFrontPushNotification":"","UseWebFrontPushNotification":false,"WebFrontPushNotificationTitle":"","WebFrontPushNotificationSound":"alarm","WebFrontPushNotificationTargetID":0,"SpacerMail":"","LabelMail":"","UseMailer":false,"Subject":"","SpacerSMS":"","LabelSMS":"","UseSMS":false,"SMSTitle":"","SpacerTelegram":"","LabelTelegram":"","UseTelegram":false,"TelegramTitle":""}]');
+        $this->RegisterPropertyString('MotionDetectorAlarmNotification', '[{"Use":false,"Designation":"Bewegungsmelder Alarm","SpacerNotification":"","LabelMessageText":"","MessageText":"❗ %1$s hat einen Alarm ausgelöst!","UseTimestamp":true,"SpacerWebFrontNotification":"","LabelWebFrontNotification":"","UseWebFrontNotification":false,"WebFrontNotificationTitle":"","WebFrontNotificationIcon":"","WebFrontNotificationDisplayDuration":0,"SpacerWebFrontPushNotification":"","LabelWebFrontPushNotification":"","UseWebFrontPushNotification":false,"WebFrontPushNotificationTitle":"","WebFrontPushNotificationSound":"alarm","WebFrontPushNotificationTargetID":0,"SpacerMail":"","LabelMail":"","UseMailer":false,"Subject":"","SpacerSMS":"","LabelSMS":"","UseSMS":false,"SMSTitle":"","SpacerTelegram":"","LabelTelegram":"","UseTelegram":false,"TelegramTitle":""}]');
+        $this->RegisterPropertyString('GlassBreakageDetectorAlarmNotification', '[{"Use":false,"Designation":"Glasbruchmelder Alarm","SpacerNotification":"","LabelMessageText":"","MessageText":"❗ %1$s hat einen Alarm ausgelöst!","UseTimestamp":true,"SpacerWebFrontNotification":"","LabelWebFrontNotification":"","UseWebFrontNotification":false,"WebFrontNotificationTitle":"","WebFrontNotificationIcon":"","WebFrontNotificationDisplayDuration":0,"SpacerWebFrontPushNotification":"","LabelWebFrontPushNotification":"","UseWebFrontPushNotification":false,"WebFrontPushNotificationTitle":"","WebFrontPushNotificationSound":"alarm","WebFrontPushNotificationTargetID":0,"SpacerMail":"","LabelMail":"","UseMailer":false,"Subject":"","SpacerSMS":"","LabelSMS":"","UseSMS":false,"SMSTitle":"","SpacerTelegram":"","LabelTelegram":"","UseTelegram":false,"TelegramTitle":""}]');
+        $this->RegisterPropertyString('SmokeDetectorAlarmNotification', '[{"Use":false,"Designation":"Rauchmelder Alarm","SpacerNotification":"","LabelMessageText":"","MessageText":"🔥 %1$s hat Rauch erkannt!","UseTimestamp":true,"SpacerWebFrontNotification":"","LabelWebFrontNotification":"","UseWebFrontNotification":false,"WebFrontNotificationTitle":"","WebFrontNotificationIcon":"","WebFrontNotificationDisplayDuration":0,"SpacerWebFrontPushNotification":"","LabelWebFrontPushNotification":"","UseWebFrontPushNotification":false,"WebFrontPushNotificationTitle":"","WebFrontPushNotificationSound":"alarm","WebFrontPushNotificationTargetID":0,"SpacerMail":"","LabelMail":"","UseMailer":false,"Subject":"","SpacerSMS":"","LabelSMS":"","UseSMS":false,"SMSTitle":"","SpacerTelegram":"","LabelTelegram":"","UseTelegram":false,"TelegramTitle":""}]');
+        $this->RegisterPropertyString('WaterDetectorAlarmNotification', '[{"Use":false,"Designation":"Wassermelder Alarm","SpacerNotification":"","LabelMessageText":"","MessageText":"💧 %1$s hat Wasser erkannt!","UseTimestamp":true,"SpacerWebFrontNotification":"","LabelWebFrontNotification":"","UseWebFrontNotification":false,"WebFrontNotificationTitle":"","WebFrontNotificationIcon":"","WebFrontNotificationDisplayDuration":0,"SpacerWebFrontPushNotification":"","LabelWebFrontPushNotification":"","UseWebFrontPushNotification":false,"WebFrontPushNotificationTitle":"","WebFrontPushNotificationSound":"alarm","WebFrontPushNotificationTargetID":0,"SpacerMail":"","LabelMail":"","UseMailer":false,"Subject":"","SpacerSMS":"","LabelSMS":"","UseSMS":false,"SMSTitle":"","SpacerTelegram":"","LabelTelegram":"","UseTelegram":false,"TelegramTitle":""}]');
+        $this->RegisterPropertyString('PanicAlarmNotification', '[{"Use":false,"Designation":"Panikalarm","SpacerNotification":"","LabelMessageText":"","MessageText":"⚠️%1$s wurde ausgelöst!","UseTimestamp":true,"SpacerWebFrontNotification":"","LabelWebFrontNotification":"","UseWebFrontNotification":false,"WebFrontNotificationTitle":"","WebFrontNotificationIcon":"","WebFrontNotificationDisplayDuration":0,"SpacerWebFrontPushNotification":"","LabelWebFrontPushNotification":"","UseWebFrontPushNotification":false,"WebFrontPushNotificationTitle":"","WebFrontPushNotificationSound":"alarm","WebFrontPushNotificationTargetID":0,"SpacerMail":"","LabelMail":"","UseMailer":false,"Subject":"","SpacerSMS":"","LabelSMS":"","UseSMS":false,"SMSTitle":"","SpacerTelegram":"","LabelTelegram":"","UseTelegram":false,"TelegramTitle":""}]');
 
         ##### Actions
 
@@ -188,6 +191,7 @@ class Alarmzone extends IPSModule
         $this->RegisterPropertyBoolean('EnableAlarmSirenState', false);
         $this->RegisterPropertyBoolean('EnableAlarmLightState', false);
         $this->RegisterPropertyBoolean('EnableAlarmCallState', false);
+        $this->RegisterPropertyBoolean('EnablePanicAlarmState', false);
 
         ########## Variables
 
@@ -350,7 +354,7 @@ class Alarmzone extends IPSModule
         IPS_SetVariableProfileAssociation($profile, 1, 'Alarm', 'Alert', 0xFF0000);
         $this->RegisterVariableInteger('AlarmState', 'Alarmstatus', $profile, 180);
 
-        //Alarm siren
+        //Alarm siren status
         $profile = self::MODULE_PREFIX . '.' . $this->InstanceID . '.AlarmSirenStatus';
         if (!IPS_VariableProfileExists($profile)) {
             IPS_CreateVariableProfile($profile, 0);
@@ -360,7 +364,7 @@ class Alarmzone extends IPSModule
         IPS_SetVariableProfileAssociation($profile, 1, 'An', '', 0xFF0000);
         $this->RegisterVariableBoolean('AlarmSiren', 'Alarmsirene', $profile, 190);
 
-        //Alarm light
+        //Alarm light status
         $profile = self::MODULE_PREFIX . '.' . $this->InstanceID . '.AlarmLightStatus';
         if (!IPS_VariableProfileExists($profile)) {
             IPS_CreateVariableProfile($profile, 0);
@@ -370,7 +374,7 @@ class Alarmzone extends IPSModule
         IPS_SetVariableProfileAssociation($profile, 1, 'An', '', 0xFF0000);
         $this->RegisterVariableBoolean('AlarmLight', 'Alarmbeleuchtung', $profile, 200);
 
-        //Alarm call
+        //Alarm call status
         $profile = self::MODULE_PREFIX . '.' . $this->InstanceID . '.AlarmCallStatus';
         if (!IPS_VariableProfileExists($profile)) {
             IPS_CreateVariableProfile($profile, 0);
@@ -379,6 +383,16 @@ class Alarmzone extends IPSModule
         IPS_SetVariableProfileAssociation($profile, 0, 'Aus', '', 0x00FF00);
         IPS_SetVariableProfileAssociation($profile, 1, 'An', '', 0xFF0000);
         $this->RegisterVariableBoolean('AlarmCall', 'Alarmanruf', $profile, 210);
+
+        //Panic alarm status
+        $profile = self::MODULE_PREFIX . '.' . $this->InstanceID . '.PanicAlarmStatus';
+        if (!IPS_VariableProfileExists($profile)) {
+            IPS_CreateVariableProfile($profile, 0);
+        }
+        IPS_SetVariableProfileIcon($profile, 'Warning');
+        IPS_SetVariableProfileAssociation($profile, 0, 'Aus', '', 0x00FF00);
+        IPS_SetVariableProfileAssociation($profile, 1, 'An', '', 0xFF0000);
+        $this->RegisterVariableBoolean('PanicAlarm', 'Panikalarm', $profile, 220);
 
         ########## Attributes
 
@@ -499,6 +513,9 @@ class Alarmzone extends IPSModule
 
         //Alarm call state
         IPS_SetHidden($this->GetIDForIdent('AlarmCall'), !$this->ReadPropertyBoolean('EnableAlarmCallState'));
+
+        //Panic alarm state
+        IPS_SetHidden($this->GetIDForIdent('PanicAlarm'), !$this->ReadPropertyBoolean('EnablePanicAlarmState'));
 
         ########## Attributes
 
@@ -823,7 +840,20 @@ class Alarmzone extends IPSModule
         parent::Destroy();
 
         //Delete profiles
-        $profiles = ['Mode', 'AlarmZoneState', 'AlarmZoneDetailedState', 'AlarmState', 'DoorWindowState', 'MotionDetectorState', 'GlassBreakageDetectorState', 'SmokeDetectorState', 'WaterDetectorState', 'AlarmSirenStatus', 'AlarmLightStatus', 'AlarmCallStatus'];
+        $profiles = [
+            'Mode',
+            'AlarmZoneState',
+            'AlarmZoneDetailedState',
+            'AlarmState',
+            'DoorWindowState',
+            'MotionDetectorState',
+            'GlassBreakageDetectorState',
+            'SmokeDetectorState',
+            'WaterDetectorState',
+            'AlarmSirenStatus',
+            'AlarmLightStatus',
+            'AlarmCallStatus',
+            'PanicAlarmStatus'];
         if (!empty($profiles)) {
             foreach ($profiles as $profile) {
                 $profileName = self::MODULE_PREFIX . '.' . $this->InstanceID . '.' . $profile;
@@ -1037,6 +1067,7 @@ class Alarmzone extends IPSModule
         IPS_SetPosition($this->GetIDForIdent('AlarmSiren'), 190);
         IPS_SetPosition($this->GetIDForIdent('AlarmLight'), 200);
         IPS_SetPosition($this->GetIDForIdent('AlarmCall'), 210);
+        IPS_SetPosition($this->GetIDForIdent('PanicAlarm'), 220);
     }
 
     /**

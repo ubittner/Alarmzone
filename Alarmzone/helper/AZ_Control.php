@@ -147,13 +147,15 @@ trait AZ_Control
                 $this->SetValue('AlarmSiren', false);
                 $this->SetValue('AlarmLight', false);
                 $this->SetValue('AlarmCall', false);
+                $this->SetValue('PanicAlarm', false);
             }
         } else {
             $alarm = false;
             $useAlarmSiren = $this->ReadPropertyBoolean('UseAlarmSirenWhenAlarmSwitchIsOn');
             $useAlarmLight = $this->ReadPropertyBoolean('UseAlarmLightWhenAlarmSwitchIsOn');
             $useAlarmCall = $this->ReadPropertyBoolean('UseAlarmCallWhenAlarmSwitchIsOn');
-            if ($useAlarmSiren || $useAlarmLight || $useAlarmCall) {
+            $usePanicAlarm = $this->ReadPropertyBoolean('UsePanicAlarmWhenAlarmSwitchIsOn');
+            if ($useAlarmSiren || $useAlarmLight || $useAlarmCall || $usePanicAlarm) {
                 $alarm = true;
             }
             if ($alarm) {
@@ -169,6 +171,10 @@ trait AZ_Control
                 if ($useAlarmCall) {
                     $this->SetValue('AlarmCall', true);
                 }
+                if ($usePanicAlarm) {
+                    $this->SetValue('PanicAlarm', true);
+                }
+                $this->SendNotification('PanicAlarmNotification', (string) $this->ReadPropertyString('AlertingSensorNameWhenAlarmSwitchIsOn'));
             }
         }
     }
@@ -310,6 +316,7 @@ trait AZ_Control
         $this->SetValue('AlarmSiren', false);
         $this->SetValue('AlarmLight', false);
         $this->SetValue('AlarmCall', false);
+        $this->SetValue('PanicAlarm', false);
         $this->ResetBlacklist();
         //Check activation delay
         $activationDelay = $this->ReadPropertyInteger($activationDelayName);
@@ -409,6 +416,7 @@ trait AZ_Control
         $this->SetValue('AlarmSiren', false);
         $this->SetValue('AlarmLight', false);
         $this->SetValue('AlarmCall', false);
+        $this->SetValue('PanicAlarm', false);
     }
 
     /**

@@ -42,6 +42,7 @@ trait AZST_States
         $update12 = $this->UpdateAlarmSiren();
         $update13 = $this->UpdateAlarmLight();
         $update14 = $this->UpdateAlarmCall();
+        $update15 = $this->UpdatePanicAlarm();
         if (!$update1 ||
             !$update2 ||
             !$update3 ||
@@ -55,7 +56,8 @@ trait AZST_States
             !$update11 ||
             !$update12 ||
             !$update13 ||
-            !$update14) {
+            !$update14 ||
+            !$update15) {
             $result = false;
         }
         return $result;
@@ -739,6 +741,43 @@ trait AZST_States
             }
         }
         $this->SetValue('AlarmCall', $state);
+        return $result;
+    }
+
+    /**
+     * Updates the state of the panic alarm.
+     *
+     * @return bool
+     * false =  an error occurred,
+     * true =   successful
+     *
+     * @throws Exception
+     */
+    public function UpdatePanicAlarm(): bool
+    {
+        $this->SendDebug(__FUNCTION__, 'wird ausgeführt', 0);
+        if ($this->CheckMaintenance()) {
+            return false;
+        }
+        $variables = json_decode($this->ReadPropertyString('PanicAlarm'), true);
+        if (empty($variables)) {
+            return false;
+        }
+        $result = false;
+        $state = false;
+        foreach ($variables as $variable) {
+            if ($variable['Use']) {
+                $id = $variable['ID'];
+                if ($id > 1 && @IPS_ObjectExists($id)) {
+                    $result = true;
+                    $actualValue = GetValueBoolean($variable['ID']);
+                    if ($actualValue) {
+                        $state = true; //on
+                    }
+                }
+            }
+        }
+        $this->SetValue('PanicAlarm', $state);
         return $result;
     }
 }

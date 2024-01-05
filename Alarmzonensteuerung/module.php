@@ -22,6 +22,7 @@ class Alarmzonensteuerung extends IPSModule
     //Helper
     use AZST_ConfigurationForm;
     use AZST_Control;
+    use AZST_Notification;
     use AZST_States;
 
     //Constants
@@ -29,6 +30,7 @@ class Alarmzonensteuerung extends IPSModule
     private const MODULE_GUID = '{79BB840E-65C1-06E0-E1DD-BAFEFC514848}';
     private const MODULE_PREFIX = 'AZST';
     private const ALARMZONE_MODULE_GUID = '{127AB08D-CD10-801D-D419-442CDE6E5C61}';
+    private const NOTIFICATION_MODULE_GUID = '{BDAB70AA-B45D-4CB4-3D65-509CFF0969F9}';
 
     public function Create()
     {
@@ -53,6 +55,7 @@ class Alarmzonensteuerung extends IPSModule
         $this->RegisterPropertyBoolean('UseAlarmSirenWhenAlarmSwitchIsOn', false);
         $this->RegisterPropertyBoolean('UseAlarmLightWhenAlarmSwitchIsOn', false);
         $this->RegisterPropertyBoolean('UseAlarmCallWhenAlarmSwitchIsOn', false);
+        $this->RegisterPropertyBoolean('UsePanicAlarmWhenAlarmSwitchIsOn', false);
 
         //Disarmed
         $this->RegisterPropertyString('DisarmedIcon', 'Warning');
@@ -100,6 +103,14 @@ class Alarmzonensteuerung extends IPSModule
         $this->RegisterPropertyString('AlarmSiren', '[]');
         $this->RegisterPropertyString('AlarmLight', '[]');
         $this->RegisterPropertyString('AlarmCall', '[]');
+        $this->RegisterPropertyString('PanicAlarm', '[]');
+
+        ##### Notification
+
+        //Notification center
+        $this->RegisterPropertyInteger('Notification', 0);
+        //Notification alarm
+        $this->RegisterPropertyString('PanicAlarmNotification', '[{"Use":false,"Designation":"Panikalarm","SpacerNotification":"","LabelMessageText":"","MessageText":"⚠️%1$s wurde ausgelöst!","UseTimestamp":true,"SpacerWebFrontNotification":"","LabelWebFrontNotification":"","UseWebFrontNotification":false,"WebFrontNotificationTitle":"","WebFrontNotificationIcon":"","WebFrontNotificationDisplayDuration":0,"SpacerWebFrontPushNotification":"","LabelWebFrontPushNotification":"","UseWebFrontPushNotification":false,"WebFrontPushNotificationTitle":"","WebFrontPushNotificationSound":"alarm","WebFrontPushNotificationTargetID":0,"SpacerMail":"","LabelMail":"","UseMailer":false,"Subject":"","SpacerSMS":"","LabelSMS":"","UseSMS":false,"SMSTitle":"","SpacerTelegram":"","LabelTelegram":"","UseTelegram":false,"TelegramTitle":""}]');
 
         ###### Actions
 
@@ -138,6 +149,7 @@ class Alarmzonensteuerung extends IPSModule
         $this->RegisterPropertyBoolean('EnableAlarmSirenState', false);
         $this->RegisterPropertyBoolean('EnableAlarmLightState', false);
         $this->RegisterPropertyBoolean('EnableAlarmCallState', false);
+        $this->RegisterPropertyBoolean('EnablePanicAlarmState', false);
 
         ########## Variables
 
@@ -301,7 +313,7 @@ class Alarmzonensteuerung extends IPSModule
         IPS_SetVariableProfileAssociation($profile, 1, 'Alarm', 'Alert', 0xFF0000);
         $this->RegisterVariableInteger('AlarmState', 'Alarmstatus', $profile, 180);
 
-        //Alarm siren
+        //Alarm siren status
         $profile = self::MODULE_PREFIX . '.' . $this->InstanceID . '.AlarmSirenStatus';
         if (!IPS_VariableProfileExists($profile)) {
             IPS_CreateVariableProfile($profile, 0);
@@ -311,7 +323,7 @@ class Alarmzonensteuerung extends IPSModule
         IPS_SetVariableProfileAssociation($profile, 1, 'An', '', 0xFF0000);
         $this->RegisterVariableBoolean('AlarmSiren', 'Alarmsirene', $profile, 190);
 
-        //Alarm light
+        //Alarm light status
         $profile = self::MODULE_PREFIX . '.' . $this->InstanceID . '.AlarmLightStatus';
         if (!IPS_VariableProfileExists($profile)) {
             IPS_CreateVariableProfile($profile, 0);
@@ -321,7 +333,7 @@ class Alarmzonensteuerung extends IPSModule
         IPS_SetVariableProfileAssociation($profile, 1, 'An', '', 0xFF0000);
         $this->RegisterVariableBoolean('AlarmLight', 'Alarmbeleuchtung', $profile, 200);
 
-        //Alarm call
+        //Alarm call status
         $profile = self::MODULE_PREFIX . '.' . $this->InstanceID . '.AlarmCallStatus';
         if (!IPS_VariableProfileExists($profile)) {
             IPS_CreateVariableProfile($profile, 0);
@@ -330,6 +342,16 @@ class Alarmzonensteuerung extends IPSModule
         IPS_SetVariableProfileAssociation($profile, 0, 'Aus', '', 0x00FF00);
         IPS_SetVariableProfileAssociation($profile, 1, 'An', '', 0xFF0000);
         $this->RegisterVariableBoolean('AlarmCall', 'Alarmanruf', $profile, 210);
+
+        //Panic alarm status
+        $profile = self::MODULE_PREFIX . '.' . $this->InstanceID . '.PanicAlarmStatus';
+        if (!IPS_VariableProfileExists($profile)) {
+            IPS_CreateVariableProfile($profile, 0);
+        }
+        IPS_SetVariableProfileIcon($profile, 'Warning');
+        IPS_SetVariableProfileAssociation($profile, 0, 'Aus', '', 0x00FF00);
+        IPS_SetVariableProfileAssociation($profile, 1, 'An', '', 0xFF0000);
+        $this->RegisterVariableBoolean('PanicAlarm', 'Panikalarm', $profile, 220);
 
         ########## Attribute
 
@@ -437,6 +459,9 @@ class Alarmzonensteuerung extends IPSModule
         //Alarm call state
         IPS_SetHidden($this->GetIDForIdent('AlarmCall'), !$this->ReadPropertyBoolean('EnableAlarmCallState'));
 
+        //Panic alarm state
+        IPS_SetHidden($this->GetIDForIdent('PanicAlarm'), !$this->ReadPropertyBoolean('EnablePanicAlarmState'));
+
         ########## Attribute
 
         $this->WriteAttributeBoolean('DisableUpdateMode', false);
@@ -481,7 +506,8 @@ class Alarmzonensteuerung extends IPSModule
             'WaterDetectorState',
             'AlarmSiren',
             'AlarmLight',
-            'AlarmCall'];
+            'AlarmCall',
+            'PanicAlarm'];
         foreach ($properties as $property) {
             $variables = json_decode($this->ReadPropertyString($property), true);
             foreach ($variables as $variable) {
@@ -494,6 +520,13 @@ class Alarmzonensteuerung extends IPSModule
                 }
             }
         }
+
+        //Notification
+        $id = $this->ReadPropertyInteger('Notification');
+        if ($id > 1 && @IPS_ObjectExists($id)) {
+            $this->RegisterReference($id);
+        }
+
         $this->UpdateStates();
     }
 
@@ -503,7 +536,19 @@ class Alarmzonensteuerung extends IPSModule
         parent::Destroy();
 
         //Delete profiles
-        $profiles = ['Mode', 'SystemState', 'SystemDetailedState', 'AlarmState', 'DoorWindowState', 'MotionDetectorState', 'GlassBreakageDetectorState', 'SmokeDetectorState', 'WaterDetectorState', 'AlarmSirenStatus', 'AlarmLightStatus', 'AlarmCallStatus'];
+        $profiles = [
+            'Mode',
+            'SystemState',
+            'SystemDetailedState',
+            'AlarmState', 'DoorWindowState',
+            'MotionDetectorState',
+            'GlassBreakageDetectorState',
+            'SmokeDetectorState',
+            'WaterDetectorState',
+            'AlarmSirenStatus',
+            'AlarmLightStatus',
+            'AlarmCallStatus',
+            'PanicAlarmStatus'];
         if (!empty($profiles)) {
             foreach ($profiles as $profile) {
                 $profileName = self::MODULE_PREFIX . '.' . $this->InstanceID . '.' . $profile;
@@ -548,7 +593,8 @@ class Alarmzonensteuerung extends IPSModule
                     'WaterDetectorState',
                     'AlarmSiren',
                     'AlarmLight',
-                    'AlarmCall'];
+                    'AlarmCall',
+                    'PanicAlarm'];
                 foreach ($properties as $property) {
                     $variables = json_decode($this->ReadPropertyString($property), true);
                     if (!empty($variables)) {
@@ -577,6 +623,24 @@ class Alarmzonensteuerung extends IPSModule
             $infoText = 'Eine neue Alarmzone mit der ID ' . $id . ' wurde erfolgreich erstellt!';
         } else {
             $infoText = 'Alarmzone konnte nicht erstellt werden!';
+        }
+        $this->UpdateFormField('InfoMessage', 'visible', true);
+        $this->UpdateFormField('InfoMessageLabel', 'caption', $infoText);
+    }
+
+    /**
+     * Creates a new notification instance.
+     *
+     * @return void
+     */
+    public function CreateNotificationInstance(): void
+    {
+        $id = IPS_CreateInstance(self::NOTIFICATION_MODULE_GUID);
+        if (is_int($id)) {
+            IPS_SetName($id, 'Benachrichtigung');
+            $infoText = 'Instanz mit der ID ' . $id . ' wurde erfolgreich erstellt!';
+        } else {
+            $infoText = 'Instanz konnte nicht erstellt werden!';
         }
         $this->UpdateFormField('InfoMessage', 'visible', true);
         $this->UpdateFormField('InfoMessageLabel', 'caption', $infoText);
@@ -611,6 +675,7 @@ class Alarmzonensteuerung extends IPSModule
         IPS_SetPosition($this->GetIDForIdent('AlarmSiren'), 190);
         IPS_SetPosition($this->GetIDForIdent('AlarmLight'), 200);
         IPS_SetPosition($this->GetIDForIdent('AlarmCall'), 210);
+        IPS_SetPosition($this->GetIDForIdent('PanicAlarm'), 220);
     }
 
     #################### Request Action
