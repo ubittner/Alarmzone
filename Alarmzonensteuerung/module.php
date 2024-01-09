@@ -528,6 +528,12 @@ class Alarmzonensteuerung extends IPSModule
             }
         }
 
+        //Alarm protocol
+        $id = $this->ReadPropertyInteger('AlarmProtocol');
+        if ($id > 1 && @IPS_ObjectExists($id)) {
+            $this->RegisterReference($id);
+        }
+
         //Notification
         $id = $this->ReadPropertyInteger('Notification');
         if ($id > 1 && @IPS_ObjectExists($id)) {
