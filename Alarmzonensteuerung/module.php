@@ -20,6 +20,7 @@ include_once __DIR__ . '/helper/AZST_autoload.php';
 class Alarmzonensteuerung extends IPSModule
 {
     //Helper
+    use AZST_AlarmProtocol;
     use AZST_ConfigurationForm;
     use AZST_Control;
     use AZST_Notification;
@@ -30,6 +31,7 @@ class Alarmzonensteuerung extends IPSModule
     private const MODULE_GUID = '{79BB840E-65C1-06E0-E1DD-BAFEFC514848}';
     private const MODULE_PREFIX = 'AZST';
     private const ALARMZONE_MODULE_GUID = '{127AB08D-CD10-801D-D419-442CDE6E5C61}';
+    private const ALARMPROTOCOL_MODULE_GUID = '{66BDB59B-E80F-E837-6640-005C32D5FC24}';
     private const NOTIFICATION_MODULE_GUID = '{BDAB70AA-B45D-4CB4-3D65-509CFF0969F9}';
 
     public function Create()
@@ -45,6 +47,7 @@ class Alarmzonensteuerung extends IPSModule
 
         ##### Designations
 
+        $this->RegisterPropertyString('SystemName', 'Alarmanlage');
         $this->RegisterPropertyString('Location', '');
 
         ##### Operating modes
@@ -104,6 +107,10 @@ class Alarmzonensteuerung extends IPSModule
         $this->RegisterPropertyString('AlarmLight', '[]');
         $this->RegisterPropertyString('AlarmCall', '[]');
         $this->RegisterPropertyString('PanicAlarm', '[]');
+
+        ##### Alarm protocol
+
+        $this->RegisterPropertyInteger('AlarmProtocol', 0);
 
         ##### Notification
 
@@ -623,6 +630,24 @@ class Alarmzonensteuerung extends IPSModule
             $infoText = 'Eine neue Alarmzone mit der ID ' . $id . ' wurde erfolgreich erstellt!';
         } else {
             $infoText = 'Alarmzone konnte nicht erstellt werden!';
+        }
+        $this->UpdateFormField('InfoMessage', 'visible', true);
+        $this->UpdateFormField('InfoMessageLabel', 'caption', $infoText);
+    }
+
+    /**
+     * Creates a new alarm protocol instance.
+     *
+     * @return void
+     */
+    public function CreateAlarmProtocolInstance(): void
+    {
+        $id = @IPS_CreateInstance(self::ALARMPROTOCOL_MODULE_GUID);
+        if (is_int($id)) {
+            IPS_SetName($id, 'Alarmprotokoll');
+            $infoText = 'Instanz mit der ID ' . $id . ' wurde erfolgreich erstellt!';
+        } else {
+            $infoText = 'Instanz konnte nicht erstellt werden!';
         }
         $this->UpdateFormField('InfoMessage', 'visible', true);
         $this->UpdateFormField('InfoMessageLabel', 'caption', $infoText);

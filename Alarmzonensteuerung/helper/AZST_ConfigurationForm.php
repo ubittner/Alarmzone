@@ -152,8 +152,14 @@ trait AZST_ConfigurationForm
         $form['elements'][] = [
             'type'    => 'ExpansionPanel',
             'name'    => 'Panel2',
-            'caption' => 'Bezeichnung',
+            'caption' => 'Bezeichnungen',
             'items'   => [
+                [
+                    'type'    => 'ValidationTextBox',
+                    'name'    => 'SystemName',
+                    'caption' => 'Systembezeichnung (z.B. Alarmanlage, Einbruchmeldeanlage)',
+                    'width'   => '600px'
+                ],
                 [
                     'type'    => 'ValidationTextBox',
                     'name'    => 'Location',
@@ -1793,6 +1799,46 @@ trait AZST_ConfigurationForm
             ]
         ];
 
+        //Alarm protocol
+        $id = $this->ReadPropertyInteger('AlarmProtocol');
+        $enableButton = false;
+        if ($id > 1 && @IPS_ObjectExists($id)) {
+            $enableButton = true;
+        }
+        $form['elements'][] = [
+            'type'     => 'ExpansionPanel',
+            'caption'  => 'Alarmprotokoll',
+            'name'     => 'Panel5',
+            'expanded' => false,
+            'items'    => [
+                [
+                    'type'  => 'RowLayout',
+                    'items' => [
+                        [
+                            'type'     => 'SelectModule',
+                            'name'     => 'AlarmProtocol',
+                            'caption'  => 'Instanz',
+                            'moduleID' => self::ALARMPROTOCOL_MODULE_GUID,
+                            'width'    => '1000px',
+                            'onChange' => self::MODULE_PREFIX . '_ModifyButton($id, "AlarmProtocolConfigurationButton", "ID " . $AlarmProtocol . " konfigurieren", $AlarmProtocol);'
+                        ],
+                        [
+                            'type'     => 'OpenObjectButton',
+                            'caption'  => 'ID ' . $id . ' konfigurieren',
+                            'name'     => 'AlarmProtocolConfigurationButton',
+                            'visible'  => $enableButton,
+                            'objectID' => $id
+                        ],
+                        [
+                            'type'    => 'Button',
+                            'caption' => 'Neue Instanz erstellen',
+                            'onClick' => self::MODULE_PREFIX . '_CreateAlarmProtocolInstance($id);'
+                        ]
+                    ]
+                ]
+            ]
+        ];
+
         //Notification
         $id = $this->ReadPropertyInteger('Notification');
         $enableButton = false;
@@ -1802,7 +1848,7 @@ trait AZST_ConfigurationForm
         $form['elements'][] = [
             'type'     => 'ExpansionPanel',
             'caption'  => 'Benachrichtigung',
-            'name'     => 'Panel5',
+            'name'     => 'Panel6',
             'expanded' => false,
             'items'    => [
                 [
@@ -2233,7 +2279,7 @@ trait AZST_ConfigurationForm
         //Actions
         $form['elements'][] = [
             'type'    => 'ExpansionPanel',
-            'name'    => 'Panel6',
+            'name'    => 'Panel7',
             'caption' => 'Aktionen',
             'items'   => [
                 [
@@ -2347,7 +2393,7 @@ trait AZST_ConfigurationForm
         //Visualisation
         $form['elements'][] = [
             'type'    => 'ExpansionPanel',
-            'name'    => 'Panel7',
+            'name'    => 'Panel8',
             'caption' => 'Visualisierung',
             'items'   => [
                 [

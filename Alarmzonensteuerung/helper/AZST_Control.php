@@ -304,6 +304,11 @@ trait AZST_Control
         if (!$State) {
             $this->SetValue('AlarmSwitch', false);
             $this->SetValue('PanicAlarm', false);
+            //Protocol
+            $text = 'Der Alarm wurde deaktiviert. (ID ' . $this->GetIDForIdent('AlarmSwitch') . ')';
+            $logText = date('d.m.Y, H:i:s') . ', ' . $this->ReadPropertyString('Location') . ', ' . $this->ReadPropertyString('SystemName') . ', ' . $text;
+            $this->UpdateAlarmProtocol($logText, 1);
+            //Alarm zones
             $alarmZones = json_decode($this->ReadPropertyString('AlarmZones'), true);
             if (empty($alarmZones)) {
                 return;
@@ -347,6 +352,11 @@ trait AZST_Control
                 if ($usePanicAlarm) {
                     $this->SetValue('PanicAlarm', true);
                 }
+                //Protocol
+                $text = 'Der Panikalarm wurde ausgelöst. (ID ' . $this->GetIDForIdent('AlarmSwitch') . ')';
+                $logText = date('d.m.Y, H:i:s') . ', ' . $this->ReadPropertyString('Location') . ', ' . $this->ReadPropertyString('SystemName') . ', ' . $text;
+                $this->UpdateAlarmProtocol($logText, 1);
+                //Notification
                 $this->SendNotification('PanicAlarmNotification', (string) $this->ReadPropertyString('AlertingSensorNameWhenAlarmSwitchIsOn'));
             }
         }
