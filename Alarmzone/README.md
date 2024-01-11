@@ -185,34 +185,36 @@ Prüfung der Alarmsensoren für den Voll-, Hüll- und Teilschutz:
 ### 7. Externe Aktion
 
 Das Modul kann über eine externe Aktion gesteuert werden.  
-Nachfolgendes Beispiel aktiviert die Alarmzone mit Vollschutz.  
+Nachfolgendes Beispiel aktiviert die Alarmzone mit Vollschutz und führt die Benachrichtigung aus.  
 
 ```php
-AZ_SelectProtectionMode(12345, 1, 'Sender ID');
+AZ_SelectProtectionMode(12345, 1, 'Sender ID', true);
 ```
 ### 8. PHP-Befehlsreferenz
 
 #### 8.1 Alarmzone schalten
 
 ```text
-boolean AZ_SelectProtectionMode(integer INSTANCE_ID, integer MODE, string SENDER_ID);
+boolean AZ_SelectProtectionMode(integer INSTANCE_ID, integer MODE, string SENDER_ID, bool USE_NOTIFICATION);
 ```
 
 Konnte der jeweilige Befehl erfolgreich ausgeführt werden, liefert er als Ergebnis **TRUE**, andernfalls **FALSE**.
 
-| Parameter     | Beschreibung                                   | Wert           |
-|---------------|------------------------------------------------|----------------|
-| `INSTANCE_ID` | ID der Instanz                                 |                |
-| `MODE`        | Modus, der geschaltet werden soll              | 0 = Unscharf   |
-|               |                                                | 1 = Vollschutz |
-|               |                                                | 2 = Hüllschutz |
-|               |                                                | 3 = Teilschutz |
-| `SENDER_ID`   | Eine Kennung, die den Sender identifiziert und |                |
-|               | im Alarmprotokoll anzeigt                      |                |
+| Parameter          | Beschreibung                                   | Wert                              |
+|--------------------|------------------------------------------------|-----------------------------------|
+| `INSTANCE_ID`      | ID der Instanz                                 |                                   |
+| `MODE`             | Modus, der geschaltet werden soll              | 0 = Unscharf                      |
+|                    |                                                | 1 = Vollschutz                    |
+|                    |                                                | 2 = Hüllschutz                    |
+|                    |                                                | 3 = Teilschutz                    |
+| `SENDER_ID`        | Eine Kennung, die den Sender identifiziert und |                                   |
+|                    | im Alarmprotokoll anzeigt                      |                                   |
+| `USE_NOTIFICATION` | Benachrichtigung                               | false = keine Benachrichtigung    |
+|                    |                                                | true = Benachrichtigung ausführen |
 
 **Beispiel:**
 ```php
-$result = AZ_SelectProtectionMode(12345, 0, 'Sender');
+$result = AZ_SelectProtectionMode(12345, 0, 'Sender', true);
 var_dump($result);
 ```
 
