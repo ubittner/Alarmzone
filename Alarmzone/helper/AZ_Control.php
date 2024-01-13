@@ -214,43 +214,28 @@ trait AZ_Control
      *
      * @param string $SenderID
      *
+     * @param bool $UseNotification
+     * false =  don't use notification
+     * true =   use notification
+     *
      * @return bool
      * false =  An error occurred
      * true =   Successful
      *
      * @throws Exception
      */
-    public function SelectProtectionMode(int $Mode, string $SenderID): bool
+    public function SelectProtectionMode(int $Mode, string $SenderID, bool $UseNotification = true): bool
     {
         $this->SendDebug(__FUNCTION__, 'wird ausgeführt', 0);
-        switch ($Mode) {
-            case 0:
-                $modeText = $this->ReadPropertyString('DisarmedName');
-                break;
-
-            case 1:
-                $modeText = $this->ReadPropertyString('FullProtectionName');
-                break;
-
-            case 2:
-                $modeText = $this->ReadPropertyString('HullProtectionName');
-                break;
-
-            case 3:
-                $modeText = $this->ReadPropertyString('PartialProtectionName');
-                break;
-
-            default:
-                $modeText = 'Unbekannt';
-        }
-        $this->SendDebug(__FUNCTION__, 'Modus: ' . $modeText, 0);
-        $this->SendDebug(__FUNCTION__, 'Sender: ' . $SenderID, 0);
         if ($this->CheckMaintenance()) {
             return false;
         }
+        if (!$this->CheckOperationMode($Mode)) {
+            return false;
+        }
+        $this->SendDebug(__FUNCTION__, 'Sender: ' . $SenderID, 0);
         switch ($Mode) {
-            //Disarm
-            case 0:
+            case 0: //Disarm
                 $this->ResetValues();
                 $this->SetTimerInterval('StartActivation', 0);
                 //Protocol
@@ -258,18 +243,18 @@ trait AZ_Control
                 $logText = date('d.m.Y, H:i:s') . ', ' . $this->ReadPropertyString('Location') . ', ' . $this->ReadPropertyString('AlarmZoneName') . ', ' . $text;
                 $this->UpdateAlarmProtocol($logText, 1);
                 //Notification
-                $this->SendNotification('DeactivationNotification', '');
+                if ($UseNotification) {
+                    $this->SendNotification('DeactivationNotification', '');
+                }
                 $this->CheckDoorWindowState($Mode, false, false, false);
                 //Action
                 $this->ExecuteAction(0, $SenderID);
                 return true;
 
-                //Full protection mode
-            case 1:
+            case 1: //Full protection mode
                 $fullProtectionControlSwitch = true;
                 $hullProtectionControlSwitch = false;
                 $partialProtectionControlSwitch = false;
-                $useProtectionModeName = 'UseFullProtectionMode';
                 $activationDelayName = 'FullProtectionModeActivationDelay';
                 $protectionModeName = 'FullProtectionName';
                 $delayedActivationNotificationName = 'FullProtectionDelayedActivationNotification';
@@ -278,12 +263,10 @@ trait AZ_Control
                 $activationWithOpenDoorWindowNotificationName = 'FullProtectionActivationWithOpenDoorWindowNotification';
                 break;
 
-                //Hull protection mode
-            case 2:
+            case 2: //Hull protection mode
                 $fullProtectionControlSwitch = false;
                 $hullProtectionControlSwitch = true;
                 $partialProtectionControlSwitch = false;
-                $useProtectionModeName = 'UseHullProtectionMode';
                 $activationDelayName = 'HullProtectionModeActivationDelay';
                 $protectionModeName = 'HullProtectionName';
                 $delayedActivationNotificationName = 'HullProtectionDelayedActivationNotification';
@@ -292,12 +275,10 @@ trait AZ_Control
                 $activationWithOpenDoorWindowNotificationName = 'HullProtectionActivationWithOpenDoorWindowNotification';
                 break;
 
-                //Partial protection mode
-            case 3:
+            case 3: //Partial protection mode
                 $fullProtectionControlSwitch = false;
                 $hullProtectionControlSwitch = false;
                 $partialProtectionControlSwitch = true;
-                $useProtectionModeName = 'UsePartialProtectionMode';
                 $activationDelayName = 'PartialProtectionModeActivationDelay';
                 $protectionModeName = 'PartialProtectionName';
                 $delayedActivationNotificationName = 'PartialProtectionDelayedActivationNotification';
@@ -308,12 +289,6 @@ trait AZ_Control
 
             default:
                 return false;
-        }
-        //Check if the mode is used for this alarm zone
-        if (!$this->ReadPropertyBoolean($useProtectionModeName)) {
-            $this->SendDebug(__FUNCTION__, 'Der Modus ' . $modeText . ' ist deaktiviert und steht nicht zur Verfügung!', 0);
-            $this->LogMessage('ID ' . $this->InstanceID . ', ' . __FUNCTION__ . ', der Modus ' . $modeText . ' ist deaktiviert und steht nicht zur Verfügung!', KL_WARNING);
-            return false;
         }
         $result = true;
         $this->SetValue('FullProtectionControlSwitch', $fullProtectionControlSwitch);
@@ -384,10 +359,14 @@ trait AZ_Control
                 $this->UpdateAlarmProtocol($logText, 1);
                 //Notification
                 if (!$doorWindowState) { //Closed
-                    $this->SendNotification($activationNotificationName, '');
+                    if ($UseNotification) {
+                        $this->SendNotification($activationNotificationName, '');
+                    }
                     $notification = json_decode($this->ReadPropertyString($activationNotificationName), true);
                 } else { //Opened
-                    $this->SendNotification($activationWithOpenDoorWindowNotificationName, '');
+                    if ($UseNotification) {
+                        $this->SendNotification($activationWithOpenDoorWindowNotificationName, '');
+                    }
                     $notification = json_decode($this->ReadPropertyString($activationWithOpenDoorWindowNotificationName), true);
                 }
                 //Action
@@ -402,6 +381,57 @@ trait AZ_Control
     }
 
     #################### Private
+
+    /**
+     * Checks whether an operating mode is being used.
+     *
+     * @param int $Mode
+     *  0 =  Disarm,
+     *  1 =  Full protection mode
+     *  2 =  Hull protection mode,
+     *  3 =  Partial protection mode
+     *
+     * @return bool
+     * false =  operation mode is not used,
+     * true =   operation mode is used
+     *
+     * @throws Exception
+     */
+    private function CheckOperationMode(int $Mode): bool
+    {
+        switch ($Mode) {
+            case 0: //Disarmed
+                $modeText = $this->ReadPropertyString('DisarmedName');
+                $check = true;
+                break;
+
+            case 1: //Full protection  mode
+                $modeText = $this->ReadPropertyString('FullProtectionName');
+                $check = $this->ReadPropertyBoolean('UseFullProtectionMode');
+                break;
+
+            case 2:
+                $modeText = $this->ReadPropertyString('HullProtectionName');
+                $check = $this->ReadPropertyBoolean('UseHullProtectionMode');
+                break;
+
+            case 3:
+                $modeText = $this->ReadPropertyString('PartialProtectionName');
+                $check = $this->ReadPropertyBoolean('UsePartialProtectionMode');
+                break;
+
+            default:
+                $modeText = 'Unbekannt';
+                $check = false;
+        }
+        $this->SendDebug(__FUNCTION__, 'Modus: ' . $modeText, 0);
+        if (!$check) {
+            $this->SendDebug(__FUNCTION__, 'Der Modus ist deaktiviert und steht nicht zur Verfügung!', 0);
+            $this->LogMessage('ID ' . $this->InstanceID . ', ' . __FUNCTION__ . ', der Modus ' . $modeText . ' ist deaktiviert und steht nicht zur Verfügung!', KL_WARNING);
+            return false;
+        }
+        return true;
+    }
 
     /**
      * Resets the values of the alarm zone.

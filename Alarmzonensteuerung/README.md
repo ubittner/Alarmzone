@@ -18,7 +18,7 @@ Der Nutzer stimmt den o.a. Bedingungen, sowie den Lizenzbedingungen ausdrücklic
    3. [Teilschutz](#43-teilschutz)
    4. [Individualschutz](#44-individualschutz)
 5. [Systemstatus](#5-systemstatus)
-6. [Ablaufplan](#6-ablaufplan)
+6. [Benachrichtigungen](#6-benachrichtigungen)
 7. [Externe Aktion](#7-externe-aktion)
 8. [PHP-Befehlsreferenz](#8-php-befehlsreferenz)
    1. [Alarmzonen schalten](#81-alarmzonen-schalten)
@@ -106,9 +106,20 @@ Detaillierter Systemstatus:
 | 4      | Verzögert Teilscharf | Die Alarmzonen werden verzögert scharf geschaltet, es sind noch Türen oder Fenster geöffnet |
 
 
-### 6. Ablaufplan
+### 6. Benachrichtigungen
 
-Der Ablaufplan ist in der jeweiligen Alarmzone definiert.
+Die Alarmzonensteuerung kann die folgenden Benachrichtigungen verwenden:
+* Unscharf
+* Scharf mit offener Tür und/oder offenem Fenster,
+* Scharf
+
+Damit kann für alle Alarmzonen nur eine Benachrichtigung erfolgen. 
+
+Ausnahme:  
+Wenn die Alarmzone eine Aktivierungsprüfung oder eine Einschaltverzögerung verwendet,  
+dann werden alle Benachrichtigungen von der Alarmzone selbst vorgenommen.  
+In der Konfiguration der Alarmzonensteuerung muss dann unter Betriebsarten die Aktivierungsprüfung und/oder Einschaltverzögerung aktiviert werden,  
+damit keine Benachrichtigungen ausgelöst werden.
 
 ### 7. Externe Aktion
 
