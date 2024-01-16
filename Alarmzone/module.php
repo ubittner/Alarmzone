@@ -4,7 +4,7 @@
  * @project       Alarmzone/Alarmzone/
  * @file          module.php
  * @author        Ulrich Bittner
- * @copyright     2023 Ulrich Bittner
+ * @copyright     2023, 2024 Ulrich Bittner
  * @license       https://creativecommons.org/licenses/by-nc-sa/4.0/ CC BY-NC-SA 4.0
  */
 
@@ -20,6 +20,8 @@ include_once __DIR__ . '/helper/AZ_autoload.php';
 class Alarmzone extends IPSModule
 {
     //Helper
+    use AZ_AcknowledgementTone;
+    use AZ_Action;
     use AZ_AlarmProtocol;
     use AZ_Blacklist;
     use AZ_ConfigurationForm;
@@ -37,6 +39,7 @@ class Alarmzone extends IPSModule
     private const MODULE_PREFIX = 'AZ';
     private const ALARMPROTOCOL_MODULE_GUID = '{66BDB59B-E80F-E837-6640-005C32D5FC24}';
     private const NOTIFICATION_MODULE_GUID = '{BDAB70AA-B45D-4CB4-3D65-509CFF0969F9}';
+    private const ACKNOWLEDGEMENT_TONE_MODULE_GUID = '{C2E1BF4E-FB45-9023-85F0-5C80BCE99D45}'; //'[{90C71DCF-603A-A5C8-7955-CB3FFC4FF58C}, {C2E1BF4E-FB45-9023-85F0-5C80BCE99D45}]';
     private const SLEEP_DELAY = 100;
 
     public function Create()
@@ -155,6 +158,18 @@ class Alarmzone extends IPSModule
         $this->RegisterPropertyString('SmokeDetectorAlarmNotification', '[{"Use":false,"Designation":"Rauchmelder Alarm","SpacerNotification":"","LabelMessageText":"","MessageText":"🔥 %1$s hat Rauch erkannt!","UseTimestamp":true,"SpacerWebFrontNotification":"","LabelWebFrontNotification":"","UseWebFrontNotification":false,"WebFrontNotificationTitle":"","WebFrontNotificationIcon":"","WebFrontNotificationDisplayDuration":0,"SpacerWebFrontPushNotification":"","LabelWebFrontPushNotification":"","UseWebFrontPushNotification":false,"WebFrontPushNotificationTitle":"","WebFrontPushNotificationSound":"alarm","WebFrontPushNotificationTargetID":0,"SpacerMail":"","LabelMail":"","UseMailer":false,"Subject":"","SpacerSMS":"","LabelSMS":"","UseSMS":false,"SMSTitle":"","SpacerTelegram":"","LabelTelegram":"","UseTelegram":false,"TelegramTitle":""}]');
         $this->RegisterPropertyString('WaterDetectorAlarmNotification', '[{"Use":false,"Designation":"Wassermelder Alarm","SpacerNotification":"","LabelMessageText":"","MessageText":"💧 %1$s hat Wasser erkannt!","UseTimestamp":true,"SpacerWebFrontNotification":"","LabelWebFrontNotification":"","UseWebFrontNotification":false,"WebFrontNotificationTitle":"","WebFrontNotificationIcon":"","WebFrontNotificationDisplayDuration":0,"SpacerWebFrontPushNotification":"","LabelWebFrontPushNotification":"","UseWebFrontPushNotification":false,"WebFrontPushNotificationTitle":"","WebFrontPushNotificationSound":"alarm","WebFrontPushNotificationTargetID":0,"SpacerMail":"","LabelMail":"","UseMailer":false,"Subject":"","SpacerSMS":"","LabelSMS":"","UseSMS":false,"SMSTitle":"","SpacerTelegram":"","LabelTelegram":"","UseTelegram":false,"TelegramTitle":""}]');
         $this->RegisterPropertyString('PanicAlarmNotification', '[{"Use":false,"Designation":"Panikalarm","SpacerNotification":"","LabelMessageText":"","MessageText":"⚠️%1$s wurde ausgelöst!","UseTimestamp":true,"SpacerWebFrontNotification":"","LabelWebFrontNotification":"","UseWebFrontNotification":false,"WebFrontNotificationTitle":"","WebFrontNotificationIcon":"","WebFrontNotificationDisplayDuration":0,"SpacerWebFrontPushNotification":"","LabelWebFrontPushNotification":"","UseWebFrontPushNotification":false,"WebFrontPushNotificationTitle":"","WebFrontPushNotificationSound":"alarm","WebFrontPushNotificationTargetID":0,"SpacerMail":"","LabelMail":"","UseMailer":false,"Subject":"","SpacerSMS":"","LabelSMS":"","UseSMS":false,"SMSTitle":"","SpacerTelegram":"","LabelTelegram":"","UseTelegram":false,"TelegramTitle":""}]');
+
+        ##### Acknowledgement tone
+
+        //Disarmed
+        $this->RegisterPropertyBoolean('UseAcknowledgementToneDisarmedAction', false);
+        $parameters = '{"actionID":"{346AA8C1-30E0-1663-78EF-93EFADFAC650}","parameters":{"SCRIPT":"<?php\n\n/* Quittungston */\n\n//$id = 12345;\n\n//HomeMatic\n//ASIRHM_ExecuteToneAcknowledgement($id, 0);\n\n//Homematic IP\n//ASIRHMIP_ExecuteSignaling($id, 16, 2, 0, 10);","ENVIRONMENT":"Default","PARENT":' . $this->InstanceID . ',"TARGET":' . $this->InstanceID . '}}';
+        $this->RegisterPropertyString('AcknowledgementToneDisarmedAction', $parameters);
+
+        //Armed
+        $this->RegisterPropertyBoolean('UseAcknowledgementToneArmedAction', false);
+        $parameters = '{"actionID":"{346AA8C1-30E0-1663-78EF-93EFADFAC650}","parameters":{"SCRIPT":"<?php\n\n/* Quittungston */\n\n//$id = 12345;\n\n//HomeMatic\n//ASIRHM_ExecuteToneAcknowledgement($id, 1);\n\n//Homematic IP\n//ASIRHMIP_ExecuteSignaling($id, 17, 3, 0, 10);","ENVIRONMENT":"Default","PARENT":' . $this->InstanceID . ',"TARGET":' . $this->InstanceID . '}}';
+        $this->RegisterPropertyString('AcknowledgementToneArmedAction', $parameters);
 
         ##### Actions
 
@@ -1030,6 +1045,24 @@ class Alarmzone extends IPSModule
         $id = IPS_CreateInstance(self::NOTIFICATION_MODULE_GUID);
         if (is_int($id)) {
             IPS_SetName($id, 'Benachrichtigung');
+            $infoText = 'Instanz mit der ID ' . $id . ' wurde erfolgreich erstellt!';
+        } else {
+            $infoText = 'Instanz konnte nicht erstellt werden!';
+        }
+        $this->UpdateFormField('InfoMessage', 'visible', true);
+        $this->UpdateFormField('InfoMessageLabel', 'caption', $infoText);
+    }
+
+    /**
+     * Creates a new acknowledgement tone instance.
+     *
+     * @return void
+     */
+    public function CreateAcknowledgementToneInstance(): void
+    {
+        $id = @IPS_CreateInstance(self::ACKNOWLEDGEMENT_TONE_MODULE_GUID);
+        if (is_int($id)) {
+            IPS_SetName($id, 'Quittungston');
             $infoText = 'Instanz mit der ID ' . $id . ' wurde erfolgreich erstellt!';
         } else {
             $infoText = 'Instanz konnte nicht erstellt werden!';

@@ -4,19 +4,19 @@
  * @project       Alarmzone/Alarmzone/helper/
  * @file          AZ_Notification.php
  * @author        Ulrich Bittner
- * @copyright     2023 Ulrich Bittner
+ * @copyright     2023, 2024 Ulrich Bittner
  * @license       https://creativecommons.org/licenses/by-nc-sa/4.0/ CC BY-NC-SA 4.0
  */
 
-/** @noinspection PhpUnusedPrivateMethodInspection */
 /** @noinspection PhpUndefinedFunctionInspection */
 /** @noinspection SpellCheckingInspection */
+/** @noinspection DuplicatedCode */
 
 declare(strict_types=1);
 
 trait AZ_Notification
 {
-    #################### Private
+    #################### Protected
 
     /**
      * Sends a notification.
@@ -26,10 +26,9 @@ trait AZ_Notification
      * @return void
      * @throws Exception
      */
-    private function SendNotification(string $NotificationName, string $TextPlaceholder): void
+    protected function SendNotification(string $NotificationName, string $TextPlaceholder): void
     {
         $this->SendDebug(__FUNCTION__, 'wird ausgeführt', 0);
-
         if ($this->CheckMaintenance()) {
             return;
         }
@@ -56,7 +55,11 @@ trait AZ_Notification
             }
             //WebFront push notification
             if ($notification[0]['UseWebFrontPushNotification']) {
-                @BN_SendWebFrontPushNotification($id, $notification[0]['WebFrontPushNotificationTitle'], "\n" . $messageText, $notification[0]['WebFrontPushNotificationSound'], $notification[0]['WebFrontPushNotificationTargetID']);
+                //Title length max 32 characters
+                $title = substr($notification[0]['WebFrontPushNotificationTitle'], 0, 32);
+                //Text length max 256 characters
+                $text = substr($messageText, 0, 256);
+                @BN_SendWebFrontPushNotification($id, $title, "\n" . $text, $notification[0]['WebFrontPushNotificationSound'], $notification[0]['WebFrontPushNotificationTargetID']);
             }
             //E-Mail
             if ($notification[0]['UseMailer']) {

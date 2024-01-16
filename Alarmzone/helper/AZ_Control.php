@@ -4,7 +4,7 @@
  * @project       Alarmzone/Alarmzone/helper/
  * @file          AZ_Control.php
  * @author        Ulrich Bittner
- * @copyright     2023 Ulrich Bittner
+ * @copyright     2023, 2024 Ulrich Bittner
  * @license       https://creativecommons.org/licenses/by-nc-sa/4.0/ CC BY-NC-SA 4.0
  */
 
@@ -29,28 +29,25 @@ trait AZ_Control
             return;
         }
         $mode = $this->GetValue('Mode');
+        if (!$this->CheckOperationMode($mode)) {
+            return;
+        }
         switch ($mode) {
-            //Full protection
-            case 1:
-                $useProtectionModeName = 'UseFullProtectionMode';
+            case 1: //Full protection
                 $abortActivationNotificationName = 'FullProtectionAbortActivationNotification';
                 $protectionModeName = 'FullProtectionName';
                 $activationWithOpenDoorWindowNotificationName = 'FullProtectionActivationWithOpenDoorWindowNotification';
                 $activationNotificationName = 'FullProtectionActivationNotification';
                 break;
 
-                //Hull protection
-            case 2:
-                $useProtectionModeName = 'UseHullProtectionMode';
+            case 2: //Hull protection
                 $abortActivationNotificationName = 'HullProtectionAbortActivationNotification';
                 $protectionModeName = 'HullProtectionName';
                 $activationWithOpenDoorWindowNotificationName = 'HullProtectionActivationWithOpenDoorWindowNotification';
                 $activationNotificationName = 'HullProtectionActivationNotification';
                 break;
 
-                //Partial protection
-            case 3:
-                $useProtectionModeName = 'UsePartialProtectionMode';
+            case 3: //Partial protection
                 $abortActivationNotificationName = 'PartialProtectionAbortActivationNotification';
                 $protectionModeName = 'PartialProtectionName';
                 $activationWithOpenDoorWindowNotificationName = 'PartialProtectionActivationWithOpenDoorWindowNotification';
@@ -59,12 +56,6 @@ trait AZ_Control
 
             default:
                 return;
-        }
-        //Check if the mode is used for this alarm zone
-        if (!$this->ReadPropertyBoolean($useProtectionModeName)) {
-            $this->SendDebug(__FUNCTION__, 'Der Modus ' . $this->ReadPropertyString($protectionModeName) . ' ist deaktiviert und steht nicht zur Verfügung!', 0);
-            $this->LogMessage('ID ' . $this->InstanceID . ', ' . __FUNCTION__ . ', der Modus ' . $this->ReadPropertyString($protectionModeName) . ' ist deaktiviert und steht nicht zur Verfügung!', KL_WARNING);
-            return;
         }
         //Check activation
         $activation = $this->CheckDoorWindowState($mode, true, true, false);
@@ -88,7 +79,7 @@ trait AZ_Control
                 $this->CheckDoorWindowState($mode, false, false, true);
             }
             //Action
-            $this->ExecuteAction(0, (string) $this->InstanceID);
+            $this->ExecuteAction(0);
         }
         //Activate
         else {
@@ -120,8 +111,10 @@ trait AZ_Control
                     $this->CheckDoorWindowState($mode, false, false, true);
                 }
             }
+            //Acknowledgement tone
+            $this->ExecuteAcknowledgementTone(1);
             //Action
-            $this->ExecuteAction($mode, (string) $this->InstanceID);
+            $this->ExecuteAction($mode);
         }
     }
 
@@ -207,24 +200,32 @@ trait AZ_Control
      * Selects the protection mode.
      *
      * @param int $Mode
-     * 0 =  disarmed,
-     * 1 =  full protection mode,
-     * 2 =  hull protection mode,
-     * 3 =  partial protection mode
+     * 0 =  Disarmed,
+     * 1 =  Full protection mode,
+     * 2 =  Hull protection mode,
+     * 3 =  Partial protection mode
      *
      * @param string $SenderID
      *
      * @param bool $UseNotification
-     * false =  don't use notification
+     * false =  don't use notification,
      * true =   use notification
      *
+     * @param bool $UseAcknowledgementTone
+     * false =  don't use acknowledgement tone
+     * true =   use acknowledgement tone
+     *
+     * @param bool $UseAction
+     * false =  don't use action,
+     * true =   use action
+     *
      * @return bool
-     * false =  An error occurred
-     * true =   Successful
+     * false =  an error occurred,
+     * true =   successful
      *
      * @throws Exception
      */
-    public function SelectProtectionMode(int $Mode, string $SenderID, bool $UseNotification = true): bool
+    public function SelectProtectionMode(int $Mode, string $SenderID, bool $UseNotification = true, bool $UseAcknowledgementTone = true, bool $UseAction = true): bool
     {
         $this->SendDebug(__FUNCTION__, 'wird ausgeführt', 0);
         if ($this->CheckMaintenance()) {
@@ -247,8 +248,14 @@ trait AZ_Control
                     $this->SendNotification('DeactivationNotification', '');
                 }
                 $this->CheckDoorWindowState($Mode, false, false, false);
+                //Acknowledgement tone
+                if ($UseAcknowledgementTone) {
+                    $this->ExecuteAcknowledgementTone(0);
+                }
                 //Action
-                $this->ExecuteAction(0, $SenderID);
+                if ($UseAction) {
+                    $this->ExecuteAction(0);
+                }
                 return true;
 
             case 1: //Full protection mode
@@ -323,7 +330,7 @@ trait AZ_Control
             $this->SendNotification($delayedActivationNotificationName, (string) $activationDelay);
             $notification = json_decode($this->ReadPropertyString($delayedActivationNotificationName), true);
             //Action
-            $this->ExecuteAction($Mode, $SenderID);
+            $this->ExecuteAction($Mode);
         }
         //Immediate activation
         else {
@@ -341,7 +348,7 @@ trait AZ_Control
                 $this->SendNotification($abortActivationNotificationName, '');
                 $notification = json_decode($this->ReadPropertyString($abortActivationNotificationName), true);
                 //Action
-                $this->ExecuteAction(0, $SenderID);
+                $this->ExecuteAction(0);
             }
             //Activate
             else {
@@ -369,8 +376,14 @@ trait AZ_Control
                     }
                     $notification = json_decode($this->ReadPropertyString($activationWithOpenDoorWindowNotificationName), true);
                 }
+                //Acknowledgement tone
+                if ($UseAcknowledgementTone) {
+                    $this->ExecuteAcknowledgementTone(1);
+                }
                 //Action
-                $this->ExecuteAction($Mode, $SenderID);
+                if ($UseAction) {
+                    $this->ExecuteAction($Mode);
+                }
             }
         }
         if ($notification[0]['Use'] && $notification[0]['UseOpenDoorWindowNotification']) {
@@ -456,100 +469,5 @@ trait AZ_Control
         $this->SetValue('AlarmLight', false);
         $this->SetValue('AlarmCall', false);
         $this->SetValue('PanicAlarm', false);
-    }
-
-    /**
-     * Executes an action.
-     *
-     * @param int $Mode
-     * 0 =  disarmed,
-     * 1 =  full protection,
-     * 2 =  hull protection,
-     * 3 =  partial protection
-     *
-     * @param string $SenderID
-     * ID of the sender
-     *
-     * @return void
-     * @throws Exception
-     */
-    private function ExecuteAction(int $Mode, string $SenderID): void
-    {
-        $executeAction = false;
-        $action = [];
-        switch ($Mode) {
-            case 0: # disarmed
-                switch ($SenderID) {
-                    case $this->InstanceID:
-                    case $this->GetIDForIdent('AlarmSwitch'):
-                    case $this->GetIDForIdent('FullProtectionControlSwitch'):
-                    case $this->GetIDForIdent('HullProtectionControlSwitch'):
-                    case $this->GetIDForIdent('PartialProtectionControlSwitch'):
-                    case $this->GetIDForIdent('Mode'):
-                        if ($this->ReadPropertyBoolean('UseDisarmedAction')) {
-                            $executeAction = true;
-                            $action = json_decode($this->ReadPropertyString('DisarmedAction'), true);
-                        }
-                        break;
-
-                }
-                break;
-
-            case 1: # full protection
-                switch ($SenderID) {
-                    case $this->InstanceID:
-                    case $this->GetIDForIdent('FullProtectionControlSwitch'):
-                    case $this->GetIDForIdent('Mode'):
-                        if ($this->ReadPropertyBoolean('UseFullProtectionAction')) {
-                            //Check if the status has remained the same
-                            if ($this->GetValue('FullProtectionControlSwitch') || $this->GetValue('Mode') == 1) {
-                                $executeAction = true;
-                                $action = json_decode($this->ReadPropertyString('FullProtectionAction'), true);
-                            }
-                        }
-                        break;
-
-                }
-                break;
-
-            case 2: # hull protection
-                switch ($SenderID) {
-                    case $this->InstanceID:
-                    case $this->GetIDForIdent('HullProtectionControlSwitch'):
-                    case $this->GetIDForIdent('Mode'):
-                        if ($this->ReadPropertyBoolean('UseHullProtectionAction')) {
-                            //Check if the status has remained the same
-                            if ($this->GetValue('HullProtectionControlSwitch') || $this->GetValue('Mode') == 2) {
-                                $executeAction = true;
-                                $action = json_decode($this->ReadPropertyString('HullProtectionAction'), true);
-                            }
-                        }
-                        break;
-
-                }
-                break;
-
-            case 3: # partial protection
-                switch ($SenderID) {
-                    case $this->InstanceID:
-                    case $this->GetIDForIdent('PartialProtectionControlSwitch'):
-                    case $this->GetIDForIdent('Mode'):
-                        if ($this->ReadPropertyBoolean('UsePartialProtectionAction')) {
-                            //Check if the status has remained the same
-                            if ($this->GetValue('PartialProtectionControlSwitch') || $this->GetValue('Mode') == 3) {
-                                $executeAction = true;
-                                $action = json_decode($this->ReadPropertyString('PartialProtectionAction'), true);
-                            }
-                        }
-                        break;
-
-                }
-                break;
-
-        }
-        if ($executeAction && !empty($action)) {
-            $this->SendDebug(__FUNCTION__, 'Aktion: ' . json_encode($action), 0);
-            IPS_RunAction($action['actionID'], $action['parameters']);
-        }
     }
 }
