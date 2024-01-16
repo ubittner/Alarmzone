@@ -124,7 +124,7 @@ trait AZST_Action
             return false;
         }
         if (isset($useAction)) {
-            if ($this->ReadPropertyString($useAction)) {
+            if ($this->ReadPropertyBoolean($useAction)) {
                 $useAlarmZoneControllerAction = true;
             }
         }

@@ -112,7 +112,7 @@ trait AZST_AcknowledgementTone
             return false;
         }
         if (isset($useAction)) {
-            if ($this->ReadPropertyString($useAction)) {
+            if ($this->ReadPropertyBoolean($useAction)) {
                 $useAlarmZoneControllerAcknowledgementTone = true;
             }
         }
