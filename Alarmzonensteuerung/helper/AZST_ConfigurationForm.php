@@ -5869,7 +5869,7 @@ trait AZST_ConfigurationForm
                         [
                             'type'     => 'CheckBox',
                             'name'     => 'UseHullProtectionAction',
-                            'caption'  => 'Hüllschutz',
+                            'caption'  => 'Aktiv',
                             'onChange' => self::MODULE_PREFIX . '_HideAction($id, "HullProtectionAction", $UseHullProtectionAction);'
                         ],
                         [
@@ -5887,7 +5887,7 @@ trait AZST_ConfigurationForm
                         [
                             'type'     => 'CheckBox',
                             'name'     => 'UsePartialProtectionAction',
-                            'caption'  => 'Teilschutz',
+                            'caption'  => 'Aktiv',
                             'onChange' => self::MODULE_PREFIX . '_HideAction($id, "PartialProtectionAction", $UsePartialProtectionAction);'
                         ],
                         [
@@ -5906,7 +5906,7 @@ trait AZST_ConfigurationForm
                         [
                             'type'     => 'CheckBox',
                             'name'     => 'UseIndividualProtectionAction',
-                            'caption'  => 'Teilschutz',
+                            'caption'  => 'Aktiv',
                             'onChange' => self::MODULE_PREFIX . '_HideAction($id, "IndividualProtectionAction", $UseIndividualProtectionAction);'
                         ],
                         [

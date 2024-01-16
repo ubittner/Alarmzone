@@ -11488,7 +11488,7 @@ trait AZ_ConfigurationForm
                         [
                             'type'     => 'CheckBox',
                             'name'     => 'UseHullProtectionAction',
-                            'caption'  => 'Hüllschutz',
+                            'caption'  => 'Aktiv',
                             'onChange' => self::MODULE_PREFIX . '_HideAction($id, "HullProtectionAction", $UseHullProtectionAction);'
                         ],
                         [
@@ -11506,7 +11506,7 @@ trait AZ_ConfigurationForm
                         [
                             'type'     => 'CheckBox',
                             'name'     => 'UsePartialProtectionAction',
-                            'caption'  => 'Teilschutz',
+                            'caption'  => 'Aktiv',
                             'onChange' => self::MODULE_PREFIX . '_HideAction($id, "PartialProtectionAction", $UsePartialProtectionAction);'
                         ],
                         [
