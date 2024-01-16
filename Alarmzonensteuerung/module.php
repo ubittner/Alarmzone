@@ -4,7 +4,7 @@
  * @project       Alarmzone/Alarmzonensteuerung/
  * @file          module.php
  * @author        Ulrich Bittner
- * @copyright     2023 Ulrich Bittner
+ * @copyright     2023, 2024 Ulrich Bittner
  * @license       https://creativecommons.org/licenses/by-nc-sa/4.0/ CC BY-NC-SA 4.0
  */
 
@@ -20,6 +20,8 @@ include_once __DIR__ . '/helper/AZST_autoload.php';
 class Alarmzonensteuerung extends IPSModule
 {
     //Helper
+    use AZST_AcknowledgementTone;
+    use AZST_Action;
     use AZST_AlarmProtocol;
     use AZST_ConfigurationForm;
     use AZST_Control;
@@ -146,6 +148,18 @@ class Alarmzonensteuerung extends IPSModule
 
         //Notification alarm
         $this->RegisterPropertyString('PanicAlarmNotification', '[{"Use":false,"Designation":"Panikalarm","SpacerNotification":"","LabelMessageText":"","MessageText":"⚠️%1$s wurde ausgelöst!","UseTimestamp":true,"SpacerWebFrontNotification":"","LabelWebFrontNotification":"","UseWebFrontNotification":false,"WebFrontNotificationTitle":"","WebFrontNotificationIcon":"","WebFrontNotificationDisplayDuration":0,"SpacerWebFrontPushNotification":"","LabelWebFrontPushNotification":"","UseWebFrontPushNotification":false,"WebFrontPushNotificationTitle":"","WebFrontPushNotificationSound":"alarm","WebFrontPushNotificationTargetID":0,"SpacerMail":"","LabelMail":"","UseMailer":false,"Subject":"","SpacerSMS":"","LabelSMS":"","UseSMS":false,"SMSTitle":"","SpacerTelegram":"","LabelTelegram":"","UseTelegram":false,"TelegramTitle":""}]');
+
+        ##### Acknowledgement tone
+
+        //Disarmed
+        $this->RegisterPropertyBoolean('UseAcknowledgementToneDisarmedAction', false);
+        $parameters = '{"actionID":"{346AA8C1-30E0-1663-78EF-93EFADFAC650}","parameters":{"SCRIPT":"<?php\n\n/* Quittungston */\n\n//$id = 12345;\n\n//HomeMatic\n//ASIRHM_ExecuteToneAcknowledgement($id, 0);\n\n//Homematic IP\n//ASIRHMIP_ExecuteSignaling($id, 16, 2, 0, 10);","ENVIRONMENT":"Default","PARENT":' . $this->InstanceID . ',"TARGET":' . $this->InstanceID . '}}';
+        $this->RegisterPropertyString('AcknowledgementToneDisarmedAction', $parameters);
+
+        //Armed
+        $this->RegisterPropertyBoolean('UseAcknowledgementToneArmedAction', false);
+        $parameters = '{"actionID":"{346AA8C1-30E0-1663-78EF-93EFADFAC650}","parameters":{"SCRIPT":"<?php\n\n/* Quittungston */\n\n//$id = 12345;\n\n//HomeMatic\n//ASIRHM_ExecuteToneAcknowledgement($id, 1);\n\n//Homematic IP\n//ASIRHMIP_ExecuteSignaling($id, 17, 3, 0, 10);","ENVIRONMENT":"Default","PARENT":' . $this->InstanceID . ',"TARGET":' . $this->InstanceID . '}}';
+        $this->RegisterPropertyString('AcknowledgementToneArmedAction', $parameters);
 
         ###### Actions
 

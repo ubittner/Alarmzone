@@ -195,27 +195,34 @@ AZ_SelectProtectionMode(12345, 1, 'Sender ID', true);
 #### 8.1 Alarmzone schalten
 
 ```text
-boolean AZ_SelectProtectionMode(integer INSTANCE_ID, integer MODE, string SENDER_ID, bool USE_NOTIFICATION);
+boolean AZ_SelectProtectionMode(integer INSTANCE_ID, integer MODE, string SENDER_ID, bool USE_NOTIFICATION, bool USE_ACKNOWLEDGEMENT_TONE, bool USE_ACTION);
 ```
 
 Konnte der jeweilige Befehl erfolgreich ausgeführt werden, liefert er als Ergebnis **TRUE**, andernfalls **FALSE**.
 
-| Parameter          | Beschreibung                                   | Wert                              |
-|--------------------|------------------------------------------------|-----------------------------------|
-| `INSTANCE_ID`      | ID der Instanz                                 |                                   |
-| `MODE`             | Modus, der geschaltet werden soll              | 0 = Unscharf                      |
-|                    |                                                | 1 = Vollschutz                    |
-|                    |                                                | 2 = Hüllschutz                    |
-|                    |                                                | 3 = Teilschutz                    |
-| `SENDER_ID`        | Eine Kennung, die den Sender identifiziert und |                                   |
-|                    | im Alarmprotokoll anzeigt                      |                                   |
-| `USE_NOTIFICATION` | Benachrichtigung                               | false = keine Benachrichtigung    |
-|                    |                                                | true = Benachrichtigung ausführen |
+| Parameter                  | Beschreibung                                   | Wert                              |
+|----------------------------|------------------------------------------------|-----------------------------------|
+| `INSTANCE_ID`              | ID der Instanz                                 |                                   |
+| `MODE`                     | Modus, der geschaltet werden soll              | 0 = Unscharf                      |
+|                            |                                                | 1 = Vollschutz                    |
+|                            |                                                | 2 = Hüllschutz                    |
+|                            |                                                | 3 = Teilschutz                    |
+|                            |                                                |                                   |
+| `SENDER_ID`                | Eine Kennung, die den Sender identifiziert und |                                   |
+|                            | im Alarmprotokoll anzeigt                      |                                   |
+|                            |                                                |                                   |
+| `USE_NOTIFICATION`         | Benachrichtigung                               | false = keine Benachrichtigung    |
+|                            |                                                | true = Benachrichtigung ausführen |
+|                            |                                                |                                   |
+| `USE_ACKNOWLEDGEMENT_TONE` | Quittungston                                   | false = kein Quittungston         |
+|                            |                                                | true = Quittungston ausführen     |
+|                            |                                                |                                   |
+| `USE_ACTION`               | Aktion                                         | false = kein Aktion               |
+|                            |                                                | true = Aktion ausführen           |
 
 **Beispiel:**
 ```php
-$result = AZ_SelectProtectionMode(12345, 0, 'Sender', true);
+$result = AZ_SelectProtectionMode(12345, 0, 'Sender', true, true, true);
 var_dump($result);
 ```
-
 ---

@@ -4,11 +4,10 @@
  * @project       Alarmzone/Alarmzonensteuerung/helper/
  * @file          AZ_Notification.php
  * @author        Ulrich Bittner
- * @copyright     2023 Ulrich Bittner
+ * @copyright     2023, 2024 Ulrich Bittner
  * @license       https://creativecommons.org/licenses/by-nc-sa/4.0/ CC BY-NC-SA 4.0
  */
 
-/** @noinspection PhpUnusedPrivateMethodInspection */
 /** @noinspection PhpUndefinedFunctionInspection */
 /** @noinspection SpellCheckingInspection */
 /** @noinspection DuplicatedCode */
@@ -17,6 +16,221 @@ declare(strict_types=1);
 
 trait AZST_Notification
 {
+    #################### Public
+
+    /**
+     * Executes the notification from the alarm zone controller.
+     *
+     * If the alarm zone! uses an activation check or has a delayed activation,
+     * all notifications must be done by the alarm zone itself!
+     *
+     * @param int $Mode
+     * 0 =      Disarmed,
+     * 1 =      Full protection mode,
+     * 2 =      Hull protection mode,
+     * 3 =      Partial protection mode,
+     * 4 =      Individual protection mode
+     * 911 =    Panic alarm
+     *
+     * @return void
+     * @throws Exception
+     */
+    public function ExecuteAlarmZoneControllerNotification(int $Mode): void
+    {
+        $notifcationName = '';
+        $textPlaceholder = '';
+        switch ($Mode) {
+            case 0: //Disarm
+                $notifcationName = 'DeactivationNotification';
+                break;
+
+            case 1: //Full protection mode
+                if ($this->ReadPropertyBoolean('FullProtectionActivationCheck') || $this->ReadPropertyBoolean('FullProtectionActivationDelay')) {
+                    break;
+                }
+                //Armed with an open door and/or open window
+                $name = 'FullProtectionActivationWithOpenDoorWindowNotification';
+                $notification = json_decode($this->ReadPropertyString($name), true);
+                if ($notification[0]['Use']) {
+                    if ($this->GetValue('DoorWindowState')) {
+                        $notifcationName = $name;
+                        break;
+                    }
+                }
+                //Armed
+                $name = 'FullProtectionActivationNotification';
+                $notification = json_decode($this->ReadPropertyString($name), true);
+                if ($notification[0]['Use']) {
+                    $notifcationName = $name;
+                    break;
+                }
+                break;
+
+            case 2: //Hull protection mode
+                if ($this->ReadPropertyBoolean('HullProtectionActivationCheck') || $this->ReadPropertyBoolean('HullProtectionActivationDelay')) {
+                    break;
+                }
+                //Armed with an open door and/or open window
+                $name = 'HullProtectionActivationWithOpenDoorWindowNotification';
+                $notification = json_decode($this->ReadPropertyString($name), true);
+                if ($notification[0]['Use']) {
+                    if ($this->GetValue('DoorWindowState')) {
+                        $notifcationName = $name;
+                        break;
+                    }
+                }
+                //Armed
+                $name = 'HullProtectionActivationNotification';
+                $notification = json_decode($this->ReadPropertyString($name), true);
+                if ($notification[0]['Use']) {
+                    $notifcationName = $name;
+                    break;
+                }
+                break;
+
+            case 3: //Partial protection mode
+                if ($this->ReadPropertyBoolean('PartialProtectionActivationCheck') || $this->ReadPropertyBoolean('PartialProtectionActivationDelay')) {
+                    break;
+                }
+                //Armed with an open door and/or open window
+                $name = 'PartialProtectionActivationWithOpenDoorWindowNotification';
+                $notification = json_decode($this->ReadPropertyString($name), true);
+                if ($notification[0]['Use']) {
+                    if ($this->GetValue('DoorWindowState')) {
+                        $notifcationName = $name;
+                        break;
+                    }
+                }
+                //Armed
+                $name = 'PartialProtectionActivationNotification';
+                $notification = json_decode($this->ReadPropertyString($name), true);
+                if ($notification[0]['Use']) {
+                    $notifcationName = $name;
+                    break;
+                }
+                break;
+
+            case 4: //Individual protection mode
+                if ($this->ReadPropertyBoolean('IndividualProtectionActivationCheck') || $this->ReadPropertyBoolean('IndividualProtectionActivationDelay')) {
+                    break;
+                }
+                //Armed with an open door and/or open window
+                $name = 'IndividualProtectionActivationWithOpenDoorWindowNotification';
+                $notification = json_decode($this->ReadPropertyString($name), true);
+                if ($notification[0]['Use']) {
+                    if ($this->GetValue('DoorWindowState')) {
+                        $notifcationName = $name;
+                        break;
+                    }
+                }
+                //Armed
+                $name = 'IndividualProtectionActivationNotification';
+                $notification = json_decode($this->ReadPropertyString($name), true);
+                if ($notification[0]['Use']) {
+                    $notifcationName = $name;
+                    break;
+                }
+                break;
+
+            case 911: //Panik alarm
+                $name = 'PanicAlarmNotification';
+                $notification = json_decode($this->ReadPropertyString($name), true);
+                if ($notification[0]['Use']) {
+                    $notifcationName = $name;
+                    $textPlaceholder = $this->ReadPropertyString('AlertingSensorNameWhenAlarmSwitchIsOn');
+                    break;
+                }
+                break;
+
+        }
+        if ($notifcationName != '') {
+            $notification = json_decode($this->ReadPropertyString($notifcationName), true);
+            if ($notification[0]['Use']) {
+                $this->SendNotification($notifcationName, $textPlaceholder);
+            }
+        }
+    }
+
+    #################### Protected
+
+    /**
+     * Checks whether the alarm zone controller should use a notification.
+     *
+     * If the alarm zone! uses an activation check or has a delayed activation,
+     * all notifications must be done by the alarm zone itself!
+     *
+     * @param int $Mode
+     * 0 =  Disarmed,
+     * 1 =  Full protection mode,
+     * 2 =  Hull protection mode,
+     * 3 =  Partial protection mode,
+     * 4 =  Individual protection mode
+     *
+     * @return bool
+     * false =  don't use notification,
+     * true =   use notification
+     *
+     * @throws Exception
+     */
+    protected function CheckAlarmZoneControllerNotification(int $Mode): bool
+    {
+        $useAlarmZoneControllerNotification = false;
+        $activationCheck = false;
+        $activationDelay = false;
+        $notifications = [];
+        switch ($Mode) {
+            case 0: //Disarm
+                $notifications = ['DeactivationNotification'];
+                break;
+
+            case 1: //Full protection mode
+                $activationCheck = $this->ReadPropertyBoolean('FullProtectionActivationCheck');
+                $activationDelay = $this->ReadPropertyBoolean('FullProtectionActivationDelay');
+                $notifications = [
+                    'FullProtectionActivationWithOpenDoorWindowNotification',
+                    'FullProtectionActivationNotification'];
+                break;
+
+            case 2: //Hull protection mode
+                $activationCheck = $this->ReadPropertyBoolean('HullProtectionActivationCheck');
+                $activationDelay = $this->ReadPropertyBoolean('HullProtectionActivationDelay');
+                $notifications = [
+                    'HullProtectionActivationWithOpenDoorWindowNotification',
+                    'HullProtectionActivationNotification'];
+                break;
+
+            case 3: //Partial protection mode
+                $activationCheck = $this->ReadPropertyBoolean('PartialProtectionActivationCheck');
+                $activationDelay = $this->ReadPropertyBoolean('PartialProtectionActivationDelay');
+                $notifications = [
+                    'PartialProtectionActivationWithOpenDoorWindowNotification',
+                    'PartialProtectionActivationNotification'];
+                break;
+
+            case 4: //Individual protection mode
+                $activationCheck = $this->ReadPropertyBoolean('IndividualProtectionActivationCheck');
+                $activationDelay = $this->ReadPropertyBoolean('IndividualProtectionActivationDelay');
+                $notifications = [
+                    'IndividualProtectionActivationWithOpenDoorWindowNotification',
+                    'IndividualProtectionActivationNotification'];
+                break;
+
+        }
+
+        if ($activationCheck || $activationDelay) {
+            return false;
+        }
+        if (!empty($notifications)) {
+            foreach ($notifications as $notification) {
+                $notification = json_decode($this->ReadPropertyString($notification), true);
+                if ($notification[0]['Use']) {
+                    $useAlarmZoneControllerNotification = true;
+                }
+            }
+        }
+        return $useAlarmZoneControllerNotification;
+    }
+
     #################### Private
 
     /**
@@ -57,7 +271,11 @@ trait AZST_Notification
             }
             //WebFront push notification
             if ($notification[0]['UseWebFrontPushNotification']) {
-                @BN_SendWebFrontPushNotification($id, $notification[0]['WebFrontPushNotificationTitle'], "\n" . $messageText, $notification[0]['WebFrontPushNotificationSound'], $notification[0]['WebFrontPushNotificationTargetID']);
+                //Title length max 32 characters
+                $title = substr($notification[0]['WebFrontPushNotificationTitle'], 0, 32);
+                //Text length max 256 characters
+                $text = substr($messageText, 0, 256);
+                @BN_SendWebFrontPushNotification($id, $title, "\n" . $text, $notification[0]['WebFrontPushNotificationSound'], $notification[0]['WebFrontPushNotificationTargetID']);
             }
             //E-Mail
             if ($notification[0]['UseMailer']) {

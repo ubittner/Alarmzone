@@ -34,7 +34,7 @@ trait AZ_ConfigurationForm
      */
     public function ExpandExpansionPanels(bool $State): void
     {
-        for ($i = 1; $i <= 12; $i++) {
+        for ($i = 1; $i <= 13; $i++) {
             $this->UpdateFormField('Panel' . $i, 'expanded', $State);
         }
     }
@@ -220,157 +220,198 @@ trait AZ_ConfigurationForm
             'expanded' => false,
             'items'    => [
                 [
-                    'type'    => 'Label',
-                    'caption' => 'Alarm Aus',
-                    'bold'    => true,
-                    'italic'  => true
-                ],
-                [
-                    'type'    => 'CheckBox',
-                    'name'    => 'UseDisarmAlarmZoneWhenAlarmSwitchIsOff',
-                    'caption' => 'Alarmzone unscharf'
-                ],
-                [
-                    'type'    => 'Label',
-                    'caption' => ' '
-                ],
-                [
-                    'type'    => 'Label',
-                    'caption' => 'Alarm An',
-                    'bold'    => true,
-                    'italic'  => true
-                ],
-                [
-                    'type'    => 'ValidationTextBox',
-                    'name'    => 'AlertingSensorNameWhenAlarmSwitchIsOn',
-                    'caption' => 'Alarmbezeichnung',
-                    'width'   => '600px'
-                ],
-                [
-                    'type'    => 'CheckBox',
-                    'name'    => 'UseAlarmSirenWhenAlarmSwitchIsOn',
-                    'caption' => 'Alarmsirene'
-                ],
-                [
-                    'type'    => 'CheckBox',
-                    'name'    => 'UseAlarmLightWhenAlarmSwitchIsOn',
-                    'caption' => 'Alarmbeleuchtung'
-                ],
-                [
-                    'type'    => 'CheckBox',
-                    'name'    => 'UseAlarmCallWhenAlarmSwitchIsOn',
-                    'caption' => 'Alarmanruf'
-                ],
-                [
-                    'type'    => 'CheckBox',
-                    'name'    => 'UsePanicAlarmWhenAlarmSwitchIsOn',
-                    'caption' => 'Panikalarm'
-                ],
-                [
-                    'type'    => 'Label',
-                    'caption' => ' '
-                ],
-                [
-                    'type'    => 'Label',
-                    'caption' => 'Unscharf',
-                    'bold'    => true,
-                    'italic'  => true
-                ],
-                [
-                    'type'  => 'RowLayout',
-                    'items' => [
-                        [
-                            'type'    => 'SelectIcon',
-                            'name'    => 'DisarmedIcon',
-                            'caption' => 'Icon'
-                        ],
+                    'type'     => 'ExpansionPanel',
+                    'caption'  => 'Alarm',
+                    'expanded' => false,
+                    'items'    => [
                         [
                             'type'    => 'Label',
-                            'caption' => ' '
-                        ],
-                        [
-                            'type'    => 'ValidationTextBox',
-                            'name'    => 'DisarmedName',
-                            'caption' => 'Bezeichnung'
-                        ],
-                        [
-                            'type'    => 'Label',
-                            'caption' => ' '
-                        ],
-                        [
-                            'type'    => 'SelectColor',
-                            'name'    => 'DisarmedColor',
-                            'caption' => 'Farbe'
-                        ]
-                    ]
-                ],
-                [
-                    'type'    => 'Label',
-                    'caption' => ' '
-                ],
-                [
-                    'type'    => 'Button',
-                    'caption' => 'Ablaufplan Scharfschaltung',
-                    'onClick' => 'echo "https://github.com/ubittner/Alarmzone/blob/main/docs/Ablaufplan_Scharfschaltung.png";'
-                ],
-                [
-                    'type'    => 'Label',
-                    'caption' => ' '
-                ],
-                [
-                    'type'  => 'RowLayout',
-                    'items' => [
-                        [
-                            'type' => 'CheckBox',
-                            'name' => 'UseFullProtectionMode'
-                        ],
-                        [
-                            'type'    => 'Label',
-                            'caption' => 'Vollschutz',
+                            'caption' => 'Aus',
                             'bold'    => true,
                             'italic'  => true
-                        ]
-                    ]
-                ],
-                [
-                    'type'  => 'RowLayout',
-                    'items' => [
+                        ],
                         [
-                            'type'    => 'SelectIcon',
-                            'name'    => 'FullProtectionIcon',
-                            'caption' => 'Icon'
+                            'type'    => 'CheckBox',
+                            'name'    => 'UseDisarmAlarmZoneWhenAlarmSwitchIsOff',
+                            'caption' => 'Alarmzone unscharf'
                         ],
                         [
                             'type'    => 'Label',
                             'caption' => ' '
+                        ],
+                        [
+                            'type'    => 'Label',
+                            'caption' => 'An',
+                            'bold'    => true,
+                            'italic'  => true
                         ],
                         [
                             'type'    => 'ValidationTextBox',
-                            'name'    => 'FullProtectionName',
-                            'caption' => 'Bezeichnung'
+                            'name'    => 'AlertingSensorNameWhenAlarmSwitchIsOn',
+                            'caption' => 'Alarmbezeichnung',
+                            'width'   => '600px'
                         ],
                         [
-                            'type'    => 'Label',
-                            'caption' => ' '
+                            'type'    => 'CheckBox',
+                            'name'    => 'UseAlarmSirenWhenAlarmSwitchIsOn',
+                            'caption' => 'Alarmsirene'
                         ],
                         [
-                            'type'    => 'SelectColor',
-                            'name'    => 'FullProtectionColor',
-                            'caption' => 'Farbe'
+                            'type'    => 'CheckBox',
+                            'name'    => 'UseAlarmLightWhenAlarmSwitchIsOn',
+                            'caption' => 'Alarmbeleuchtung'
+                        ],
+                        [
+                            'type'    => 'CheckBox',
+                            'name'    => 'UseAlarmCallWhenAlarmSwitchIsOn',
+                            'caption' => 'Alarmanruf'
+                        ],
+                        [
+                            'type'    => 'CheckBox',
+                            'name'    => 'UsePanicAlarmWhenAlarmSwitchIsOn',
+                            'caption' => 'Panikalarm'
                         ]
                     ]
                 ],
                 [
-                    'type'    => 'CheckBox',
-                    'name'    => 'CheckFullProtectionModeActivation',
-                    'caption' => 'Aktivierungsprüfung'
+                    'type'     => 'ExpansionPanel',
+                    'caption'  => 'Unscharf',
+                    'expanded' => false,
+                    'items'    => [
+                        [
+                            'type'  => 'RowLayout',
+                            'items' => [
+                                [
+                                    'type'    => 'SelectIcon',
+                                    'name'    => 'DisarmedIcon',
+                                    'caption' => 'Icon'
+                                ],
+                                [
+                                    'type'    => 'Label',
+                                    'caption' => ' '
+                                ],
+                                [
+                                    'type'    => 'ValidationTextBox',
+                                    'name'    => 'DisarmedName',
+                                    'caption' => 'Bezeichnung'
+                                ],
+                                [
+                                    'type'    => 'Label',
+                                    'caption' => ' '
+                                ],
+                                [
+                                    'type'    => 'SelectColor',
+                                    'name'    => 'DisarmedColor',
+                                    'caption' => 'Farbe'
+                                ]
+                            ]
+                        ]
+                    ]
                 ],
                 [
-                    'type'  => 'RowLayout',
-                    'items' => [
+                    'type'     => 'ExpansionPanel',
+                    'caption'  => 'Vollschutz',
+                    'expanded' => false,
+                    'items'    => [
+                        [
+                            'type'    => 'CheckBox',
+                            'name'    => 'UseFullProtectionMode',
+                            'caption' => 'Aktiv'
+                        ],
+                        [
+                            'type'  => 'RowLayout',
+                            'items' => [
+                                [
+                                    'type'    => 'SelectIcon',
+                                    'name'    => 'FullProtectionIcon',
+                                    'caption' => 'Icon'
+                                ],
+                                [
+                                    'type'    => 'Label',
+                                    'caption' => ' '
+                                ],
+                                [
+                                    'type'    => 'ValidationTextBox',
+                                    'name'    => 'FullProtectionName',
+                                    'caption' => 'Bezeichnung'
+                                ],
+                                [
+                                    'type'    => 'Label',
+                                    'caption' => ' '
+                                ],
+                                [
+                                    'type'    => 'SelectColor',
+                                    'name'    => 'FullProtectionColor',
+                                    'caption' => 'Farbe'
+                                ]
+                            ]
+                        ],
+                        [
+                            'type'    => 'CheckBox',
+                            'name'    => 'CheckFullProtectionModeActivation',
+                            'caption' => 'Aktivierungsprüfung'
+                        ],
+                        [
+                            'type'  => 'RowLayout',
+                            'items' => [
+                                [
+                                    'type'    => 'NumberSpinner',
+                                    'name'    => 'FullProtectionModeActivationDelay',
+                                    'caption' => 'Einschaltverzögerung',
+                                    'suffix'  => 'Sekunden',
+                                    'minimum' => 0,
+                                    'maximum' => 60
+                                ]
+                            ]
+                        ]
+                    ]
+                ],
+                [
+                    'type'     => 'ExpansionPanel',
+                    'caption'  => 'Hüllschutz',
+                    'expanded' => false,
+                    'items'    => [
+                        [
+                            'type'    => 'CheckBox',
+                            'name'    => 'UseHullProtectionMode',
+                            'caption' => 'Aktiv'
+                        ],
+                        [
+                            'type'  => 'RowLayout',
+                            'items' => [
+                                [
+                                    'type'    => 'SelectIcon',
+                                    'name'    => 'HullProtectionIcon',
+                                    'caption' => 'Icon'
+                                ],
+                                [
+                                    'type'    => 'Label',
+                                    'caption' => ' '
+                                ],
+                                [
+                                    'type'    => 'ValidationTextBox',
+                                    'name'    => 'HullProtectionName',
+                                    'caption' => 'Hüllschutz'
+                                ],
+                                [
+                                    'type'    => 'Label',
+                                    'caption' => ' '
+                                ],
+                                [
+                                    'type'    => 'SelectColor',
+                                    'name'    => 'HullProtectionColor',
+                                    'caption' => 'Farbe'
+                                ]
+                            ]
+                        ],
+                        [
+                            'type'    => 'CheckBox',
+                            'name'    => 'CheckHullProtectionModeActivation',
+                            'caption' => 'Aktivierungsprüfung'
+                        ],
                         [
                             'type'    => 'NumberSpinner',
-                            'name'    => 'FullProtectionModeActivationDelay',
+                            'name'    => 'HullProtectionModeActivationDelay',
                             'caption' => 'Einschaltverzögerung',
                             'suffix'  => 'Sekunden',
                             'minimum' => 0,
@@ -379,124 +420,62 @@ trait AZ_ConfigurationForm
                     ]
                 ],
                 [
-                    'type'    => 'Label',
-                    'caption' => ' '
-                ],
-                [
-                    'type'  => 'RowLayout',
-                    'items' => [
+                    'type'     => 'ExpansionPanel',
+                    'caption'  => 'Teilschutz',
+                    'expanded' => false,
+                    'items'    => [
                         [
-                            'type' => 'CheckBox',
-                            'name' => 'UseHullProtectionMode'
+                            'type'    => 'CheckBox',
+                            'name'    => 'UsePartialProtectionMode',
+                            'caption' => 'Aktiv'
                         ],
                         [
-                            'type'    => 'Label',
-                            'caption' => 'Hüllschutz',
-                            'bold'    => true,
-                            'italic'  => true
+                            'type'  => 'RowLayout',
+                            'items' => [
+                                [
+                                    'type'    => 'SelectIcon',
+                                    'name'    => 'PartialProtectionIcon',
+                                    'caption' => 'Icon'
+                                ],
+                                [
+                                    'type'    => 'Label',
+                                    'caption' => ' '
+                                ],
+                                [
+                                    'type'    => 'ValidationTextBox',
+                                    'name'    => 'PartialProtectionName',
+                                    'caption' => 'Teilschutz'
+                                ],
+                                [
+                                    'type'    => 'Label',
+                                    'caption' => ' '
+                                ],
+                                [
+                                    'type'    => 'SelectColor',
+                                    'name'    => 'PartialProtectionColor',
+                                    'caption' => 'Farbe'
+                                ]
+                            ]
+                        ],
+                        [
+                            'type'    => 'CheckBox',
+                            'name'    => 'CheckPartialProtectionModeActivation',
+                            'caption' => 'Aktivierungsprüfung'
+                        ],
+                        [
+                            'type'    => 'NumberSpinner',
+                            'name'    => 'PartialProtectionModeActivationDelay',
+                            'caption' => 'Einschaltverzögerung',
+                            'suffix'  => 'Sekunden',
+                            'minimum' => 0,
+                            'maximum' => 60
                         ]
                     ]
                 ],
                 [
-                    'type'  => 'RowLayout',
-                    'items' => [
-                        [
-                            'type'    => 'SelectIcon',
-                            'name'    => 'HullProtectionIcon',
-                            'caption' => 'Icon'
-                        ],
-                        [
-                            'type'    => 'Label',
-                            'caption' => ' '
-                        ],
-                        [
-                            'type'    => 'ValidationTextBox',
-                            'name'    => 'HullProtectionName',
-                            'caption' => 'Hüllschutz'
-                        ],
-                        [
-                            'type'    => 'Label',
-                            'caption' => ' '
-                        ],
-                        [
-                            'type'    => 'SelectColor',
-                            'name'    => 'HullProtectionColor',
-                            'caption' => 'Farbe'
-                        ]
-                    ]
-                ],
-                [
-                    'type'    => 'CheckBox',
-                    'name'    => 'CheckHullProtectionModeActivation',
-                    'caption' => 'Aktivierungsprüfung'
-                ],
-                [
-                    'type'    => 'NumberSpinner',
-                    'name'    => 'HullProtectionModeActivationDelay',
-                    'caption' => 'Einschaltverzögerung',
-                    'suffix'  => 'Sekunden',
-                    'minimum' => 0,
-                    'maximum' => 60
-                ],
-                [
-                    'type'    => 'Label',
-                    'caption' => ' '
-                ],
-                [
-                    'type'  => 'RowLayout',
-                    'items' => [
-                        [
-                            'type' => 'CheckBox',
-                            'name' => 'UsePartialProtectionMode'
-                        ],
-                        [
-                            'type'    => 'Label',
-                            'caption' => 'Teilschutz',
-                            'bold'    => true,
-                            'italic'  => true
-                        ]
-                    ]
-                ],
-                [
-                    'type'  => 'RowLayout',
-                    'items' => [
-                        [
-                            'type'    => 'SelectIcon',
-                            'name'    => 'PartialProtectionIcon',
-                            'caption' => 'Icon'
-                        ],
-                        [
-                            'type'    => 'Label',
-                            'caption' => ' '
-                        ],
-                        [
-                            'type'    => 'ValidationTextBox',
-                            'name'    => 'PartialProtectionName',
-                            'caption' => 'Teilschutz'
-                        ],
-                        [
-                            'type'    => 'Label',
-                            'caption' => ' '
-                        ],
-                        [
-                            'type'    => 'SelectColor',
-                            'name'    => 'PartialProtectionColor',
-                            'caption' => 'Farbe'
-                        ]
-                    ]
-                ],
-                [
-                    'type'    => 'CheckBox',
-                    'name'    => 'CheckPartialProtectionModeActivation',
-                    'caption' => 'Aktivierungsprüfung'
-                ],
-                [
-                    'type'    => 'NumberSpinner',
-                    'name'    => 'PartialProtectionModeActivationDelay',
-                    'caption' => 'Einschaltverzögerung',
-                    'suffix'  => 'Sekunden',
-                    'minimum' => 0,
-                    'maximum' => 60
+                    'type'    => 'Button',
+                    'caption' => 'Ablaufplan Scharfschaltung',
+                    'onClick' => 'echo "https://github.com/ubittner/Alarmzone/blob/main/docs/Ablaufplan_Scharfschaltung.png";'
                 ]
             ]
         ];
@@ -765,7 +744,7 @@ trait AZ_ConfigurationForm
                             'column'    => 'Designation',
                             'direction' => 'ascending'
                         ],
-                        'columns'  => [
+                        'columns' => [
                             [
                                 'caption' => 'Aktiviert',
                                 'name'    => 'Use',
@@ -1333,7 +1312,7 @@ trait AZ_ConfigurationForm
                             'column'    => 'Designation',
                             'direction' => 'ascending'
                         ],
-                        'columns'  => [
+                        'columns' => [
                             [
                                 'caption' => 'Aktiviert',
                                 'name'    => 'Use',
@@ -1878,7 +1857,7 @@ trait AZ_ConfigurationForm
                             'column'    => 'Designation',
                             'direction' => 'ascending'
                         ],
-                        'columns'  => [
+                        'columns' => [
                             [
                                 'caption' => 'Aktiviert',
                                 'name'    => 'Use',
@@ -2429,7 +2408,7 @@ trait AZ_ConfigurationForm
                             'column'    => 'Designation',
                             'direction' => 'ascending'
                         ],
-                        'columns'  => [
+                        'columns' => [
                             [
                                 'caption' => 'Aktiviert',
                                 'name'    => 'Use',
@@ -2979,7 +2958,7 @@ trait AZ_ConfigurationForm
                             'column'    => 'Designation',
                             'direction' => 'ascending'
                         ],
-                        'columns'  => [
+                        'columns' => [
                             [
                                 'caption' => 'Aktiviert',
                                 'name'    => 'Use',
@@ -3355,8063 +3334,8048 @@ trait AZ_ConfigurationForm
                         ]
                     ]
                 ],
-                [
-                    'type'    => 'Label',
-                    'caption' => ' '
-                ],
                 //Disarmed
                 [
-                    'type'    => 'Label',
-                    'caption' => 'Unscharf',
-                    'bold'    => true,
-                    'italic'  => true
-                ],
-                [
-                    'type'     => 'List',
-                    'name'     => 'DeactivationNotification',
-                    'caption'  => 'Aus (unscharf)',
-                    'rowCount' => 1,
-                    'add'      => false,
-                    'delete'   => false,
-                    'columns'  => [
+                    'type'     => 'ExpansionPanel',
+                    'caption'  => 'Unscharf',
+                    'expanded' => false,
+                    'items'    => [
                         [
-                            'caption' => 'Aktiviert',
-                            'name'    => 'Use',
-                            'width'   => '100px',
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Bezeichnung',
-                            'name'    => 'Designation',
-                            'width'   => '300px',
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Meldungstext:',
-                            'name'    => 'LabelMessageText',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'Text der Meldung (maximal 256 Zeichen)',
-                            'name'    => 'MessageText',
-                            'width'   => '400px',
-                            'visible' => true,
-                            'edit'    => [
-                                'type'      => 'ValidationTextBox',
-                                'multiline' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'Zeitstempel',
-                            'name'    => 'UseTimestamp',
-                            'width'   => '100px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerWebFrontNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Nachricht:',
-                            'name'    => 'LabelWebFrontNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'WebFront Nachricht',
-                            'name'    => 'UseWebFrontNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
-                            'name'    => 'WebFrontNotificationTitle',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Icon',
-                            'name'    => 'WebFrontNotificationIcon',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'SelectIcon'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Anzeigedauer',
-                            'name'    => 'WebFrontNotificationDisplayDuration',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type'   => 'NumberSpinner',
-                                'suffix' => 'Sekunden'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerWebFrontPushNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Push-Nachricht:',
-                            'name'    => 'LabelWebFrontPushNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'WebFront Push-Nachricht',
-                            'name'    => 'UseWebFrontPushNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
-                            'name'    => 'WebFrontPushNotificationTitle',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Sound',
-                            'name'    => 'WebFrontPushNotificationSound',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type'    => 'Select',
-                                'options' => [
-                                    [
-                                        'caption' => 'Standard',
-                                        'value'   => ''
-                                    ],
-                                    [
-                                        'caption' => 'Alarm',
-                                        'value'   => 'alarm'
-                                    ],
-                                    [
-                                        'caption' => 'Bell',
-                                        'value'   => 'bell'
-                                    ],
-                                    [
-                                        'caption' => 'Boom',
-                                        'value'   => 'boom'
-                                    ],
-                                    [
-                                        'caption' => 'Buzzer',
-                                        'value'   => 'buzzer'
-                                    ],
-                                    [
-                                        'caption' => 'Connected',
-                                        'value'   => 'connected'
-                                    ],
-                                    [
-                                        'caption' => 'Dark',
-                                        'value'   => 'dark'
-                                    ],
-                                    [
-                                        'caption' => 'Digital',
-                                        'value'   => 'digital'
-                                    ],
-                                    [
-                                        'caption' => 'Drums',
-                                        'value'   => 'drums'
-                                    ],
-                                    [
-                                        'caption' => 'Duck',
-                                        'value'   => 'duck'
-                                    ],
-                                    [
-                                        'caption' => 'Full',
-                                        'value'   => 'full'
-                                    ],
-                                    [
-                                        'caption' => 'Happy',
-                                        'value'   => 'happy'
-                                    ],
-                                    [
-                                        'caption' => 'Horn',
-                                        'value'   => 'horn'
-                                    ],
-                                    [
-                                        'caption' => 'Inception',
-                                        'value'   => 'inception'
-                                    ],
-                                    [
-                                        'caption' => 'Kazoo',
-                                        'value'   => 'kazoo'
-                                    ],
-                                    [
-                                        'caption' => 'Roll',
-                                        'value'   => 'roll'
-                                    ],
-                                    [
-                                        'caption' => 'Siren',
-                                        'value'   => 'siren'
-                                    ],
-                                    [
-                                        'caption' => 'Space',
-                                        'value'   => 'space'
-                                    ],
-                                    [
-                                        'caption' => 'Trickling',
-                                        'value'   => 'trickling'
-                                    ],
-                                    [
-                                        'caption' => 'Turn',
-                                        'value'   => 'turn'
+                            'type'     => 'List',
+                            'name'     => 'DeactivationNotification',
+                            'rowCount' => 1,
+                            'add'      => false,
+                            'delete'   => false,
+                            'columns'  => [
+                                [
+                                    'caption' => 'Aktiviert',
+                                    'name'    => 'Use',
+                                    'width'   => '100px',
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Bezeichnung',
+                                    'name'    => 'Designation',
+                                    'width'   => '300px',
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Meldungstext:',
+                                    'name'    => 'LabelMessageText',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Text der Meldung (maximal 256 Zeichen)',
+                                    'name'    => 'MessageText',
+                                    'width'   => '400px',
+                                    'visible' => true,
+                                    'edit'    => [
+                                        'type'      => 'ValidationTextBox',
+                                        'multiline' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Zeitstempel',
+                                    'name'    => 'UseTimestamp',
+                                    'width'   => '100px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerWebFrontNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Nachricht:',
+                                    'name'    => 'LabelWebFrontNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'WebFront Nachricht',
+                                    'name'    => 'UseWebFrontNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
+                                    'name'    => 'WebFrontNotificationTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Icon',
+                                    'name'    => 'WebFrontNotificationIcon',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'SelectIcon'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Anzeigedauer',
+                                    'name'    => 'WebFrontNotificationDisplayDuration',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type'   => 'NumberSpinner',
+                                        'suffix' => 'Sekunden'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerWebFrontPushNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Push-Nachricht:',
+                                    'name'    => 'LabelWebFrontPushNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'WebFront Push-Nachricht',
+                                    'name'    => 'UseWebFrontPushNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
+                                    'name'    => 'WebFrontPushNotificationTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Sound',
+                                    'name'    => 'WebFrontPushNotificationSound',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type'    => 'Select',
+                                        'options' => [
+                                            [
+                                                'caption' => 'Standard',
+                                                'value'   => ''
+                                            ],
+                                            [
+                                                'caption' => 'Alarm',
+                                                'value'   => 'alarm'
+                                            ],
+                                            [
+                                                'caption' => 'Bell',
+                                                'value'   => 'bell'
+                                            ],
+                                            [
+                                                'caption' => 'Boom',
+                                                'value'   => 'boom'
+                                            ],
+                                            [
+                                                'caption' => 'Buzzer',
+                                                'value'   => 'buzzer'
+                                            ],
+                                            [
+                                                'caption' => 'Connected',
+                                                'value'   => 'connected'
+                                            ],
+                                            [
+                                                'caption' => 'Dark',
+                                                'value'   => 'dark'
+                                            ],
+                                            [
+                                                'caption' => 'Digital',
+                                                'value'   => 'digital'
+                                            ],
+                                            [
+                                                'caption' => 'Drums',
+                                                'value'   => 'drums'
+                                            ],
+                                            [
+                                                'caption' => 'Duck',
+                                                'value'   => 'duck'
+                                            ],
+                                            [
+                                                'caption' => 'Full',
+                                                'value'   => 'full'
+                                            ],
+                                            [
+                                                'caption' => 'Happy',
+                                                'value'   => 'happy'
+                                            ],
+                                            [
+                                                'caption' => 'Horn',
+                                                'value'   => 'horn'
+                                            ],
+                                            [
+                                                'caption' => 'Inception',
+                                                'value'   => 'inception'
+                                            ],
+                                            [
+                                                'caption' => 'Kazoo',
+                                                'value'   => 'kazoo'
+                                            ],
+                                            [
+                                                'caption' => 'Roll',
+                                                'value'   => 'roll'
+                                            ],
+                                            [
+                                                'caption' => 'Siren',
+                                                'value'   => 'siren'
+                                            ],
+                                            [
+                                                'caption' => 'Space',
+                                                'value'   => 'space'
+                                            ],
+                                            [
+                                                'caption' => 'Trickling',
+                                                'value'   => 'trickling'
+                                            ],
+                                            [
+                                                'caption' => 'Turn',
+                                                'value'   => 'turn'
+                                            ]
+                                        ]
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Zielscript',
+                                    'name'    => 'WebFrontPushNotificationTargetID',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'SelectScript'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerMail',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'E-Mail:',
+                                    'name'    => 'LabelMail',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'E-Mail',
+                                    'name'    => 'UseMailer',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Betreff',
+                                    'name'    => 'Subject',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerSMS',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'SMS:',
+                                    'name'    => 'LabelSMS',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'SMS',
+                                    'name'    => 'UseSMS',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel',
+                                    'name'    => 'SMSTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerTelegram',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Telegram:',
+                                    'name'    => 'LabelTelegram',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Telegram',
+                                    'name'    => 'UseTelegram',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel',
+                                    'name'    => 'TelegramTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
                                     ]
                                 ]
                             ]
-                        ],
-                        [
-                            'caption' => 'Zielscript',
-                            'name'    => 'WebFrontPushNotificationTargetID',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'SelectScript'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerMail',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'E-Mail:',
-                            'name'    => 'LabelMail',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'E-Mail',
-                            'name'    => 'UseMailer',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Betreff',
-                            'name'    => 'Subject',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerSMS',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'SMS:',
-                            'name'    => 'LabelSMS',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'SMS',
-                            'name'    => 'UseSMS',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Titel',
-                            'name'    => 'SMSTitle',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerTelegram',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Telegram:',
-                            'name'    => 'LabelTelegram',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'Telegram',
-                            'name'    => 'UseTelegram',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Titel',
-                            'name'    => 'TelegramTitle',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
                         ]
                     ]
-                ],
-                [
-                    'type'    => 'Label',
-                    'caption' => ' '
                 ],
                 //Full protection
                 [
-                    'type'    => 'Label',
-                    'caption' => 'Vollschutz',
-                    'bold'    => true,
-                    'italic'  => true
-                ],
-                [
-                    'type'     => 'List',
-                    'name'     => 'FullProtectionAbortActivationNotification',
-                    'caption'  => 'Aktivierungsprüfung',
-                    'rowCount' => 1,
-                    'add'      => false,
-                    'delete'   => false,
-                    'columns'  => [
+                    'type'     => 'ExpansionPanel',
+                    'caption'  => 'Vollschutz',
+                    'expanded' => false,
+                    'items'    => [
                         [
-                            'caption' => 'Aktiviert',
-                            'name'    => 'Use',
-                            'width'   => '100px',
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Bezeichnung',
-                            'name'    => 'Designation',
-                            'width'   => '300px',
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Meldungstext:',
-                            'name'    => 'LabelMessageText',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'Text der Meldung (maximal 256 Zeichen)',
-                            'name'    => 'MessageText',
-                            'width'   => '400px',
-                            'visible' => true,
-                            'edit'    => [
-                                'type'      => 'ValidationTextBox',
-                                'multiline' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'Zeitstempel',
-                            'name'    => 'UseTimestamp',
-                            'width'   => '100px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerWebFrontNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Nachricht:',
-                            'name'    => 'LabelWebFrontNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'WebFront Nachricht',
-                            'name'    => 'UseWebFrontNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
-                            'name'    => 'WebFrontNotificationTitle',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Icon',
-                            'name'    => 'WebFrontNotificationIcon',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'SelectIcon'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Anzeigedauer',
-                            'name'    => 'WebFrontNotificationDisplayDuration',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type'   => 'NumberSpinner',
-                                'suffix' => 'Sekunden'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerWebFrontPushNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Push-Nachricht:',
-                            'name'    => 'LabelWebFrontPushNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'WebFront Push-Nachricht',
-                            'name'    => 'UseWebFrontPushNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
-                            'name'    => 'WebFrontPushNotificationTitle',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Sound',
-                            'name'    => 'WebFrontPushNotificationSound',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type'    => 'Select',
-                                'options' => [
-                                    [
-                                        'caption' => 'Standard',
-                                        'value'   => ''
-                                    ],
-                                    [
-                                        'caption' => 'Alarm',
-                                        'value'   => 'alarm'
-                                    ],
-                                    [
-                                        'caption' => 'Bell',
-                                        'value'   => 'bell'
-                                    ],
-                                    [
-                                        'caption' => 'Boom',
-                                        'value'   => 'boom'
-                                    ],
-                                    [
-                                        'caption' => 'Buzzer',
-                                        'value'   => 'buzzer'
-                                    ],
-                                    [
-                                        'caption' => 'Connected',
-                                        'value'   => 'connected'
-                                    ],
-                                    [
-                                        'caption' => 'Dark',
-                                        'value'   => 'dark'
-                                    ],
-                                    [
-                                        'caption' => 'Digital',
-                                        'value'   => 'digital'
-                                    ],
-                                    [
-                                        'caption' => 'Drums',
-                                        'value'   => 'drums'
-                                    ],
-                                    [
-                                        'caption' => 'Duck',
-                                        'value'   => 'duck'
-                                    ],
-                                    [
-                                        'caption' => 'Full',
-                                        'value'   => 'full'
-                                    ],
-                                    [
-                                        'caption' => 'Happy',
-                                        'value'   => 'happy'
-                                    ],
-                                    [
-                                        'caption' => 'Horn',
-                                        'value'   => 'horn'
-                                    ],
-                                    [
-                                        'caption' => 'Inception',
-                                        'value'   => 'inception'
-                                    ],
-                                    [
-                                        'caption' => 'Kazoo',
-                                        'value'   => 'kazoo'
-                                    ],
-                                    [
-                                        'caption' => 'Roll',
-                                        'value'   => 'roll'
-                                    ],
-                                    [
-                                        'caption' => 'Siren',
-                                        'value'   => 'siren'
-                                    ],
-                                    [
-                                        'caption' => 'Space',
-                                        'value'   => 'space'
-                                    ],
-                                    [
-                                        'caption' => 'Trickling',
-                                        'value'   => 'trickling'
-                                    ],
-                                    [
-                                        'caption' => 'Turn',
-                                        'value'   => 'turn'
+                            'type'     => 'List',
+                            'name'     => 'FullProtectionAbortActivationNotification',
+                            'caption'  => 'Aktivierungsprüfung',
+                            'rowCount' => 1,
+                            'add'      => false,
+                            'delete'   => false,
+                            'columns'  => [
+                                [
+                                    'caption' => 'Aktiviert',
+                                    'name'    => 'Use',
+                                    'width'   => '100px',
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Bezeichnung',
+                                    'name'    => 'Designation',
+                                    'width'   => '300px',
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Meldungstext:',
+                                    'name'    => 'LabelMessageText',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Text der Meldung (maximal 256 Zeichen)',
+                                    'name'    => 'MessageText',
+                                    'width'   => '400px',
+                                    'visible' => true,
+                                    'edit'    => [
+                                        'type'      => 'ValidationTextBox',
+                                        'multiline' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Zeitstempel',
+                                    'name'    => 'UseTimestamp',
+                                    'width'   => '100px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerWebFrontNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Nachricht:',
+                                    'name'    => 'LabelWebFrontNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'WebFront Nachricht',
+                                    'name'    => 'UseWebFrontNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
+                                    'name'    => 'WebFrontNotificationTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Icon',
+                                    'name'    => 'WebFrontNotificationIcon',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'SelectIcon'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Anzeigedauer',
+                                    'name'    => 'WebFrontNotificationDisplayDuration',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type'   => 'NumberSpinner',
+                                        'suffix' => 'Sekunden'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerWebFrontPushNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Push-Nachricht:',
+                                    'name'    => 'LabelWebFrontPushNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'WebFront Push-Nachricht',
+                                    'name'    => 'UseWebFrontPushNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
+                                    'name'    => 'WebFrontPushNotificationTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Sound',
+                                    'name'    => 'WebFrontPushNotificationSound',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type'    => 'Select',
+                                        'options' => [
+                                            [
+                                                'caption' => 'Standard',
+                                                'value'   => ''
+                                            ],
+                                            [
+                                                'caption' => 'Alarm',
+                                                'value'   => 'alarm'
+                                            ],
+                                            [
+                                                'caption' => 'Bell',
+                                                'value'   => 'bell'
+                                            ],
+                                            [
+                                                'caption' => 'Boom',
+                                                'value'   => 'boom'
+                                            ],
+                                            [
+                                                'caption' => 'Buzzer',
+                                                'value'   => 'buzzer'
+                                            ],
+                                            [
+                                                'caption' => 'Connected',
+                                                'value'   => 'connected'
+                                            ],
+                                            [
+                                                'caption' => 'Dark',
+                                                'value'   => 'dark'
+                                            ],
+                                            [
+                                                'caption' => 'Digital',
+                                                'value'   => 'digital'
+                                            ],
+                                            [
+                                                'caption' => 'Drums',
+                                                'value'   => 'drums'
+                                            ],
+                                            [
+                                                'caption' => 'Duck',
+                                                'value'   => 'duck'
+                                            ],
+                                            [
+                                                'caption' => 'Full',
+                                                'value'   => 'full'
+                                            ],
+                                            [
+                                                'caption' => 'Happy',
+                                                'value'   => 'happy'
+                                            ],
+                                            [
+                                                'caption' => 'Horn',
+                                                'value'   => 'horn'
+                                            ],
+                                            [
+                                                'caption' => 'Inception',
+                                                'value'   => 'inception'
+                                            ],
+                                            [
+                                                'caption' => 'Kazoo',
+                                                'value'   => 'kazoo'
+                                            ],
+                                            [
+                                                'caption' => 'Roll',
+                                                'value'   => 'roll'
+                                            ],
+                                            [
+                                                'caption' => 'Siren',
+                                                'value'   => 'siren'
+                                            ],
+                                            [
+                                                'caption' => 'Space',
+                                                'value'   => 'space'
+                                            ],
+                                            [
+                                                'caption' => 'Trickling',
+                                                'value'   => 'trickling'
+                                            ],
+                                            [
+                                                'caption' => 'Turn',
+                                                'value'   => 'turn'
+                                            ]
+                                        ]
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Zielscript',
+                                    'name'    => 'WebFrontPushNotificationTargetID',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'SelectScript'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerMail',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'E-Mail:',
+                                    'name'    => 'LabelMail',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'E-Mail',
+                                    'name'    => 'UseMailer',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Betreff',
+                                    'name'    => 'Subject',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerSMS',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'SMS:',
+                                    'name'    => 'LabelSMS',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'SMS',
+                                    'name'    => 'UseSMS',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel',
+                                    'name'    => 'SMSTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerTelegram',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Telegram:',
+                                    'name'    => 'LabelTelegram',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Telegram',
+                                    'name'    => 'UseTelegram',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel',
+                                    'name'    => 'TelegramTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerOpenDoorWindowNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Tür/Fenster geöffnet:',
+                                    'name'    => 'LabelOpenDoorWindowNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Benachrichtigung',
+                                    'name'    => 'UseOpenDoorWindowNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
                                     ]
                                 ]
                             ]
                         ],
                         [
-                            'caption' => 'Zielscript',
-                            'name'    => 'WebFrontPushNotificationTargetID',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'SelectScript'
-                            ]
+                            'type'    => 'Label',
+                            'caption' => ' '
                         ],
                         [
-                            'caption' => ' ',
-                            'name'    => 'SpacerMail',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'E-Mail:',
-                            'name'    => 'LabelMail',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'E-Mail',
-                            'name'    => 'UseMailer',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Betreff',
-                            'name'    => 'Subject',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerSMS',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'SMS:',
-                            'name'    => 'LabelSMS',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'SMS',
-                            'name'    => 'UseSMS',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Titel',
-                            'name'    => 'SMSTitle',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerTelegram',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Telegram:',
-                            'name'    => 'LabelTelegram',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'Telegram',
-                            'name'    => 'UseTelegram',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Titel',
-                            'name'    => 'TelegramTitle',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerOpenDoorWindowNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Tür/Fenster geöffnet:',
-                            'name'    => 'LabelOpenDoorWindowNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'Benachrichtigung',
-                            'name'    => 'UseOpenDoorWindowNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ]
-                    ]
-                ],
-                [
-                    'type'    => 'Label',
-                    'caption' => ' '
-                ],
-                [
-                    'type'     => 'List',
-                    'name'     => 'FullProtectionDelayedActivationNotification',
-                    'caption'  => 'Einschaltverzögerung',
-                    'rowCount' => 1,
-                    'add'      => false,
-                    'delete'   => false,
-                    'columns'  => [
-                        [
-                            'caption' => 'Aktiviert',
-                            'name'    => 'Use',
-                            'width'   => '100px',
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Bezeichnung',
-                            'name'    => 'Designation',
-                            'width'   => '300px',
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Meldungstext:',
-                            'name'    => 'LabelMessageText',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'Text der Meldung (maximal 256 Zeichen)',
-                            'name'    => 'MessageText',
-                            'width'   => '400px',
-                            'visible' => true,
-                            'edit'    => [
-                                'type'      => 'ValidationTextBox',
-                                'multiline' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'Zeitstempel',
-                            'name'    => 'UseTimestamp',
-                            'width'   => '100px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerWebFrontNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Nachricht:',
-                            'name'    => 'LabelWebFrontNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'WebFront Nachricht',
-                            'name'    => 'UseWebFrontNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
-                            'name'    => 'WebFrontNotificationTitle',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Icon',
-                            'name'    => 'WebFrontNotificationIcon',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'SelectIcon'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Anzeigedauer',
-                            'name'    => 'WebFrontNotificationDisplayDuration',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type'   => 'NumberSpinner',
-                                'suffix' => 'Sekunden'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerWebFrontPushNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Push-Nachricht:',
-                            'name'    => 'LabelWebFrontPushNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'WebFront Push-Nachricht',
-                            'name'    => 'UseWebFrontPushNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
-                            'name'    => 'WebFrontPushNotificationTitle',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Sound',
-                            'name'    => 'WebFrontPushNotificationSound',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type'    => 'Select',
-                                'options' => [
-                                    [
-                                        'caption' => 'Standard',
-                                        'value'   => ''
-                                    ],
-                                    [
-                                        'caption' => 'Alarm',
-                                        'value'   => 'alarm'
-                                    ],
-                                    [
-                                        'caption' => 'Bell',
-                                        'value'   => 'bell'
-                                    ],
-                                    [
-                                        'caption' => 'Boom',
-                                        'value'   => 'boom'
-                                    ],
-                                    [
-                                        'caption' => 'Buzzer',
-                                        'value'   => 'buzzer'
-                                    ],
-                                    [
-                                        'caption' => 'Connected',
-                                        'value'   => 'connected'
-                                    ],
-                                    [
-                                        'caption' => 'Dark',
-                                        'value'   => 'dark'
-                                    ],
-                                    [
-                                        'caption' => 'Digital',
-                                        'value'   => 'digital'
-                                    ],
-                                    [
-                                        'caption' => 'Drums',
-                                        'value'   => 'drums'
-                                    ],
-                                    [
-                                        'caption' => 'Duck',
-                                        'value'   => 'duck'
-                                    ],
-                                    [
-                                        'caption' => 'Full',
-                                        'value'   => 'full'
-                                    ],
-                                    [
-                                        'caption' => 'Happy',
-                                        'value'   => 'happy'
-                                    ],
-                                    [
-                                        'caption' => 'Horn',
-                                        'value'   => 'horn'
-                                    ],
-                                    [
-                                        'caption' => 'Inception',
-                                        'value'   => 'inception'
-                                    ],
-                                    [
-                                        'caption' => 'Kazoo',
-                                        'value'   => 'kazoo'
-                                    ],
-                                    [
-                                        'caption' => 'Roll',
-                                        'value'   => 'roll'
-                                    ],
-                                    [
-                                        'caption' => 'Siren',
-                                        'value'   => 'siren'
-                                    ],
-                                    [
-                                        'caption' => 'Space',
-                                        'value'   => 'space'
-                                    ],
-                                    [
-                                        'caption' => 'Trickling',
-                                        'value'   => 'trickling'
-                                    ],
-                                    [
-                                        'caption' => 'Turn',
-                                        'value'   => 'turn'
+                            'type'     => 'List',
+                            'name'     => 'FullProtectionDelayedActivationNotification',
+                            'caption'  => 'Einschaltverzögerung',
+                            'rowCount' => 1,
+                            'add'      => false,
+                            'delete'   => false,
+                            'columns'  => [
+                                [
+                                    'caption' => 'Aktiviert',
+                                    'name'    => 'Use',
+                                    'width'   => '100px',
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Bezeichnung',
+                                    'name'    => 'Designation',
+                                    'width'   => '300px',
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Meldungstext:',
+                                    'name'    => 'LabelMessageText',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Text der Meldung (maximal 256 Zeichen)',
+                                    'name'    => 'MessageText',
+                                    'width'   => '400px',
+                                    'visible' => true,
+                                    'edit'    => [
+                                        'type'      => 'ValidationTextBox',
+                                        'multiline' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Zeitstempel',
+                                    'name'    => 'UseTimestamp',
+                                    'width'   => '100px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerWebFrontNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Nachricht:',
+                                    'name'    => 'LabelWebFrontNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'WebFront Nachricht',
+                                    'name'    => 'UseWebFrontNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
+                                    'name'    => 'WebFrontNotificationTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Icon',
+                                    'name'    => 'WebFrontNotificationIcon',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'SelectIcon'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Anzeigedauer',
+                                    'name'    => 'WebFrontNotificationDisplayDuration',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type'   => 'NumberSpinner',
+                                        'suffix' => 'Sekunden'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerWebFrontPushNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Push-Nachricht:',
+                                    'name'    => 'LabelWebFrontPushNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'WebFront Push-Nachricht',
+                                    'name'    => 'UseWebFrontPushNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
+                                    'name'    => 'WebFrontPushNotificationTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Sound',
+                                    'name'    => 'WebFrontPushNotificationSound',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type'    => 'Select',
+                                        'options' => [
+                                            [
+                                                'caption' => 'Standard',
+                                                'value'   => ''
+                                            ],
+                                            [
+                                                'caption' => 'Alarm',
+                                                'value'   => 'alarm'
+                                            ],
+                                            [
+                                                'caption' => 'Bell',
+                                                'value'   => 'bell'
+                                            ],
+                                            [
+                                                'caption' => 'Boom',
+                                                'value'   => 'boom'
+                                            ],
+                                            [
+                                                'caption' => 'Buzzer',
+                                                'value'   => 'buzzer'
+                                            ],
+                                            [
+                                                'caption' => 'Connected',
+                                                'value'   => 'connected'
+                                            ],
+                                            [
+                                                'caption' => 'Dark',
+                                                'value'   => 'dark'
+                                            ],
+                                            [
+                                                'caption' => 'Digital',
+                                                'value'   => 'digital'
+                                            ],
+                                            [
+                                                'caption' => 'Drums',
+                                                'value'   => 'drums'
+                                            ],
+                                            [
+                                                'caption' => 'Duck',
+                                                'value'   => 'duck'
+                                            ],
+                                            [
+                                                'caption' => 'Full',
+                                                'value'   => 'full'
+                                            ],
+                                            [
+                                                'caption' => 'Happy',
+                                                'value'   => 'happy'
+                                            ],
+                                            [
+                                                'caption' => 'Horn',
+                                                'value'   => 'horn'
+                                            ],
+                                            [
+                                                'caption' => 'Inception',
+                                                'value'   => 'inception'
+                                            ],
+                                            [
+                                                'caption' => 'Kazoo',
+                                                'value'   => 'kazoo'
+                                            ],
+                                            [
+                                                'caption' => 'Roll',
+                                                'value'   => 'roll'
+                                            ],
+                                            [
+                                                'caption' => 'Siren',
+                                                'value'   => 'siren'
+                                            ],
+                                            [
+                                                'caption' => 'Space',
+                                                'value'   => 'space'
+                                            ],
+                                            [
+                                                'caption' => 'Trickling',
+                                                'value'   => 'trickling'
+                                            ],
+                                            [
+                                                'caption' => 'Turn',
+                                                'value'   => 'turn'
+                                            ]
+                                        ]
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Zielscript',
+                                    'name'    => 'WebFrontPushNotificationTargetID',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'SelectScript'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerMail',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'E-Mail:',
+                                    'name'    => 'LabelMail',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'E-Mail',
+                                    'name'    => 'UseMailer',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Betreff',
+                                    'name'    => 'Subject',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerSMS',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'SMS:',
+                                    'name'    => 'LabelSMS',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'SMS',
+                                    'name'    => 'UseSMS',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel',
+                                    'name'    => 'SMSTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerTelegram',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Telegram:',
+                                    'name'    => 'LabelTelegram',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Telegram',
+                                    'name'    => 'UseTelegram',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel',
+                                    'name'    => 'TelegramTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerOpenDoorWindowNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Tür/Fenster geöffnet:',
+                                    'name'    => 'LabelOpenDoorWindowNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Benachrichtigung',
+                                    'name'    => 'UseOpenDoorWindowNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
                                     ]
                                 ]
                             ]
                         ],
                         [
-                            'caption' => 'Zielscript',
-                            'name'    => 'WebFrontPushNotificationTargetID',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'SelectScript'
-                            ]
+                            'type'    => 'Label',
+                            'caption' => ' '
                         ],
                         [
-                            'caption' => ' ',
-                            'name'    => 'SpacerMail',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'E-Mail:',
-                            'name'    => 'LabelMail',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'E-Mail',
-                            'name'    => 'UseMailer',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Betreff',
-                            'name'    => 'Subject',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerSMS',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'SMS:',
-                            'name'    => 'LabelSMS',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'SMS',
-                            'name'    => 'UseSMS',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Titel',
-                            'name'    => 'SMSTitle',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerTelegram',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Telegram:',
-                            'name'    => 'LabelTelegram',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'Telegram',
-                            'name'    => 'UseTelegram',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Titel',
-                            'name'    => 'TelegramTitle',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerOpenDoorWindowNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Tür/Fenster geöffnet:',
-                            'name'    => 'LabelOpenDoorWindowNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'Benachrichtigung',
-                            'name'    => 'UseOpenDoorWindowNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ]
-                    ]
-                ],
-                [
-                    'type'    => 'Label',
-                    'caption' => ' '
-                ],
-                [
-                    'type'     => 'List',
-                    'name'     => 'FullProtectionActivationWithOpenDoorWindowNotification',
-                    'caption'  => 'An + Tür/Fenster geöffnet (teilscharf)',
-                    'rowCount' => 1,
-                    'add'      => false,
-                    'delete'   => false,
-                    'columns'  => [
-                        [
-                            'caption' => 'Aktiviert',
-                            'name'    => 'Use',
-                            'width'   => '100px',
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Bezeichnung',
-                            'name'    => 'Designation',
-                            'width'   => '300px',
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Meldungstext:',
-                            'name'    => 'LabelMessageText',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'Text der Meldung (maximal 256 Zeichen)',
-                            'name'    => 'MessageText',
-                            'width'   => '400px',
-                            'visible' => true,
-                            'edit'    => [
-                                'type'      => 'ValidationTextBox',
-                                'multiline' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'Zeitstempel',
-                            'name'    => 'UseTimestamp',
-                            'width'   => '100px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerWebFrontNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Nachricht:',
-                            'name'    => 'LabelWebFrontNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'WebFront Nachricht',
-                            'name'    => 'UseWebFrontNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
-                            'name'    => 'WebFrontNotificationTitle',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Icon',
-                            'name'    => 'WebFrontNotificationIcon',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'SelectIcon'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Anzeigedauer',
-                            'name'    => 'WebFrontNotificationDisplayDuration',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type'   => 'NumberSpinner',
-                                'suffix' => 'Sekunden'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerWebFrontPushNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Push-Nachricht:',
-                            'name'    => 'LabelWebFrontPushNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'WebFront Push-Nachricht',
-                            'name'    => 'UseWebFrontPushNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
-                            'name'    => 'WebFrontPushNotificationTitle',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Sound',
-                            'name'    => 'WebFrontPushNotificationSound',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type'    => 'Select',
-                                'options' => [
-                                    [
-                                        'caption' => 'Standard',
-                                        'value'   => ''
-                                    ],
-                                    [
-                                        'caption' => 'Alarm',
-                                        'value'   => 'alarm'
-                                    ],
-                                    [
-                                        'caption' => 'Bell',
-                                        'value'   => 'bell'
-                                    ],
-                                    [
-                                        'caption' => 'Boom',
-                                        'value'   => 'boom'
-                                    ],
-                                    [
-                                        'caption' => 'Buzzer',
-                                        'value'   => 'buzzer'
-                                    ],
-                                    [
-                                        'caption' => 'Connected',
-                                        'value'   => 'connected'
-                                    ],
-                                    [
-                                        'caption' => 'Dark',
-                                        'value'   => 'dark'
-                                    ],
-                                    [
-                                        'caption' => 'Digital',
-                                        'value'   => 'digital'
-                                    ],
-                                    [
-                                        'caption' => 'Drums',
-                                        'value'   => 'drums'
-                                    ],
-                                    [
-                                        'caption' => 'Duck',
-                                        'value'   => 'duck'
-                                    ],
-                                    [
-                                        'caption' => 'Full',
-                                        'value'   => 'full'
-                                    ],
-                                    [
-                                        'caption' => 'Happy',
-                                        'value'   => 'happy'
-                                    ],
-                                    [
-                                        'caption' => 'Horn',
-                                        'value'   => 'horn'
-                                    ],
-                                    [
-                                        'caption' => 'Inception',
-                                        'value'   => 'inception'
-                                    ],
-                                    [
-                                        'caption' => 'Kazoo',
-                                        'value'   => 'kazoo'
-                                    ],
-                                    [
-                                        'caption' => 'Roll',
-                                        'value'   => 'roll'
-                                    ],
-                                    [
-                                        'caption' => 'Siren',
-                                        'value'   => 'siren'
-                                    ],
-                                    [
-                                        'caption' => 'Space',
-                                        'value'   => 'space'
-                                    ],
-                                    [
-                                        'caption' => 'Trickling',
-                                        'value'   => 'trickling'
-                                    ],
-                                    [
-                                        'caption' => 'Turn',
-                                        'value'   => 'turn'
+                            'type'     => 'List',
+                            'name'     => 'FullProtectionActivationWithOpenDoorWindowNotification',
+                            'caption'  => 'Teilscharf (Tür/Fenster geöffnet)',
+                            'rowCount' => 1,
+                            'add'      => false,
+                            'delete'   => false,
+                            'columns'  => [
+                                [
+                                    'caption' => 'Aktiviert',
+                                    'name'    => 'Use',
+                                    'width'   => '100px',
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Bezeichnung',
+                                    'name'    => 'Designation',
+                                    'width'   => '300px',
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Meldungstext:',
+                                    'name'    => 'LabelMessageText',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Text der Meldung (maximal 256 Zeichen)',
+                                    'name'    => 'MessageText',
+                                    'width'   => '400px',
+                                    'visible' => true,
+                                    'edit'    => [
+                                        'type'      => 'ValidationTextBox',
+                                        'multiline' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Zeitstempel',
+                                    'name'    => 'UseTimestamp',
+                                    'width'   => '100px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerWebFrontNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Nachricht:',
+                                    'name'    => 'LabelWebFrontNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'WebFront Nachricht',
+                                    'name'    => 'UseWebFrontNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
+                                    'name'    => 'WebFrontNotificationTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Icon',
+                                    'name'    => 'WebFrontNotificationIcon',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'SelectIcon'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Anzeigedauer',
+                                    'name'    => 'WebFrontNotificationDisplayDuration',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type'   => 'NumberSpinner',
+                                        'suffix' => 'Sekunden'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerWebFrontPushNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Push-Nachricht:',
+                                    'name'    => 'LabelWebFrontPushNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'WebFront Push-Nachricht',
+                                    'name'    => 'UseWebFrontPushNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
+                                    'name'    => 'WebFrontPushNotificationTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Sound',
+                                    'name'    => 'WebFrontPushNotificationSound',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type'    => 'Select',
+                                        'options' => [
+                                            [
+                                                'caption' => 'Standard',
+                                                'value'   => ''
+                                            ],
+                                            [
+                                                'caption' => 'Alarm',
+                                                'value'   => 'alarm'
+                                            ],
+                                            [
+                                                'caption' => 'Bell',
+                                                'value'   => 'bell'
+                                            ],
+                                            [
+                                                'caption' => 'Boom',
+                                                'value'   => 'boom'
+                                            ],
+                                            [
+                                                'caption' => 'Buzzer',
+                                                'value'   => 'buzzer'
+                                            ],
+                                            [
+                                                'caption' => 'Connected',
+                                                'value'   => 'connected'
+                                            ],
+                                            [
+                                                'caption' => 'Dark',
+                                                'value'   => 'dark'
+                                            ],
+                                            [
+                                                'caption' => 'Digital',
+                                                'value'   => 'digital'
+                                            ],
+                                            [
+                                                'caption' => 'Drums',
+                                                'value'   => 'drums'
+                                            ],
+                                            [
+                                                'caption' => 'Duck',
+                                                'value'   => 'duck'
+                                            ],
+                                            [
+                                                'caption' => 'Full',
+                                                'value'   => 'full'
+                                            ],
+                                            [
+                                                'caption' => 'Happy',
+                                                'value'   => 'happy'
+                                            ],
+                                            [
+                                                'caption' => 'Horn',
+                                                'value'   => 'horn'
+                                            ],
+                                            [
+                                                'caption' => 'Inception',
+                                                'value'   => 'inception'
+                                            ],
+                                            [
+                                                'caption' => 'Kazoo',
+                                                'value'   => 'kazoo'
+                                            ],
+                                            [
+                                                'caption' => 'Roll',
+                                                'value'   => 'roll'
+                                            ],
+                                            [
+                                                'caption' => 'Siren',
+                                                'value'   => 'siren'
+                                            ],
+                                            [
+                                                'caption' => 'Space',
+                                                'value'   => 'space'
+                                            ],
+                                            [
+                                                'caption' => 'Trickling',
+                                                'value'   => 'trickling'
+                                            ],
+                                            [
+                                                'caption' => 'Turn',
+                                                'value'   => 'turn'
+                                            ]
+                                        ]
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Zielscript',
+                                    'name'    => 'WebFrontPushNotificationTargetID',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'SelectScript'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerMail',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'E-Mail:',
+                                    'name'    => 'LabelMail',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'E-Mail',
+                                    'name'    => 'UseMailer',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Betreff',
+                                    'name'    => 'Subject',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerSMS',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'SMS:',
+                                    'name'    => 'LabelSMS',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'SMS',
+                                    'name'    => 'UseSMS',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel',
+                                    'name'    => 'SMSTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerTelegram',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Telegram:',
+                                    'name'    => 'LabelTelegram',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Telegram',
+                                    'name'    => 'UseTelegram',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel',
+                                    'name'    => 'TelegramTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerOpenDoorWindowNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Tür/Fenster geöffnet:',
+                                    'name'    => 'LabelOpenDoorWindowNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Benachrichtigung',
+                                    'name'    => 'UseOpenDoorWindowNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
                                     ]
                                 ]
                             ]
                         ],
                         [
-                            'caption' => 'Zielscript',
-                            'name'    => 'WebFrontPushNotificationTargetID',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'SelectScript'
-                            ]
+                            'type'    => 'Label',
+                            'caption' => ' '
                         ],
                         [
-                            'caption' => ' ',
-                            'name'    => 'SpacerMail',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'E-Mail:',
-                            'name'    => 'LabelMail',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'E-Mail',
-                            'name'    => 'UseMailer',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Betreff',
-                            'name'    => 'Subject',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerSMS',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'SMS:',
-                            'name'    => 'LabelSMS',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'SMS',
-                            'name'    => 'UseSMS',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Titel',
-                            'name'    => 'SMSTitle',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerTelegram',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Telegram:',
-                            'name'    => 'LabelTelegram',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'Telegram',
-                            'name'    => 'UseTelegram',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Titel',
-                            'name'    => 'TelegramTitle',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerOpenDoorWindowNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Tür/Fenster geöffnet:',
-                            'name'    => 'LabelOpenDoorWindowNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'Benachrichtigung',
-                            'name'    => 'UseOpenDoorWindowNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ]
-                    ]
-                ],
-                [
-                    'type'    => 'Label',
-                    'caption' => ' '
-                ],
-                [
-                    'type'     => 'List',
-                    'name'     => 'FullProtectionActivationNotification',
-                    'caption'  => 'An (scharf)',
-                    'rowCount' => 1,
-                    'add'      => false,
-                    'delete'   => false,
-                    'columns'  => [
-                        [
-                            'caption' => 'Aktiviert',
-                            'name'    => 'Use',
-                            'width'   => '100px',
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Bezeichnung',
-                            'name'    => 'Designation',
-                            'width'   => '300px',
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Meldungstext:',
-                            'name'    => 'LabelMessageText',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'Text der Meldung (maximal 256 Zeichen)',
-                            'name'    => 'MessageText',
-                            'width'   => '400px',
-                            'visible' => true,
-                            'edit'    => [
-                                'type'      => 'ValidationTextBox',
-                                'multiline' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'Zeitstempel',
-                            'name'    => 'UseTimestamp',
-                            'width'   => '100px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerWebFrontNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Nachricht:',
-                            'name'    => 'LabelWebFrontNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'WebFront Nachricht',
-                            'name'    => 'UseWebFrontNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
-                            'name'    => 'WebFrontNotificationTitle',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Icon',
-                            'name'    => 'WebFrontNotificationIcon',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'SelectIcon'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Anzeigedauer',
-                            'name'    => 'WebFrontNotificationDisplayDuration',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type'   => 'NumberSpinner',
-                                'suffix' => 'Sekunden'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerWebFrontPushNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Push-Nachricht:',
-                            'name'    => 'LabelWebFrontPushNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'WebFront Push-Nachricht',
-                            'name'    => 'UseWebFrontPushNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
-                            'name'    => 'WebFrontPushNotificationTitle',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Sound',
-                            'name'    => 'WebFrontPushNotificationSound',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type'    => 'Select',
-                                'options' => [
-                                    [
-                                        'caption' => 'Standard',
-                                        'value'   => ''
-                                    ],
-                                    [
-                                        'caption' => 'Alarm',
-                                        'value'   => 'alarm'
-                                    ],
-                                    [
-                                        'caption' => 'Bell',
-                                        'value'   => 'bell'
-                                    ],
-                                    [
-                                        'caption' => 'Boom',
-                                        'value'   => 'boom'
-                                    ],
-                                    [
-                                        'caption' => 'Buzzer',
-                                        'value'   => 'buzzer'
-                                    ],
-                                    [
-                                        'caption' => 'Connected',
-                                        'value'   => 'connected'
-                                    ],
-                                    [
-                                        'caption' => 'Dark',
-                                        'value'   => 'dark'
-                                    ],
-                                    [
-                                        'caption' => 'Digital',
-                                        'value'   => 'digital'
-                                    ],
-                                    [
-                                        'caption' => 'Drums',
-                                        'value'   => 'drums'
-                                    ],
-                                    [
-                                        'caption' => 'Duck',
-                                        'value'   => 'duck'
-                                    ],
-                                    [
-                                        'caption' => 'Full',
-                                        'value'   => 'full'
-                                    ],
-                                    [
-                                        'caption' => 'Happy',
-                                        'value'   => 'happy'
-                                    ],
-                                    [
-                                        'caption' => 'Horn',
-                                        'value'   => 'horn'
-                                    ],
-                                    [
-                                        'caption' => 'Inception',
-                                        'value'   => 'inception'
-                                    ],
-                                    [
-                                        'caption' => 'Kazoo',
-                                        'value'   => 'kazoo'
-                                    ],
-                                    [
-                                        'caption' => 'Roll',
-                                        'value'   => 'roll'
-                                    ],
-                                    [
-                                        'caption' => 'Siren',
-                                        'value'   => 'siren'
-                                    ],
-                                    [
-                                        'caption' => 'Space',
-                                        'value'   => 'space'
-                                    ],
-                                    [
-                                        'caption' => 'Trickling',
-                                        'value'   => 'trickling'
-                                    ],
-                                    [
-                                        'caption' => 'Turn',
-                                        'value'   => 'turn'
+                            'type'     => 'List',
+                            'name'     => 'FullProtectionActivationNotification',
+                            'caption'  => 'Scharf',
+                            'rowCount' => 1,
+                            'add'      => false,
+                            'delete'   => false,
+                            'columns'  => [
+                                [
+                                    'caption' => 'Aktiviert',
+                                    'name'    => 'Use',
+                                    'width'   => '100px',
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Bezeichnung',
+                                    'name'    => 'Designation',
+                                    'width'   => '300px',
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Meldungstext:',
+                                    'name'    => 'LabelMessageText',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Text der Meldung (maximal 256 Zeichen)',
+                                    'name'    => 'MessageText',
+                                    'width'   => '400px',
+                                    'visible' => true,
+                                    'edit'    => [
+                                        'type'      => 'ValidationTextBox',
+                                        'multiline' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Zeitstempel',
+                                    'name'    => 'UseTimestamp',
+                                    'width'   => '100px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerWebFrontNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Nachricht:',
+                                    'name'    => 'LabelWebFrontNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'WebFront Nachricht',
+                                    'name'    => 'UseWebFrontNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
+                                    'name'    => 'WebFrontNotificationTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Icon',
+                                    'name'    => 'WebFrontNotificationIcon',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'SelectIcon'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Anzeigedauer',
+                                    'name'    => 'WebFrontNotificationDisplayDuration',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type'   => 'NumberSpinner',
+                                        'suffix' => 'Sekunden'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerWebFrontPushNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Push-Nachricht:',
+                                    'name'    => 'LabelWebFrontPushNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'WebFront Push-Nachricht',
+                                    'name'    => 'UseWebFrontPushNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
+                                    'name'    => 'WebFrontPushNotificationTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Sound',
+                                    'name'    => 'WebFrontPushNotificationSound',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type'    => 'Select',
+                                        'options' => [
+                                            [
+                                                'caption' => 'Standard',
+                                                'value'   => ''
+                                            ],
+                                            [
+                                                'caption' => 'Alarm',
+                                                'value'   => 'alarm'
+                                            ],
+                                            [
+                                                'caption' => 'Bell',
+                                                'value'   => 'bell'
+                                            ],
+                                            [
+                                                'caption' => 'Boom',
+                                                'value'   => 'boom'
+                                            ],
+                                            [
+                                                'caption' => 'Buzzer',
+                                                'value'   => 'buzzer'
+                                            ],
+                                            [
+                                                'caption' => 'Connected',
+                                                'value'   => 'connected'
+                                            ],
+                                            [
+                                                'caption' => 'Dark',
+                                                'value'   => 'dark'
+                                            ],
+                                            [
+                                                'caption' => 'Digital',
+                                                'value'   => 'digital'
+                                            ],
+                                            [
+                                                'caption' => 'Drums',
+                                                'value'   => 'drums'
+                                            ],
+                                            [
+                                                'caption' => 'Duck',
+                                                'value'   => 'duck'
+                                            ],
+                                            [
+                                                'caption' => 'Full',
+                                                'value'   => 'full'
+                                            ],
+                                            [
+                                                'caption' => 'Happy',
+                                                'value'   => 'happy'
+                                            ],
+                                            [
+                                                'caption' => 'Horn',
+                                                'value'   => 'horn'
+                                            ],
+                                            [
+                                                'caption' => 'Inception',
+                                                'value'   => 'inception'
+                                            ],
+                                            [
+                                                'caption' => 'Kazoo',
+                                                'value'   => 'kazoo'
+                                            ],
+                                            [
+                                                'caption' => 'Roll',
+                                                'value'   => 'roll'
+                                            ],
+                                            [
+                                                'caption' => 'Siren',
+                                                'value'   => 'siren'
+                                            ],
+                                            [
+                                                'caption' => 'Space',
+                                                'value'   => 'space'
+                                            ],
+                                            [
+                                                'caption' => 'Trickling',
+                                                'value'   => 'trickling'
+                                            ],
+                                            [
+                                                'caption' => 'Turn',
+                                                'value'   => 'turn'
+                                            ]
+                                        ]
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Zielscript',
+                                    'name'    => 'WebFrontPushNotificationTargetID',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'SelectScript'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerMail',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'E-Mail:',
+                                    'name'    => 'LabelMail',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'E-Mail',
+                                    'name'    => 'UseMailer',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Betreff',
+                                    'name'    => 'Subject',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerSMS',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'SMS:',
+                                    'name'    => 'LabelSMS',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'SMS',
+                                    'name'    => 'UseSMS',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel',
+                                    'name'    => 'SMSTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerTelegram',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Telegram:',
+                                    'name'    => 'LabelTelegram',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Telegram',
+                                    'name'    => 'UseTelegram',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel',
+                                    'name'    => 'TelegramTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerOpenDoorWindowNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Tür/Fenster geöffnet:',
+                                    'name'    => 'LabelOpenDoorWindowNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Benachrichtigung',
+                                    'name'    => 'UseOpenDoorWindowNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
                                     ]
                                 ]
                             ]
-                        ],
-                        [
-                            'caption' => 'Zielscript',
-                            'name'    => 'WebFrontPushNotificationTargetID',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'SelectScript'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerMail',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'E-Mail:',
-                            'name'    => 'LabelMail',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'E-Mail',
-                            'name'    => 'UseMailer',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Betreff',
-                            'name'    => 'Subject',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerSMS',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'SMS:',
-                            'name'    => 'LabelSMS',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'SMS',
-                            'name'    => 'UseSMS',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Titel',
-                            'name'    => 'SMSTitle',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerTelegram',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Telegram:',
-                            'name'    => 'LabelTelegram',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'Telegram',
-                            'name'    => 'UseTelegram',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Titel',
-                            'name'    => 'TelegramTitle',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerOpenDoorWindowNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Tür/Fenster geöffnet:',
-                            'name'    => 'LabelOpenDoorWindowNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'Benachrichtigung',
-                            'name'    => 'UseOpenDoorWindowNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
                         ]
                     ]
-                ],
-                [
-                    'type'    => 'Label',
-                    'caption' => ' '
                 ],
                 //Hull protection
                 [
-                    'type'    => 'Label',
-                    'caption' => 'Hüllschutz',
-                    'bold'    => true,
-                    'italic'  => true
-                ],
-                [
-                    'type'     => 'List',
-                    'name'     => 'HullProtectionAbortActivationNotification',
-                    'caption'  => 'Aktivierungsprüfung',
-                    'rowCount' => 1,
-                    'add'      => false,
-                    'delete'   => false,
-                    'columns'  => [
+                    'type'     => 'ExpansionPanel',
+                    'caption'  => 'Hüllschutz',
+                    'expanded' => false,
+                    'items'    => [
                         [
-                            'caption' => 'Aktiviert',
-                            'name'    => 'Use',
-                            'width'   => '100px',
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Bezeichnung',
-                            'name'    => 'Designation',
-                            'width'   => '300px',
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Meldungstext:',
-                            'name'    => 'LabelMessageText',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'Text der Meldung (maximal 256 Zeichen)',
-                            'name'    => 'MessageText',
-                            'width'   => '400px',
-                            'visible' => true,
-                            'edit'    => [
-                                'type'      => 'ValidationTextBox',
-                                'multiline' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'Zeitstempel',
-                            'name'    => 'UseTimestamp',
-                            'width'   => '100px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerWebFrontNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Nachricht:',
-                            'name'    => 'LabelWebFrontNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'WebFront Nachricht',
-                            'name'    => 'UseWebFrontNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
-                            'name'    => 'WebFrontNotificationTitle',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Icon',
-                            'name'    => 'WebFrontNotificationIcon',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'SelectIcon'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Anzeigedauer',
-                            'name'    => 'WebFrontNotificationDisplayDuration',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type'   => 'NumberSpinner',
-                                'suffix' => 'Sekunden'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerWebFrontPushNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Push-Nachricht:',
-                            'name'    => 'LabelWebFrontPushNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'WebFront Push-Nachricht',
-                            'name'    => 'UseWebFrontPushNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
-                            'name'    => 'WebFrontPushNotificationTitle',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Sound',
-                            'name'    => 'WebFrontPushNotificationSound',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type'    => 'Select',
-                                'options' => [
-                                    [
-                                        'caption' => 'Standard',
-                                        'value'   => ''
-                                    ],
-                                    [
-                                        'caption' => 'Alarm',
-                                        'value'   => 'alarm'
-                                    ],
-                                    [
-                                        'caption' => 'Bell',
-                                        'value'   => 'bell'
-                                    ],
-                                    [
-                                        'caption' => 'Boom',
-                                        'value'   => 'boom'
-                                    ],
-                                    [
-                                        'caption' => 'Buzzer',
-                                        'value'   => 'buzzer'
-                                    ],
-                                    [
-                                        'caption' => 'Connected',
-                                        'value'   => 'connected'
-                                    ],
-                                    [
-                                        'caption' => 'Dark',
-                                        'value'   => 'dark'
-                                    ],
-                                    [
-                                        'caption' => 'Digital',
-                                        'value'   => 'digital'
-                                    ],
-                                    [
-                                        'caption' => 'Drums',
-                                        'value'   => 'drums'
-                                    ],
-                                    [
-                                        'caption' => 'Duck',
-                                        'value'   => 'duck'
-                                    ],
-                                    [
-                                        'caption' => 'Full',
-                                        'value'   => 'full'
-                                    ],
-                                    [
-                                        'caption' => 'Happy',
-                                        'value'   => 'happy'
-                                    ],
-                                    [
-                                        'caption' => 'Horn',
-                                        'value'   => 'horn'
-                                    ],
-                                    [
-                                        'caption' => 'Inception',
-                                        'value'   => 'inception'
-                                    ],
-                                    [
-                                        'caption' => 'Kazoo',
-                                        'value'   => 'kazoo'
-                                    ],
-                                    [
-                                        'caption' => 'Roll',
-                                        'value'   => 'roll'
-                                    ],
-                                    [
-                                        'caption' => 'Siren',
-                                        'value'   => 'siren'
-                                    ],
-                                    [
-                                        'caption' => 'Space',
-                                        'value'   => 'space'
-                                    ],
-                                    [
-                                        'caption' => 'Trickling',
-                                        'value'   => 'trickling'
-                                    ],
-                                    [
-                                        'caption' => 'Turn',
-                                        'value'   => 'turn'
+                            'type'     => 'List',
+                            'name'     => 'HullProtectionAbortActivationNotification',
+                            'caption'  => 'Aktivierungsprüfung',
+                            'rowCount' => 1,
+                            'add'      => false,
+                            'delete'   => false,
+                            'columns'  => [
+                                [
+                                    'caption' => 'Aktiviert',
+                                    'name'    => 'Use',
+                                    'width'   => '100px',
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Bezeichnung',
+                                    'name'    => 'Designation',
+                                    'width'   => '300px',
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Meldungstext:',
+                                    'name'    => 'LabelMessageText',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Text der Meldung (maximal 256 Zeichen)',
+                                    'name'    => 'MessageText',
+                                    'width'   => '400px',
+                                    'visible' => true,
+                                    'edit'    => [
+                                        'type'      => 'ValidationTextBox',
+                                        'multiline' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Zeitstempel',
+                                    'name'    => 'UseTimestamp',
+                                    'width'   => '100px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerWebFrontNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Nachricht:',
+                                    'name'    => 'LabelWebFrontNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'WebFront Nachricht',
+                                    'name'    => 'UseWebFrontNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
+                                    'name'    => 'WebFrontNotificationTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Icon',
+                                    'name'    => 'WebFrontNotificationIcon',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'SelectIcon'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Anzeigedauer',
+                                    'name'    => 'WebFrontNotificationDisplayDuration',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type'   => 'NumberSpinner',
+                                        'suffix' => 'Sekunden'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerWebFrontPushNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Push-Nachricht:',
+                                    'name'    => 'LabelWebFrontPushNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'WebFront Push-Nachricht',
+                                    'name'    => 'UseWebFrontPushNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
+                                    'name'    => 'WebFrontPushNotificationTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Sound',
+                                    'name'    => 'WebFrontPushNotificationSound',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type'    => 'Select',
+                                        'options' => [
+                                            [
+                                                'caption' => 'Standard',
+                                                'value'   => ''
+                                            ],
+                                            [
+                                                'caption' => 'Alarm',
+                                                'value'   => 'alarm'
+                                            ],
+                                            [
+                                                'caption' => 'Bell',
+                                                'value'   => 'bell'
+                                            ],
+                                            [
+                                                'caption' => 'Boom',
+                                                'value'   => 'boom'
+                                            ],
+                                            [
+                                                'caption' => 'Buzzer',
+                                                'value'   => 'buzzer'
+                                            ],
+                                            [
+                                                'caption' => 'Connected',
+                                                'value'   => 'connected'
+                                            ],
+                                            [
+                                                'caption' => 'Dark',
+                                                'value'   => 'dark'
+                                            ],
+                                            [
+                                                'caption' => 'Digital',
+                                                'value'   => 'digital'
+                                            ],
+                                            [
+                                                'caption' => 'Drums',
+                                                'value'   => 'drums'
+                                            ],
+                                            [
+                                                'caption' => 'Duck',
+                                                'value'   => 'duck'
+                                            ],
+                                            [
+                                                'caption' => 'Full',
+                                                'value'   => 'full'
+                                            ],
+                                            [
+                                                'caption' => 'Happy',
+                                                'value'   => 'happy'
+                                            ],
+                                            [
+                                                'caption' => 'Horn',
+                                                'value'   => 'horn'
+                                            ],
+                                            [
+                                                'caption' => 'Inception',
+                                                'value'   => 'inception'
+                                            ],
+                                            [
+                                                'caption' => 'Kazoo',
+                                                'value'   => 'kazoo'
+                                            ],
+                                            [
+                                                'caption' => 'Roll',
+                                                'value'   => 'roll'
+                                            ],
+                                            [
+                                                'caption' => 'Siren',
+                                                'value'   => 'siren'
+                                            ],
+                                            [
+                                                'caption' => 'Space',
+                                                'value'   => 'space'
+                                            ],
+                                            [
+                                                'caption' => 'Trickling',
+                                                'value'   => 'trickling'
+                                            ],
+                                            [
+                                                'caption' => 'Turn',
+                                                'value'   => 'turn'
+                                            ]
+                                        ]
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Zielscript',
+                                    'name'    => 'WebFrontPushNotificationTargetID',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'SelectScript'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerMail',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'E-Mail:',
+                                    'name'    => 'LabelMail',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'E-Mail',
+                                    'name'    => 'UseMailer',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Betreff',
+                                    'name'    => 'Subject',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerSMS',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'SMS:',
+                                    'name'    => 'LabelSMS',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'SMS',
+                                    'name'    => 'UseSMS',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel',
+                                    'name'    => 'SMSTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerTelegram',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Telegram:',
+                                    'name'    => 'LabelTelegram',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Telegram',
+                                    'name'    => 'UseTelegram',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel',
+                                    'name'    => 'TelegramTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerOpenDoorWindowNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Tür/Fenster geöffnet:',
+                                    'name'    => 'LabelOpenDoorWindowNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Benachrichtigung',
+                                    'name'    => 'UseOpenDoorWindowNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
                                     ]
                                 ]
                             ]
                         ],
                         [
-                            'caption' => 'Zielscript',
-                            'name'    => 'WebFrontPushNotificationTargetID',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'SelectScript'
-                            ]
+                            'type'    => 'Label',
+                            'caption' => ' '
                         ],
                         [
-                            'caption' => ' ',
-                            'name'    => 'SpacerMail',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'E-Mail:',
-                            'name'    => 'LabelMail',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'E-Mail',
-                            'name'    => 'UseMailer',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Betreff',
-                            'name'    => 'Subject',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerSMS',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'SMS:',
-                            'name'    => 'LabelSMS',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'SMS',
-                            'name'    => 'UseSMS',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Titel',
-                            'name'    => 'SMSTitle',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerTelegram',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Telegram:',
-                            'name'    => 'LabelTelegram',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'Telegram',
-                            'name'    => 'UseTelegram',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Titel',
-                            'name'    => 'TelegramTitle',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerOpenDoorWindowNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Tür/Fenster geöffnet:',
-                            'name'    => 'LabelOpenDoorWindowNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'Benachrichtigung',
-                            'name'    => 'UseOpenDoorWindowNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ]
-                    ]
-                ],
-                [
-                    'type'    => 'Label',
-                    'caption' => ' '
-                ],
-                [
-                    'type'     => 'List',
-                    'name'     => 'HullProtectionDelayedActivationNotification',
-                    'caption'  => 'Einschaltverzögerung',
-                    'rowCount' => 1,
-                    'add'      => false,
-                    'delete'   => false,
-                    'columns'  => [
-                        [
-                            'caption' => 'Aktiviert',
-                            'name'    => 'Use',
-                            'width'   => '100px',
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Bezeichnung',
-                            'name'    => 'Designation',
-                            'width'   => '300px',
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Meldungstext:',
-                            'name'    => 'LabelMessageText',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'Text der Meldung (maximal 256 Zeichen)',
-                            'name'    => 'MessageText',
-                            'width'   => '400px',
-                            'visible' => true,
-                            'edit'    => [
-                                'type'      => 'ValidationTextBox',
-                                'multiline' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'Zeitstempel',
-                            'name'    => 'UseTimestamp',
-                            'width'   => '100px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerWebFrontNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Nachricht:',
-                            'name'    => 'LabelWebFrontNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'WebFront Nachricht',
-                            'name'    => 'UseWebFrontNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
-                            'name'    => 'WebFrontNotificationTitle',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Icon',
-                            'name'    => 'WebFrontNotificationIcon',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'SelectIcon'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Anzeigedauer',
-                            'name'    => 'WebFrontNotificationDisplayDuration',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type'   => 'NumberSpinner',
-                                'suffix' => 'Sekunden'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerWebFrontPushNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Push-Nachricht:',
-                            'name'    => 'LabelWebFrontPushNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'WebFront Push-Nachricht',
-                            'name'    => 'UseWebFrontPushNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
-                            'name'    => 'WebFrontPushNotificationTitle',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Sound',
-                            'name'    => 'WebFrontPushNotificationSound',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type'    => 'Select',
-                                'options' => [
-                                    [
-                                        'caption' => 'Standard',
-                                        'value'   => ''
-                                    ],
-                                    [
-                                        'caption' => 'Alarm',
-                                        'value'   => 'alarm'
-                                    ],
-                                    [
-                                        'caption' => 'Bell',
-                                        'value'   => 'bell'
-                                    ],
-                                    [
-                                        'caption' => 'Boom',
-                                        'value'   => 'boom'
-                                    ],
-                                    [
-                                        'caption' => 'Buzzer',
-                                        'value'   => 'buzzer'
-                                    ],
-                                    [
-                                        'caption' => 'Connected',
-                                        'value'   => 'connected'
-                                    ],
-                                    [
-                                        'caption' => 'Dark',
-                                        'value'   => 'dark'
-                                    ],
-                                    [
-                                        'caption' => 'Digital',
-                                        'value'   => 'digital'
-                                    ],
-                                    [
-                                        'caption' => 'Drums',
-                                        'value'   => 'drums'
-                                    ],
-                                    [
-                                        'caption' => 'Duck',
-                                        'value'   => 'duck'
-                                    ],
-                                    [
-                                        'caption' => 'Full',
-                                        'value'   => 'full'
-                                    ],
-                                    [
-                                        'caption' => 'Happy',
-                                        'value'   => 'happy'
-                                    ],
-                                    [
-                                        'caption' => 'Horn',
-                                        'value'   => 'horn'
-                                    ],
-                                    [
-                                        'caption' => 'Inception',
-                                        'value'   => 'inception'
-                                    ],
-                                    [
-                                        'caption' => 'Kazoo',
-                                        'value'   => 'kazoo'
-                                    ],
-                                    [
-                                        'caption' => 'Roll',
-                                        'value'   => 'roll'
-                                    ],
-                                    [
-                                        'caption' => 'Siren',
-                                        'value'   => 'siren'
-                                    ],
-                                    [
-                                        'caption' => 'Space',
-                                        'value'   => 'space'
-                                    ],
-                                    [
-                                        'caption' => 'Trickling',
-                                        'value'   => 'trickling'
-                                    ],
-                                    [
-                                        'caption' => 'Turn',
-                                        'value'   => 'turn'
+                            'type'     => 'List',
+                            'name'     => 'HullProtectionDelayedActivationNotification',
+                            'caption'  => 'Einschaltverzögerung',
+                            'rowCount' => 1,
+                            'add'      => false,
+                            'delete'   => false,
+                            'columns'  => [
+                                [
+                                    'caption' => 'Aktiviert',
+                                    'name'    => 'Use',
+                                    'width'   => '100px',
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Bezeichnung',
+                                    'name'    => 'Designation',
+                                    'width'   => '300px',
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Meldungstext:',
+                                    'name'    => 'LabelMessageText',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Text der Meldung (maximal 256 Zeichen)',
+                                    'name'    => 'MessageText',
+                                    'width'   => '400px',
+                                    'visible' => true,
+                                    'edit'    => [
+                                        'type'      => 'ValidationTextBox',
+                                        'multiline' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Zeitstempel',
+                                    'name'    => 'UseTimestamp',
+                                    'width'   => '100px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerWebFrontNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Nachricht:',
+                                    'name'    => 'LabelWebFrontNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'WebFront Nachricht',
+                                    'name'    => 'UseWebFrontNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
+                                    'name'    => 'WebFrontNotificationTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Icon',
+                                    'name'    => 'WebFrontNotificationIcon',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'SelectIcon'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Anzeigedauer',
+                                    'name'    => 'WebFrontNotificationDisplayDuration',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type'   => 'NumberSpinner',
+                                        'suffix' => 'Sekunden'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerWebFrontPushNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Push-Nachricht:',
+                                    'name'    => 'LabelWebFrontPushNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'WebFront Push-Nachricht',
+                                    'name'    => 'UseWebFrontPushNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
+                                    'name'    => 'WebFrontPushNotificationTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Sound',
+                                    'name'    => 'WebFrontPushNotificationSound',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type'    => 'Select',
+                                        'options' => [
+                                            [
+                                                'caption' => 'Standard',
+                                                'value'   => ''
+                                            ],
+                                            [
+                                                'caption' => 'Alarm',
+                                                'value'   => 'alarm'
+                                            ],
+                                            [
+                                                'caption' => 'Bell',
+                                                'value'   => 'bell'
+                                            ],
+                                            [
+                                                'caption' => 'Boom',
+                                                'value'   => 'boom'
+                                            ],
+                                            [
+                                                'caption' => 'Buzzer',
+                                                'value'   => 'buzzer'
+                                            ],
+                                            [
+                                                'caption' => 'Connected',
+                                                'value'   => 'connected'
+                                            ],
+                                            [
+                                                'caption' => 'Dark',
+                                                'value'   => 'dark'
+                                            ],
+                                            [
+                                                'caption' => 'Digital',
+                                                'value'   => 'digital'
+                                            ],
+                                            [
+                                                'caption' => 'Drums',
+                                                'value'   => 'drums'
+                                            ],
+                                            [
+                                                'caption' => 'Duck',
+                                                'value'   => 'duck'
+                                            ],
+                                            [
+                                                'caption' => 'Full',
+                                                'value'   => 'full'
+                                            ],
+                                            [
+                                                'caption' => 'Happy',
+                                                'value'   => 'happy'
+                                            ],
+                                            [
+                                                'caption' => 'Horn',
+                                                'value'   => 'horn'
+                                            ],
+                                            [
+                                                'caption' => 'Inception',
+                                                'value'   => 'inception'
+                                            ],
+                                            [
+                                                'caption' => 'Kazoo',
+                                                'value'   => 'kazoo'
+                                            ],
+                                            [
+                                                'caption' => 'Roll',
+                                                'value'   => 'roll'
+                                            ],
+                                            [
+                                                'caption' => 'Siren',
+                                                'value'   => 'siren'
+                                            ],
+                                            [
+                                                'caption' => 'Space',
+                                                'value'   => 'space'
+                                            ],
+                                            [
+                                                'caption' => 'Trickling',
+                                                'value'   => 'trickling'
+                                            ],
+                                            [
+                                                'caption' => 'Turn',
+                                                'value'   => 'turn'
+                                            ]
+                                        ]
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Zielscript',
+                                    'name'    => 'WebFrontPushNotificationTargetID',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'SelectScript'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerMail',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'E-Mail:',
+                                    'name'    => 'LabelMail',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'E-Mail',
+                                    'name'    => 'UseMailer',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Betreff',
+                                    'name'    => 'Subject',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerSMS',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'SMS:',
+                                    'name'    => 'LabelSMS',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'SMS',
+                                    'name'    => 'UseSMS',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel',
+                                    'name'    => 'SMSTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerTelegram',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Telegram:',
+                                    'name'    => 'LabelTelegram',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Telegram',
+                                    'name'    => 'UseTelegram',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel',
+                                    'name'    => 'TelegramTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerOpenDoorWindowNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Tür/Fenster geöffnet:',
+                                    'name'    => 'LabelOpenDoorWindowNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Benachrichtigung',
+                                    'name'    => 'UseOpenDoorWindowNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
                                     ]
                                 ]
                             ]
                         ],
                         [
-                            'caption' => 'Zielscript',
-                            'name'    => 'WebFrontPushNotificationTargetID',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'SelectScript'
-                            ]
+                            'type'    => 'Label',
+                            'caption' => ' '
                         ],
                         [
-                            'caption' => ' ',
-                            'name'    => 'SpacerMail',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'E-Mail:',
-                            'name'    => 'LabelMail',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'E-Mail',
-                            'name'    => 'UseMailer',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Betreff',
-                            'name'    => 'Subject',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerSMS',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'SMS:',
-                            'name'    => 'LabelSMS',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'SMS',
-                            'name'    => 'UseSMS',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Titel',
-                            'name'    => 'SMSTitle',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerTelegram',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Telegram:',
-                            'name'    => 'LabelTelegram',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'Telegram',
-                            'name'    => 'UseTelegram',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Titel',
-                            'name'    => 'TelegramTitle',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerOpenDoorWindowNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Tür/Fenster geöffnet:',
-                            'name'    => 'LabelOpenDoorWindowNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'Benachrichtigung',
-                            'name'    => 'UseOpenDoorWindowNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ]
-                    ]
-                ],
-                [
-                    'type'    => 'Label',
-                    'caption' => ' '
-                ],
-                [
-                    'type'     => 'List',
-                    'name'     => 'HullProtectionActivationWithOpenDoorWindowNotification',
-                    'caption'  => 'An + Tür/Fenster geöffnet (teilscharf)',
-                    'rowCount' => 1,
-                    'add'      => false,
-                    'delete'   => false,
-                    'columns'  => [
-                        [
-                            'caption' => 'Aktiviert',
-                            'name'    => 'Use',
-                            'width'   => '100px',
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Bezeichnung',
-                            'name'    => 'Designation',
-                            'width'   => '300px',
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Meldungstext:',
-                            'name'    => 'LabelMessageText',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'Text der Meldung (maximal 256 Zeichen)',
-                            'name'    => 'MessageText',
-                            'width'   => '400px',
-                            'visible' => true,
-                            'edit'    => [
-                                'type'      => 'ValidationTextBox',
-                                'multiline' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'Zeitstempel',
-                            'name'    => 'UseTimestamp',
-                            'width'   => '100px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerWebFrontNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Nachricht:',
-                            'name'    => 'LabelWebFrontNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'WebFront Nachricht',
-                            'name'    => 'UseWebFrontNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
-                            'name'    => 'WebFrontNotificationTitle',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Icon',
-                            'name'    => 'WebFrontNotificationIcon',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'SelectIcon'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Anzeigedauer',
-                            'name'    => 'WebFrontNotificationDisplayDuration',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type'   => 'NumberSpinner',
-                                'suffix' => 'Sekunden'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerWebFrontPushNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Push-Nachricht:',
-                            'name'    => 'LabelWebFrontPushNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'WebFront Push-Nachricht',
-                            'name'    => 'UseWebFrontPushNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
-                            'name'    => 'WebFrontPushNotificationTitle',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Sound',
-                            'name'    => 'WebFrontPushNotificationSound',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type'    => 'Select',
-                                'options' => [
-                                    [
-                                        'caption' => 'Standard',
-                                        'value'   => ''
-                                    ],
-                                    [
-                                        'caption' => 'Alarm',
-                                        'value'   => 'alarm'
-                                    ],
-                                    [
-                                        'caption' => 'Bell',
-                                        'value'   => 'bell'
-                                    ],
-                                    [
-                                        'caption' => 'Boom',
-                                        'value'   => 'boom'
-                                    ],
-                                    [
-                                        'caption' => 'Buzzer',
-                                        'value'   => 'buzzer'
-                                    ],
-                                    [
-                                        'caption' => 'Connected',
-                                        'value'   => 'connected'
-                                    ],
-                                    [
-                                        'caption' => 'Dark',
-                                        'value'   => 'dark'
-                                    ],
-                                    [
-                                        'caption' => 'Digital',
-                                        'value'   => 'digital'
-                                    ],
-                                    [
-                                        'caption' => 'Drums',
-                                        'value'   => 'drums'
-                                    ],
-                                    [
-                                        'caption' => 'Duck',
-                                        'value'   => 'duck'
-                                    ],
-                                    [
-                                        'caption' => 'Full',
-                                        'value'   => 'full'
-                                    ],
-                                    [
-                                        'caption' => 'Happy',
-                                        'value'   => 'happy'
-                                    ],
-                                    [
-                                        'caption' => 'Horn',
-                                        'value'   => 'horn'
-                                    ],
-                                    [
-                                        'caption' => 'Inception',
-                                        'value'   => 'inception'
-                                    ],
-                                    [
-                                        'caption' => 'Kazoo',
-                                        'value'   => 'kazoo'
-                                    ],
-                                    [
-                                        'caption' => 'Roll',
-                                        'value'   => 'roll'
-                                    ],
-                                    [
-                                        'caption' => 'Siren',
-                                        'value'   => 'siren'
-                                    ],
-                                    [
-                                        'caption' => 'Space',
-                                        'value'   => 'space'
-                                    ],
-                                    [
-                                        'caption' => 'Trickling',
-                                        'value'   => 'trickling'
-                                    ],
-                                    [
-                                        'caption' => 'Turn',
-                                        'value'   => 'turn'
+                            'type'     => 'List',
+                            'name'     => 'HullProtectionActivationWithOpenDoorWindowNotification',
+                            'caption'  => 'Teilscharf (Tür/Fenster geöffnet)',
+                            'rowCount' => 1,
+                            'add'      => false,
+                            'delete'   => false,
+                            'columns'  => [
+                                [
+                                    'caption' => 'Aktiviert',
+                                    'name'    => 'Use',
+                                    'width'   => '100px',
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Bezeichnung',
+                                    'name'    => 'Designation',
+                                    'width'   => '300px',
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Meldungstext:',
+                                    'name'    => 'LabelMessageText',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Text der Meldung (maximal 256 Zeichen)',
+                                    'name'    => 'MessageText',
+                                    'width'   => '400px',
+                                    'visible' => true,
+                                    'edit'    => [
+                                        'type'      => 'ValidationTextBox',
+                                        'multiline' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Zeitstempel',
+                                    'name'    => 'UseTimestamp',
+                                    'width'   => '100px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerWebFrontNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Nachricht:',
+                                    'name'    => 'LabelWebFrontNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'WebFront Nachricht',
+                                    'name'    => 'UseWebFrontNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
+                                    'name'    => 'WebFrontNotificationTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Icon',
+                                    'name'    => 'WebFrontNotificationIcon',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'SelectIcon'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Anzeigedauer',
+                                    'name'    => 'WebFrontNotificationDisplayDuration',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type'   => 'NumberSpinner',
+                                        'suffix' => 'Sekunden'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerWebFrontPushNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Push-Nachricht:',
+                                    'name'    => 'LabelWebFrontPushNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'WebFront Push-Nachricht',
+                                    'name'    => 'UseWebFrontPushNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
+                                    'name'    => 'WebFrontPushNotificationTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Sound',
+                                    'name'    => 'WebFrontPushNotificationSound',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type'    => 'Select',
+                                        'options' => [
+                                            [
+                                                'caption' => 'Standard',
+                                                'value'   => ''
+                                            ],
+                                            [
+                                                'caption' => 'Alarm',
+                                                'value'   => 'alarm'
+                                            ],
+                                            [
+                                                'caption' => 'Bell',
+                                                'value'   => 'bell'
+                                            ],
+                                            [
+                                                'caption' => 'Boom',
+                                                'value'   => 'boom'
+                                            ],
+                                            [
+                                                'caption' => 'Buzzer',
+                                                'value'   => 'buzzer'
+                                            ],
+                                            [
+                                                'caption' => 'Connected',
+                                                'value'   => 'connected'
+                                            ],
+                                            [
+                                                'caption' => 'Dark',
+                                                'value'   => 'dark'
+                                            ],
+                                            [
+                                                'caption' => 'Digital',
+                                                'value'   => 'digital'
+                                            ],
+                                            [
+                                                'caption' => 'Drums',
+                                                'value'   => 'drums'
+                                            ],
+                                            [
+                                                'caption' => 'Duck',
+                                                'value'   => 'duck'
+                                            ],
+                                            [
+                                                'caption' => 'Full',
+                                                'value'   => 'full'
+                                            ],
+                                            [
+                                                'caption' => 'Happy',
+                                                'value'   => 'happy'
+                                            ],
+                                            [
+                                                'caption' => 'Horn',
+                                                'value'   => 'horn'
+                                            ],
+                                            [
+                                                'caption' => 'Inception',
+                                                'value'   => 'inception'
+                                            ],
+                                            [
+                                                'caption' => 'Kazoo',
+                                                'value'   => 'kazoo'
+                                            ],
+                                            [
+                                                'caption' => 'Roll',
+                                                'value'   => 'roll'
+                                            ],
+                                            [
+                                                'caption' => 'Siren',
+                                                'value'   => 'siren'
+                                            ],
+                                            [
+                                                'caption' => 'Space',
+                                                'value'   => 'space'
+                                            ],
+                                            [
+                                                'caption' => 'Trickling',
+                                                'value'   => 'trickling'
+                                            ],
+                                            [
+                                                'caption' => 'Turn',
+                                                'value'   => 'turn'
+                                            ]
+                                        ]
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Zielscript',
+                                    'name'    => 'WebFrontPushNotificationTargetID',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'SelectScript'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerMail',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'E-Mail:',
+                                    'name'    => 'LabelMail',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'E-Mail',
+                                    'name'    => 'UseMailer',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Betreff',
+                                    'name'    => 'Subject',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerSMS',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'SMS:',
+                                    'name'    => 'LabelSMS',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'SMS',
+                                    'name'    => 'UseSMS',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel',
+                                    'name'    => 'SMSTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerTelegram',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Telegram:',
+                                    'name'    => 'LabelTelegram',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Telegram',
+                                    'name'    => 'UseTelegram',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel',
+                                    'name'    => 'TelegramTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerOpenDoorWindowNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Tür/Fenster geöffnet:',
+                                    'name'    => 'LabelOpenDoorWindowNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Benachrichtigung',
+                                    'name'    => 'UseOpenDoorWindowNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
                                     ]
                                 ]
                             ]
                         ],
                         [
-                            'caption' => 'Zielscript',
-                            'name'    => 'WebFrontPushNotificationTargetID',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'SelectScript'
-                            ]
+                            'type'    => 'Label',
+                            'caption' => ' '
                         ],
                         [
-                            'caption' => ' ',
-                            'name'    => 'SpacerMail',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'E-Mail:',
-                            'name'    => 'LabelMail',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'E-Mail',
-                            'name'    => 'UseMailer',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Betreff',
-                            'name'    => 'Subject',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerSMS',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'SMS:',
-                            'name'    => 'LabelSMS',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'SMS',
-                            'name'    => 'UseSMS',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Titel',
-                            'name'    => 'SMSTitle',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerTelegram',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Telegram:',
-                            'name'    => 'LabelTelegram',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'Telegram',
-                            'name'    => 'UseTelegram',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Titel',
-                            'name'    => 'TelegramTitle',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerOpenDoorWindowNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Tür/Fenster geöffnet:',
-                            'name'    => 'LabelOpenDoorWindowNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'Benachrichtigung',
-                            'name'    => 'UseOpenDoorWindowNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ]
-                    ]
-                ],
-                [
-                    'type'    => 'Label',
-                    'caption' => ' '
-                ],
-                [
-                    'type'     => 'List',
-                    'name'     => 'HullProtectionActivationNotification',
-                    'caption'  => 'An (scharf)',
-                    'rowCount' => 1,
-                    'add'      => false,
-                    'delete'   => false,
-                    'columns'  => [
-                        [
-                            'caption' => 'Aktiviert',
-                            'name'    => 'Use',
-                            'width'   => '100px',
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Bezeichnung',
-                            'name'    => 'Designation',
-                            'width'   => '300px',
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Meldungstext:',
-                            'name'    => 'LabelMessageText',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'Text der Meldung (maximal 256 Zeichen)',
-                            'name'    => 'MessageText',
-                            'width'   => '400px',
-                            'visible' => true,
-                            'edit'    => [
-                                'type'      => 'ValidationTextBox',
-                                'multiline' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'Zeitstempel',
-                            'name'    => 'UseTimestamp',
-                            'width'   => '100px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerWebFrontNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Nachricht:',
-                            'name'    => 'LabelWebFrontNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'WebFront Nachricht',
-                            'name'    => 'UseWebFrontNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
-                            'name'    => 'WebFrontNotificationTitle',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Icon',
-                            'name'    => 'WebFrontNotificationIcon',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'SelectIcon'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Anzeigedauer',
-                            'name'    => 'WebFrontNotificationDisplayDuration',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type'   => 'NumberSpinner',
-                                'suffix' => 'Sekunden'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerWebFrontPushNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Push-Nachricht:',
-                            'name'    => 'LabelWebFrontPushNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'WebFront Push-Nachricht',
-                            'name'    => 'UseWebFrontPushNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
-                            'name'    => 'WebFrontPushNotificationTitle',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Sound',
-                            'name'    => 'WebFrontPushNotificationSound',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type'    => 'Select',
-                                'options' => [
-                                    [
-                                        'caption' => 'Standard',
-                                        'value'   => ''
-                                    ],
-                                    [
-                                        'caption' => 'Alarm',
-                                        'value'   => 'alarm'
-                                    ],
-                                    [
-                                        'caption' => 'Bell',
-                                        'value'   => 'bell'
-                                    ],
-                                    [
-                                        'caption' => 'Boom',
-                                        'value'   => 'boom'
-                                    ],
-                                    [
-                                        'caption' => 'Buzzer',
-                                        'value'   => 'buzzer'
-                                    ],
-                                    [
-                                        'caption' => 'Connected',
-                                        'value'   => 'connected'
-                                    ],
-                                    [
-                                        'caption' => 'Dark',
-                                        'value'   => 'dark'
-                                    ],
-                                    [
-                                        'caption' => 'Digital',
-                                        'value'   => 'digital'
-                                    ],
-                                    [
-                                        'caption' => 'Drums',
-                                        'value'   => 'drums'
-                                    ],
-                                    [
-                                        'caption' => 'Duck',
-                                        'value'   => 'duck'
-                                    ],
-                                    [
-                                        'caption' => 'Full',
-                                        'value'   => 'full'
-                                    ],
-                                    [
-                                        'caption' => 'Happy',
-                                        'value'   => 'happy'
-                                    ],
-                                    [
-                                        'caption' => 'Horn',
-                                        'value'   => 'horn'
-                                    ],
-                                    [
-                                        'caption' => 'Inception',
-                                        'value'   => 'inception'
-                                    ],
-                                    [
-                                        'caption' => 'Kazoo',
-                                        'value'   => 'kazoo'
-                                    ],
-                                    [
-                                        'caption' => 'Roll',
-                                        'value'   => 'roll'
-                                    ],
-                                    [
-                                        'caption' => 'Siren',
-                                        'value'   => 'siren'
-                                    ],
-                                    [
-                                        'caption' => 'Space',
-                                        'value'   => 'space'
-                                    ],
-                                    [
-                                        'caption' => 'Trickling',
-                                        'value'   => 'trickling'
-                                    ],
-                                    [
-                                        'caption' => 'Turn',
-                                        'value'   => 'turn'
+                            'type'     => 'List',
+                            'name'     => 'HullProtectionActivationNotification',
+                            'caption'  => 'Scharf',
+                            'rowCount' => 1,
+                            'add'      => false,
+                            'delete'   => false,
+                            'columns'  => [
+                                [
+                                    'caption' => 'Aktiviert',
+                                    'name'    => 'Use',
+                                    'width'   => '100px',
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Bezeichnung',
+                                    'name'    => 'Designation',
+                                    'width'   => '300px',
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Meldungstext:',
+                                    'name'    => 'LabelMessageText',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Text der Meldung (maximal 256 Zeichen)',
+                                    'name'    => 'MessageText',
+                                    'width'   => '400px',
+                                    'visible' => true,
+                                    'edit'    => [
+                                        'type'      => 'ValidationTextBox',
+                                        'multiline' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Zeitstempel',
+                                    'name'    => 'UseTimestamp',
+                                    'width'   => '100px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerWebFrontNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Nachricht:',
+                                    'name'    => 'LabelWebFrontNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'WebFront Nachricht',
+                                    'name'    => 'UseWebFrontNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
+                                    'name'    => 'WebFrontNotificationTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Icon',
+                                    'name'    => 'WebFrontNotificationIcon',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'SelectIcon'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Anzeigedauer',
+                                    'name'    => 'WebFrontNotificationDisplayDuration',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type'   => 'NumberSpinner',
+                                        'suffix' => 'Sekunden'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerWebFrontPushNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Push-Nachricht:',
+                                    'name'    => 'LabelWebFrontPushNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'WebFront Push-Nachricht',
+                                    'name'    => 'UseWebFrontPushNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
+                                    'name'    => 'WebFrontPushNotificationTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Sound',
+                                    'name'    => 'WebFrontPushNotificationSound',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type'    => 'Select',
+                                        'options' => [
+                                            [
+                                                'caption' => 'Standard',
+                                                'value'   => ''
+                                            ],
+                                            [
+                                                'caption' => 'Alarm',
+                                                'value'   => 'alarm'
+                                            ],
+                                            [
+                                                'caption' => 'Bell',
+                                                'value'   => 'bell'
+                                            ],
+                                            [
+                                                'caption' => 'Boom',
+                                                'value'   => 'boom'
+                                            ],
+                                            [
+                                                'caption' => 'Buzzer',
+                                                'value'   => 'buzzer'
+                                            ],
+                                            [
+                                                'caption' => 'Connected',
+                                                'value'   => 'connected'
+                                            ],
+                                            [
+                                                'caption' => 'Dark',
+                                                'value'   => 'dark'
+                                            ],
+                                            [
+                                                'caption' => 'Digital',
+                                                'value'   => 'digital'
+                                            ],
+                                            [
+                                                'caption' => 'Drums',
+                                                'value'   => 'drums'
+                                            ],
+                                            [
+                                                'caption' => 'Duck',
+                                                'value'   => 'duck'
+                                            ],
+                                            [
+                                                'caption' => 'Full',
+                                                'value'   => 'full'
+                                            ],
+                                            [
+                                                'caption' => 'Happy',
+                                                'value'   => 'happy'
+                                            ],
+                                            [
+                                                'caption' => 'Horn',
+                                                'value'   => 'horn'
+                                            ],
+                                            [
+                                                'caption' => 'Inception',
+                                                'value'   => 'inception'
+                                            ],
+                                            [
+                                                'caption' => 'Kazoo',
+                                                'value'   => 'kazoo'
+                                            ],
+                                            [
+                                                'caption' => 'Roll',
+                                                'value'   => 'roll'
+                                            ],
+                                            [
+                                                'caption' => 'Siren',
+                                                'value'   => 'siren'
+                                            ],
+                                            [
+                                                'caption' => 'Space',
+                                                'value'   => 'space'
+                                            ],
+                                            [
+                                                'caption' => 'Trickling',
+                                                'value'   => 'trickling'
+                                            ],
+                                            [
+                                                'caption' => 'Turn',
+                                                'value'   => 'turn'
+                                            ]
+                                        ]
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Zielscript',
+                                    'name'    => 'WebFrontPushNotificationTargetID',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'SelectScript'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerMail',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'E-Mail:',
+                                    'name'    => 'LabelMail',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'E-Mail',
+                                    'name'    => 'UseMailer',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Betreff',
+                                    'name'    => 'Subject',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerSMS',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'SMS:',
+                                    'name'    => 'LabelSMS',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'SMS',
+                                    'name'    => 'UseSMS',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel',
+                                    'name'    => 'SMSTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerTelegram',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Telegram:',
+                                    'name'    => 'LabelTelegram',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Telegram',
+                                    'name'    => 'UseTelegram',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel',
+                                    'name'    => 'TelegramTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerOpenDoorWindowNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Tür/Fenster geöffnet:',
+                                    'name'    => 'LabelOpenDoorWindowNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Benachrichtigung',
+                                    'name'    => 'UseOpenDoorWindowNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
                                     ]
                                 ]
                             ]
-                        ],
-                        [
-                            'caption' => 'Zielscript',
-                            'name'    => 'WebFrontPushNotificationTargetID',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'SelectScript'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerMail',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'E-Mail:',
-                            'name'    => 'LabelMail',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'E-Mail',
-                            'name'    => 'UseMailer',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Betreff',
-                            'name'    => 'Subject',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerSMS',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'SMS:',
-                            'name'    => 'LabelSMS',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'SMS',
-                            'name'    => 'UseSMS',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Titel',
-                            'name'    => 'SMSTitle',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerTelegram',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Telegram:',
-                            'name'    => 'LabelTelegram',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'Telegram',
-                            'name'    => 'UseTelegram',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Titel',
-                            'name'    => 'TelegramTitle',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerOpenDoorWindowNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Tür/Fenster geöffnet:',
-                            'name'    => 'LabelOpenDoorWindowNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'Benachrichtigung',
-                            'name'    => 'UseOpenDoorWindowNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
                         ]
                     ]
-                ],
-                [
-                    'type'    => 'Label',
-                    'caption' => ' '
                 ],
                 //Partial protection
                 [
-                    'type'    => 'Label',
-                    'caption' => 'Teilschutz',
-                    'bold'    => true,
-                    'italic'  => true
-                ],
-                [
-                    'type'     => 'List',
-                    'name'     => 'PartialProtectionAbortActivationNotification',
-                    'caption'  => 'Aktivierungsprüfung',
-                    'rowCount' => 1,
-                    'add'      => false,
-                    'delete'   => false,
-                    'columns'  => [
+                    'type'     => 'ExpansionPanel',
+                    'caption'  => 'Teilschutz',
+                    'expanded' => false,
+                    'items'    => [
                         [
-                            'caption' => 'Aktiviert',
-                            'name'    => 'Use',
-                            'width'   => '100px',
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Bezeichnung',
-                            'name'    => 'Designation',
-                            'width'   => '300px',
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Meldungstext:',
-                            'name'    => 'LabelMessageText',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'Text der Meldung (maximal 256 Zeichen)',
-                            'name'    => 'MessageText',
-                            'width'   => '400px',
-                            'visible' => true,
-                            'edit'    => [
-                                'type'      => 'ValidationTextBox',
-                                'multiline' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'Zeitstempel',
-                            'name'    => 'UseTimestamp',
-                            'width'   => '100px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerWebFrontNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Nachricht:',
-                            'name'    => 'LabelWebFrontNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'WebFront Nachricht',
-                            'name'    => 'UseWebFrontNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
-                            'name'    => 'WebFrontNotificationTitle',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Icon',
-                            'name'    => 'WebFrontNotificationIcon',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'SelectIcon'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Anzeigedauer',
-                            'name'    => 'WebFrontNotificationDisplayDuration',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type'   => 'NumberSpinner',
-                                'suffix' => 'Sekunden'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerWebFrontPushNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Push-Nachricht:',
-                            'name'    => 'LabelWebFrontPushNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'WebFront Push-Nachricht',
-                            'name'    => 'UseWebFrontPushNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
-                            'name'    => 'WebFrontPushNotificationTitle',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Sound',
-                            'name'    => 'WebFrontPushNotificationSound',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type'    => 'Select',
-                                'options' => [
-                                    [
-                                        'caption' => 'Standard',
-                                        'value'   => ''
-                                    ],
-                                    [
-                                        'caption' => 'Alarm',
-                                        'value'   => 'alarm'
-                                    ],
-                                    [
-                                        'caption' => 'Bell',
-                                        'value'   => 'bell'
-                                    ],
-                                    [
-                                        'caption' => 'Boom',
-                                        'value'   => 'boom'
-                                    ],
-                                    [
-                                        'caption' => 'Buzzer',
-                                        'value'   => 'buzzer'
-                                    ],
-                                    [
-                                        'caption' => 'Connected',
-                                        'value'   => 'connected'
-                                    ],
-                                    [
-                                        'caption' => 'Dark',
-                                        'value'   => 'dark'
-                                    ],
-                                    [
-                                        'caption' => 'Digital',
-                                        'value'   => 'digital'
-                                    ],
-                                    [
-                                        'caption' => 'Drums',
-                                        'value'   => 'drums'
-                                    ],
-                                    [
-                                        'caption' => 'Duck',
-                                        'value'   => 'duck'
-                                    ],
-                                    [
-                                        'caption' => 'Full',
-                                        'value'   => 'full'
-                                    ],
-                                    [
-                                        'caption' => 'Happy',
-                                        'value'   => 'happy'
-                                    ],
-                                    [
-                                        'caption' => 'Horn',
-                                        'value'   => 'horn'
-                                    ],
-                                    [
-                                        'caption' => 'Inception',
-                                        'value'   => 'inception'
-                                    ],
-                                    [
-                                        'caption' => 'Kazoo',
-                                        'value'   => 'kazoo'
-                                    ],
-                                    [
-                                        'caption' => 'Roll',
-                                        'value'   => 'roll'
-                                    ],
-                                    [
-                                        'caption' => 'Siren',
-                                        'value'   => 'siren'
-                                    ],
-                                    [
-                                        'caption' => 'Space',
-                                        'value'   => 'space'
-                                    ],
-                                    [
-                                        'caption' => 'Trickling',
-                                        'value'   => 'trickling'
-                                    ],
-                                    [
-                                        'caption' => 'Turn',
-                                        'value'   => 'turn'
+                            'type'     => 'List',
+                            'name'     => 'PartialProtectionAbortActivationNotification',
+                            'caption'  => 'Aktivierungsprüfung',
+                            'rowCount' => 1,
+                            'add'      => false,
+                            'delete'   => false,
+                            'columns'  => [
+                                [
+                                    'caption' => 'Aktiviert',
+                                    'name'    => 'Use',
+                                    'width'   => '100px',
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Bezeichnung',
+                                    'name'    => 'Designation',
+                                    'width'   => '300px',
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Meldungstext:',
+                                    'name'    => 'LabelMessageText',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Text der Meldung (maximal 256 Zeichen)',
+                                    'name'    => 'MessageText',
+                                    'width'   => '400px',
+                                    'visible' => true,
+                                    'edit'    => [
+                                        'type'      => 'ValidationTextBox',
+                                        'multiline' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Zeitstempel',
+                                    'name'    => 'UseTimestamp',
+                                    'width'   => '100px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerWebFrontNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Nachricht:',
+                                    'name'    => 'LabelWebFrontNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'WebFront Nachricht',
+                                    'name'    => 'UseWebFrontNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
+                                    'name'    => 'WebFrontNotificationTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Icon',
+                                    'name'    => 'WebFrontNotificationIcon',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'SelectIcon'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Anzeigedauer',
+                                    'name'    => 'WebFrontNotificationDisplayDuration',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type'   => 'NumberSpinner',
+                                        'suffix' => 'Sekunden'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerWebFrontPushNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Push-Nachricht:',
+                                    'name'    => 'LabelWebFrontPushNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'WebFront Push-Nachricht',
+                                    'name'    => 'UseWebFrontPushNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
+                                    'name'    => 'WebFrontPushNotificationTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Sound',
+                                    'name'    => 'WebFrontPushNotificationSound',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type'    => 'Select',
+                                        'options' => [
+                                            [
+                                                'caption' => 'Standard',
+                                                'value'   => ''
+                                            ],
+                                            [
+                                                'caption' => 'Alarm',
+                                                'value'   => 'alarm'
+                                            ],
+                                            [
+                                                'caption' => 'Bell',
+                                                'value'   => 'bell'
+                                            ],
+                                            [
+                                                'caption' => 'Boom',
+                                                'value'   => 'boom'
+                                            ],
+                                            [
+                                                'caption' => 'Buzzer',
+                                                'value'   => 'buzzer'
+                                            ],
+                                            [
+                                                'caption' => 'Connected',
+                                                'value'   => 'connected'
+                                            ],
+                                            [
+                                                'caption' => 'Dark',
+                                                'value'   => 'dark'
+                                            ],
+                                            [
+                                                'caption' => 'Digital',
+                                                'value'   => 'digital'
+                                            ],
+                                            [
+                                                'caption' => 'Drums',
+                                                'value'   => 'drums'
+                                            ],
+                                            [
+                                                'caption' => 'Duck',
+                                                'value'   => 'duck'
+                                            ],
+                                            [
+                                                'caption' => 'Full',
+                                                'value'   => 'full'
+                                            ],
+                                            [
+                                                'caption' => 'Happy',
+                                                'value'   => 'happy'
+                                            ],
+                                            [
+                                                'caption' => 'Horn',
+                                                'value'   => 'horn'
+                                            ],
+                                            [
+                                                'caption' => 'Inception',
+                                                'value'   => 'inception'
+                                            ],
+                                            [
+                                                'caption' => 'Kazoo',
+                                                'value'   => 'kazoo'
+                                            ],
+                                            [
+                                                'caption' => 'Roll',
+                                                'value'   => 'roll'
+                                            ],
+                                            [
+                                                'caption' => 'Siren',
+                                                'value'   => 'siren'
+                                            ],
+                                            [
+                                                'caption' => 'Space',
+                                                'value'   => 'space'
+                                            ],
+                                            [
+                                                'caption' => 'Trickling',
+                                                'value'   => 'trickling'
+                                            ],
+                                            [
+                                                'caption' => 'Turn',
+                                                'value'   => 'turn'
+                                            ]
+                                        ]
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Zielscript',
+                                    'name'    => 'WebFrontPushNotificationTargetID',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'SelectScript'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerMail',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'E-Mail:',
+                                    'name'    => 'LabelMail',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'E-Mail',
+                                    'name'    => 'UseMailer',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Betreff',
+                                    'name'    => 'Subject',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerSMS',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'SMS:',
+                                    'name'    => 'LabelSMS',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'SMS',
+                                    'name'    => 'UseSMS',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel',
+                                    'name'    => 'SMSTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerTelegram',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Telegram:',
+                                    'name'    => 'LabelTelegram',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Telegram',
+                                    'name'    => 'UseTelegram',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel',
+                                    'name'    => 'TelegramTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerOpenDoorWindowNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Tür/Fenster geöffnet:',
+                                    'name'    => 'LabelOpenDoorWindowNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Benachrichtigung',
+                                    'name'    => 'UseOpenDoorWindowNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
                                     ]
                                 ]
                             ]
                         ],
                         [
-                            'caption' => 'Zielscript',
-                            'name'    => 'WebFrontPushNotificationTargetID',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'SelectScript'
-                            ]
+                            'type'    => 'Label',
+                            'caption' => ' '
                         ],
                         [
-                            'caption' => ' ',
-                            'name'    => 'SpacerMail',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'E-Mail:',
-                            'name'    => 'LabelMail',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'E-Mail',
-                            'name'    => 'UseMailer',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Betreff',
-                            'name'    => 'Subject',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerSMS',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'SMS:',
-                            'name'    => 'LabelSMS',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'SMS',
-                            'name'    => 'UseSMS',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Titel',
-                            'name'    => 'SMSTitle',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerTelegram',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Telegram:',
-                            'name'    => 'LabelTelegram',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'Telegram',
-                            'name'    => 'UseTelegram',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Titel',
-                            'name'    => 'TelegramTitle',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerOpenDoorWindowNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Tür/Fenster geöffnet:',
-                            'name'    => 'LabelOpenDoorWindowNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'Benachrichtigung',
-                            'name'    => 'UseOpenDoorWindowNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ]
-                    ]
-                ],
-                [
-                    'type'    => 'Label',
-                    'caption' => ' '
-                ],
-                [
-                    'type'     => 'List',
-                    'name'     => 'PartialProtectionDelayedActivationNotification',
-                    'caption'  => 'Einschaltverzögerung',
-                    'rowCount' => 1,
-                    'add'      => false,
-                    'delete'   => false,
-                    'columns'  => [
-                        [
-                            'caption' => 'Aktiviert',
-                            'name'    => 'Use',
-                            'width'   => '100px',
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Bezeichnung',
-                            'name'    => 'Designation',
-                            'width'   => '300px',
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Meldungstext:',
-                            'name'    => 'LabelMessageText',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'Text der Meldung (maximal 256 Zeichen)',
-                            'name'    => 'MessageText',
-                            'width'   => '400px',
-                            'visible' => true,
-                            'edit'    => [
-                                'type'      => 'ValidationTextBox',
-                                'multiline' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'Zeitstempel',
-                            'name'    => 'UseTimestamp',
-                            'width'   => '100px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerWebFrontNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Nachricht:',
-                            'name'    => 'LabelWebFrontNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'WebFront Nachricht',
-                            'name'    => 'UseWebFrontNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
-                            'name'    => 'WebFrontNotificationTitle',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Icon',
-                            'name'    => 'WebFrontNotificationIcon',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'SelectIcon'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Anzeigedauer',
-                            'name'    => 'WebFrontNotificationDisplayDuration',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type'   => 'NumberSpinner',
-                                'suffix' => 'Sekunden'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerWebFrontPushNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Push-Nachricht:',
-                            'name'    => 'LabelWebFrontPushNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'WebFront Push-Nachricht',
-                            'name'    => 'UseWebFrontPushNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
-                            'name'    => 'WebFrontPushNotificationTitle',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Sound',
-                            'name'    => 'WebFrontPushNotificationSound',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type'    => 'Select',
-                                'options' => [
-                                    [
-                                        'caption' => 'Standard',
-                                        'value'   => ''
-                                    ],
-                                    [
-                                        'caption' => 'Alarm',
-                                        'value'   => 'alarm'
-                                    ],
-                                    [
-                                        'caption' => 'Bell',
-                                        'value'   => 'bell'
-                                    ],
-                                    [
-                                        'caption' => 'Boom',
-                                        'value'   => 'boom'
-                                    ],
-                                    [
-                                        'caption' => 'Buzzer',
-                                        'value'   => 'buzzer'
-                                    ],
-                                    [
-                                        'caption' => 'Connected',
-                                        'value'   => 'connected'
-                                    ],
-                                    [
-                                        'caption' => 'Dark',
-                                        'value'   => 'dark'
-                                    ],
-                                    [
-                                        'caption' => 'Digital',
-                                        'value'   => 'digital'
-                                    ],
-                                    [
-                                        'caption' => 'Drums',
-                                        'value'   => 'drums'
-                                    ],
-                                    [
-                                        'caption' => 'Duck',
-                                        'value'   => 'duck'
-                                    ],
-                                    [
-                                        'caption' => 'Full',
-                                        'value'   => 'full'
-                                    ],
-                                    [
-                                        'caption' => 'Happy',
-                                        'value'   => 'happy'
-                                    ],
-                                    [
-                                        'caption' => 'Horn',
-                                        'value'   => 'horn'
-                                    ],
-                                    [
-                                        'caption' => 'Inception',
-                                        'value'   => 'inception'
-                                    ],
-                                    [
-                                        'caption' => 'Kazoo',
-                                        'value'   => 'kazoo'
-                                    ],
-                                    [
-                                        'caption' => 'Roll',
-                                        'value'   => 'roll'
-                                    ],
-                                    [
-                                        'caption' => 'Siren',
-                                        'value'   => 'siren'
-                                    ],
-                                    [
-                                        'caption' => 'Space',
-                                        'value'   => 'space'
-                                    ],
-                                    [
-                                        'caption' => 'Trickling',
-                                        'value'   => 'trickling'
-                                    ],
-                                    [
-                                        'caption' => 'Turn',
-                                        'value'   => 'turn'
+                            'type'     => 'List',
+                            'name'     => 'PartialProtectionDelayedActivationNotification',
+                            'caption'  => 'Einschaltverzögerung',
+                            'rowCount' => 1,
+                            'add'      => false,
+                            'delete'   => false,
+                            'columns'  => [
+                                [
+                                    'caption' => 'Aktiviert',
+                                    'name'    => 'Use',
+                                    'width'   => '100px',
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Bezeichnung',
+                                    'name'    => 'Designation',
+                                    'width'   => '300px',
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Meldungstext:',
+                                    'name'    => 'LabelMessageText',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Text der Meldung (maximal 256 Zeichen)',
+                                    'name'    => 'MessageText',
+                                    'width'   => '400px',
+                                    'visible' => true,
+                                    'edit'    => [
+                                        'type'      => 'ValidationTextBox',
+                                        'multiline' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Zeitstempel',
+                                    'name'    => 'UseTimestamp',
+                                    'width'   => '100px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerWebFrontNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Nachricht:',
+                                    'name'    => 'LabelWebFrontNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'WebFront Nachricht',
+                                    'name'    => 'UseWebFrontNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
+                                    'name'    => 'WebFrontNotificationTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Icon',
+                                    'name'    => 'WebFrontNotificationIcon',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'SelectIcon'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Anzeigedauer',
+                                    'name'    => 'WebFrontNotificationDisplayDuration',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type'   => 'NumberSpinner',
+                                        'suffix' => 'Sekunden'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerWebFrontPushNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Push-Nachricht:',
+                                    'name'    => 'LabelWebFrontPushNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'WebFront Push-Nachricht',
+                                    'name'    => 'UseWebFrontPushNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
+                                    'name'    => 'WebFrontPushNotificationTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Sound',
+                                    'name'    => 'WebFrontPushNotificationSound',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type'    => 'Select',
+                                        'options' => [
+                                            [
+                                                'caption' => 'Standard',
+                                                'value'   => ''
+                                            ],
+                                            [
+                                                'caption' => 'Alarm',
+                                                'value'   => 'alarm'
+                                            ],
+                                            [
+                                                'caption' => 'Bell',
+                                                'value'   => 'bell'
+                                            ],
+                                            [
+                                                'caption' => 'Boom',
+                                                'value'   => 'boom'
+                                            ],
+                                            [
+                                                'caption' => 'Buzzer',
+                                                'value'   => 'buzzer'
+                                            ],
+                                            [
+                                                'caption' => 'Connected',
+                                                'value'   => 'connected'
+                                            ],
+                                            [
+                                                'caption' => 'Dark',
+                                                'value'   => 'dark'
+                                            ],
+                                            [
+                                                'caption' => 'Digital',
+                                                'value'   => 'digital'
+                                            ],
+                                            [
+                                                'caption' => 'Drums',
+                                                'value'   => 'drums'
+                                            ],
+                                            [
+                                                'caption' => 'Duck',
+                                                'value'   => 'duck'
+                                            ],
+                                            [
+                                                'caption' => 'Full',
+                                                'value'   => 'full'
+                                            ],
+                                            [
+                                                'caption' => 'Happy',
+                                                'value'   => 'happy'
+                                            ],
+                                            [
+                                                'caption' => 'Horn',
+                                                'value'   => 'horn'
+                                            ],
+                                            [
+                                                'caption' => 'Inception',
+                                                'value'   => 'inception'
+                                            ],
+                                            [
+                                                'caption' => 'Kazoo',
+                                                'value'   => 'kazoo'
+                                            ],
+                                            [
+                                                'caption' => 'Roll',
+                                                'value'   => 'roll'
+                                            ],
+                                            [
+                                                'caption' => 'Siren',
+                                                'value'   => 'siren'
+                                            ],
+                                            [
+                                                'caption' => 'Space',
+                                                'value'   => 'space'
+                                            ],
+                                            [
+                                                'caption' => 'Trickling',
+                                                'value'   => 'trickling'
+                                            ],
+                                            [
+                                                'caption' => 'Turn',
+                                                'value'   => 'turn'
+                                            ]
+                                        ]
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Zielscript',
+                                    'name'    => 'WebFrontPushNotificationTargetID',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'SelectScript'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerMail',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'E-Mail:',
+                                    'name'    => 'LabelMail',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'E-Mail',
+                                    'name'    => 'UseMailer',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Betreff',
+                                    'name'    => 'Subject',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerSMS',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'SMS:',
+                                    'name'    => 'LabelSMS',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'SMS',
+                                    'name'    => 'UseSMS',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel',
+                                    'name'    => 'SMSTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerTelegram',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Telegram:',
+                                    'name'    => 'LabelTelegram',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Telegram',
+                                    'name'    => 'UseTelegram',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel',
+                                    'name'    => 'TelegramTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerOpenDoorWindowNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Tür/Fenster geöffnet:',
+                                    'name'    => 'LabelOpenDoorWindowNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Benachrichtigung',
+                                    'name'    => 'UseOpenDoorWindowNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
                                     ]
                                 ]
                             ]
                         ],
                         [
-                            'caption' => 'Zielscript',
-                            'name'    => 'WebFrontPushNotificationTargetID',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'SelectScript'
-                            ]
+                            'type'    => 'Label',
+                            'caption' => ' '
                         ],
                         [
-                            'caption' => ' ',
-                            'name'    => 'SpacerMail',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'E-Mail:',
-                            'name'    => 'LabelMail',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'E-Mail',
-                            'name'    => 'UseMailer',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Betreff',
-                            'name'    => 'Subject',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerSMS',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'SMS:',
-                            'name'    => 'LabelSMS',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'SMS',
-                            'name'    => 'UseSMS',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Titel',
-                            'name'    => 'SMSTitle',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerTelegram',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Telegram:',
-                            'name'    => 'LabelTelegram',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'Telegram',
-                            'name'    => 'UseTelegram',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Titel',
-                            'name'    => 'TelegramTitle',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerOpenDoorWindowNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Tür/Fenster geöffnet:',
-                            'name'    => 'LabelOpenDoorWindowNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'Benachrichtigung',
-                            'name'    => 'UseOpenDoorWindowNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ]
-                    ]
-                ],
-                [
-                    'type'    => 'Label',
-                    'caption' => ' '
-                ],
-                [
-                    'type'     => 'List',
-                    'name'     => 'PartialProtectionActivationWithOpenDoorWindowNotification',
-                    'caption'  => 'An + Tür/Fenster geöffnet (teilscharf)',
-                    'rowCount' => 1,
-                    'add'      => false,
-                    'delete'   => false,
-                    'columns'  => [
-                        [
-                            'caption' => 'Aktiviert',
-                            'name'    => 'Use',
-                            'width'   => '100px',
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Bezeichnung',
-                            'name'    => 'Designation',
-                            'width'   => '300px',
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Meldungstext:',
-                            'name'    => 'LabelMessageText',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'Text der Meldung (maximal 256 Zeichen)',
-                            'name'    => 'MessageText',
-                            'width'   => '400px',
-                            'visible' => true,
-                            'edit'    => [
-                                'type'      => 'ValidationTextBox',
-                                'multiline' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'Zeitstempel',
-                            'name'    => 'UseTimestamp',
-                            'width'   => '100px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerWebFrontNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Nachricht:',
-                            'name'    => 'LabelWebFrontNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'WebFront Nachricht',
-                            'name'    => 'UseWebFrontNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
-                            'name'    => 'WebFrontNotificationTitle',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Icon',
-                            'name'    => 'WebFrontNotificationIcon',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'SelectIcon'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Anzeigedauer',
-                            'name'    => 'WebFrontNotificationDisplayDuration',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type'   => 'NumberSpinner',
-                                'suffix' => 'Sekunden'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerWebFrontPushNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Push-Nachricht:',
-                            'name'    => 'LabelWebFrontPushNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'WebFront Push-Nachricht',
-                            'name'    => 'UseWebFrontPushNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
-                            'name'    => 'WebFrontPushNotificationTitle',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Sound',
-                            'name'    => 'WebFrontPushNotificationSound',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type'    => 'Select',
-                                'options' => [
-                                    [
-                                        'caption' => 'Standard',
-                                        'value'   => ''
-                                    ],
-                                    [
-                                        'caption' => 'Alarm',
-                                        'value'   => 'alarm'
-                                    ],
-                                    [
-                                        'caption' => 'Bell',
-                                        'value'   => 'bell'
-                                    ],
-                                    [
-                                        'caption' => 'Boom',
-                                        'value'   => 'boom'
-                                    ],
-                                    [
-                                        'caption' => 'Buzzer',
-                                        'value'   => 'buzzer'
-                                    ],
-                                    [
-                                        'caption' => 'Connected',
-                                        'value'   => 'connected'
-                                    ],
-                                    [
-                                        'caption' => 'Dark',
-                                        'value'   => 'dark'
-                                    ],
-                                    [
-                                        'caption' => 'Digital',
-                                        'value'   => 'digital'
-                                    ],
-                                    [
-                                        'caption' => 'Drums',
-                                        'value'   => 'drums'
-                                    ],
-                                    [
-                                        'caption' => 'Duck',
-                                        'value'   => 'duck'
-                                    ],
-                                    [
-                                        'caption' => 'Full',
-                                        'value'   => 'full'
-                                    ],
-                                    [
-                                        'caption' => 'Happy',
-                                        'value'   => 'happy'
-                                    ],
-                                    [
-                                        'caption' => 'Horn',
-                                        'value'   => 'horn'
-                                    ],
-                                    [
-                                        'caption' => 'Inception',
-                                        'value'   => 'inception'
-                                    ],
-                                    [
-                                        'caption' => 'Kazoo',
-                                        'value'   => 'kazoo'
-                                    ],
-                                    [
-                                        'caption' => 'Roll',
-                                        'value'   => 'roll'
-                                    ],
-                                    [
-                                        'caption' => 'Siren',
-                                        'value'   => 'siren'
-                                    ],
-                                    [
-                                        'caption' => 'Space',
-                                        'value'   => 'space'
-                                    ],
-                                    [
-                                        'caption' => 'Trickling',
-                                        'value'   => 'trickling'
-                                    ],
-                                    [
-                                        'caption' => 'Turn',
-                                        'value'   => 'turn'
+                            'type'     => 'List',
+                            'name'     => 'PartialProtectionActivationWithOpenDoorWindowNotification',
+                            'caption'  => 'Teilscharf (Tür/Fenster geöffnet)',
+                            'rowCount' => 1,
+                            'add'      => false,
+                            'delete'   => false,
+                            'columns'  => [
+                                [
+                                    'caption' => 'Aktiviert',
+                                    'name'    => 'Use',
+                                    'width'   => '100px',
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Bezeichnung',
+                                    'name'    => 'Designation',
+                                    'width'   => '300px',
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Meldungstext:',
+                                    'name'    => 'LabelMessageText',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Text der Meldung (maximal 256 Zeichen)',
+                                    'name'    => 'MessageText',
+                                    'width'   => '400px',
+                                    'visible' => true,
+                                    'edit'    => [
+                                        'type'      => 'ValidationTextBox',
+                                        'multiline' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Zeitstempel',
+                                    'name'    => 'UseTimestamp',
+                                    'width'   => '100px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerWebFrontNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Nachricht:',
+                                    'name'    => 'LabelWebFrontNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'WebFront Nachricht',
+                                    'name'    => 'UseWebFrontNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
+                                    'name'    => 'WebFrontNotificationTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Icon',
+                                    'name'    => 'WebFrontNotificationIcon',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'SelectIcon'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Anzeigedauer',
+                                    'name'    => 'WebFrontNotificationDisplayDuration',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type'   => 'NumberSpinner',
+                                        'suffix' => 'Sekunden'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerWebFrontPushNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Push-Nachricht:',
+                                    'name'    => 'LabelWebFrontPushNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'WebFront Push-Nachricht',
+                                    'name'    => 'UseWebFrontPushNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
+                                    'name'    => 'WebFrontPushNotificationTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Sound',
+                                    'name'    => 'WebFrontPushNotificationSound',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type'    => 'Select',
+                                        'options' => [
+                                            [
+                                                'caption' => 'Standard',
+                                                'value'   => ''
+                                            ],
+                                            [
+                                                'caption' => 'Alarm',
+                                                'value'   => 'alarm'
+                                            ],
+                                            [
+                                                'caption' => 'Bell',
+                                                'value'   => 'bell'
+                                            ],
+                                            [
+                                                'caption' => 'Boom',
+                                                'value'   => 'boom'
+                                            ],
+                                            [
+                                                'caption' => 'Buzzer',
+                                                'value'   => 'buzzer'
+                                            ],
+                                            [
+                                                'caption' => 'Connected',
+                                                'value'   => 'connected'
+                                            ],
+                                            [
+                                                'caption' => 'Dark',
+                                                'value'   => 'dark'
+                                            ],
+                                            [
+                                                'caption' => 'Digital',
+                                                'value'   => 'digital'
+                                            ],
+                                            [
+                                                'caption' => 'Drums',
+                                                'value'   => 'drums'
+                                            ],
+                                            [
+                                                'caption' => 'Duck',
+                                                'value'   => 'duck'
+                                            ],
+                                            [
+                                                'caption' => 'Full',
+                                                'value'   => 'full'
+                                            ],
+                                            [
+                                                'caption' => 'Happy',
+                                                'value'   => 'happy'
+                                            ],
+                                            [
+                                                'caption' => 'Horn',
+                                                'value'   => 'horn'
+                                            ],
+                                            [
+                                                'caption' => 'Inception',
+                                                'value'   => 'inception'
+                                            ],
+                                            [
+                                                'caption' => 'Kazoo',
+                                                'value'   => 'kazoo'
+                                            ],
+                                            [
+                                                'caption' => 'Roll',
+                                                'value'   => 'roll'
+                                            ],
+                                            [
+                                                'caption' => 'Siren',
+                                                'value'   => 'siren'
+                                            ],
+                                            [
+                                                'caption' => 'Space',
+                                                'value'   => 'space'
+                                            ],
+                                            [
+                                                'caption' => 'Trickling',
+                                                'value'   => 'trickling'
+                                            ],
+                                            [
+                                                'caption' => 'Turn',
+                                                'value'   => 'turn'
+                                            ]
+                                        ]
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Zielscript',
+                                    'name'    => 'WebFrontPushNotificationTargetID',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'SelectScript'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerMail',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'E-Mail:',
+                                    'name'    => 'LabelMail',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'E-Mail',
+                                    'name'    => 'UseMailer',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Betreff',
+                                    'name'    => 'Subject',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerSMS',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'SMS:',
+                                    'name'    => 'LabelSMS',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'SMS',
+                                    'name'    => 'UseSMS',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel',
+                                    'name'    => 'SMSTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerTelegram',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Telegram:',
+                                    'name'    => 'LabelTelegram',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Telegram',
+                                    'name'    => 'UseTelegram',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel',
+                                    'name'    => 'TelegramTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerOpenDoorWindowNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Tür/Fenster geöffnet:',
+                                    'name'    => 'LabelOpenDoorWindowNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Benachrichtigung',
+                                    'name'    => 'UseOpenDoorWindowNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
                                     ]
                                 ]
                             ]
                         ],
                         [
-                            'caption' => 'Zielscript',
-                            'name'    => 'WebFrontPushNotificationTargetID',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'SelectScript'
-                            ]
+                            'type'    => 'Label',
+                            'caption' => ' '
                         ],
                         [
-                            'caption' => ' ',
-                            'name'    => 'SpacerMail',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'E-Mail:',
-                            'name'    => 'LabelMail',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'E-Mail',
-                            'name'    => 'UseMailer',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Betreff',
-                            'name'    => 'Subject',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerSMS',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'SMS:',
-                            'name'    => 'LabelSMS',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'SMS',
-                            'name'    => 'UseSMS',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Titel',
-                            'name'    => 'SMSTitle',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerTelegram',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Telegram:',
-                            'name'    => 'LabelTelegram',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'Telegram',
-                            'name'    => 'UseTelegram',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Titel',
-                            'name'    => 'TelegramTitle',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerOpenDoorWindowNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Tür/Fenster geöffnet:',
-                            'name'    => 'LabelOpenDoorWindowNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'Benachrichtigung',
-                            'name'    => 'UseOpenDoorWindowNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ]
-                    ]
-                ],
-                [
-                    'type'    => 'Label',
-                    'caption' => ' '
-                ],
-                [
-                    'type'     => 'List',
-                    'name'     => 'PartialProtectionActivationNotification',
-                    'caption'  => 'An (scharf)',
-                    'rowCount' => 1,
-                    'add'      => false,
-                    'delete'   => false,
-                    'columns'  => [
-                        [
-                            'caption' => 'Aktiviert',
-                            'name'    => 'Use',
-                            'width'   => '100px',
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Bezeichnung',
-                            'name'    => 'Designation',
-                            'width'   => '300px',
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Meldungstext:',
-                            'name'    => 'LabelMessageText',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'Text der Meldung (maximal 256 Zeichen)',
-                            'name'    => 'MessageText',
-                            'width'   => '400px',
-                            'visible' => true,
-                            'edit'    => [
-                                'type'      => 'ValidationTextBox',
-                                'multiline' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'Zeitstempel',
-                            'name'    => 'UseTimestamp',
-                            'width'   => '100px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerWebFrontNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Nachricht:',
-                            'name'    => 'LabelWebFrontNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'WebFront Nachricht',
-                            'name'    => 'UseWebFrontNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
-                            'name'    => 'WebFrontNotificationTitle',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Icon',
-                            'name'    => 'WebFrontNotificationIcon',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'SelectIcon'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Anzeigedauer',
-                            'name'    => 'WebFrontNotificationDisplayDuration',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type'   => 'NumberSpinner',
-                                'suffix' => 'Sekunden'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerWebFrontPushNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Push-Nachricht:',
-                            'name'    => 'LabelWebFrontPushNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'WebFront Push-Nachricht',
-                            'name'    => 'UseWebFrontPushNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
-                            'name'    => 'WebFrontPushNotificationTitle',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Sound',
-                            'name'    => 'WebFrontPushNotificationSound',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type'    => 'Select',
-                                'options' => [
-                                    [
-                                        'caption' => 'Standard',
-                                        'value'   => ''
-                                    ],
-                                    [
-                                        'caption' => 'Alarm',
-                                        'value'   => 'alarm'
-                                    ],
-                                    [
-                                        'caption' => 'Bell',
-                                        'value'   => 'bell'
-                                    ],
-                                    [
-                                        'caption' => 'Boom',
-                                        'value'   => 'boom'
-                                    ],
-                                    [
-                                        'caption' => 'Buzzer',
-                                        'value'   => 'buzzer'
-                                    ],
-                                    [
-                                        'caption' => 'Connected',
-                                        'value'   => 'connected'
-                                    ],
-                                    [
-                                        'caption' => 'Dark',
-                                        'value'   => 'dark'
-                                    ],
-                                    [
-                                        'caption' => 'Digital',
-                                        'value'   => 'digital'
-                                    ],
-                                    [
-                                        'caption' => 'Drums',
-                                        'value'   => 'drums'
-                                    ],
-                                    [
-                                        'caption' => 'Duck',
-                                        'value'   => 'duck'
-                                    ],
-                                    [
-                                        'caption' => 'Full',
-                                        'value'   => 'full'
-                                    ],
-                                    [
-                                        'caption' => 'Happy',
-                                        'value'   => 'happy'
-                                    ],
-                                    [
-                                        'caption' => 'Horn',
-                                        'value'   => 'horn'
-                                    ],
-                                    [
-                                        'caption' => 'Inception',
-                                        'value'   => 'inception'
-                                    ],
-                                    [
-                                        'caption' => 'Kazoo',
-                                        'value'   => 'kazoo'
-                                    ],
-                                    [
-                                        'caption' => 'Roll',
-                                        'value'   => 'roll'
-                                    ],
-                                    [
-                                        'caption' => 'Siren',
-                                        'value'   => 'siren'
-                                    ],
-                                    [
-                                        'caption' => 'Space',
-                                        'value'   => 'space'
-                                    ],
-                                    [
-                                        'caption' => 'Trickling',
-                                        'value'   => 'trickling'
-                                    ],
-                                    [
-                                        'caption' => 'Turn',
-                                        'value'   => 'turn'
+                            'type'     => 'List',
+                            'name'     => 'PartialProtectionActivationNotification',
+                            'caption'  => 'Scharf',
+                            'rowCount' => 1,
+                            'add'      => false,
+                            'delete'   => false,
+                            'columns'  => [
+                                [
+                                    'caption' => 'Aktiviert',
+                                    'name'    => 'Use',
+                                    'width'   => '100px',
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Bezeichnung',
+                                    'name'    => 'Designation',
+                                    'width'   => '300px',
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Meldungstext:',
+                                    'name'    => 'LabelMessageText',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Text der Meldung (maximal 256 Zeichen)',
+                                    'name'    => 'MessageText',
+                                    'width'   => '400px',
+                                    'visible' => true,
+                                    'edit'    => [
+                                        'type'      => 'ValidationTextBox',
+                                        'multiline' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Zeitstempel',
+                                    'name'    => 'UseTimestamp',
+                                    'width'   => '100px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerWebFrontNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Nachricht:',
+                                    'name'    => 'LabelWebFrontNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'WebFront Nachricht',
+                                    'name'    => 'UseWebFrontNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
+                                    'name'    => 'WebFrontNotificationTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Icon',
+                                    'name'    => 'WebFrontNotificationIcon',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'SelectIcon'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Anzeigedauer',
+                                    'name'    => 'WebFrontNotificationDisplayDuration',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type'   => 'NumberSpinner',
+                                        'suffix' => 'Sekunden'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerWebFrontPushNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Push-Nachricht:',
+                                    'name'    => 'LabelWebFrontPushNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'WebFront Push-Nachricht',
+                                    'name'    => 'UseWebFrontPushNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
+                                    'name'    => 'WebFrontPushNotificationTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Sound',
+                                    'name'    => 'WebFrontPushNotificationSound',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type'    => 'Select',
+                                        'options' => [
+                                            [
+                                                'caption' => 'Standard',
+                                                'value'   => ''
+                                            ],
+                                            [
+                                                'caption' => 'Alarm',
+                                                'value'   => 'alarm'
+                                            ],
+                                            [
+                                                'caption' => 'Bell',
+                                                'value'   => 'bell'
+                                            ],
+                                            [
+                                                'caption' => 'Boom',
+                                                'value'   => 'boom'
+                                            ],
+                                            [
+                                                'caption' => 'Buzzer',
+                                                'value'   => 'buzzer'
+                                            ],
+                                            [
+                                                'caption' => 'Connected',
+                                                'value'   => 'connected'
+                                            ],
+                                            [
+                                                'caption' => 'Dark',
+                                                'value'   => 'dark'
+                                            ],
+                                            [
+                                                'caption' => 'Digital',
+                                                'value'   => 'digital'
+                                            ],
+                                            [
+                                                'caption' => 'Drums',
+                                                'value'   => 'drums'
+                                            ],
+                                            [
+                                                'caption' => 'Duck',
+                                                'value'   => 'duck'
+                                            ],
+                                            [
+                                                'caption' => 'Full',
+                                                'value'   => 'full'
+                                            ],
+                                            [
+                                                'caption' => 'Happy',
+                                                'value'   => 'happy'
+                                            ],
+                                            [
+                                                'caption' => 'Horn',
+                                                'value'   => 'horn'
+                                            ],
+                                            [
+                                                'caption' => 'Inception',
+                                                'value'   => 'inception'
+                                            ],
+                                            [
+                                                'caption' => 'Kazoo',
+                                                'value'   => 'kazoo'
+                                            ],
+                                            [
+                                                'caption' => 'Roll',
+                                                'value'   => 'roll'
+                                            ],
+                                            [
+                                                'caption' => 'Siren',
+                                                'value'   => 'siren'
+                                            ],
+                                            [
+                                                'caption' => 'Space',
+                                                'value'   => 'space'
+                                            ],
+                                            [
+                                                'caption' => 'Trickling',
+                                                'value'   => 'trickling'
+                                            ],
+                                            [
+                                                'caption' => 'Turn',
+                                                'value'   => 'turn'
+                                            ]
+                                        ]
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Zielscript',
+                                    'name'    => 'WebFrontPushNotificationTargetID',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'SelectScript'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerMail',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'E-Mail:',
+                                    'name'    => 'LabelMail',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'E-Mail',
+                                    'name'    => 'UseMailer',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Betreff',
+                                    'name'    => 'Subject',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerSMS',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'SMS:',
+                                    'name'    => 'LabelSMS',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'SMS',
+                                    'name'    => 'UseSMS',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel',
+                                    'name'    => 'SMSTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerTelegram',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Telegram:',
+                                    'name'    => 'LabelTelegram',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Telegram',
+                                    'name'    => 'UseTelegram',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel',
+                                    'name'    => 'TelegramTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerOpenDoorWindowNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Tür/Fenster geöffnet:',
+                                    'name'    => 'LabelOpenDoorWindowNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Benachrichtigung',
+                                    'name'    => 'UseOpenDoorWindowNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
                                     ]
                                 ]
                             ]
                         ],
                         [
-                            'caption' => 'Zielscript',
-                            'name'    => 'WebFrontPushNotificationTargetID',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'SelectScript'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerMail',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'E-Mail:',
-                            'name'    => 'LabelMail',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'E-Mail',
-                            'name'    => 'UseMailer',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Betreff',
-                            'name'    => 'Subject',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerSMS',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'SMS:',
-                            'name'    => 'LabelSMS',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'SMS',
-                            'name'    => 'UseSMS',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Titel',
-                            'name'    => 'SMSTitle',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerTelegram',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Telegram:',
-                            'name'    => 'LabelTelegram',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'Telegram',
-                            'name'    => 'UseTelegram',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Titel',
-                            'name'    => 'TelegramTitle',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerOpenDoorWindowNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Tür/Fenster geöffnet:',
-                            'name'    => 'LabelOpenDoorWindowNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'Benachrichtigung',
-                            'name'    => 'UseOpenDoorWindowNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
+                            'type'    => 'Label',
+                            'caption' => ' '
                         ]
                     ]
                 ],
                 [
-                    'type'    => 'Label',
-                    'caption' => ' '
-                ],
-                [
-                    'type'    => 'Label',
-                    'caption' => 'Tür/Fenster',
-                    'bold'    => true,
-                    'italic'  => true
-                ],
-                [
-                    'type'     => 'List',
-                    'name'     => 'OpenDoorWindowNotification',
-                    'caption'  => 'Tür/Fenster geöffnet',
-                    'rowCount' => 1,
-                    'add'      => false,
-                    'delete'   => false,
-                    'columns'  => [
+                    'type'     => 'ExpansionPanel',
+                    'caption'  => 'Tür/Fenster',
+                    'expanded' => false,
+                    'items'    => [
                         [
-                            'caption' => 'Aktiviert',
-                            'name'    => 'Use',
-                            'width'   => '100px',
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Bezeichnung',
-                            'name'    => 'Designation',
-                            'width'   => '300px',
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Meldungstext:',
-                            'name'    => 'LabelMessageText',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'Text der Meldung (maximal 256 Zeichen)',
-                            'name'    => 'MessageText',
-                            'width'   => '400px',
-                            'visible' => true,
-                            'edit'    => [
-                                'type'      => 'ValidationTextBox',
-                                'multiline' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'Zeitstempel',
-                            'name'    => 'UseTimestamp',
-                            'width'   => '100px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerWebFrontNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Nachricht:',
-                            'name'    => 'LabelWebFrontNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'WebFront Nachricht',
-                            'name'    => 'UseWebFrontNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
-                            'name'    => 'WebFrontNotificationTitle',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Icon',
-                            'name'    => 'WebFrontNotificationIcon',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'SelectIcon'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Anzeigedauer',
-                            'name'    => 'WebFrontNotificationDisplayDuration',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type'   => 'NumberSpinner',
-                                'suffix' => 'Sekunden'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerWebFrontPushNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Push-Nachricht:',
-                            'name'    => 'LabelWebFrontPushNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'WebFront Push-Nachricht',
-                            'name'    => 'UseWebFrontPushNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
-                            'name'    => 'WebFrontPushNotificationTitle',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Sound',
-                            'name'    => 'WebFrontPushNotificationSound',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type'    => 'Select',
-                                'options' => [
-                                    [
-                                        'caption' => 'Standard',
-                                        'value'   => ''
-                                    ],
-                                    [
-                                        'caption' => 'Alarm',
-                                        'value'   => 'alarm'
-                                    ],
-                                    [
-                                        'caption' => 'Bell',
-                                        'value'   => 'bell'
-                                    ],
-                                    [
-                                        'caption' => 'Boom',
-                                        'value'   => 'boom'
-                                    ],
-                                    [
-                                        'caption' => 'Buzzer',
-                                        'value'   => 'buzzer'
-                                    ],
-                                    [
-                                        'caption' => 'Connected',
-                                        'value'   => 'connected'
-                                    ],
-                                    [
-                                        'caption' => 'Dark',
-                                        'value'   => 'dark'
-                                    ],
-                                    [
-                                        'caption' => 'Digital',
-                                        'value'   => 'digital'
-                                    ],
-                                    [
-                                        'caption' => 'Drums',
-                                        'value'   => 'drums'
-                                    ],
-                                    [
-                                        'caption' => 'Duck',
-                                        'value'   => 'duck'
-                                    ],
-                                    [
-                                        'caption' => 'Full',
-                                        'value'   => 'full'
-                                    ],
-                                    [
-                                        'caption' => 'Happy',
-                                        'value'   => 'happy'
-                                    ],
-                                    [
-                                        'caption' => 'Horn',
-                                        'value'   => 'horn'
-                                    ],
-                                    [
-                                        'caption' => 'Inception',
-                                        'value'   => 'inception'
-                                    ],
-                                    [
-                                        'caption' => 'Kazoo',
-                                        'value'   => 'kazoo'
-                                    ],
-                                    [
-                                        'caption' => 'Roll',
-                                        'value'   => 'roll'
-                                    ],
-                                    [
-                                        'caption' => 'Siren',
-                                        'value'   => 'siren'
-                                    ],
-                                    [
-                                        'caption' => 'Space',
-                                        'value'   => 'space'
-                                    ],
-                                    [
-                                        'caption' => 'Trickling',
-                                        'value'   => 'trickling'
-                                    ],
-                                    [
-                                        'caption' => 'Turn',
-                                        'value'   => 'turn'
+                            'type'     => 'List',
+                            'name'     => 'OpenDoorWindowNotification',
+                            'caption'  => 'Geöffnet',
+                            'rowCount' => 1,
+                            'add'      => false,
+                            'delete'   => false,
+                            'columns'  => [
+                                [
+                                    'caption' => 'Aktiviert',
+                                    'name'    => 'Use',
+                                    'width'   => '100px',
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Bezeichnung',
+                                    'name'    => 'Designation',
+                                    'width'   => '300px',
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Meldungstext:',
+                                    'name'    => 'LabelMessageText',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Text der Meldung (maximal 256 Zeichen)',
+                                    'name'    => 'MessageText',
+                                    'width'   => '400px',
+                                    'visible' => true,
+                                    'edit'    => [
+                                        'type'      => 'ValidationTextBox',
+                                        'multiline' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Zeitstempel',
+                                    'name'    => 'UseTimestamp',
+                                    'width'   => '100px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerWebFrontNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Nachricht:',
+                                    'name'    => 'LabelWebFrontNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'WebFront Nachricht',
+                                    'name'    => 'UseWebFrontNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
+                                    'name'    => 'WebFrontNotificationTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Icon',
+                                    'name'    => 'WebFrontNotificationIcon',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'SelectIcon'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Anzeigedauer',
+                                    'name'    => 'WebFrontNotificationDisplayDuration',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type'   => 'NumberSpinner',
+                                        'suffix' => 'Sekunden'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerWebFrontPushNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Push-Nachricht:',
+                                    'name'    => 'LabelWebFrontPushNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'WebFront Push-Nachricht',
+                                    'name'    => 'UseWebFrontPushNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
+                                    'name'    => 'WebFrontPushNotificationTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Sound',
+                                    'name'    => 'WebFrontPushNotificationSound',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type'    => 'Select',
+                                        'options' => [
+                                            [
+                                                'caption' => 'Standard',
+                                                'value'   => ''
+                                            ],
+                                            [
+                                                'caption' => 'Alarm',
+                                                'value'   => 'alarm'
+                                            ],
+                                            [
+                                                'caption' => 'Bell',
+                                                'value'   => 'bell'
+                                            ],
+                                            [
+                                                'caption' => 'Boom',
+                                                'value'   => 'boom'
+                                            ],
+                                            [
+                                                'caption' => 'Buzzer',
+                                                'value'   => 'buzzer'
+                                            ],
+                                            [
+                                                'caption' => 'Connected',
+                                                'value'   => 'connected'
+                                            ],
+                                            [
+                                                'caption' => 'Dark',
+                                                'value'   => 'dark'
+                                            ],
+                                            [
+                                                'caption' => 'Digital',
+                                                'value'   => 'digital'
+                                            ],
+                                            [
+                                                'caption' => 'Drums',
+                                                'value'   => 'drums'
+                                            ],
+                                            [
+                                                'caption' => 'Duck',
+                                                'value'   => 'duck'
+                                            ],
+                                            [
+                                                'caption' => 'Full',
+                                                'value'   => 'full'
+                                            ],
+                                            [
+                                                'caption' => 'Happy',
+                                                'value'   => 'happy'
+                                            ],
+                                            [
+                                                'caption' => 'Horn',
+                                                'value'   => 'horn'
+                                            ],
+                                            [
+                                                'caption' => 'Inception',
+                                                'value'   => 'inception'
+                                            ],
+                                            [
+                                                'caption' => 'Kazoo',
+                                                'value'   => 'kazoo'
+                                            ],
+                                            [
+                                                'caption' => 'Roll',
+                                                'value'   => 'roll'
+                                            ],
+                                            [
+                                                'caption' => 'Siren',
+                                                'value'   => 'siren'
+                                            ],
+                                            [
+                                                'caption' => 'Space',
+                                                'value'   => 'space'
+                                            ],
+                                            [
+                                                'caption' => 'Trickling',
+                                                'value'   => 'trickling'
+                                            ],
+                                            [
+                                                'caption' => 'Turn',
+                                                'value'   => 'turn'
+                                            ]
+                                        ]
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Zielscript',
+                                    'name'    => 'WebFrontPushNotificationTargetID',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'SelectScript'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerMail',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'E-Mail:',
+                                    'name'    => 'LabelMail',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'E-Mail',
+                                    'name'    => 'UseMailer',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Betreff',
+                                    'name'    => 'Subject',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerSMS',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'SMS:',
+                                    'name'    => 'LabelSMS',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'SMS',
+                                    'name'    => 'UseSMS',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel',
+                                    'name'    => 'SMSTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerTelegram',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Telegram:',
+                                    'name'    => 'LabelTelegram',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Telegram',
+                                    'name'    => 'UseTelegram',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel',
+                                    'name'    => 'TelegramTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
                                     ]
                                 ]
                             ]
-                        ],
-                        [
-                            'caption' => 'Zielscript',
-                            'name'    => 'WebFrontPushNotificationTargetID',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'SelectScript'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerMail',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'E-Mail:',
-                            'name'    => 'LabelMail',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'E-Mail',
-                            'name'    => 'UseMailer',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Betreff',
-                            'name'    => 'Subject',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerSMS',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'SMS:',
-                            'name'    => 'LabelSMS',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'SMS',
-                            'name'    => 'UseSMS',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Titel',
-                            'name'    => 'SMSTitle',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerTelegram',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Telegram:',
-                            'name'    => 'LabelTelegram',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'Telegram',
-                            'name'    => 'UseTelegram',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Titel',
-                            'name'    => 'TelegramTitle',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
                         ]
                     ]
-                ],
-                [
-                    'type'    => 'Label',
-                    'caption' => ' '
                 ],
                 //Alarm
                 [
-                    'type'    => 'Label',
-                    'caption' => 'Alarm',
-                    'bold'    => true,
-                    'italic'  => true
-                ],
-                //Door and window sensors
-                [
-                    'type'     => 'List',
-                    'name'     => 'DoorWindowAlarmNotification',
-                    'caption'  => 'Tür- und Fenstersensoren',
-                    'rowCount' => 1,
-                    'delete'   => false,
-                    'columns'  => [
+                    'type'     => 'ExpansionPanel',
+                    'caption'  => 'Alarm',
+                    'expanded' => false,
+                    'items'    => [
+                        //Door and window sensors
                         [
-                            'caption' => 'Aktiviert',
-                            'name'    => 'Use',
-                            'width'   => '100px',
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Bezeichnung',
-                            'name'    => 'Designation',
-                            'width'   => '300px',
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Meldungstext:',
-                            'name'    => 'LabelMessageText',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'Text der Meldung (maximal 256 Zeichen)',
-                            'name'    => 'MessageText',
-                            'width'   => '400px',
-                            'visible' => true,
-                            'edit'    => [
-                                'type'      => 'ValidationTextBox',
-                                'multiline' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'Zeitstempel',
-                            'name'    => 'UseTimestamp',
-                            'width'   => '100px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerWebFrontNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Nachricht:',
-                            'name'    => 'LabelWebFrontNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'WebFront Nachricht',
-                            'name'    => 'UseWebFrontNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
-                            'name'    => 'WebFrontNotificationTitle',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Icon',
-                            'name'    => 'WebFrontNotificationIcon',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'SelectIcon'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Anzeigedauer',
-                            'name'    => 'WebFrontNotificationDisplayDuration',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type'   => 'NumberSpinner',
-                                'suffix' => 'Sekunden'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerWebFrontPushNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Push-Nachricht:',
-                            'name'    => 'LabelWebFrontPushNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'WebFront Push-Nachricht',
-                            'name'    => 'UseWebFrontPushNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
-                            'name'    => 'WebFrontPushNotificationTitle',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Sound',
-                            'name'    => 'WebFrontPushNotificationSound',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type'    => 'Select',
-                                'options' => [
-                                    [
-                                        'caption' => 'Standard',
-                                        'value'   => ''
-                                    ],
-                                    [
-                                        'caption' => 'Alarm',
-                                        'value'   => 'alarm'
-                                    ],
-                                    [
-                                        'caption' => 'Bell',
-                                        'value'   => 'bell'
-                                    ],
-                                    [
-                                        'caption' => 'Boom',
-                                        'value'   => 'boom'
-                                    ],
-                                    [
-                                        'caption' => 'Buzzer',
-                                        'value'   => 'buzzer'
-                                    ],
-                                    [
-                                        'caption' => 'Connected',
-                                        'value'   => 'connected'
-                                    ],
-                                    [
-                                        'caption' => 'Dark',
-                                        'value'   => 'dark'
-                                    ],
-                                    [
-                                        'caption' => 'Digital',
-                                        'value'   => 'digital'
-                                    ],
-                                    [
-                                        'caption' => 'Drums',
-                                        'value'   => 'drums'
-                                    ],
-                                    [
-                                        'caption' => 'Duck',
-                                        'value'   => 'duck'
-                                    ],
-                                    [
-                                        'caption' => 'Full',
-                                        'value'   => 'full'
-                                    ],
-                                    [
-                                        'caption' => 'Happy',
-                                        'value'   => 'happy'
-                                    ],
-                                    [
-                                        'caption' => 'Horn',
-                                        'value'   => 'horn'
-                                    ],
-                                    [
-                                        'caption' => 'Inception',
-                                        'value'   => 'inception'
-                                    ],
-                                    [
-                                        'caption' => 'Kazoo',
-                                        'value'   => 'kazoo'
-                                    ],
-                                    [
-                                        'caption' => 'Roll',
-                                        'value'   => 'roll'
-                                    ],
-                                    [
-                                        'caption' => 'Siren',
-                                        'value'   => 'siren'
-                                    ],
-                                    [
-                                        'caption' => 'Space',
-                                        'value'   => 'space'
-                                    ],
-                                    [
-                                        'caption' => 'Trickling',
-                                        'value'   => 'trickling'
-                                    ],
-                                    [
-                                        'caption' => 'Turn',
-                                        'value'   => 'turn'
+                            'type'     => 'List',
+                            'name'     => 'DoorWindowAlarmNotification',
+                            'caption'  => 'Tür- und Fenstersensoren',
+                            'rowCount' => 1,
+                            'delete'   => false,
+                            'columns'  => [
+                                [
+                                    'caption' => 'Aktiviert',
+                                    'name'    => 'Use',
+                                    'width'   => '100px',
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Bezeichnung',
+                                    'name'    => 'Designation',
+                                    'width'   => '300px',
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Meldungstext:',
+                                    'name'    => 'LabelMessageText',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Text der Meldung (maximal 256 Zeichen)',
+                                    'name'    => 'MessageText',
+                                    'width'   => '400px',
+                                    'visible' => true,
+                                    'edit'    => [
+                                        'type'      => 'ValidationTextBox',
+                                        'multiline' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Zeitstempel',
+                                    'name'    => 'UseTimestamp',
+                                    'width'   => '100px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerWebFrontNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Nachricht:',
+                                    'name'    => 'LabelWebFrontNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'WebFront Nachricht',
+                                    'name'    => 'UseWebFrontNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
+                                    'name'    => 'WebFrontNotificationTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Icon',
+                                    'name'    => 'WebFrontNotificationIcon',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'SelectIcon'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Anzeigedauer',
+                                    'name'    => 'WebFrontNotificationDisplayDuration',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type'   => 'NumberSpinner',
+                                        'suffix' => 'Sekunden'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerWebFrontPushNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Push-Nachricht:',
+                                    'name'    => 'LabelWebFrontPushNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'WebFront Push-Nachricht',
+                                    'name'    => 'UseWebFrontPushNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
+                                    'name'    => 'WebFrontPushNotificationTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Sound',
+                                    'name'    => 'WebFrontPushNotificationSound',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type'    => 'Select',
+                                        'options' => [
+                                            [
+                                                'caption' => 'Standard',
+                                                'value'   => ''
+                                            ],
+                                            [
+                                                'caption' => 'Alarm',
+                                                'value'   => 'alarm'
+                                            ],
+                                            [
+                                                'caption' => 'Bell',
+                                                'value'   => 'bell'
+                                            ],
+                                            [
+                                                'caption' => 'Boom',
+                                                'value'   => 'boom'
+                                            ],
+                                            [
+                                                'caption' => 'Buzzer',
+                                                'value'   => 'buzzer'
+                                            ],
+                                            [
+                                                'caption' => 'Connected',
+                                                'value'   => 'connected'
+                                            ],
+                                            [
+                                                'caption' => 'Dark',
+                                                'value'   => 'dark'
+                                            ],
+                                            [
+                                                'caption' => 'Digital',
+                                                'value'   => 'digital'
+                                            ],
+                                            [
+                                                'caption' => 'Drums',
+                                                'value'   => 'drums'
+                                            ],
+                                            [
+                                                'caption' => 'Duck',
+                                                'value'   => 'duck'
+                                            ],
+                                            [
+                                                'caption' => 'Full',
+                                                'value'   => 'full'
+                                            ],
+                                            [
+                                                'caption' => 'Happy',
+                                                'value'   => 'happy'
+                                            ],
+                                            [
+                                                'caption' => 'Horn',
+                                                'value'   => 'horn'
+                                            ],
+                                            [
+                                                'caption' => 'Inception',
+                                                'value'   => 'inception'
+                                            ],
+                                            [
+                                                'caption' => 'Kazoo',
+                                                'value'   => 'kazoo'
+                                            ],
+                                            [
+                                                'caption' => 'Roll',
+                                                'value'   => 'roll'
+                                            ],
+                                            [
+                                                'caption' => 'Siren',
+                                                'value'   => 'siren'
+                                            ],
+                                            [
+                                                'caption' => 'Space',
+                                                'value'   => 'space'
+                                            ],
+                                            [
+                                                'caption' => 'Trickling',
+                                                'value'   => 'trickling'
+                                            ],
+                                            [
+                                                'caption' => 'Turn',
+                                                'value'   => 'turn'
+                                            ]
+                                        ]
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Zielscript',
+                                    'name'    => 'WebFrontPushNotificationTargetID',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'SelectScript'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerMail',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'E-Mail:',
+                                    'name'    => 'LabelMail',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'E-Mail',
+                                    'name'    => 'UseMailer',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Betreff',
+                                    'name'    => 'Subject',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerSMS',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'SMS:',
+                                    'name'    => 'LabelSMS',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'SMS',
+                                    'name'    => 'UseSMS',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel',
+                                    'name'    => 'SMSTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerTelegram',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Telegram:',
+                                    'name'    => 'LabelTelegram',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Telegram',
+                                    'name'    => 'UseTelegram',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel',
+                                    'name'    => 'TelegramTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
                                     ]
                                 ]
                             ]
                         ],
+                        //Motion detectors
                         [
-                            'caption' => 'Zielscript',
-                            'name'    => 'WebFrontPushNotificationTargetID',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'SelectScript'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerMail',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'E-Mail:',
-                            'name'    => 'LabelMail',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'E-Mail',
-                            'name'    => 'UseMailer',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Betreff',
-                            'name'    => 'Subject',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerSMS',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'SMS:',
-                            'name'    => 'LabelSMS',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'SMS',
-                            'name'    => 'UseSMS',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Titel',
-                            'name'    => 'SMSTitle',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerTelegram',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Telegram:',
-                            'name'    => 'LabelTelegram',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'Telegram',
-                            'name'    => 'UseTelegram',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Titel',
-                            'name'    => 'TelegramTitle',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ]
-                    ]
-                ],
-                //Motion detectors
-                [
-                    'type'     => 'List',
-                    'name'     => 'MotionDetectorAlarmNotification',
-                    'caption'  => 'Bewegungsmelder',
-                    'rowCount' => 1,
-                    'delete'   => false,
-                    'columns'  => [
-                        [
-                            'caption' => 'Aktiviert',
-                            'name'    => 'Use',
-                            'width'   => '100px',
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Bezeichnung',
-                            'name'    => 'Designation',
-                            'width'   => '300px',
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Meldungstext:',
-                            'name'    => 'LabelMessageText',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'Text der Meldung (maximal 256 Zeichen)',
-                            'name'    => 'MessageText',
-                            'width'   => '400px',
-                            'visible' => true,
-                            'edit'    => [
-                                'type'      => 'ValidationTextBox',
-                                'multiline' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'Zeitstempel',
-                            'name'    => 'UseTimestamp',
-                            'width'   => '100px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerWebFrontNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Nachricht:',
-                            'name'    => 'LabelWebFrontNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'WebFront Nachricht',
-                            'name'    => 'UseWebFrontNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
-                            'name'    => 'WebFrontNotificationTitle',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Icon',
-                            'name'    => 'WebFrontNotificationIcon',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'SelectIcon'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Anzeigedauer',
-                            'name'    => 'WebFrontNotificationDisplayDuration',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type'   => 'NumberSpinner',
-                                'suffix' => 'Sekunden'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerWebFrontPushNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Push-Nachricht:',
-                            'name'    => 'LabelWebFrontPushNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'WebFront Push-Nachricht',
-                            'name'    => 'UseWebFrontPushNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
-                            'name'    => 'WebFrontPushNotificationTitle',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Sound',
-                            'name'    => 'WebFrontPushNotificationSound',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type'    => 'Select',
-                                'options' => [
-                                    [
-                                        'caption' => 'Standard',
-                                        'value'   => ''
-                                    ],
-                                    [
-                                        'caption' => 'Alarm',
-                                        'value'   => 'alarm'
-                                    ],
-                                    [
-                                        'caption' => 'Bell',
-                                        'value'   => 'bell'
-                                    ],
-                                    [
-                                        'caption' => 'Boom',
-                                        'value'   => 'boom'
-                                    ],
-                                    [
-                                        'caption' => 'Buzzer',
-                                        'value'   => 'buzzer'
-                                    ],
-                                    [
-                                        'caption' => 'Connected',
-                                        'value'   => 'connected'
-                                    ],
-                                    [
-                                        'caption' => 'Dark',
-                                        'value'   => 'dark'
-                                    ],
-                                    [
-                                        'caption' => 'Digital',
-                                        'value'   => 'digital'
-                                    ],
-                                    [
-                                        'caption' => 'Drums',
-                                        'value'   => 'drums'
-                                    ],
-                                    [
-                                        'caption' => 'Duck',
-                                        'value'   => 'duck'
-                                    ],
-                                    [
-                                        'caption' => 'Full',
-                                        'value'   => 'full'
-                                    ],
-                                    [
-                                        'caption' => 'Happy',
-                                        'value'   => 'happy'
-                                    ],
-                                    [
-                                        'caption' => 'Horn',
-                                        'value'   => 'horn'
-                                    ],
-                                    [
-                                        'caption' => 'Inception',
-                                        'value'   => 'inception'
-                                    ],
-                                    [
-                                        'caption' => 'Kazoo',
-                                        'value'   => 'kazoo'
-                                    ],
-                                    [
-                                        'caption' => 'Roll',
-                                        'value'   => 'roll'
-                                    ],
-                                    [
-                                        'caption' => 'Siren',
-                                        'value'   => 'siren'
-                                    ],
-                                    [
-                                        'caption' => 'Space',
-                                        'value'   => 'space'
-                                    ],
-                                    [
-                                        'caption' => 'Trickling',
-                                        'value'   => 'trickling'
-                                    ],
-                                    [
-                                        'caption' => 'Turn',
-                                        'value'   => 'turn'
+                            'type'     => 'List',
+                            'name'     => 'MotionDetectorAlarmNotification',
+                            'caption'  => 'Bewegungsmelder',
+                            'rowCount' => 1,
+                            'delete'   => false,
+                            'columns'  => [
+                                [
+                                    'caption' => 'Aktiviert',
+                                    'name'    => 'Use',
+                                    'width'   => '100px',
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Bezeichnung',
+                                    'name'    => 'Designation',
+                                    'width'   => '300px',
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Meldungstext:',
+                                    'name'    => 'LabelMessageText',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Text der Meldung (maximal 256 Zeichen)',
+                                    'name'    => 'MessageText',
+                                    'width'   => '400px',
+                                    'visible' => true,
+                                    'edit'    => [
+                                        'type'      => 'ValidationTextBox',
+                                        'multiline' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Zeitstempel',
+                                    'name'    => 'UseTimestamp',
+                                    'width'   => '100px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerWebFrontNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Nachricht:',
+                                    'name'    => 'LabelWebFrontNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'WebFront Nachricht',
+                                    'name'    => 'UseWebFrontNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
+                                    'name'    => 'WebFrontNotificationTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Icon',
+                                    'name'    => 'WebFrontNotificationIcon',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'SelectIcon'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Anzeigedauer',
+                                    'name'    => 'WebFrontNotificationDisplayDuration',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type'   => 'NumberSpinner',
+                                        'suffix' => 'Sekunden'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerWebFrontPushNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Push-Nachricht:',
+                                    'name'    => 'LabelWebFrontPushNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'WebFront Push-Nachricht',
+                                    'name'    => 'UseWebFrontPushNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
+                                    'name'    => 'WebFrontPushNotificationTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Sound',
+                                    'name'    => 'WebFrontPushNotificationSound',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type'    => 'Select',
+                                        'options' => [
+                                            [
+                                                'caption' => 'Standard',
+                                                'value'   => ''
+                                            ],
+                                            [
+                                                'caption' => 'Alarm',
+                                                'value'   => 'alarm'
+                                            ],
+                                            [
+                                                'caption' => 'Bell',
+                                                'value'   => 'bell'
+                                            ],
+                                            [
+                                                'caption' => 'Boom',
+                                                'value'   => 'boom'
+                                            ],
+                                            [
+                                                'caption' => 'Buzzer',
+                                                'value'   => 'buzzer'
+                                            ],
+                                            [
+                                                'caption' => 'Connected',
+                                                'value'   => 'connected'
+                                            ],
+                                            [
+                                                'caption' => 'Dark',
+                                                'value'   => 'dark'
+                                            ],
+                                            [
+                                                'caption' => 'Digital',
+                                                'value'   => 'digital'
+                                            ],
+                                            [
+                                                'caption' => 'Drums',
+                                                'value'   => 'drums'
+                                            ],
+                                            [
+                                                'caption' => 'Duck',
+                                                'value'   => 'duck'
+                                            ],
+                                            [
+                                                'caption' => 'Full',
+                                                'value'   => 'full'
+                                            ],
+                                            [
+                                                'caption' => 'Happy',
+                                                'value'   => 'happy'
+                                            ],
+                                            [
+                                                'caption' => 'Horn',
+                                                'value'   => 'horn'
+                                            ],
+                                            [
+                                                'caption' => 'Inception',
+                                                'value'   => 'inception'
+                                            ],
+                                            [
+                                                'caption' => 'Kazoo',
+                                                'value'   => 'kazoo'
+                                            ],
+                                            [
+                                                'caption' => 'Roll',
+                                                'value'   => 'roll'
+                                            ],
+                                            [
+                                                'caption' => 'Siren',
+                                                'value'   => 'siren'
+                                            ],
+                                            [
+                                                'caption' => 'Space',
+                                                'value'   => 'space'
+                                            ],
+                                            [
+                                                'caption' => 'Trickling',
+                                                'value'   => 'trickling'
+                                            ],
+                                            [
+                                                'caption' => 'Turn',
+                                                'value'   => 'turn'
+                                            ]
+                                        ]
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Zielscript',
+                                    'name'    => 'WebFrontPushNotificationTargetID',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'SelectScript'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerMail',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'E-Mail:',
+                                    'name'    => 'LabelMail',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'E-Mail',
+                                    'name'    => 'UseMailer',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Betreff',
+                                    'name'    => 'Subject',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerSMS',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'SMS:',
+                                    'name'    => 'LabelSMS',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'SMS',
+                                    'name'    => 'UseSMS',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel',
+                                    'name'    => 'SMSTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerTelegram',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Telegram:',
+                                    'name'    => 'LabelTelegram',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Telegram',
+                                    'name'    => 'UseTelegram',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel',
+                                    'name'    => 'TelegramTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
                                     ]
                                 ]
                             ]
                         ],
+                        //Glass breakage detector
                         [
-                            'caption' => 'Zielscript',
-                            'name'    => 'WebFrontPushNotificationTargetID',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'SelectScript'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerMail',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'E-Mail:',
-                            'name'    => 'LabelMail',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'E-Mail',
-                            'name'    => 'UseMailer',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Betreff',
-                            'name'    => 'Subject',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerSMS',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'SMS:',
-                            'name'    => 'LabelSMS',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'SMS',
-                            'name'    => 'UseSMS',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Titel',
-                            'name'    => 'SMSTitle',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerTelegram',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Telegram:',
-                            'name'    => 'LabelTelegram',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'Telegram',
-                            'name'    => 'UseTelegram',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Titel',
-                            'name'    => 'TelegramTitle',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ]
-                    ]
-                ],
-                //Glass breakage detector
-                [
-                    'type'     => 'List',
-                    'name'     => 'GlassBreakageDetectorAlarmNotification',
-                    'caption'  => 'Glasbruchmelder',
-                    'rowCount' => 1,
-                    'delete'   => false,
-                    'columns'  => [
-                        [
-                            'caption' => 'Aktiviert',
-                            'name'    => 'Use',
-                            'width'   => '100px',
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Bezeichnung',
-                            'name'    => 'Designation',
-                            'width'   => '300px',
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Meldungstext:',
-                            'name'    => 'LabelMessageText',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'Text der Meldung (maximal 256 Zeichen)',
-                            'name'    => 'MessageText',
-                            'width'   => '400px',
-                            'visible' => true,
-                            'edit'    => [
-                                'type'      => 'ValidationTextBox',
-                                'multiline' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'Zeitstempel',
-                            'name'    => 'UseTimestamp',
-                            'width'   => '100px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerWebFrontNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Nachricht:',
-                            'name'    => 'LabelWebFrontNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'WebFront Nachricht',
-                            'name'    => 'UseWebFrontNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
-                            'name'    => 'WebFrontNotificationTitle',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Icon',
-                            'name'    => 'WebFrontNotificationIcon',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'SelectIcon'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Anzeigedauer',
-                            'name'    => 'WebFrontNotificationDisplayDuration',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type'   => 'NumberSpinner',
-                                'suffix' => 'Sekunden'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerWebFrontPushNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Push-Nachricht:',
-                            'name'    => 'LabelWebFrontPushNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'WebFront Push-Nachricht',
-                            'name'    => 'UseWebFrontPushNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
-                            'name'    => 'WebFrontPushNotificationTitle',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Sound',
-                            'name'    => 'WebFrontPushNotificationSound',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type'    => 'Select',
-                                'options' => [
-                                    [
-                                        'caption' => 'Standard',
-                                        'value'   => ''
-                                    ],
-                                    [
-                                        'caption' => 'Alarm',
-                                        'value'   => 'alarm'
-                                    ],
-                                    [
-                                        'caption' => 'Bell',
-                                        'value'   => 'bell'
-                                    ],
-                                    [
-                                        'caption' => 'Boom',
-                                        'value'   => 'boom'
-                                    ],
-                                    [
-                                        'caption' => 'Buzzer',
-                                        'value'   => 'buzzer'
-                                    ],
-                                    [
-                                        'caption' => 'Connected',
-                                        'value'   => 'connected'
-                                    ],
-                                    [
-                                        'caption' => 'Dark',
-                                        'value'   => 'dark'
-                                    ],
-                                    [
-                                        'caption' => 'Digital',
-                                        'value'   => 'digital'
-                                    ],
-                                    [
-                                        'caption' => 'Drums',
-                                        'value'   => 'drums'
-                                    ],
-                                    [
-                                        'caption' => 'Duck',
-                                        'value'   => 'duck'
-                                    ],
-                                    [
-                                        'caption' => 'Full',
-                                        'value'   => 'full'
-                                    ],
-                                    [
-                                        'caption' => 'Happy',
-                                        'value'   => 'happy'
-                                    ],
-                                    [
-                                        'caption' => 'Horn',
-                                        'value'   => 'horn'
-                                    ],
-                                    [
-                                        'caption' => 'Inception',
-                                        'value'   => 'inception'
-                                    ],
-                                    [
-                                        'caption' => 'Kazoo',
-                                        'value'   => 'kazoo'
-                                    ],
-                                    [
-                                        'caption' => 'Roll',
-                                        'value'   => 'roll'
-                                    ],
-                                    [
-                                        'caption' => 'Siren',
-                                        'value'   => 'siren'
-                                    ],
-                                    [
-                                        'caption' => 'Space',
-                                        'value'   => 'space'
-                                    ],
-                                    [
-                                        'caption' => 'Trickling',
-                                        'value'   => 'trickling'
-                                    ],
-                                    [
-                                        'caption' => 'Turn',
-                                        'value'   => 'turn'
+                            'type'     => 'List',
+                            'name'     => 'GlassBreakageDetectorAlarmNotification',
+                            'caption'  => 'Glasbruchmelder',
+                            'rowCount' => 1,
+                            'delete'   => false,
+                            'columns'  => [
+                                [
+                                    'caption' => 'Aktiviert',
+                                    'name'    => 'Use',
+                                    'width'   => '100px',
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Bezeichnung',
+                                    'name'    => 'Designation',
+                                    'width'   => '300px',
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Meldungstext:',
+                                    'name'    => 'LabelMessageText',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Text der Meldung (maximal 256 Zeichen)',
+                                    'name'    => 'MessageText',
+                                    'width'   => '400px',
+                                    'visible' => true,
+                                    'edit'    => [
+                                        'type'      => 'ValidationTextBox',
+                                        'multiline' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Zeitstempel',
+                                    'name'    => 'UseTimestamp',
+                                    'width'   => '100px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerWebFrontNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Nachricht:',
+                                    'name'    => 'LabelWebFrontNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'WebFront Nachricht',
+                                    'name'    => 'UseWebFrontNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
+                                    'name'    => 'WebFrontNotificationTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Icon',
+                                    'name'    => 'WebFrontNotificationIcon',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'SelectIcon'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Anzeigedauer',
+                                    'name'    => 'WebFrontNotificationDisplayDuration',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type'   => 'NumberSpinner',
+                                        'suffix' => 'Sekunden'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerWebFrontPushNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Push-Nachricht:',
+                                    'name'    => 'LabelWebFrontPushNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'WebFront Push-Nachricht',
+                                    'name'    => 'UseWebFrontPushNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
+                                    'name'    => 'WebFrontPushNotificationTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Sound',
+                                    'name'    => 'WebFrontPushNotificationSound',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type'    => 'Select',
+                                        'options' => [
+                                            [
+                                                'caption' => 'Standard',
+                                                'value'   => ''
+                                            ],
+                                            [
+                                                'caption' => 'Alarm',
+                                                'value'   => 'alarm'
+                                            ],
+                                            [
+                                                'caption' => 'Bell',
+                                                'value'   => 'bell'
+                                            ],
+                                            [
+                                                'caption' => 'Boom',
+                                                'value'   => 'boom'
+                                            ],
+                                            [
+                                                'caption' => 'Buzzer',
+                                                'value'   => 'buzzer'
+                                            ],
+                                            [
+                                                'caption' => 'Connected',
+                                                'value'   => 'connected'
+                                            ],
+                                            [
+                                                'caption' => 'Dark',
+                                                'value'   => 'dark'
+                                            ],
+                                            [
+                                                'caption' => 'Digital',
+                                                'value'   => 'digital'
+                                            ],
+                                            [
+                                                'caption' => 'Drums',
+                                                'value'   => 'drums'
+                                            ],
+                                            [
+                                                'caption' => 'Duck',
+                                                'value'   => 'duck'
+                                            ],
+                                            [
+                                                'caption' => 'Full',
+                                                'value'   => 'full'
+                                            ],
+                                            [
+                                                'caption' => 'Happy',
+                                                'value'   => 'happy'
+                                            ],
+                                            [
+                                                'caption' => 'Horn',
+                                                'value'   => 'horn'
+                                            ],
+                                            [
+                                                'caption' => 'Inception',
+                                                'value'   => 'inception'
+                                            ],
+                                            [
+                                                'caption' => 'Kazoo',
+                                                'value'   => 'kazoo'
+                                            ],
+                                            [
+                                                'caption' => 'Roll',
+                                                'value'   => 'roll'
+                                            ],
+                                            [
+                                                'caption' => 'Siren',
+                                                'value'   => 'siren'
+                                            ],
+                                            [
+                                                'caption' => 'Space',
+                                                'value'   => 'space'
+                                            ],
+                                            [
+                                                'caption' => 'Trickling',
+                                                'value'   => 'trickling'
+                                            ],
+                                            [
+                                                'caption' => 'Turn',
+                                                'value'   => 'turn'
+                                            ]
+                                        ]
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Zielscript',
+                                    'name'    => 'WebFrontPushNotificationTargetID',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'SelectScript'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerMail',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'E-Mail:',
+                                    'name'    => 'LabelMail',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'E-Mail',
+                                    'name'    => 'UseMailer',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Betreff',
+                                    'name'    => 'Subject',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerSMS',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'SMS:',
+                                    'name'    => 'LabelSMS',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'SMS',
+                                    'name'    => 'UseSMS',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel',
+                                    'name'    => 'SMSTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerTelegram',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Telegram:',
+                                    'name'    => 'LabelTelegram',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Telegram',
+                                    'name'    => 'UseTelegram',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel',
+                                    'name'    => 'TelegramTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
                                     ]
                                 ]
                             ]
                         ],
+                        //Smoke detector
                         [
-                            'caption' => 'Zielscript',
-                            'name'    => 'WebFrontPushNotificationTargetID',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'SelectScript'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerMail',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'E-Mail:',
-                            'name'    => 'LabelMail',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'E-Mail',
-                            'name'    => 'UseMailer',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Betreff',
-                            'name'    => 'Subject',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerSMS',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'SMS:',
-                            'name'    => 'LabelSMS',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'SMS',
-                            'name'    => 'UseSMS',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Titel',
-                            'name'    => 'SMSTitle',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerTelegram',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Telegram:',
-                            'name'    => 'LabelTelegram',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'Telegram',
-                            'name'    => 'UseTelegram',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Titel',
-                            'name'    => 'TelegramTitle',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ]
-                    ]
-                ],
-                //Smoke detector
-                [
-                    'type'     => 'List',
-                    'name'     => 'SmokeDetectorAlarmNotification',
-                    'caption'  => 'Rauchmelder',
-                    'rowCount' => 1,
-                    'delete'   => false,
-                    'columns'  => [
-                        [
-                            'caption' => 'Aktiviert',
-                            'name'    => 'Use',
-                            'width'   => '100px',
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Bezeichnung',
-                            'name'    => 'Designation',
-                            'width'   => '300px',
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Meldungstext:',
-                            'name'    => 'LabelMessageText',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'Text der Meldung (maximal 256 Zeichen)',
-                            'name'    => 'MessageText',
-                            'width'   => '400px',
-                            'visible' => true,
-                            'edit'    => [
-                                'type'      => 'ValidationTextBox',
-                                'multiline' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'Zeitstempel',
-                            'name'    => 'UseTimestamp',
-                            'width'   => '100px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerWebFrontNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Nachricht:',
-                            'name'    => 'LabelWebFrontNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'WebFront Nachricht',
-                            'name'    => 'UseWebFrontNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
-                            'name'    => 'WebFrontNotificationTitle',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Icon',
-                            'name'    => 'WebFrontNotificationIcon',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'SelectIcon'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Anzeigedauer',
-                            'name'    => 'WebFrontNotificationDisplayDuration',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type'   => 'NumberSpinner',
-                                'suffix' => 'Sekunden'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerWebFrontPushNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Push-Nachricht:',
-                            'name'    => 'LabelWebFrontPushNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'WebFront Push-Nachricht',
-                            'name'    => 'UseWebFrontPushNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
-                            'name'    => 'WebFrontPushNotificationTitle',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Sound',
-                            'name'    => 'WebFrontPushNotificationSound',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type'    => 'Select',
-                                'options' => [
-                                    [
-                                        'caption' => 'Standard',
-                                        'value'   => ''
-                                    ],
-                                    [
-                                        'caption' => 'Alarm',
-                                        'value'   => 'alarm'
-                                    ],
-                                    [
-                                        'caption' => 'Bell',
-                                        'value'   => 'bell'
-                                    ],
-                                    [
-                                        'caption' => 'Boom',
-                                        'value'   => 'boom'
-                                    ],
-                                    [
-                                        'caption' => 'Buzzer',
-                                        'value'   => 'buzzer'
-                                    ],
-                                    [
-                                        'caption' => 'Connected',
-                                        'value'   => 'connected'
-                                    ],
-                                    [
-                                        'caption' => 'Dark',
-                                        'value'   => 'dark'
-                                    ],
-                                    [
-                                        'caption' => 'Digital',
-                                        'value'   => 'digital'
-                                    ],
-                                    [
-                                        'caption' => 'Drums',
-                                        'value'   => 'drums'
-                                    ],
-                                    [
-                                        'caption' => 'Duck',
-                                        'value'   => 'duck'
-                                    ],
-                                    [
-                                        'caption' => 'Full',
-                                        'value'   => 'full'
-                                    ],
-                                    [
-                                        'caption' => 'Happy',
-                                        'value'   => 'happy'
-                                    ],
-                                    [
-                                        'caption' => 'Horn',
-                                        'value'   => 'horn'
-                                    ],
-                                    [
-                                        'caption' => 'Inception',
-                                        'value'   => 'inception'
-                                    ],
-                                    [
-                                        'caption' => 'Kazoo',
-                                        'value'   => 'kazoo'
-                                    ],
-                                    [
-                                        'caption' => 'Roll',
-                                        'value'   => 'roll'
-                                    ],
-                                    [
-                                        'caption' => 'Siren',
-                                        'value'   => 'siren'
-                                    ],
-                                    [
-                                        'caption' => 'Space',
-                                        'value'   => 'space'
-                                    ],
-                                    [
-                                        'caption' => 'Trickling',
-                                        'value'   => 'trickling'
-                                    ],
-                                    [
-                                        'caption' => 'Turn',
-                                        'value'   => 'turn'
+                            'type'     => 'List',
+                            'name'     => 'SmokeDetectorAlarmNotification',
+                            'caption'  => 'Rauchmelder',
+                            'rowCount' => 1,
+                            'delete'   => false,
+                            'columns'  => [
+                                [
+                                    'caption' => 'Aktiviert',
+                                    'name'    => 'Use',
+                                    'width'   => '100px',
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Bezeichnung',
+                                    'name'    => 'Designation',
+                                    'width'   => '300px',
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Meldungstext:',
+                                    'name'    => 'LabelMessageText',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Text der Meldung (maximal 256 Zeichen)',
+                                    'name'    => 'MessageText',
+                                    'width'   => '400px',
+                                    'visible' => true,
+                                    'edit'    => [
+                                        'type'      => 'ValidationTextBox',
+                                        'multiline' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Zeitstempel',
+                                    'name'    => 'UseTimestamp',
+                                    'width'   => '100px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerWebFrontNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Nachricht:',
+                                    'name'    => 'LabelWebFrontNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'WebFront Nachricht',
+                                    'name'    => 'UseWebFrontNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
+                                    'name'    => 'WebFrontNotificationTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Icon',
+                                    'name'    => 'WebFrontNotificationIcon',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'SelectIcon'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Anzeigedauer',
+                                    'name'    => 'WebFrontNotificationDisplayDuration',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type'   => 'NumberSpinner',
+                                        'suffix' => 'Sekunden'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerWebFrontPushNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Push-Nachricht:',
+                                    'name'    => 'LabelWebFrontPushNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'WebFront Push-Nachricht',
+                                    'name'    => 'UseWebFrontPushNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
+                                    'name'    => 'WebFrontPushNotificationTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Sound',
+                                    'name'    => 'WebFrontPushNotificationSound',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type'    => 'Select',
+                                        'options' => [
+                                            [
+                                                'caption' => 'Standard',
+                                                'value'   => ''
+                                            ],
+                                            [
+                                                'caption' => 'Alarm',
+                                                'value'   => 'alarm'
+                                            ],
+                                            [
+                                                'caption' => 'Bell',
+                                                'value'   => 'bell'
+                                            ],
+                                            [
+                                                'caption' => 'Boom',
+                                                'value'   => 'boom'
+                                            ],
+                                            [
+                                                'caption' => 'Buzzer',
+                                                'value'   => 'buzzer'
+                                            ],
+                                            [
+                                                'caption' => 'Connected',
+                                                'value'   => 'connected'
+                                            ],
+                                            [
+                                                'caption' => 'Dark',
+                                                'value'   => 'dark'
+                                            ],
+                                            [
+                                                'caption' => 'Digital',
+                                                'value'   => 'digital'
+                                            ],
+                                            [
+                                                'caption' => 'Drums',
+                                                'value'   => 'drums'
+                                            ],
+                                            [
+                                                'caption' => 'Duck',
+                                                'value'   => 'duck'
+                                            ],
+                                            [
+                                                'caption' => 'Full',
+                                                'value'   => 'full'
+                                            ],
+                                            [
+                                                'caption' => 'Happy',
+                                                'value'   => 'happy'
+                                            ],
+                                            [
+                                                'caption' => 'Horn',
+                                                'value'   => 'horn'
+                                            ],
+                                            [
+                                                'caption' => 'Inception',
+                                                'value'   => 'inception'
+                                            ],
+                                            [
+                                                'caption' => 'Kazoo',
+                                                'value'   => 'kazoo'
+                                            ],
+                                            [
+                                                'caption' => 'Roll',
+                                                'value'   => 'roll'
+                                            ],
+                                            [
+                                                'caption' => 'Siren',
+                                                'value'   => 'siren'
+                                            ],
+                                            [
+                                                'caption' => 'Space',
+                                                'value'   => 'space'
+                                            ],
+                                            [
+                                                'caption' => 'Trickling',
+                                                'value'   => 'trickling'
+                                            ],
+                                            [
+                                                'caption' => 'Turn',
+                                                'value'   => 'turn'
+                                            ]
+                                        ]
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Zielscript',
+                                    'name'    => 'WebFrontPushNotificationTargetID',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'SelectScript'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerMail',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'E-Mail:',
+                                    'name'    => 'LabelMail',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'E-Mail',
+                                    'name'    => 'UseMailer',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Betreff',
+                                    'name'    => 'Subject',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerSMS',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'SMS:',
+                                    'name'    => 'LabelSMS',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'SMS',
+                                    'name'    => 'UseSMS',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel',
+                                    'name'    => 'SMSTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerTelegram',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Telegram:',
+                                    'name'    => 'LabelTelegram',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Telegram',
+                                    'name'    => 'UseTelegram',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel',
+                                    'name'    => 'TelegramTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
                                     ]
                                 ]
                             ]
                         ],
+                        //Water detector
                         [
-                            'caption' => 'Zielscript',
-                            'name'    => 'WebFrontPushNotificationTargetID',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'SelectScript'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerMail',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'E-Mail:',
-                            'name'    => 'LabelMail',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'E-Mail',
-                            'name'    => 'UseMailer',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Betreff',
-                            'name'    => 'Subject',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerSMS',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'SMS:',
-                            'name'    => 'LabelSMS',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'SMS',
-                            'name'    => 'UseSMS',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Titel',
-                            'name'    => 'SMSTitle',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerTelegram',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Telegram:',
-                            'name'    => 'LabelTelegram',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'Telegram',
-                            'name'    => 'UseTelegram',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Titel',
-                            'name'    => 'TelegramTitle',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ]
-                    ]
-                ],
-                //Water detector
-                [
-                    'type'     => 'List',
-                    'name'     => 'WaterDetectorAlarmNotification',
-                    'caption'  => 'Wassermelder',
-                    'rowCount' => 1,
-                    'delete'   => false,
-                    'columns'  => [
-                        [
-                            'caption' => 'Aktiviert',
-                            'name'    => 'Use',
-                            'width'   => '100px',
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Bezeichnung',
-                            'name'    => 'Designation',
-                            'width'   => '300px',
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Meldungstext:',
-                            'name'    => 'LabelMessageText',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'Text der Meldung (maximal 256 Zeichen)',
-                            'name'    => 'MessageText',
-                            'width'   => '400px',
-                            'visible' => true,
-                            'edit'    => [
-                                'type'      => 'ValidationTextBox',
-                                'multiline' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'Zeitstempel',
-                            'name'    => 'UseTimestamp',
-                            'width'   => '100px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerWebFrontNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Nachricht:',
-                            'name'    => 'LabelWebFrontNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'WebFront Nachricht',
-                            'name'    => 'UseWebFrontNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
-                            'name'    => 'WebFrontNotificationTitle',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Icon',
-                            'name'    => 'WebFrontNotificationIcon',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'SelectIcon'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Anzeigedauer',
-                            'name'    => 'WebFrontNotificationDisplayDuration',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type'   => 'NumberSpinner',
-                                'suffix' => 'Sekunden'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerWebFrontPushNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Push-Nachricht:',
-                            'name'    => 'LabelWebFrontPushNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'WebFront Push-Nachricht',
-                            'name'    => 'UseWebFrontPushNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
-                            'name'    => 'WebFrontPushNotificationTitle',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Sound',
-                            'name'    => 'WebFrontPushNotificationSound',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type'    => 'Select',
-                                'options' => [
-                                    [
-                                        'caption' => 'Standard',
-                                        'value'   => ''
-                                    ],
-                                    [
-                                        'caption' => 'Alarm',
-                                        'value'   => 'alarm'
-                                    ],
-                                    [
-                                        'caption' => 'Bell',
-                                        'value'   => 'bell'
-                                    ],
-                                    [
-                                        'caption' => 'Boom',
-                                        'value'   => 'boom'
-                                    ],
-                                    [
-                                        'caption' => 'Buzzer',
-                                        'value'   => 'buzzer'
-                                    ],
-                                    [
-                                        'caption' => 'Connected',
-                                        'value'   => 'connected'
-                                    ],
-                                    [
-                                        'caption' => 'Dark',
-                                        'value'   => 'dark'
-                                    ],
-                                    [
-                                        'caption' => 'Digital',
-                                        'value'   => 'digital'
-                                    ],
-                                    [
-                                        'caption' => 'Drums',
-                                        'value'   => 'drums'
-                                    ],
-                                    [
-                                        'caption' => 'Duck',
-                                        'value'   => 'duck'
-                                    ],
-                                    [
-                                        'caption' => 'Full',
-                                        'value'   => 'full'
-                                    ],
-                                    [
-                                        'caption' => 'Happy',
-                                        'value'   => 'happy'
-                                    ],
-                                    [
-                                        'caption' => 'Horn',
-                                        'value'   => 'horn'
-                                    ],
-                                    [
-                                        'caption' => 'Inception',
-                                        'value'   => 'inception'
-                                    ],
-                                    [
-                                        'caption' => 'Kazoo',
-                                        'value'   => 'kazoo'
-                                    ],
-                                    [
-                                        'caption' => 'Roll',
-                                        'value'   => 'roll'
-                                    ],
-                                    [
-                                        'caption' => 'Siren',
-                                        'value'   => 'siren'
-                                    ],
-                                    [
-                                        'caption' => 'Space',
-                                        'value'   => 'space'
-                                    ],
-                                    [
-                                        'caption' => 'Trickling',
-                                        'value'   => 'trickling'
-                                    ],
-                                    [
-                                        'caption' => 'Turn',
-                                        'value'   => 'turn'
+                            'type'     => 'List',
+                            'name'     => 'WaterDetectorAlarmNotification',
+                            'caption'  => 'Wassermelder',
+                            'rowCount' => 1,
+                            'delete'   => false,
+                            'columns'  => [
+                                [
+                                    'caption' => 'Aktiviert',
+                                    'name'    => 'Use',
+                                    'width'   => '100px',
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Bezeichnung',
+                                    'name'    => 'Designation',
+                                    'width'   => '300px',
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Meldungstext:',
+                                    'name'    => 'LabelMessageText',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Text der Meldung (maximal 256 Zeichen)',
+                                    'name'    => 'MessageText',
+                                    'width'   => '400px',
+                                    'visible' => true,
+                                    'edit'    => [
+                                        'type'      => 'ValidationTextBox',
+                                        'multiline' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Zeitstempel',
+                                    'name'    => 'UseTimestamp',
+                                    'width'   => '100px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerWebFrontNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Nachricht:',
+                                    'name'    => 'LabelWebFrontNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'WebFront Nachricht',
+                                    'name'    => 'UseWebFrontNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
+                                    'name'    => 'WebFrontNotificationTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Icon',
+                                    'name'    => 'WebFrontNotificationIcon',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'SelectIcon'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Anzeigedauer',
+                                    'name'    => 'WebFrontNotificationDisplayDuration',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type'   => 'NumberSpinner',
+                                        'suffix' => 'Sekunden'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerWebFrontPushNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Push-Nachricht:',
+                                    'name'    => 'LabelWebFrontPushNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'WebFront Push-Nachricht',
+                                    'name'    => 'UseWebFrontPushNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
+                                    'name'    => 'WebFrontPushNotificationTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Sound',
+                                    'name'    => 'WebFrontPushNotificationSound',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type'    => 'Select',
+                                        'options' => [
+                                            [
+                                                'caption' => 'Standard',
+                                                'value'   => ''
+                                            ],
+                                            [
+                                                'caption' => 'Alarm',
+                                                'value'   => 'alarm'
+                                            ],
+                                            [
+                                                'caption' => 'Bell',
+                                                'value'   => 'bell'
+                                            ],
+                                            [
+                                                'caption' => 'Boom',
+                                                'value'   => 'boom'
+                                            ],
+                                            [
+                                                'caption' => 'Buzzer',
+                                                'value'   => 'buzzer'
+                                            ],
+                                            [
+                                                'caption' => 'Connected',
+                                                'value'   => 'connected'
+                                            ],
+                                            [
+                                                'caption' => 'Dark',
+                                                'value'   => 'dark'
+                                            ],
+                                            [
+                                                'caption' => 'Digital',
+                                                'value'   => 'digital'
+                                            ],
+                                            [
+                                                'caption' => 'Drums',
+                                                'value'   => 'drums'
+                                            ],
+                                            [
+                                                'caption' => 'Duck',
+                                                'value'   => 'duck'
+                                            ],
+                                            [
+                                                'caption' => 'Full',
+                                                'value'   => 'full'
+                                            ],
+                                            [
+                                                'caption' => 'Happy',
+                                                'value'   => 'happy'
+                                            ],
+                                            [
+                                                'caption' => 'Horn',
+                                                'value'   => 'horn'
+                                            ],
+                                            [
+                                                'caption' => 'Inception',
+                                                'value'   => 'inception'
+                                            ],
+                                            [
+                                                'caption' => 'Kazoo',
+                                                'value'   => 'kazoo'
+                                            ],
+                                            [
+                                                'caption' => 'Roll',
+                                                'value'   => 'roll'
+                                            ],
+                                            [
+                                                'caption' => 'Siren',
+                                                'value'   => 'siren'
+                                            ],
+                                            [
+                                                'caption' => 'Space',
+                                                'value'   => 'space'
+                                            ],
+                                            [
+                                                'caption' => 'Trickling',
+                                                'value'   => 'trickling'
+                                            ],
+                                            [
+                                                'caption' => 'Turn',
+                                                'value'   => 'turn'
+                                            ]
+                                        ]
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Zielscript',
+                                    'name'    => 'WebFrontPushNotificationTargetID',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'SelectScript'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerMail',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'E-Mail:',
+                                    'name'    => 'LabelMail',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'E-Mail',
+                                    'name'    => 'UseMailer',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Betreff',
+                                    'name'    => 'Subject',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerSMS',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'SMS:',
+                                    'name'    => 'LabelSMS',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'SMS',
+                                    'name'    => 'UseSMS',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel',
+                                    'name'    => 'SMSTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerTelegram',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Telegram:',
+                                    'name'    => 'LabelTelegram',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Telegram',
+                                    'name'    => 'UseTelegram',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel',
+                                    'name'    => 'TelegramTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
                                     ]
                                 ]
                             ]
                         ],
+                        //Panic alarm
                         [
-                            'caption' => 'Zielscript',
-                            'name'    => 'WebFrontPushNotificationTargetID',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'SelectScript'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerMail',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'E-Mail:',
-                            'name'    => 'LabelMail',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'E-Mail',
-                            'name'    => 'UseMailer',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Betreff',
-                            'name'    => 'Subject',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerSMS',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'SMS:',
-                            'name'    => 'LabelSMS',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'SMS',
-                            'name'    => 'UseSMS',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Titel',
-                            'name'    => 'SMSTitle',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerTelegram',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Telegram:',
-                            'name'    => 'LabelTelegram',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'Telegram',
-                            'name'    => 'UseTelegram',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Titel',
-                            'name'    => 'TelegramTitle',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ]
-                    ]
-                ],
-                //Panic alarm
-                [
-                    'type'     => 'List',
-                    'name'     => 'PanicAlarmNotification',
-                    'caption'  => 'Panikalarm',
-                    'rowCount' => 1,
-                    'delete'   => false,
-                    'columns'  => [
-                        [
-                            'caption' => 'Aktiviert',
-                            'name'    => 'Use',
-                            'width'   => '100px',
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Bezeichnung',
-                            'name'    => 'Designation',
-                            'width'   => '300px',
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Meldungstext:',
-                            'name'    => 'LabelMessageText',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'Text der Meldung (maximal 256 Zeichen)',
-                            'name'    => 'MessageText',
-                            'width'   => '400px',
-                            'visible' => true,
-                            'edit'    => [
-                                'type'      => 'ValidationTextBox',
-                                'multiline' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'Zeitstempel',
-                            'name'    => 'UseTimestamp',
-                            'width'   => '100px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerWebFrontNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Nachricht:',
-                            'name'    => 'LabelWebFrontNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'WebFront Nachricht',
-                            'name'    => 'UseWebFrontNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
-                            'name'    => 'WebFrontNotificationTitle',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Icon',
-                            'name'    => 'WebFrontNotificationIcon',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'SelectIcon'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Anzeigedauer',
-                            'name'    => 'WebFrontNotificationDisplayDuration',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type'   => 'NumberSpinner',
-                                'suffix' => 'Sekunden'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerWebFrontPushNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Push-Nachricht:',
-                            'name'    => 'LabelWebFrontPushNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'WebFront Push-Nachricht',
-                            'name'    => 'UseWebFrontPushNotification',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
-                            'name'    => 'WebFrontPushNotificationTitle',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Sound',
-                            'name'    => 'WebFrontPushNotificationSound',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type'    => 'Select',
-                                'options' => [
-                                    [
-                                        'caption' => 'Standard',
-                                        'value'   => ''
-                                    ],
-                                    [
-                                        'caption' => 'Alarm',
-                                        'value'   => 'alarm'
-                                    ],
-                                    [
-                                        'caption' => 'Bell',
-                                        'value'   => 'bell'
-                                    ],
-                                    [
-                                        'caption' => 'Boom',
-                                        'value'   => 'boom'
-                                    ],
-                                    [
-                                        'caption' => 'Buzzer',
-                                        'value'   => 'buzzer'
-                                    ],
-                                    [
-                                        'caption' => 'Connected',
-                                        'value'   => 'connected'
-                                    ],
-                                    [
-                                        'caption' => 'Dark',
-                                        'value'   => 'dark'
-                                    ],
-                                    [
-                                        'caption' => 'Digital',
-                                        'value'   => 'digital'
-                                    ],
-                                    [
-                                        'caption' => 'Drums',
-                                        'value'   => 'drums'
-                                    ],
-                                    [
-                                        'caption' => 'Duck',
-                                        'value'   => 'duck'
-                                    ],
-                                    [
-                                        'caption' => 'Full',
-                                        'value'   => 'full'
-                                    ],
-                                    [
-                                        'caption' => 'Happy',
-                                        'value'   => 'happy'
-                                    ],
-                                    [
-                                        'caption' => 'Horn',
-                                        'value'   => 'horn'
-                                    ],
-                                    [
-                                        'caption' => 'Inception',
-                                        'value'   => 'inception'
-                                    ],
-                                    [
-                                        'caption' => 'Kazoo',
-                                        'value'   => 'kazoo'
-                                    ],
-                                    [
-                                        'caption' => 'Roll',
-                                        'value'   => 'roll'
-                                    ],
-                                    [
-                                        'caption' => 'Siren',
-                                        'value'   => 'siren'
-                                    ],
-                                    [
-                                        'caption' => 'Space',
-                                        'value'   => 'space'
-                                    ],
-                                    [
-                                        'caption' => 'Trickling',
-                                        'value'   => 'trickling'
-                                    ],
-                                    [
-                                        'caption' => 'Turn',
-                                        'value'   => 'turn'
+                            'type'     => 'List',
+                            'name'     => 'PanicAlarmNotification',
+                            'caption'  => 'Panikalarm',
+                            'rowCount' => 1,
+                            'delete'   => false,
+                            'columns'  => [
+                                [
+                                    'caption' => 'Aktiviert',
+                                    'name'    => 'Use',
+                                    'width'   => '100px',
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Bezeichnung',
+                                    'name'    => 'Designation',
+                                    'width'   => '300px',
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Meldungstext:',
+                                    'name'    => 'LabelMessageText',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Text der Meldung (maximal 256 Zeichen)',
+                                    'name'    => 'MessageText',
+                                    'width'   => '400px',
+                                    'visible' => true,
+                                    'edit'    => [
+                                        'type'      => 'ValidationTextBox',
+                                        'multiline' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Zeitstempel',
+                                    'name'    => 'UseTimestamp',
+                                    'width'   => '100px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerWebFrontNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Nachricht:',
+                                    'name'    => 'LabelWebFrontNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'WebFront Nachricht',
+                                    'name'    => 'UseWebFrontNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
+                                    'name'    => 'WebFrontNotificationTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Icon',
+                                    'name'    => 'WebFrontNotificationIcon',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'SelectIcon'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Anzeigedauer',
+                                    'name'    => 'WebFrontNotificationDisplayDuration',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type'   => 'NumberSpinner',
+                                        'suffix' => 'Sekunden'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerWebFrontPushNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Push-Nachricht:',
+                                    'name'    => 'LabelWebFrontPushNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'WebFront Push-Nachricht',
+                                    'name'    => 'UseWebFrontPushNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
+                                    'name'    => 'WebFrontPushNotificationTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Sound',
+                                    'name'    => 'WebFrontPushNotificationSound',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type'    => 'Select',
+                                        'options' => [
+                                            [
+                                                'caption' => 'Standard',
+                                                'value'   => ''
+                                            ],
+                                            [
+                                                'caption' => 'Alarm',
+                                                'value'   => 'alarm'
+                                            ],
+                                            [
+                                                'caption' => 'Bell',
+                                                'value'   => 'bell'
+                                            ],
+                                            [
+                                                'caption' => 'Boom',
+                                                'value'   => 'boom'
+                                            ],
+                                            [
+                                                'caption' => 'Buzzer',
+                                                'value'   => 'buzzer'
+                                            ],
+                                            [
+                                                'caption' => 'Connected',
+                                                'value'   => 'connected'
+                                            ],
+                                            [
+                                                'caption' => 'Dark',
+                                                'value'   => 'dark'
+                                            ],
+                                            [
+                                                'caption' => 'Digital',
+                                                'value'   => 'digital'
+                                            ],
+                                            [
+                                                'caption' => 'Drums',
+                                                'value'   => 'drums'
+                                            ],
+                                            [
+                                                'caption' => 'Duck',
+                                                'value'   => 'duck'
+                                            ],
+                                            [
+                                                'caption' => 'Full',
+                                                'value'   => 'full'
+                                            ],
+                                            [
+                                                'caption' => 'Happy',
+                                                'value'   => 'happy'
+                                            ],
+                                            [
+                                                'caption' => 'Horn',
+                                                'value'   => 'horn'
+                                            ],
+                                            [
+                                                'caption' => 'Inception',
+                                                'value'   => 'inception'
+                                            ],
+                                            [
+                                                'caption' => 'Kazoo',
+                                                'value'   => 'kazoo'
+                                            ],
+                                            [
+                                                'caption' => 'Roll',
+                                                'value'   => 'roll'
+                                            ],
+                                            [
+                                                'caption' => 'Siren',
+                                                'value'   => 'siren'
+                                            ],
+                                            [
+                                                'caption' => 'Space',
+                                                'value'   => 'space'
+                                            ],
+                                            [
+                                                'caption' => 'Trickling',
+                                                'value'   => 'trickling'
+                                            ],
+                                            [
+                                                'caption' => 'Turn',
+                                                'value'   => 'turn'
+                                            ]
+                                        ]
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Zielscript',
+                                    'name'    => 'WebFrontPushNotificationTargetID',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'SelectScript'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerMail',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'E-Mail:',
+                                    'name'    => 'LabelMail',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'E-Mail',
+                                    'name'    => 'UseMailer',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Betreff',
+                                    'name'    => 'Subject',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerSMS',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'SMS:',
+                                    'name'    => 'LabelSMS',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'SMS',
+                                    'name'    => 'UseSMS',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel',
+                                    'name'    => 'SMSTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerTelegram',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Telegram:',
+                                    'name'    => 'LabelTelegram',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Telegram',
+                                    'name'    => 'UseTelegram',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel',
+                                    'name'    => 'TelegramTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
                                     ]
                                 ]
-                            ]
-                        ],
-                        [
-                            'caption' => 'Zielscript',
-                            'name'    => 'WebFrontPushNotificationTargetID',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'SelectScript'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerMail',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'E-Mail:',
-                            'name'    => 'LabelMail',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'E-Mail',
-                            'name'    => 'UseMailer',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Betreff',
-                            'name'    => 'Subject',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerSMS',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'SMS:',
-                            'name'    => 'LabelSMS',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'SMS',
-                            'name'    => 'UseSMS',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Titel',
-                            'name'    => 'SMSTitle',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ],
-                        [
-                            'caption' => ' ',
-                            'name'    => 'SpacerTelegram',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Telegram:',
-                            'name'    => 'LabelTelegram',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'save'    => false,
-                            'edit'    => [
-                                'type' => 'Label',
-                                'bold' => true
-                            ]
-                        ],
-                        [
-                            'caption' => 'Telegram',
-                            'name'    => 'UseTelegram',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'CheckBox'
-                            ]
-                        ],
-                        [
-                            'caption' => 'Titel',
-                            'name'    => 'TelegramTitle',
-                            'width'   => '200px',
-                            'visible' => false,
-                            'edit'    => [
-                                'type' => 'ValidationTextBox'
                             ]
                         ]
                     ]
@@ -11419,101 +11383,138 @@ trait AZ_ConfigurationForm
             ]
         ];
 
+        //Acknowledgement tone
+        $acknowledgementToneDisarmedActionVisible = $this->ReadPropertyBoolean('UseAcknowledgementToneDisarmedAction');
+        $acknowledgementToneArmedActionVisible = $this->ReadPropertyBoolean('UseAcknowledgementToneArmedAction');
+
+        $form['elements'][] = [
+            'type'     => 'ExpansionPanel',
+            'caption'  => 'Quittungston',
+            'name'     => 'Panel11',
+            'expanded' => false,
+            'items'    => [
+                [
+                    'type'     => 'ExpansionPanel',
+                    'caption'  => 'Unscharf',
+                    'expanded' => false,
+                    'items'    => [
+                        [
+                            'type'     => 'CheckBox',
+                            'name'     => 'UseAcknowledgementToneDisarmedAction',
+                            'caption'  => 'Aktiv',
+                            'onChange' => self::MODULE_PREFIX . '_HideAction($id, "AcknowledgementToneDisarmedAction", $UseAcknowledgementToneDisarmedAction);'
+                        ],
+                        [
+                            'type'    => 'SelectAction',
+                            'name'    => 'AcknowledgementToneDisarmedAction',
+                            'visible' => $acknowledgementToneDisarmedActionVisible
+                        ]
+                    ]
+                ],
+                [
+                    'type'     => 'ExpansionPanel',
+                    'caption'  => 'Scharf',
+                    'expanded' => false,
+                    'items'    => [
+                        [
+                            'type'     => 'CheckBox',
+                            'name'     => 'UseAcknowledgementToneArmedAction',
+                            'caption'  => 'Aktiv',
+                            'onChange' => self::MODULE_PREFIX . '_HideAction($id, "AcknowledgementToneArmedAction", $UseAcknowledgementToneArmedAction);'
+                        ],
+                        [
+                            'type'    => 'SelectAction',
+                            'name'    => 'AcknowledgementToneArmedAction',
+                            'visible' => $acknowledgementToneArmedActionVisible
+                        ]
+                    ]
+                ]
+            ]
+        ];
+
+        //Actions
         $disarmedActionVisible = $this->ReadPropertyBoolean('UseDisarmedAction');
         $fullProtectionActionVisible = $this->ReadPropertyBoolean('UseFullProtectionAction');
         $hullProtectionActionVisible = $this->ReadPropertyBoolean('UseHullProtectionAction');
         $partialProtectionActionVisible = $this->ReadPropertyBoolean('UsePartialProtectionAction');
 
-        //Actions
         $form['elements'][] = [
             'type'     => 'ExpansionPanel',
             'caption'  => 'Aktionen',
-            'name'     => 'Panel11',
+            'name'     => 'Panel12',
             'expanded' => false,
             'items'    => [
                 [
-                    'type'  => 'RowLayout',
-                    'items' => [
+                    'type'     => 'ExpansionPanel',
+                    'caption'  => 'Unscharf',
+                    'expanded' => false,
+                    'items'    => [
                         [
                             'type'     => 'CheckBox',
                             'name'     => 'UseDisarmedAction',
+                            'caption'  => 'Aktiv',
                             'onChange' => self::MODULE_PREFIX . '_HideAction($id, "DisarmedAction", $UseDisarmedAction);'
                         ],
                         [
-                            'type'    => 'Label',
-                            'caption' => 'Unscharf',
-                            'bold'    => true,
-                            'italic'  => true
+                            'type'    => 'SelectAction',
+                            'name'    => 'DisarmedAction',
+                            'visible' => $disarmedActionVisible
                         ]
                     ]
                 ],
                 [
-                    'type'    => 'SelectAction',
-                    'name'    => 'DisarmedAction',
-                    'visible' => $disarmedActionVisible
-                ],
-                [
-                    'type'  => 'RowLayout',
-                    'items' => [
+                    'type'     => 'ExpansionPanel',
+                    'caption'  => 'Vollschutz',
+                    'expanded' => false,
+                    'items'    => [
                         [
                             'type'     => 'CheckBox',
                             'name'     => 'UseFullProtectionAction',
+                            'caption'  => 'Aktiv',
                             'onChange' => self::MODULE_PREFIX . '_HideAction($id, "FullProtectionAction", $UseFullProtectionAction);'
                         ],
                         [
-                            'type'    => 'Label',
-                            'caption' => 'Vollschutz',
-                            'bold'    => true,
-                            'italic'  => true
+                            'type'    => 'SelectAction',
+                            'name'    => 'FullProtectionAction',
+                            'visible' => $fullProtectionActionVisible
                         ]
                     ]
                 ],
                 [
-                    'type'    => 'SelectAction',
-                    'name'    => 'FullProtectionAction',
-                    'visible' => $fullProtectionActionVisible
-                ],
-                [
-                    'type'  => 'RowLayout',
-                    'items' => [
+                    'type'     => 'ExpansionPanel',
+                    'caption'  => 'Hüllschutz',
+                    'expanded' => false,
+                    'items'    => [
                         [
                             'type'     => 'CheckBox',
                             'name'     => 'UseHullProtectionAction',
+                            'caption'  => 'Aktiv',
                             'onChange' => self::MODULE_PREFIX . '_HideAction($id, "HullProtectionAction", $UseHullProtectionAction);'
                         ],
                         [
-                            'type'    => 'Label',
-                            'caption' => 'Hüllschutz',
-                            'bold'    => true,
-                            'italic'  => true
+                            'type'    => 'SelectAction',
+                            'name'    => 'HullProtectionAction',
+                            'visible' => $hullProtectionActionVisible
                         ]
                     ]
                 ],
                 [
-                    'type'    => 'SelectAction',
-                    'name'    => 'HullProtectionAction',
-                    'visible' => $hullProtectionActionVisible
-                ],
-                [
-                    'type'  => 'RowLayout',
-                    'items' => [
+                    'type'     => 'ExpansionPanel',
+                    'caption'  => 'Teilschutz',
+                    'expanded' => false,
+                    'items'    => [
                         [
                             'type'     => 'CheckBox',
                             'name'     => 'UsePartialProtectionAction',
+                            'caption'  => 'Aktiv',
                             'onChange' => self::MODULE_PREFIX . '_HideAction($id, "PartialProtectionAction", $UsePartialProtectionAction);'
                         ],
                         [
-                            'type'    => 'Label',
-                            'caption' => 'Teilschutz',
-                            'bold'    => true,
-                            'italic'  => true
+                            'type'    => 'SelectAction',
+                            'name'    => 'PartialProtectionAction',
+                            'visible' => $partialProtectionActionVisible
                         ]
                     ]
-                ],
-                [
-                    'type'    => 'SelectAction',
-                    'name'    => 'PartialProtectionAction',
-                    'visible' => $partialProtectionActionVisible
                 ]
             ]
         ];
@@ -11522,7 +11523,7 @@ trait AZ_ConfigurationForm
         $form['elements'][] = [
             'type'     => 'ExpansionPanel',
             'caption'  => 'Visualisierung',
-            'name'     => 'Panel12',
+            'name'     => 'Panel13',
             'expanded' => false,
             'items'    => [
                 [
