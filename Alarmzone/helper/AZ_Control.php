@@ -78,6 +78,9 @@ trait AZ_Control
                 IPS_Sleep(self::SLEEP_DELAY);
                 $this->CheckDoorWindowState($mode, false, false, true);
             }
+
+            //Status indicator //ToDo:
+
             //Action
             $this->ExecuteAction(0);
         }
@@ -111,6 +114,8 @@ trait AZ_Control
                     $this->CheckDoorWindowState($mode, false, false, true);
                 }
             }
+            //Status indicator //ToDo:
+
             //Acknowledgement tone
             $this->ExecuteAcknowledgementTone(1);
             //Action
@@ -211,6 +216,10 @@ trait AZ_Control
      * false =  don't use notification,
      * true =   use notification
      *
+     * @param bool $UseStatusIndicator
+     * false =  don't use staus indicator,
+     * true =   use status indicator
+     *
      * @param bool $UseAcknowledgementTone
      * false =  don't use acknowledgement tone
      * true =   use acknowledgement tone
@@ -225,7 +234,7 @@ trait AZ_Control
      *
      * @throws Exception
      */
-    public function SelectProtectionMode(int $Mode, string $SenderID, bool $UseNotification = true, bool $UseAcknowledgementTone = true, bool $UseAction = true): bool
+    public function SelectProtectionMode(int $Mode, string $SenderID, bool $UseNotification = true, bool $UseStatusIndicator = true, bool $UseAcknowledgementTone = true, bool $UseAction = true): bool
     {
         $this->SendDebug(__FUNCTION__, 'wird ausgeführt', 0);
         if ($this->CheckMaintenance()) {
@@ -243,6 +252,10 @@ trait AZ_Control
                 $text = $this->ReadPropertyString('SystemName') . ' deaktiviert. (ID ' . $SenderID . ', ID ' . $this->GetIDForIdent('Mode') . ')';
                 $logText = date('d.m.Y, H:i:s') . ', ' . $this->ReadPropertyString('Location') . ', ' . $this->ReadPropertyString('AlarmZoneName') . ', ' . $text;
                 $this->UpdateAlarmProtocol($logText, 1);
+                //Status indicator
+                if ($UseStatusIndicator) {
+                    $this->ExecuteStatusIndicator(0);
+                }
                 //Notification
                 if ($UseNotification) {
                     $this->SendNotification('DeactivationNotification', '');
@@ -347,6 +360,10 @@ trait AZ_Control
                 //Notification
                 $this->SendNotification($abortActivationNotificationName, '');
                 $notification = json_decode($this->ReadPropertyString($abortActivationNotificationName), true);
+                //Status indicator
+                if ($UseStatusIndicator) {
+                    $this->ExecuteStatusIndicator(0);
+                }
                 //Action
                 $this->ExecuteAction(0);
             }
@@ -375,6 +392,10 @@ trait AZ_Control
                         $this->SendNotification($activationWithOpenDoorWindowNotificationName, '');
                     }
                     $notification = json_decode($this->ReadPropertyString($activationWithOpenDoorWindowNotificationName), true);
+                }
+                //Status indicator
+                if ($UseStatusIndicator) {
+                    $this->ExecuteStatusIndicator($Mode);
                 }
                 //Acknowledgement tone
                 if ($UseAcknowledgementTone) {

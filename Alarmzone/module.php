@@ -30,6 +30,7 @@ class Alarmzone extends IPSModule
     use AZ_GlassBreakageDetectors;
     use AZ_MotionDetectors;
     use AZ_SmokeDetectors;
+    use AZ_StatusIndicator;
     use AZ_WaterDetectors;
     use AZ_Notification;
 
@@ -159,16 +160,28 @@ class Alarmzone extends IPSModule
         $this->RegisterPropertyString('WaterDetectorAlarmNotification', '[{"Use":false,"Designation":"Wassermelder Alarm","SpacerNotification":"","LabelMessageText":"","MessageText":"💧 %1$s hat Wasser erkannt!","UseTimestamp":true,"SpacerWebFrontNotification":"","LabelWebFrontNotification":"","UseWebFrontNotification":false,"WebFrontNotificationTitle":"","WebFrontNotificationIcon":"","WebFrontNotificationDisplayDuration":0,"SpacerWebFrontPushNotification":"","LabelWebFrontPushNotification":"","UseWebFrontPushNotification":false,"WebFrontPushNotificationTitle":"","WebFrontPushNotificationSound":"alarm","WebFrontPushNotificationTargetID":0,"SpacerMail":"","LabelMail":"","UseMailer":false,"Subject":"","SpacerSMS":"","LabelSMS":"","UseSMS":false,"SMSTitle":"","SpacerTelegram":"","LabelTelegram":"","UseTelegram":false,"TelegramTitle":""}]');
         $this->RegisterPropertyString('PanicAlarmNotification', '[{"Use":false,"Designation":"Panikalarm","SpacerNotification":"","LabelMessageText":"","MessageText":"⚠️%1$s wurde ausgelöst!","UseTimestamp":true,"SpacerWebFrontNotification":"","LabelWebFrontNotification":"","UseWebFrontNotification":false,"WebFrontNotificationTitle":"","WebFrontNotificationIcon":"","WebFrontNotificationDisplayDuration":0,"SpacerWebFrontPushNotification":"","LabelWebFrontPushNotification":"","UseWebFrontPushNotification":false,"WebFrontPushNotificationTitle":"","WebFrontPushNotificationSound":"alarm","WebFrontPushNotificationTargetID":0,"SpacerMail":"","LabelMail":"","UseMailer":false,"Subject":"","SpacerSMS":"","LabelSMS":"","UseSMS":false,"SMSTitle":"","SpacerTelegram":"","LabelTelegram":"","UseTelegram":false,"TelegramTitle":""}]');
 
+        ##### Status indicator
+
+        //Disarmed
+        $this->RegisterPropertyBoolean('UseStatusIndicatorDisarmedAction', false);
+        $parameters = '{"actionID":"{346AA8C1-30E0-1663-78EF-93EFADFAC650}","parameters":{"SCRIPT":"<?php\n\n/* Statusanzeige Unscharf */\n\n//$id = 12345;\n\n//Request action\n//RequestAction($id, false);\n\n//HomeMatic\n//SAHM_ToggleSignalling($id, false, true);\n\n//Homematic IP\n//SAHMIP_SetDeviceSignaling($id, 0, 2, 100, true);","ENVIRONMENT":"Default","PARENT":' . $this->InstanceID . ',"TARGET":' . $this->InstanceID . '}}';
+        $this->RegisterPropertyString('StatusIndicatorDisarmedAction', $parameters);
+
+        //Armed
+        $this->RegisterPropertyBoolean('UseStatusIndicatorArmedAction', false);
+        $parameters = '{"actionID":"{346AA8C1-30E0-1663-78EF-93EFADFAC650}","parameters":{"SCRIPT":"<?php\n\n/* Statusanzeige Scharf */\n\n//$id = 12345;\n\n//Request action\n//RequestAction($id, true);\n\n//HomeMatic\n//SAHM_ToggleSignalling($id, true, true);\n\n//Homematic IP\n//SAHMIP_SetDeviceSignaling($id, 0, 4, 100, true);","ENVIRONMENT":"Default","PARENT":' . $this->InstanceID . ',"TARGET":' . $this->InstanceID . '}}';
+        $this->RegisterPropertyString('StatusIndicatorArmedAction', $parameters);
+
         ##### Acknowledgement tone
 
         //Disarmed
         $this->RegisterPropertyBoolean('UseAcknowledgementToneDisarmedAction', false);
-        $parameters = '{"actionID":"{346AA8C1-30E0-1663-78EF-93EFADFAC650}","parameters":{"SCRIPT":"<?php\n\n/* Quittungston */\n\n//$id = 12345;\n\n//HomeMatic\n//ASIRHM_ExecuteToneAcknowledgement($id, 0);\n\n//Homematic IP\n//ASIRHMIP_ExecuteSignaling($id, 16, 2, 0, 10);","ENVIRONMENT":"Default","PARENT":' . $this->InstanceID . ',"TARGET":' . $this->InstanceID . '}}';
+        $parameters = '{"actionID":"{346AA8C1-30E0-1663-78EF-93EFADFAC650}","parameters":{"SCRIPT":"<?php\n\n/* Quittungston Unscharf */\n\n//$id = 12345;\n\n//HomeMatic\n//ASIRHM_ExecuteToneAcknowledgement($id, 0);\n\n//Homematic IP\n//ASIRHMIP_ExecuteSignaling($id, 16, 2, 0, 10);","ENVIRONMENT":"Default","PARENT":' . $this->InstanceID . ',"TARGET":' . $this->InstanceID . '}}';
         $this->RegisterPropertyString('AcknowledgementToneDisarmedAction', $parameters);
 
         //Armed
         $this->RegisterPropertyBoolean('UseAcknowledgementToneArmedAction', false);
-        $parameters = '{"actionID":"{346AA8C1-30E0-1663-78EF-93EFADFAC650}","parameters":{"SCRIPT":"<?php\n\n/* Quittungston */\n\n//$id = 12345;\n\n//HomeMatic\n//ASIRHM_ExecuteToneAcknowledgement($id, 1);\n\n//Homematic IP\n//ASIRHMIP_ExecuteSignaling($id, 17, 3, 0, 10);","ENVIRONMENT":"Default","PARENT":' . $this->InstanceID . ',"TARGET":' . $this->InstanceID . '}}';
+        $parameters = '{"actionID":"{346AA8C1-30E0-1663-78EF-93EFADFAC650}","parameters":{"SCRIPT":"<?php\n\n/* Quittungston Scharf */\n\n//$id = 12345;\n\n//HomeMatic\n//ASIRHM_ExecuteToneAcknowledgement($id, 1);\n\n//Homematic IP\n//ASIRHMIP_ExecuteSignaling($id, 17, 3, 0, 10);","ENVIRONMENT":"Default","PARENT":' . $this->InstanceID . ',"TARGET":' . $this->InstanceID . '}}';
         $this->RegisterPropertyString('AcknowledgementToneArmedAction', $parameters);
 
         ##### Actions
@@ -556,6 +569,7 @@ class Alarmzone extends IPSModule
         $this->CheckGlassBreakageDetectorState();
         $this->CheckSmokeDetectorState();
         $this->CheckWaterDetectorState();
+        $this->ExecuteStatusIndicator($mode);
 
         ########## References
 

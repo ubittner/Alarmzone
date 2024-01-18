@@ -181,6 +181,9 @@ trait AZST_States
             }
             //Mode
             $this->SetValue('Mode', $mode);
+            //Status indicator
+            $this->ExecuteStatusIndicator($mode);
+            //Debug
             $this->SendDebug(__FUNCTION__, 'Modus: ' . $mode . ' = ' . $stateText, 0);
         }
         return $result;

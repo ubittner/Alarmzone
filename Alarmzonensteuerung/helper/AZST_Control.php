@@ -432,6 +432,7 @@ trait AZST_Control
             $this->SetValue('Mode', $Mode);
         }
         $useAlarmZoneControllerNotification = $this->CheckAlarmZoneControllerNotification($Mode);
+        $useAlarmZoneControllerStatusIndicator = $this->CheckAlarmZoneControllerStatusIndicator($Mode);
         $useAlarmZoneControllerAcknowledgementTone = $this->CheckAlarmZoneControllerAcknowledgementTone($Mode);
         $useAlarmZoneControllerAction = $this->CheckAlarmZoneControllerAction($Mode);
         //Select protection mode
@@ -448,7 +449,7 @@ trait AZST_Control
                     if ($id == 0 || @!IPS_ObjectExists($id)) {
                         continue;
                     }
-                    $response = @AZ_SelectProtectionMode($id, $Mode, $SenderID, !$useAlarmZoneControllerNotification, !$useAlarmZoneControllerAcknowledgementTone, !$useAlarmZoneControllerAction);
+                    $response = @AZ_SelectProtectionMode($id, $Mode, $SenderID, !$useAlarmZoneControllerNotification, !$useAlarmZoneControllerStatusIndicator, !$useAlarmZoneControllerAcknowledgementTone, !$useAlarmZoneControllerAction);
                     if (!$response) {
                         $result = false;
                     }
@@ -466,28 +467,28 @@ trait AZST_Control
                     }
                     switch ($alarmZone['IndividualProtectionMode']) {
                         case 0: //Disarmed
-                            $response = @AZ_SelectProtectionMode($id, 0, $SenderID, !$useAlarmZoneControllerNotification, !$useAlarmZoneControllerAcknowledgementTone, !$useAlarmZoneControllerAction);
+                            $response = @AZ_SelectProtectionMode($id, 0, $SenderID, !$useAlarmZoneControllerNotification, !$useAlarmZoneControllerStatusIndicator, !$useAlarmZoneControllerAcknowledgementTone, !$useAlarmZoneControllerAction);
                             if (!$response) {
                                 $result = false;
                             }
                             break;
 
                         case 1: //Full protection mode
-                            $response = @AZ_SelectProtectionMode($id, 1, $SenderID, !$useAlarmZoneControllerNotification, !$useAlarmZoneControllerAcknowledgementTone, !$useAlarmZoneControllerAction);
+                            $response = @AZ_SelectProtectionMode($id, 1, $SenderID, !$useAlarmZoneControllerNotification, !$useAlarmZoneControllerStatusIndicator, !$useAlarmZoneControllerAcknowledgementTone, !$useAlarmZoneControllerAction);
                             if (!$response) {
                                 $result = false;
                             }
                             break;
 
                         case 2: //Hull protection mode
-                            $response = @AZ_SelectProtectionMode($id, 2, $SenderID, !$useAlarmZoneControllerNotification, !$useAlarmZoneControllerAcknowledgementTone, !$useAlarmZoneControllerAction);
+                            $response = @AZ_SelectProtectionMode($id, 2, $SenderID, !$useAlarmZoneControllerNotification, !$useAlarmZoneControllerStatusIndicator, !$useAlarmZoneControllerAcknowledgementTone, !$useAlarmZoneControllerAction);
                             if (!$response) {
                                 $result = false;
                             }
                             break;
 
                         case 3: //Partial protection mode
-                            $response = @AZ_SelectProtectionMode($id, 3, $SenderID, !$useAlarmZoneControllerNotification, !$useAlarmZoneControllerAcknowledgementTone, !$useAlarmZoneControllerAction);
+                            $response = @AZ_SelectProtectionMode($id, 3, $SenderID, !$useAlarmZoneControllerNotification, !$useAlarmZoneControllerStatusIndicator, !$useAlarmZoneControllerAcknowledgementTone, !$useAlarmZoneControllerAction);
                             if (!$response) {
                                 $result = false;
                             }
@@ -514,6 +515,9 @@ trait AZST_Control
 
         //Notification
         $this->ExecuteAlarmZoneControllerNotification($Mode);
+
+        //Status indicator
+        $this->ExecuteStatusIndicator($Mode);
 
         //Acknowledgement tone
         $this->ExecuteAcknowledgementTone($Mode);

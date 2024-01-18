@@ -34,7 +34,7 @@ trait AZ_ConfigurationForm
      */
     public function ExpandExpansionPanels(bool $State): void
     {
-        for ($i = 1; $i <= 13; $i++) {
+        for ($i = 1; $i <= 14; $i++) {
             $this->UpdateFormField('Panel' . $i, 'expanded', $State);
         }
     }
@@ -11383,6 +11383,55 @@ trait AZ_ConfigurationForm
             ]
         ];
 
+        //Status indicator
+        $statusIndicatorDisarmedActionVisible = $this->ReadPropertyBoolean('UseStatusIndicatorDisarmedAction');
+        $statusIndicatorArmedActionVisible = $this->ReadPropertyBoolean('UseStatusIndicatorArmedAction');
+
+        $form['elements'][] = [
+            'type'     => 'ExpansionPanel',
+            'caption'  => 'Statusanzeige',
+            'name'     => 'Panel11',
+            'expanded' => false,
+            'items'    => [
+                [
+                    'type'     => 'ExpansionPanel',
+                    'caption'  => 'Unscharf',
+                    'expanded' => false,
+                    'items'    => [
+                        [
+                            'type'     => 'CheckBox',
+                            'name'     => 'UseStatusIndicatorDisarmedAction',
+                            'caption'  => 'Aktiv',
+                            'onChange' => self::MODULE_PREFIX . '_HideAction($id, "StatusIndicatorDisarmedAction", $UseStatusIndicatorDisarmedAction);'
+                        ],
+                        [
+                            'type'    => 'SelectAction',
+                            'name'    => 'StatusIndicatorDisarmedAction',
+                            'visible' => $statusIndicatorDisarmedActionVisible
+                        ]
+                    ]
+                ],
+                [
+                    'type'     => 'ExpansionPanel',
+                    'caption'  => 'Scharf',
+                    'expanded' => false,
+                    'items'    => [
+                        [
+                            'type'     => 'CheckBox',
+                            'name'     => 'UseStatusIndicatorArmedAction',
+                            'caption'  => 'Aktiv',
+                            'onChange' => self::MODULE_PREFIX . '_HideAction($id, "StatusIndicatorArmedAction", $UseStatusIndicatorArmedAction);'
+                        ],
+                        [
+                            'type'    => 'SelectAction',
+                            'name'    => 'StatusIndicatorArmedAction',
+                            'visible' => $statusIndicatorArmedActionVisible
+                        ]
+                    ]
+                ]
+            ]
+        ];
+
         //Acknowledgement tone
         $acknowledgementToneDisarmedActionVisible = $this->ReadPropertyBoolean('UseAcknowledgementToneDisarmedAction');
         $acknowledgementToneArmedActionVisible = $this->ReadPropertyBoolean('UseAcknowledgementToneArmedAction');
@@ -11390,7 +11439,7 @@ trait AZ_ConfigurationForm
         $form['elements'][] = [
             'type'     => 'ExpansionPanel',
             'caption'  => 'Quittungston',
-            'name'     => 'Panel11',
+            'name'     => 'Panel12',
             'expanded' => false,
             'items'    => [
                 [
@@ -11441,7 +11490,7 @@ trait AZ_ConfigurationForm
         $form['elements'][] = [
             'type'     => 'ExpansionPanel',
             'caption'  => 'Aktionen',
-            'name'     => 'Panel12',
+            'name'     => 'Panel13',
             'expanded' => false,
             'items'    => [
                 [
@@ -11523,7 +11572,7 @@ trait AZ_ConfigurationForm
         $form['elements'][] = [
             'type'     => 'ExpansionPanel',
             'caption'  => 'Visualisierung',
-            'name'     => 'Panel13',
+            'name'     => 'Panel14',
             'expanded' => false,
             'items'    => [
                 [

@@ -195,7 +195,7 @@ AZ_SelectProtectionMode(12345, 1, 'Sender ID', true);
 #### 8.1 Alarmzone schalten
 
 ```text
-boolean AZ_SelectProtectionMode(integer INSTANCE_ID, integer MODE, string SENDER_ID, bool USE_NOTIFICATION, bool USE_ACKNOWLEDGEMENT_TONE, bool USE_ACTION);
+boolean AZ_SelectProtectionMode(integer INSTANCE_ID, integer MODE, string SENDER_ID, bool USE_NOTIFICATION, bool `USE_STATUS_INDICATOR`, bool USE_ACKNOWLEDGEMENT_TONE, bool USE_ACTION);
 ```
 
 Konnte der jeweilige Befehl erfolgreich ausgeführt werden, liefert er als Ergebnis **TRUE**, andernfalls **FALSE**.
@@ -214,6 +214,9 @@ Konnte der jeweilige Befehl erfolgreich ausgeführt werden, liefert er als Ergeb
 | `USE_NOTIFICATION`         | Benachrichtigung                               | false = keine Benachrichtigung    |
 |                            |                                                | true = Benachrichtigung ausführen |
 |                            |                                                |                                   |
+| `USE_STATUS_INDICATOR`     | Statusanzeige                                  | false = keine Statusanzeige       |
+|                            |                                                | true = Statusanzeige ausführen    |
+|                            |                                                |                                   |
 | `USE_ACKNOWLEDGEMENT_TONE` | Quittungston                                   | false = kein Quittungston         |
 |                            |                                                | true = Quittungston ausführen     |
 |                            |                                                |                                   |
@@ -222,7 +225,7 @@ Konnte der jeweilige Befehl erfolgreich ausgeführt werden, liefert er als Ergeb
 
 **Beispiel:**
 ```php
-$result = AZ_SelectProtectionMode(12345, 0, 'Sender', true, true, true);
+$result = AZ_SelectProtectionMode(12345, 0, 'Sender', true, true, true, true);
 var_dump($result);
 ```
 ---
