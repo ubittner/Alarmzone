@@ -913,6 +913,15 @@ trait AZ_ConfigurationForm
                                 ]
                             ],
                             [
+                                'caption' => 'Panikalarm',
+                                'name'    => 'UsePanicAlarm',
+                                'width'   => '120px',
+                                'add'     => false,
+                                'edit'    => [
+                                    'type' => 'CheckBox'
+                                ]
+                            ],
+                            [
                                 'caption' => 'Aktion',
                                 'name'    => 'UseAlertingAction',
                                 'width'   => '80px',
@@ -1451,6 +1460,15 @@ trait AZ_ConfigurationForm
                             [
                                 'caption' => 'Alarmanruf',
                                 'name'    => 'UseAlarmCall',
+                                'width'   => '120px',
+                                'add'     => false,
+                                'edit'    => [
+                                    'type' => 'CheckBox'
+                                ]
+                            ],
+                            [
+                                'caption' => 'Panikalarm',
+                                'name'    => 'UsePanicAlarm',
                                 'width'   => '120px',
                                 'add'     => false,
                                 'edit'    => [
@@ -2009,6 +2027,15 @@ trait AZ_ConfigurationForm
                                 ]
                             ],
                             [
+                                'caption' => 'Panikalarm',
+                                'name'    => 'UsePanicAlarm',
+                                'width'   => '120px',
+                                'add'     => false,
+                                'edit'    => [
+                                    'type' => 'CheckBox'
+                                ]
+                            ],
+                            [
                                 'caption' => 'Aktion',
                                 'name'    => 'UseAlertingAction',
                                 'width'   => '80px',
@@ -2559,6 +2586,15 @@ trait AZ_ConfigurationForm
                                 ]
                             ],
                             [
+                                'caption' => 'Panikalarm',
+                                'name'    => 'UsePanicAlarm',
+                                'width'   => '120px',
+                                'add'     => false,
+                                'edit'    => [
+                                    'type' => 'CheckBox'
+                                ]
+                            ],
+                            [
                                 'caption' => 'Aktion',
                                 'name'    => 'UseAlertingAction',
                                 'width'   => '80px',
@@ -3102,6 +3138,15 @@ trait AZ_ConfigurationForm
                             [
                                 'caption' => 'Alarmanruf',
                                 'name'    => 'UseAlarmCall',
+                                'width'   => '120px',
+                                'add'     => false,
+                                'edit'    => [
+                                    'type' => 'CheckBox'
+                                ]
+                            ],
+                            [
+                                'caption' => 'Panikalarm',
+                                'name'    => 'UsePanicAlarm',
                                 'width'   => '120px',
                                 'add'     => false,
                                 'edit'    => [

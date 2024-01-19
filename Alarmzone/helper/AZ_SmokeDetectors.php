@@ -295,6 +295,7 @@ trait AZ_SmokeDetectors
                 'UseAlarmSiren'                                    => true,
                 'UseAlarmLight'                                    => false,
                 'UseAlarmCall'                                     => false,
+                'UsePanicAlarm'                                    => false,
                 'UseAlertingAction'                                => false,
                 'AlertingAction'                                   => '{"actionID":"{346AA8C1-30E0-1663-78EF-93EFADFAC650}","parameters":{"SCRIPT":"<?php\n\n//Skript hier einfügen","ENVIRONMENT":"Default","PARENT":' . $this->InstanceID . ',"TARGET":0}}',
                 'UseAlarmProtocol'                                 => true];
@@ -625,6 +626,12 @@ trait AZ_SmokeDetectors
                                     }
                                     if ($variable['UseAlarmCall']) {
                                         $this->SetValue('AlarmCall', true);
+                                    }
+                                    //Check if we have this property already configured!
+                                    if (array_key_exists('UsePanicAlarm', $variable)) {
+                                        if ($variable['UsePanicAlarm']) {
+                                            $this->SetValue('PanicAlarm', true);
+                                        }
                                     }
                                     if ($variable['UseAlertingAction']) {
                                         $action = json_decode($variable['AlertingAction'], true);
