@@ -3637,12 +3637,160 @@ trait AZ_ConfigurationForm
                                     ]
                                 ],
                                 [
-                                    'caption' => 'Zielscript',
+                                    'caption' => 'Ziel ID',
                                     'name'    => 'WebFrontPushNotificationTargetID',
                                     'width'   => '200px',
                                     'visible' => false,
                                     'edit'    => [
-                                        'type' => 'SelectScript'
+                                        'type' => 'SelectObject'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerTileVisualisationNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Post-Nachricht:',
+                                    'name'    => 'LabelTileVisualisationNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Kachel Visualisierung',
+                                    'name'    => 'UseTileVisualisationNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
+                                    'name'    => 'TileVisualisationNotificationTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Icon',
+                                    'name'    => 'TileVisualisationNotificationIcon',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'SelectIcon'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Sound',
+                                    'name'    => 'TileVisualisationNotificationSound',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type'    => 'Select',
+                                        'options' => [
+                                            [
+                                                'caption' => 'Standard',
+                                                'value'   => ''
+                                            ],
+                                            [
+                                                'caption' => 'Alarm',
+                                                'value'   => 'alarm'
+                                            ],
+                                            [
+                                                'caption' => 'Bell',
+                                                'value'   => 'bell'
+                                            ],
+                                            [
+                                                'caption' => 'Boom',
+                                                'value'   => 'boom'
+                                            ],
+                                            [
+                                                'caption' => 'Buzzer',
+                                                'value'   => 'buzzer'
+                                            ],
+                                            [
+                                                'caption' => 'Connected',
+                                                'value'   => 'connected'
+                                            ],
+                                            [
+                                                'caption' => 'Dark',
+                                                'value'   => 'dark'
+                                            ],
+                                            [
+                                                'caption' => 'Digital',
+                                                'value'   => 'digital'
+                                            ],
+                                            [
+                                                'caption' => 'Drums',
+                                                'value'   => 'drums'
+                                            ],
+                                            [
+                                                'caption' => 'Duck',
+                                                'value'   => 'duck'
+                                            ],
+                                            [
+                                                'caption' => 'Full',
+                                                'value'   => 'full'
+                                            ],
+                                            [
+                                                'caption' => 'Happy',
+                                                'value'   => 'happy'
+                                            ],
+                                            [
+                                                'caption' => 'Horn',
+                                                'value'   => 'horn'
+                                            ],
+                                            [
+                                                'caption' => 'Inception',
+                                                'value'   => 'inception'
+                                            ],
+                                            [
+                                                'caption' => 'Kazoo',
+                                                'value'   => 'kazoo'
+                                            ],
+                                            [
+                                                'caption' => 'Roll',
+                                                'value'   => 'roll'
+                                            ],
+                                            [
+                                                'caption' => 'Siren',
+                                                'value'   => 'siren'
+                                            ],
+                                            [
+                                                'caption' => 'Space',
+                                                'value'   => 'space'
+                                            ],
+                                            [
+                                                'caption' => 'Trickling',
+                                                'value'   => 'trickling'
+                                            ],
+                                            [
+                                                'caption' => 'Turn',
+                                                'value'   => 'turn'
+                                            ]
+                                        ]
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Ziel ID',
+                                    'name'    => 'TileVisualisationNotificationTargetID',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'SelectObject'
                                     ]
                                 ],
                                 [
@@ -4025,12 +4173,160 @@ trait AZ_ConfigurationForm
                                     ]
                                 ],
                                 [
-                                    'caption' => 'Zielscript',
+                                    'caption' => 'Ziel ID',
                                     'name'    => 'WebFrontPushNotificationTargetID',
                                     'width'   => '200px',
                                     'visible' => false,
                                     'edit'    => [
-                                        'type' => 'SelectScript'
+                                        'type' => 'SelectObject'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerTileVisualisationNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Post-Nachricht:',
+                                    'name'    => 'LabelTileVisualisationNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Kachel Visualisierung',
+                                    'name'    => 'UseTileVisualisationNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
+                                    'name'    => 'TileVisualisationNotificationTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Icon',
+                                    'name'    => 'TileVisualisationNotificationIcon',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'SelectIcon'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Sound',
+                                    'name'    => 'TileVisualisationNotificationSound',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type'    => 'Select',
+                                        'options' => [
+                                            [
+                                                'caption' => 'Standard',
+                                                'value'   => ''
+                                            ],
+                                            [
+                                                'caption' => 'Alarm',
+                                                'value'   => 'alarm'
+                                            ],
+                                            [
+                                                'caption' => 'Bell',
+                                                'value'   => 'bell'
+                                            ],
+                                            [
+                                                'caption' => 'Boom',
+                                                'value'   => 'boom'
+                                            ],
+                                            [
+                                                'caption' => 'Buzzer',
+                                                'value'   => 'buzzer'
+                                            ],
+                                            [
+                                                'caption' => 'Connected',
+                                                'value'   => 'connected'
+                                            ],
+                                            [
+                                                'caption' => 'Dark',
+                                                'value'   => 'dark'
+                                            ],
+                                            [
+                                                'caption' => 'Digital',
+                                                'value'   => 'digital'
+                                            ],
+                                            [
+                                                'caption' => 'Drums',
+                                                'value'   => 'drums'
+                                            ],
+                                            [
+                                                'caption' => 'Duck',
+                                                'value'   => 'duck'
+                                            ],
+                                            [
+                                                'caption' => 'Full',
+                                                'value'   => 'full'
+                                            ],
+                                            [
+                                                'caption' => 'Happy',
+                                                'value'   => 'happy'
+                                            ],
+                                            [
+                                                'caption' => 'Horn',
+                                                'value'   => 'horn'
+                                            ],
+                                            [
+                                                'caption' => 'Inception',
+                                                'value'   => 'inception'
+                                            ],
+                                            [
+                                                'caption' => 'Kazoo',
+                                                'value'   => 'kazoo'
+                                            ],
+                                            [
+                                                'caption' => 'Roll',
+                                                'value'   => 'roll'
+                                            ],
+                                            [
+                                                'caption' => 'Siren',
+                                                'value'   => 'siren'
+                                            ],
+                                            [
+                                                'caption' => 'Space',
+                                                'value'   => 'space'
+                                            ],
+                                            [
+                                                'caption' => 'Trickling',
+                                                'value'   => 'trickling'
+                                            ],
+                                            [
+                                                'caption' => 'Turn',
+                                                'value'   => 'turn'
+                                            ]
+                                        ]
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Ziel ID',
+                                    'name'    => 'TileVisualisationNotificationTargetID',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'SelectObject'
                                     ]
                                 ],
                                 [
@@ -4439,12 +4735,160 @@ trait AZ_ConfigurationForm
                                     ]
                                 ],
                                 [
-                                    'caption' => 'Zielscript',
+                                    'caption' => 'Ziel ID',
                                     'name'    => 'WebFrontPushNotificationTargetID',
                                     'width'   => '200px',
                                     'visible' => false,
                                     'edit'    => [
-                                        'type' => 'SelectScript'
+                                        'type' => 'SelectObject'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerTileVisualisationNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Post-Nachricht:',
+                                    'name'    => 'LabelTileVisualisationNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Kachel Visualisierung',
+                                    'name'    => 'UseTileVisualisationNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
+                                    'name'    => 'TileVisualisationNotificationTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Icon',
+                                    'name'    => 'TileVisualisationNotificationIcon',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'SelectIcon'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Sound',
+                                    'name'    => 'TileVisualisationNotificationSound',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type'    => 'Select',
+                                        'options' => [
+                                            [
+                                                'caption' => 'Standard',
+                                                'value'   => ''
+                                            ],
+                                            [
+                                                'caption' => 'Alarm',
+                                                'value'   => 'alarm'
+                                            ],
+                                            [
+                                                'caption' => 'Bell',
+                                                'value'   => 'bell'
+                                            ],
+                                            [
+                                                'caption' => 'Boom',
+                                                'value'   => 'boom'
+                                            ],
+                                            [
+                                                'caption' => 'Buzzer',
+                                                'value'   => 'buzzer'
+                                            ],
+                                            [
+                                                'caption' => 'Connected',
+                                                'value'   => 'connected'
+                                            ],
+                                            [
+                                                'caption' => 'Dark',
+                                                'value'   => 'dark'
+                                            ],
+                                            [
+                                                'caption' => 'Digital',
+                                                'value'   => 'digital'
+                                            ],
+                                            [
+                                                'caption' => 'Drums',
+                                                'value'   => 'drums'
+                                            ],
+                                            [
+                                                'caption' => 'Duck',
+                                                'value'   => 'duck'
+                                            ],
+                                            [
+                                                'caption' => 'Full',
+                                                'value'   => 'full'
+                                            ],
+                                            [
+                                                'caption' => 'Happy',
+                                                'value'   => 'happy'
+                                            ],
+                                            [
+                                                'caption' => 'Horn',
+                                                'value'   => 'horn'
+                                            ],
+                                            [
+                                                'caption' => 'Inception',
+                                                'value'   => 'inception'
+                                            ],
+                                            [
+                                                'caption' => 'Kazoo',
+                                                'value'   => 'kazoo'
+                                            ],
+                                            [
+                                                'caption' => 'Roll',
+                                                'value'   => 'roll'
+                                            ],
+                                            [
+                                                'caption' => 'Siren',
+                                                'value'   => 'siren'
+                                            ],
+                                            [
+                                                'caption' => 'Space',
+                                                'value'   => 'space'
+                                            ],
+                                            [
+                                                'caption' => 'Trickling',
+                                                'value'   => 'trickling'
+                                            ],
+                                            [
+                                                'caption' => 'Turn',
+                                                'value'   => 'turn'
+                                            ]
+                                        ]
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Ziel ID',
+                                    'name'    => 'TileVisualisationNotificationTargetID',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'SelectObject'
                                     ]
                                 ],
                                 [
@@ -4853,12 +5297,160 @@ trait AZ_ConfigurationForm
                                     ]
                                 ],
                                 [
-                                    'caption' => 'Zielscript',
+                                    'caption' => 'Ziel ID',
                                     'name'    => 'WebFrontPushNotificationTargetID',
                                     'width'   => '200px',
                                     'visible' => false,
                                     'edit'    => [
-                                        'type' => 'SelectScript'
+                                        'type' => 'SelectObject'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerTileVisualisationNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Post-Nachricht:',
+                                    'name'    => 'LabelTileVisualisationNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Kachel Visualisierung',
+                                    'name'    => 'UseTileVisualisationNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
+                                    'name'    => 'TileVisualisationNotificationTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Icon',
+                                    'name'    => 'TileVisualisationNotificationIcon',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'SelectIcon'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Sound',
+                                    'name'    => 'TileVisualisationNotificationSound',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type'    => 'Select',
+                                        'options' => [
+                                            [
+                                                'caption' => 'Standard',
+                                                'value'   => ''
+                                            ],
+                                            [
+                                                'caption' => 'Alarm',
+                                                'value'   => 'alarm'
+                                            ],
+                                            [
+                                                'caption' => 'Bell',
+                                                'value'   => 'bell'
+                                            ],
+                                            [
+                                                'caption' => 'Boom',
+                                                'value'   => 'boom'
+                                            ],
+                                            [
+                                                'caption' => 'Buzzer',
+                                                'value'   => 'buzzer'
+                                            ],
+                                            [
+                                                'caption' => 'Connected',
+                                                'value'   => 'connected'
+                                            ],
+                                            [
+                                                'caption' => 'Dark',
+                                                'value'   => 'dark'
+                                            ],
+                                            [
+                                                'caption' => 'Digital',
+                                                'value'   => 'digital'
+                                            ],
+                                            [
+                                                'caption' => 'Drums',
+                                                'value'   => 'drums'
+                                            ],
+                                            [
+                                                'caption' => 'Duck',
+                                                'value'   => 'duck'
+                                            ],
+                                            [
+                                                'caption' => 'Full',
+                                                'value'   => 'full'
+                                            ],
+                                            [
+                                                'caption' => 'Happy',
+                                                'value'   => 'happy'
+                                            ],
+                                            [
+                                                'caption' => 'Horn',
+                                                'value'   => 'horn'
+                                            ],
+                                            [
+                                                'caption' => 'Inception',
+                                                'value'   => 'inception'
+                                            ],
+                                            [
+                                                'caption' => 'Kazoo',
+                                                'value'   => 'kazoo'
+                                            ],
+                                            [
+                                                'caption' => 'Roll',
+                                                'value'   => 'roll'
+                                            ],
+                                            [
+                                                'caption' => 'Siren',
+                                                'value'   => 'siren'
+                                            ],
+                                            [
+                                                'caption' => 'Space',
+                                                'value'   => 'space'
+                                            ],
+                                            [
+                                                'caption' => 'Trickling',
+                                                'value'   => 'trickling'
+                                            ],
+                                            [
+                                                'caption' => 'Turn',
+                                                'value'   => 'turn'
+                                            ]
+                                        ]
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Ziel ID',
+                                    'name'    => 'TileVisualisationNotificationTargetID',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'SelectObject'
                                     ]
                                 ],
                                 [
@@ -5267,12 +5859,160 @@ trait AZ_ConfigurationForm
                                     ]
                                 ],
                                 [
-                                    'caption' => 'Zielscript',
+                                    'caption' => 'Ziel ID',
                                     'name'    => 'WebFrontPushNotificationTargetID',
                                     'width'   => '200px',
                                     'visible' => false,
                                     'edit'    => [
-                                        'type' => 'SelectScript'
+                                        'type' => 'SelectObject'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerTileVisualisationNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Post-Nachricht:',
+                                    'name'    => 'LabelTileVisualisationNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Kachel Visualisierung',
+                                    'name'    => 'UseTileVisualisationNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
+                                    'name'    => 'TileVisualisationNotificationTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Icon',
+                                    'name'    => 'TileVisualisationNotificationIcon',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'SelectIcon'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Sound',
+                                    'name'    => 'TileVisualisationNotificationSound',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type'    => 'Select',
+                                        'options' => [
+                                            [
+                                                'caption' => 'Standard',
+                                                'value'   => ''
+                                            ],
+                                            [
+                                                'caption' => 'Alarm',
+                                                'value'   => 'alarm'
+                                            ],
+                                            [
+                                                'caption' => 'Bell',
+                                                'value'   => 'bell'
+                                            ],
+                                            [
+                                                'caption' => 'Boom',
+                                                'value'   => 'boom'
+                                            ],
+                                            [
+                                                'caption' => 'Buzzer',
+                                                'value'   => 'buzzer'
+                                            ],
+                                            [
+                                                'caption' => 'Connected',
+                                                'value'   => 'connected'
+                                            ],
+                                            [
+                                                'caption' => 'Dark',
+                                                'value'   => 'dark'
+                                            ],
+                                            [
+                                                'caption' => 'Digital',
+                                                'value'   => 'digital'
+                                            ],
+                                            [
+                                                'caption' => 'Drums',
+                                                'value'   => 'drums'
+                                            ],
+                                            [
+                                                'caption' => 'Duck',
+                                                'value'   => 'duck'
+                                            ],
+                                            [
+                                                'caption' => 'Full',
+                                                'value'   => 'full'
+                                            ],
+                                            [
+                                                'caption' => 'Happy',
+                                                'value'   => 'happy'
+                                            ],
+                                            [
+                                                'caption' => 'Horn',
+                                                'value'   => 'horn'
+                                            ],
+                                            [
+                                                'caption' => 'Inception',
+                                                'value'   => 'inception'
+                                            ],
+                                            [
+                                                'caption' => 'Kazoo',
+                                                'value'   => 'kazoo'
+                                            ],
+                                            [
+                                                'caption' => 'Roll',
+                                                'value'   => 'roll'
+                                            ],
+                                            [
+                                                'caption' => 'Siren',
+                                                'value'   => 'siren'
+                                            ],
+                                            [
+                                                'caption' => 'Space',
+                                                'value'   => 'space'
+                                            ],
+                                            [
+                                                'caption' => 'Trickling',
+                                                'value'   => 'trickling'
+                                            ],
+                                            [
+                                                'caption' => 'Turn',
+                                                'value'   => 'turn'
+                                            ]
+                                        ]
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Ziel ID',
+                                    'name'    => 'TileVisualisationNotificationTargetID',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'SelectObject'
                                     ]
                                 ],
                                 [
@@ -5685,12 +6425,160 @@ trait AZ_ConfigurationForm
                                     ]
                                 ],
                                 [
-                                    'caption' => 'Zielscript',
+                                    'caption' => 'Ziel ID',
                                     'name'    => 'WebFrontPushNotificationTargetID',
                                     'width'   => '200px',
                                     'visible' => false,
                                     'edit'    => [
-                                        'type' => 'SelectScript'
+                                        'type' => 'SelectObject'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerTileVisualisationNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Post-Nachricht:',
+                                    'name'    => 'LabelTileVisualisationNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Kachel Visualisierung',
+                                    'name'    => 'UseTileVisualisationNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
+                                    'name'    => 'TileVisualisationNotificationTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Icon',
+                                    'name'    => 'TileVisualisationNotificationIcon',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'SelectIcon'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Sound',
+                                    'name'    => 'TileVisualisationNotificationSound',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type'    => 'Select',
+                                        'options' => [
+                                            [
+                                                'caption' => 'Standard',
+                                                'value'   => ''
+                                            ],
+                                            [
+                                                'caption' => 'Alarm',
+                                                'value'   => 'alarm'
+                                            ],
+                                            [
+                                                'caption' => 'Bell',
+                                                'value'   => 'bell'
+                                            ],
+                                            [
+                                                'caption' => 'Boom',
+                                                'value'   => 'boom'
+                                            ],
+                                            [
+                                                'caption' => 'Buzzer',
+                                                'value'   => 'buzzer'
+                                            ],
+                                            [
+                                                'caption' => 'Connected',
+                                                'value'   => 'connected'
+                                            ],
+                                            [
+                                                'caption' => 'Dark',
+                                                'value'   => 'dark'
+                                            ],
+                                            [
+                                                'caption' => 'Digital',
+                                                'value'   => 'digital'
+                                            ],
+                                            [
+                                                'caption' => 'Drums',
+                                                'value'   => 'drums'
+                                            ],
+                                            [
+                                                'caption' => 'Duck',
+                                                'value'   => 'duck'
+                                            ],
+                                            [
+                                                'caption' => 'Full',
+                                                'value'   => 'full'
+                                            ],
+                                            [
+                                                'caption' => 'Happy',
+                                                'value'   => 'happy'
+                                            ],
+                                            [
+                                                'caption' => 'Horn',
+                                                'value'   => 'horn'
+                                            ],
+                                            [
+                                                'caption' => 'Inception',
+                                                'value'   => 'inception'
+                                            ],
+                                            [
+                                                'caption' => 'Kazoo',
+                                                'value'   => 'kazoo'
+                                            ],
+                                            [
+                                                'caption' => 'Roll',
+                                                'value'   => 'roll'
+                                            ],
+                                            [
+                                                'caption' => 'Siren',
+                                                'value'   => 'siren'
+                                            ],
+                                            [
+                                                'caption' => 'Space',
+                                                'value'   => 'space'
+                                            ],
+                                            [
+                                                'caption' => 'Trickling',
+                                                'value'   => 'trickling'
+                                            ],
+                                            [
+                                                'caption' => 'Turn',
+                                                'value'   => 'turn'
+                                            ]
+                                        ]
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Ziel ID',
+                                    'name'    => 'TileVisualisationNotificationTargetID',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'SelectObject'
                                     ]
                                 ],
                                 [
@@ -6099,12 +6987,160 @@ trait AZ_ConfigurationForm
                                     ]
                                 ],
                                 [
-                                    'caption' => 'Zielscript',
+                                    'caption' => 'Ziel ID',
                                     'name'    => 'WebFrontPushNotificationTargetID',
                                     'width'   => '200px',
                                     'visible' => false,
                                     'edit'    => [
-                                        'type' => 'SelectScript'
+                                        'type' => 'SelectObject'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerTileVisualisationNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Post-Nachricht:',
+                                    'name'    => 'LabelTileVisualisationNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Kachel Visualisierung',
+                                    'name'    => 'UseTileVisualisationNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
+                                    'name'    => 'TileVisualisationNotificationTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Icon',
+                                    'name'    => 'TileVisualisationNotificationIcon',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'SelectIcon'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Sound',
+                                    'name'    => 'TileVisualisationNotificationSound',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type'    => 'Select',
+                                        'options' => [
+                                            [
+                                                'caption' => 'Standard',
+                                                'value'   => ''
+                                            ],
+                                            [
+                                                'caption' => 'Alarm',
+                                                'value'   => 'alarm'
+                                            ],
+                                            [
+                                                'caption' => 'Bell',
+                                                'value'   => 'bell'
+                                            ],
+                                            [
+                                                'caption' => 'Boom',
+                                                'value'   => 'boom'
+                                            ],
+                                            [
+                                                'caption' => 'Buzzer',
+                                                'value'   => 'buzzer'
+                                            ],
+                                            [
+                                                'caption' => 'Connected',
+                                                'value'   => 'connected'
+                                            ],
+                                            [
+                                                'caption' => 'Dark',
+                                                'value'   => 'dark'
+                                            ],
+                                            [
+                                                'caption' => 'Digital',
+                                                'value'   => 'digital'
+                                            ],
+                                            [
+                                                'caption' => 'Drums',
+                                                'value'   => 'drums'
+                                            ],
+                                            [
+                                                'caption' => 'Duck',
+                                                'value'   => 'duck'
+                                            ],
+                                            [
+                                                'caption' => 'Full',
+                                                'value'   => 'full'
+                                            ],
+                                            [
+                                                'caption' => 'Happy',
+                                                'value'   => 'happy'
+                                            ],
+                                            [
+                                                'caption' => 'Horn',
+                                                'value'   => 'horn'
+                                            ],
+                                            [
+                                                'caption' => 'Inception',
+                                                'value'   => 'inception'
+                                            ],
+                                            [
+                                                'caption' => 'Kazoo',
+                                                'value'   => 'kazoo'
+                                            ],
+                                            [
+                                                'caption' => 'Roll',
+                                                'value'   => 'roll'
+                                            ],
+                                            [
+                                                'caption' => 'Siren',
+                                                'value'   => 'siren'
+                                            ],
+                                            [
+                                                'caption' => 'Space',
+                                                'value'   => 'space'
+                                            ],
+                                            [
+                                                'caption' => 'Trickling',
+                                                'value'   => 'trickling'
+                                            ],
+                                            [
+                                                'caption' => 'Turn',
+                                                'value'   => 'turn'
+                                            ]
+                                        ]
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Ziel ID',
+                                    'name'    => 'TileVisualisationNotificationTargetID',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'SelectObject'
                                     ]
                                 ],
                                 [
@@ -6513,12 +7549,160 @@ trait AZ_ConfigurationForm
                                     ]
                                 ],
                                 [
-                                    'caption' => 'Zielscript',
+                                    'caption' => 'Ziel ID',
                                     'name'    => 'WebFrontPushNotificationTargetID',
                                     'width'   => '200px',
                                     'visible' => false,
                                     'edit'    => [
-                                        'type' => 'SelectScript'
+                                        'type' => 'SelectObject'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerTileVisualisationNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Post-Nachricht:',
+                                    'name'    => 'LabelTileVisualisationNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Kachel Visualisierung',
+                                    'name'    => 'UseTileVisualisationNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
+                                    'name'    => 'TileVisualisationNotificationTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Icon',
+                                    'name'    => 'TileVisualisationNotificationIcon',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'SelectIcon'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Sound',
+                                    'name'    => 'TileVisualisationNotificationSound',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type'    => 'Select',
+                                        'options' => [
+                                            [
+                                                'caption' => 'Standard',
+                                                'value'   => ''
+                                            ],
+                                            [
+                                                'caption' => 'Alarm',
+                                                'value'   => 'alarm'
+                                            ],
+                                            [
+                                                'caption' => 'Bell',
+                                                'value'   => 'bell'
+                                            ],
+                                            [
+                                                'caption' => 'Boom',
+                                                'value'   => 'boom'
+                                            ],
+                                            [
+                                                'caption' => 'Buzzer',
+                                                'value'   => 'buzzer'
+                                            ],
+                                            [
+                                                'caption' => 'Connected',
+                                                'value'   => 'connected'
+                                            ],
+                                            [
+                                                'caption' => 'Dark',
+                                                'value'   => 'dark'
+                                            ],
+                                            [
+                                                'caption' => 'Digital',
+                                                'value'   => 'digital'
+                                            ],
+                                            [
+                                                'caption' => 'Drums',
+                                                'value'   => 'drums'
+                                            ],
+                                            [
+                                                'caption' => 'Duck',
+                                                'value'   => 'duck'
+                                            ],
+                                            [
+                                                'caption' => 'Full',
+                                                'value'   => 'full'
+                                            ],
+                                            [
+                                                'caption' => 'Happy',
+                                                'value'   => 'happy'
+                                            ],
+                                            [
+                                                'caption' => 'Horn',
+                                                'value'   => 'horn'
+                                            ],
+                                            [
+                                                'caption' => 'Inception',
+                                                'value'   => 'inception'
+                                            ],
+                                            [
+                                                'caption' => 'Kazoo',
+                                                'value'   => 'kazoo'
+                                            ],
+                                            [
+                                                'caption' => 'Roll',
+                                                'value'   => 'roll'
+                                            ],
+                                            [
+                                                'caption' => 'Siren',
+                                                'value'   => 'siren'
+                                            ],
+                                            [
+                                                'caption' => 'Space',
+                                                'value'   => 'space'
+                                            ],
+                                            [
+                                                'caption' => 'Trickling',
+                                                'value'   => 'trickling'
+                                            ],
+                                            [
+                                                'caption' => 'Turn',
+                                                'value'   => 'turn'
+                                            ]
+                                        ]
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Ziel ID',
+                                    'name'    => 'TileVisualisationNotificationTargetID',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'SelectObject'
                                     ]
                                 ],
                                 [
@@ -6927,12 +8111,160 @@ trait AZ_ConfigurationForm
                                     ]
                                 ],
                                 [
-                                    'caption' => 'Zielscript',
+                                    'caption' => 'Ziel ID',
                                     'name'    => 'WebFrontPushNotificationTargetID',
                                     'width'   => '200px',
                                     'visible' => false,
                                     'edit'    => [
-                                        'type' => 'SelectScript'
+                                        'type' => 'SelectObject'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerTileVisualisationNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Post-Nachricht:',
+                                    'name'    => 'LabelTileVisualisationNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Kachel Visualisierung',
+                                    'name'    => 'UseTileVisualisationNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
+                                    'name'    => 'TileVisualisationNotificationTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Icon',
+                                    'name'    => 'TileVisualisationNotificationIcon',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'SelectIcon'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Sound',
+                                    'name'    => 'TileVisualisationNotificationSound',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type'    => 'Select',
+                                        'options' => [
+                                            [
+                                                'caption' => 'Standard',
+                                                'value'   => ''
+                                            ],
+                                            [
+                                                'caption' => 'Alarm',
+                                                'value'   => 'alarm'
+                                            ],
+                                            [
+                                                'caption' => 'Bell',
+                                                'value'   => 'bell'
+                                            ],
+                                            [
+                                                'caption' => 'Boom',
+                                                'value'   => 'boom'
+                                            ],
+                                            [
+                                                'caption' => 'Buzzer',
+                                                'value'   => 'buzzer'
+                                            ],
+                                            [
+                                                'caption' => 'Connected',
+                                                'value'   => 'connected'
+                                            ],
+                                            [
+                                                'caption' => 'Dark',
+                                                'value'   => 'dark'
+                                            ],
+                                            [
+                                                'caption' => 'Digital',
+                                                'value'   => 'digital'
+                                            ],
+                                            [
+                                                'caption' => 'Drums',
+                                                'value'   => 'drums'
+                                            ],
+                                            [
+                                                'caption' => 'Duck',
+                                                'value'   => 'duck'
+                                            ],
+                                            [
+                                                'caption' => 'Full',
+                                                'value'   => 'full'
+                                            ],
+                                            [
+                                                'caption' => 'Happy',
+                                                'value'   => 'happy'
+                                            ],
+                                            [
+                                                'caption' => 'Horn',
+                                                'value'   => 'horn'
+                                            ],
+                                            [
+                                                'caption' => 'Inception',
+                                                'value'   => 'inception'
+                                            ],
+                                            [
+                                                'caption' => 'Kazoo',
+                                                'value'   => 'kazoo'
+                                            ],
+                                            [
+                                                'caption' => 'Roll',
+                                                'value'   => 'roll'
+                                            ],
+                                            [
+                                                'caption' => 'Siren',
+                                                'value'   => 'siren'
+                                            ],
+                                            [
+                                                'caption' => 'Space',
+                                                'value'   => 'space'
+                                            ],
+                                            [
+                                                'caption' => 'Trickling',
+                                                'value'   => 'trickling'
+                                            ],
+                                            [
+                                                'caption' => 'Turn',
+                                                'value'   => 'turn'
+                                            ]
+                                        ]
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Ziel ID',
+                                    'name'    => 'TileVisualisationNotificationTargetID',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'SelectObject'
                                     ]
                                 ],
                                 [
@@ -7345,12 +8677,160 @@ trait AZ_ConfigurationForm
                                     ]
                                 ],
                                 [
-                                    'caption' => 'Zielscript',
+                                    'caption' => 'Ziel ID',
                                     'name'    => 'WebFrontPushNotificationTargetID',
                                     'width'   => '200px',
                                     'visible' => false,
                                     'edit'    => [
-                                        'type' => 'SelectScript'
+                                        'type' => 'SelectObject'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerTileVisualisationNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Post-Nachricht:',
+                                    'name'    => 'LabelTileVisualisationNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Kachel Visualisierung',
+                                    'name'    => 'UseTileVisualisationNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
+                                    'name'    => 'TileVisualisationNotificationTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Icon',
+                                    'name'    => 'TileVisualisationNotificationIcon',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'SelectIcon'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Sound',
+                                    'name'    => 'TileVisualisationNotificationSound',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type'    => 'Select',
+                                        'options' => [
+                                            [
+                                                'caption' => 'Standard',
+                                                'value'   => ''
+                                            ],
+                                            [
+                                                'caption' => 'Alarm',
+                                                'value'   => 'alarm'
+                                            ],
+                                            [
+                                                'caption' => 'Bell',
+                                                'value'   => 'bell'
+                                            ],
+                                            [
+                                                'caption' => 'Boom',
+                                                'value'   => 'boom'
+                                            ],
+                                            [
+                                                'caption' => 'Buzzer',
+                                                'value'   => 'buzzer'
+                                            ],
+                                            [
+                                                'caption' => 'Connected',
+                                                'value'   => 'connected'
+                                            ],
+                                            [
+                                                'caption' => 'Dark',
+                                                'value'   => 'dark'
+                                            ],
+                                            [
+                                                'caption' => 'Digital',
+                                                'value'   => 'digital'
+                                            ],
+                                            [
+                                                'caption' => 'Drums',
+                                                'value'   => 'drums'
+                                            ],
+                                            [
+                                                'caption' => 'Duck',
+                                                'value'   => 'duck'
+                                            ],
+                                            [
+                                                'caption' => 'Full',
+                                                'value'   => 'full'
+                                            ],
+                                            [
+                                                'caption' => 'Happy',
+                                                'value'   => 'happy'
+                                            ],
+                                            [
+                                                'caption' => 'Horn',
+                                                'value'   => 'horn'
+                                            ],
+                                            [
+                                                'caption' => 'Inception',
+                                                'value'   => 'inception'
+                                            ],
+                                            [
+                                                'caption' => 'Kazoo',
+                                                'value'   => 'kazoo'
+                                            ],
+                                            [
+                                                'caption' => 'Roll',
+                                                'value'   => 'roll'
+                                            ],
+                                            [
+                                                'caption' => 'Siren',
+                                                'value'   => 'siren'
+                                            ],
+                                            [
+                                                'caption' => 'Space',
+                                                'value'   => 'space'
+                                            ],
+                                            [
+                                                'caption' => 'Trickling',
+                                                'value'   => 'trickling'
+                                            ],
+                                            [
+                                                'caption' => 'Turn',
+                                                'value'   => 'turn'
+                                            ]
+                                        ]
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Ziel ID',
+                                    'name'    => 'TileVisualisationNotificationTargetID',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'SelectObject'
                                     ]
                                 ],
                                 [
@@ -7759,12 +9239,160 @@ trait AZ_ConfigurationForm
                                     ]
                                 ],
                                 [
-                                    'caption' => 'Zielscript',
+                                    'caption' => 'Ziel ID',
                                     'name'    => 'WebFrontPushNotificationTargetID',
                                     'width'   => '200px',
                                     'visible' => false,
                                     'edit'    => [
-                                        'type' => 'SelectScript'
+                                        'type' => 'SelectObject'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerTileVisualisationNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Post-Nachricht:',
+                                    'name'    => 'LabelTileVisualisationNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Kachel Visualisierung',
+                                    'name'    => 'UseTileVisualisationNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
+                                    'name'    => 'TileVisualisationNotificationTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Icon',
+                                    'name'    => 'TileVisualisationNotificationIcon',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'SelectIcon'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Sound',
+                                    'name'    => 'TileVisualisationNotificationSound',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type'    => 'Select',
+                                        'options' => [
+                                            [
+                                                'caption' => 'Standard',
+                                                'value'   => ''
+                                            ],
+                                            [
+                                                'caption' => 'Alarm',
+                                                'value'   => 'alarm'
+                                            ],
+                                            [
+                                                'caption' => 'Bell',
+                                                'value'   => 'bell'
+                                            ],
+                                            [
+                                                'caption' => 'Boom',
+                                                'value'   => 'boom'
+                                            ],
+                                            [
+                                                'caption' => 'Buzzer',
+                                                'value'   => 'buzzer'
+                                            ],
+                                            [
+                                                'caption' => 'Connected',
+                                                'value'   => 'connected'
+                                            ],
+                                            [
+                                                'caption' => 'Dark',
+                                                'value'   => 'dark'
+                                            ],
+                                            [
+                                                'caption' => 'Digital',
+                                                'value'   => 'digital'
+                                            ],
+                                            [
+                                                'caption' => 'Drums',
+                                                'value'   => 'drums'
+                                            ],
+                                            [
+                                                'caption' => 'Duck',
+                                                'value'   => 'duck'
+                                            ],
+                                            [
+                                                'caption' => 'Full',
+                                                'value'   => 'full'
+                                            ],
+                                            [
+                                                'caption' => 'Happy',
+                                                'value'   => 'happy'
+                                            ],
+                                            [
+                                                'caption' => 'Horn',
+                                                'value'   => 'horn'
+                                            ],
+                                            [
+                                                'caption' => 'Inception',
+                                                'value'   => 'inception'
+                                            ],
+                                            [
+                                                'caption' => 'Kazoo',
+                                                'value'   => 'kazoo'
+                                            ],
+                                            [
+                                                'caption' => 'Roll',
+                                                'value'   => 'roll'
+                                            ],
+                                            [
+                                                'caption' => 'Siren',
+                                                'value'   => 'siren'
+                                            ],
+                                            [
+                                                'caption' => 'Space',
+                                                'value'   => 'space'
+                                            ],
+                                            [
+                                                'caption' => 'Trickling',
+                                                'value'   => 'trickling'
+                                            ],
+                                            [
+                                                'caption' => 'Turn',
+                                                'value'   => 'turn'
+                                            ]
+                                        ]
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Ziel ID',
+                                    'name'    => 'TileVisualisationNotificationTargetID',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'SelectObject'
                                     ]
                                 ],
                                 [
@@ -8173,12 +9801,160 @@ trait AZ_ConfigurationForm
                                     ]
                                 ],
                                 [
-                                    'caption' => 'Zielscript',
+                                    'caption' => 'Ziel ID',
                                     'name'    => 'WebFrontPushNotificationTargetID',
                                     'width'   => '200px',
                                     'visible' => false,
                                     'edit'    => [
-                                        'type' => 'SelectScript'
+                                        'type' => 'SelectObject'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerTileVisualisationNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Post-Nachricht:',
+                                    'name'    => 'LabelTileVisualisationNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Kachel Visualisierung',
+                                    'name'    => 'UseTileVisualisationNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
+                                    'name'    => 'TileVisualisationNotificationTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Icon',
+                                    'name'    => 'TileVisualisationNotificationIcon',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'SelectIcon'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Sound',
+                                    'name'    => 'TileVisualisationNotificationSound',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type'    => 'Select',
+                                        'options' => [
+                                            [
+                                                'caption' => 'Standard',
+                                                'value'   => ''
+                                            ],
+                                            [
+                                                'caption' => 'Alarm',
+                                                'value'   => 'alarm'
+                                            ],
+                                            [
+                                                'caption' => 'Bell',
+                                                'value'   => 'bell'
+                                            ],
+                                            [
+                                                'caption' => 'Boom',
+                                                'value'   => 'boom'
+                                            ],
+                                            [
+                                                'caption' => 'Buzzer',
+                                                'value'   => 'buzzer'
+                                            ],
+                                            [
+                                                'caption' => 'Connected',
+                                                'value'   => 'connected'
+                                            ],
+                                            [
+                                                'caption' => 'Dark',
+                                                'value'   => 'dark'
+                                            ],
+                                            [
+                                                'caption' => 'Digital',
+                                                'value'   => 'digital'
+                                            ],
+                                            [
+                                                'caption' => 'Drums',
+                                                'value'   => 'drums'
+                                            ],
+                                            [
+                                                'caption' => 'Duck',
+                                                'value'   => 'duck'
+                                            ],
+                                            [
+                                                'caption' => 'Full',
+                                                'value'   => 'full'
+                                            ],
+                                            [
+                                                'caption' => 'Happy',
+                                                'value'   => 'happy'
+                                            ],
+                                            [
+                                                'caption' => 'Horn',
+                                                'value'   => 'horn'
+                                            ],
+                                            [
+                                                'caption' => 'Inception',
+                                                'value'   => 'inception'
+                                            ],
+                                            [
+                                                'caption' => 'Kazoo',
+                                                'value'   => 'kazoo'
+                                            ],
+                                            [
+                                                'caption' => 'Roll',
+                                                'value'   => 'roll'
+                                            ],
+                                            [
+                                                'caption' => 'Siren',
+                                                'value'   => 'siren'
+                                            ],
+                                            [
+                                                'caption' => 'Space',
+                                                'value'   => 'space'
+                                            ],
+                                            [
+                                                'caption' => 'Trickling',
+                                                'value'   => 'trickling'
+                                            ],
+                                            [
+                                                'caption' => 'Turn',
+                                                'value'   => 'turn'
+                                            ]
+                                        ]
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Ziel ID',
+                                    'name'    => 'TileVisualisationNotificationTargetID',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'SelectObject'
                                     ]
                                 ],
                                 [
@@ -8587,12 +10363,160 @@ trait AZ_ConfigurationForm
                                     ]
                                 ],
                                 [
-                                    'caption' => 'Zielscript',
+                                    'caption' => 'Ziel ID',
                                     'name'    => 'WebFrontPushNotificationTargetID',
                                     'width'   => '200px',
                                     'visible' => false,
                                     'edit'    => [
-                                        'type' => 'SelectScript'
+                                        'type' => 'SelectObject'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerTileVisualisationNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Post-Nachricht:',
+                                    'name'    => 'LabelTileVisualisationNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Kachel Visualisierung',
+                                    'name'    => 'UseTileVisualisationNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
+                                    'name'    => 'TileVisualisationNotificationTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Icon',
+                                    'name'    => 'TileVisualisationNotificationIcon',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'SelectIcon'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Sound',
+                                    'name'    => 'TileVisualisationNotificationSound',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type'    => 'Select',
+                                        'options' => [
+                                            [
+                                                'caption' => 'Standard',
+                                                'value'   => ''
+                                            ],
+                                            [
+                                                'caption' => 'Alarm',
+                                                'value'   => 'alarm'
+                                            ],
+                                            [
+                                                'caption' => 'Bell',
+                                                'value'   => 'bell'
+                                            ],
+                                            [
+                                                'caption' => 'Boom',
+                                                'value'   => 'boom'
+                                            ],
+                                            [
+                                                'caption' => 'Buzzer',
+                                                'value'   => 'buzzer'
+                                            ],
+                                            [
+                                                'caption' => 'Connected',
+                                                'value'   => 'connected'
+                                            ],
+                                            [
+                                                'caption' => 'Dark',
+                                                'value'   => 'dark'
+                                            ],
+                                            [
+                                                'caption' => 'Digital',
+                                                'value'   => 'digital'
+                                            ],
+                                            [
+                                                'caption' => 'Drums',
+                                                'value'   => 'drums'
+                                            ],
+                                            [
+                                                'caption' => 'Duck',
+                                                'value'   => 'duck'
+                                            ],
+                                            [
+                                                'caption' => 'Full',
+                                                'value'   => 'full'
+                                            ],
+                                            [
+                                                'caption' => 'Happy',
+                                                'value'   => 'happy'
+                                            ],
+                                            [
+                                                'caption' => 'Horn',
+                                                'value'   => 'horn'
+                                            ],
+                                            [
+                                                'caption' => 'Inception',
+                                                'value'   => 'inception'
+                                            ],
+                                            [
+                                                'caption' => 'Kazoo',
+                                                'value'   => 'kazoo'
+                                            ],
+                                            [
+                                                'caption' => 'Roll',
+                                                'value'   => 'roll'
+                                            ],
+                                            [
+                                                'caption' => 'Siren',
+                                                'value'   => 'siren'
+                                            ],
+                                            [
+                                                'caption' => 'Space',
+                                                'value'   => 'space'
+                                            ],
+                                            [
+                                                'caption' => 'Trickling',
+                                                'value'   => 'trickling'
+                                            ],
+                                            [
+                                                'caption' => 'Turn',
+                                                'value'   => 'turn'
+                                            ]
+                                        ]
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Ziel ID',
+                                    'name'    => 'TileVisualisationNotificationTargetID',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'SelectObject'
                                     ]
                                 ],
                                 [
@@ -9008,12 +10932,160 @@ trait AZ_ConfigurationForm
                                     ]
                                 ],
                                 [
-                                    'caption' => 'Zielscript',
+                                    'caption' => 'Ziel ID',
                                     'name'    => 'WebFrontPushNotificationTargetID',
                                     'width'   => '200px',
                                     'visible' => false,
                                     'edit'    => [
-                                        'type' => 'SelectScript'
+                                        'type' => 'SelectObject'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerTileVisualisationNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Post-Nachricht:',
+                                    'name'    => 'LabelTileVisualisationNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Kachel Visualisierung',
+                                    'name'    => 'UseTileVisualisationNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
+                                    'name'    => 'TileVisualisationNotificationTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Icon',
+                                    'name'    => 'TileVisualisationNotificationIcon',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'SelectIcon'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Sound',
+                                    'name'    => 'TileVisualisationNotificationSound',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type'    => 'Select',
+                                        'options' => [
+                                            [
+                                                'caption' => 'Standard',
+                                                'value'   => ''
+                                            ],
+                                            [
+                                                'caption' => 'Alarm',
+                                                'value'   => 'alarm'
+                                            ],
+                                            [
+                                                'caption' => 'Bell',
+                                                'value'   => 'bell'
+                                            ],
+                                            [
+                                                'caption' => 'Boom',
+                                                'value'   => 'boom'
+                                            ],
+                                            [
+                                                'caption' => 'Buzzer',
+                                                'value'   => 'buzzer'
+                                            ],
+                                            [
+                                                'caption' => 'Connected',
+                                                'value'   => 'connected'
+                                            ],
+                                            [
+                                                'caption' => 'Dark',
+                                                'value'   => 'dark'
+                                            ],
+                                            [
+                                                'caption' => 'Digital',
+                                                'value'   => 'digital'
+                                            ],
+                                            [
+                                                'caption' => 'Drums',
+                                                'value'   => 'drums'
+                                            ],
+                                            [
+                                                'caption' => 'Duck',
+                                                'value'   => 'duck'
+                                            ],
+                                            [
+                                                'caption' => 'Full',
+                                                'value'   => 'full'
+                                            ],
+                                            [
+                                                'caption' => 'Happy',
+                                                'value'   => 'happy'
+                                            ],
+                                            [
+                                                'caption' => 'Horn',
+                                                'value'   => 'horn'
+                                            ],
+                                            [
+                                                'caption' => 'Inception',
+                                                'value'   => 'inception'
+                                            ],
+                                            [
+                                                'caption' => 'Kazoo',
+                                                'value'   => 'kazoo'
+                                            ],
+                                            [
+                                                'caption' => 'Roll',
+                                                'value'   => 'roll'
+                                            ],
+                                            [
+                                                'caption' => 'Siren',
+                                                'value'   => 'siren'
+                                            ],
+                                            [
+                                                'caption' => 'Space',
+                                                'value'   => 'space'
+                                            ],
+                                            [
+                                                'caption' => 'Trickling',
+                                                'value'   => 'trickling'
+                                            ],
+                                            [
+                                                'caption' => 'Turn',
+                                                'value'   => 'turn'
+                                            ]
+                                        ]
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Ziel ID',
+                                    'name'    => 'TileVisualisationNotificationTargetID',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'SelectObject'
                                     ]
                                 ],
                                 [
@@ -9396,12 +11468,160 @@ trait AZ_ConfigurationForm
                                     ]
                                 ],
                                 [
-                                    'caption' => 'Zielscript',
+                                    'caption' => 'Ziel ID',
                                     'name'    => 'WebFrontPushNotificationTargetID',
                                     'width'   => '200px',
                                     'visible' => false,
                                     'edit'    => [
-                                        'type' => 'SelectScript'
+                                        'type' => 'SelectObject'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerTileVisualisationNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Post-Nachricht:',
+                                    'name'    => 'LabelTileVisualisationNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Kachel Visualisierung',
+                                    'name'    => 'UseTileVisualisationNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
+                                    'name'    => 'TileVisualisationNotificationTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Icon',
+                                    'name'    => 'TileVisualisationNotificationIcon',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'SelectIcon'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Sound',
+                                    'name'    => 'TileVisualisationNotificationSound',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type'    => 'Select',
+                                        'options' => [
+                                            [
+                                                'caption' => 'Standard',
+                                                'value'   => ''
+                                            ],
+                                            [
+                                                'caption' => 'Alarm',
+                                                'value'   => 'alarm'
+                                            ],
+                                            [
+                                                'caption' => 'Bell',
+                                                'value'   => 'bell'
+                                            ],
+                                            [
+                                                'caption' => 'Boom',
+                                                'value'   => 'boom'
+                                            ],
+                                            [
+                                                'caption' => 'Buzzer',
+                                                'value'   => 'buzzer'
+                                            ],
+                                            [
+                                                'caption' => 'Connected',
+                                                'value'   => 'connected'
+                                            ],
+                                            [
+                                                'caption' => 'Dark',
+                                                'value'   => 'dark'
+                                            ],
+                                            [
+                                                'caption' => 'Digital',
+                                                'value'   => 'digital'
+                                            ],
+                                            [
+                                                'caption' => 'Drums',
+                                                'value'   => 'drums'
+                                            ],
+                                            [
+                                                'caption' => 'Duck',
+                                                'value'   => 'duck'
+                                            ],
+                                            [
+                                                'caption' => 'Full',
+                                                'value'   => 'full'
+                                            ],
+                                            [
+                                                'caption' => 'Happy',
+                                                'value'   => 'happy'
+                                            ],
+                                            [
+                                                'caption' => 'Horn',
+                                                'value'   => 'horn'
+                                            ],
+                                            [
+                                                'caption' => 'Inception',
+                                                'value'   => 'inception'
+                                            ],
+                                            [
+                                                'caption' => 'Kazoo',
+                                                'value'   => 'kazoo'
+                                            ],
+                                            [
+                                                'caption' => 'Roll',
+                                                'value'   => 'roll'
+                                            ],
+                                            [
+                                                'caption' => 'Siren',
+                                                'value'   => 'siren'
+                                            ],
+                                            [
+                                                'caption' => 'Space',
+                                                'value'   => 'space'
+                                            ],
+                                            [
+                                                'caption' => 'Trickling',
+                                                'value'   => 'trickling'
+                                            ],
+                                            [
+                                                'caption' => 'Turn',
+                                                'value'   => 'turn'
+                                            ]
+                                        ]
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Ziel ID',
+                                    'name'    => 'TileVisualisationNotificationTargetID',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'SelectObject'
                                     ]
                                 ],
                                 [
@@ -9776,12 +11996,160 @@ trait AZ_ConfigurationForm
                                     ]
                                 ],
                                 [
-                                    'caption' => 'Zielscript',
+                                    'caption' => 'Ziel ID',
                                     'name'    => 'WebFrontPushNotificationTargetID',
                                     'width'   => '200px',
                                     'visible' => false,
                                     'edit'    => [
-                                        'type' => 'SelectScript'
+                                        'type' => 'SelectObject'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerTileVisualisationNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Post-Nachricht:',
+                                    'name'    => 'LabelTileVisualisationNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Kachel Visualisierung',
+                                    'name'    => 'UseTileVisualisationNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
+                                    'name'    => 'TileVisualisationNotificationTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Icon',
+                                    'name'    => 'TileVisualisationNotificationIcon',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'SelectIcon'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Sound',
+                                    'name'    => 'TileVisualisationNotificationSound',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type'    => 'Select',
+                                        'options' => [
+                                            [
+                                                'caption' => 'Standard',
+                                                'value'   => ''
+                                            ],
+                                            [
+                                                'caption' => 'Alarm',
+                                                'value'   => 'alarm'
+                                            ],
+                                            [
+                                                'caption' => 'Bell',
+                                                'value'   => 'bell'
+                                            ],
+                                            [
+                                                'caption' => 'Boom',
+                                                'value'   => 'boom'
+                                            ],
+                                            [
+                                                'caption' => 'Buzzer',
+                                                'value'   => 'buzzer'
+                                            ],
+                                            [
+                                                'caption' => 'Connected',
+                                                'value'   => 'connected'
+                                            ],
+                                            [
+                                                'caption' => 'Dark',
+                                                'value'   => 'dark'
+                                            ],
+                                            [
+                                                'caption' => 'Digital',
+                                                'value'   => 'digital'
+                                            ],
+                                            [
+                                                'caption' => 'Drums',
+                                                'value'   => 'drums'
+                                            ],
+                                            [
+                                                'caption' => 'Duck',
+                                                'value'   => 'duck'
+                                            ],
+                                            [
+                                                'caption' => 'Full',
+                                                'value'   => 'full'
+                                            ],
+                                            [
+                                                'caption' => 'Happy',
+                                                'value'   => 'happy'
+                                            ],
+                                            [
+                                                'caption' => 'Horn',
+                                                'value'   => 'horn'
+                                            ],
+                                            [
+                                                'caption' => 'Inception',
+                                                'value'   => 'inception'
+                                            ],
+                                            [
+                                                'caption' => 'Kazoo',
+                                                'value'   => 'kazoo'
+                                            ],
+                                            [
+                                                'caption' => 'Roll',
+                                                'value'   => 'roll'
+                                            ],
+                                            [
+                                                'caption' => 'Siren',
+                                                'value'   => 'siren'
+                                            ],
+                                            [
+                                                'caption' => 'Space',
+                                                'value'   => 'space'
+                                            ],
+                                            [
+                                                'caption' => 'Trickling',
+                                                'value'   => 'trickling'
+                                            ],
+                                            [
+                                                'caption' => 'Turn',
+                                                'value'   => 'turn'
+                                            ]
+                                        ]
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Ziel ID',
+                                    'name'    => 'TileVisualisationNotificationTargetID',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'SelectObject'
                                     ]
                                 ],
                                 [
@@ -10156,12 +12524,160 @@ trait AZ_ConfigurationForm
                                     ]
                                 ],
                                 [
-                                    'caption' => 'Zielscript',
+                                    'caption' => 'Ziel ID',
                                     'name'    => 'WebFrontPushNotificationTargetID',
                                     'width'   => '200px',
                                     'visible' => false,
                                     'edit'    => [
-                                        'type' => 'SelectScript'
+                                        'type' => 'SelectObject'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerTileVisualisationNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Post-Nachricht:',
+                                    'name'    => 'LabelTileVisualisationNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Kachel Visualisierung',
+                                    'name'    => 'UseTileVisualisationNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
+                                    'name'    => 'TileVisualisationNotificationTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Icon',
+                                    'name'    => 'TileVisualisationNotificationIcon',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'SelectIcon'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Sound',
+                                    'name'    => 'TileVisualisationNotificationSound',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type'    => 'Select',
+                                        'options' => [
+                                            [
+                                                'caption' => 'Standard',
+                                                'value'   => ''
+                                            ],
+                                            [
+                                                'caption' => 'Alarm',
+                                                'value'   => 'alarm'
+                                            ],
+                                            [
+                                                'caption' => 'Bell',
+                                                'value'   => 'bell'
+                                            ],
+                                            [
+                                                'caption' => 'Boom',
+                                                'value'   => 'boom'
+                                            ],
+                                            [
+                                                'caption' => 'Buzzer',
+                                                'value'   => 'buzzer'
+                                            ],
+                                            [
+                                                'caption' => 'Connected',
+                                                'value'   => 'connected'
+                                            ],
+                                            [
+                                                'caption' => 'Dark',
+                                                'value'   => 'dark'
+                                            ],
+                                            [
+                                                'caption' => 'Digital',
+                                                'value'   => 'digital'
+                                            ],
+                                            [
+                                                'caption' => 'Drums',
+                                                'value'   => 'drums'
+                                            ],
+                                            [
+                                                'caption' => 'Duck',
+                                                'value'   => 'duck'
+                                            ],
+                                            [
+                                                'caption' => 'Full',
+                                                'value'   => 'full'
+                                            ],
+                                            [
+                                                'caption' => 'Happy',
+                                                'value'   => 'happy'
+                                            ],
+                                            [
+                                                'caption' => 'Horn',
+                                                'value'   => 'horn'
+                                            ],
+                                            [
+                                                'caption' => 'Inception',
+                                                'value'   => 'inception'
+                                            ],
+                                            [
+                                                'caption' => 'Kazoo',
+                                                'value'   => 'kazoo'
+                                            ],
+                                            [
+                                                'caption' => 'Roll',
+                                                'value'   => 'roll'
+                                            ],
+                                            [
+                                                'caption' => 'Siren',
+                                                'value'   => 'siren'
+                                            ],
+                                            [
+                                                'caption' => 'Space',
+                                                'value'   => 'space'
+                                            ],
+                                            [
+                                                'caption' => 'Trickling',
+                                                'value'   => 'trickling'
+                                            ],
+                                            [
+                                                'caption' => 'Turn',
+                                                'value'   => 'turn'
+                                            ]
+                                        ]
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Ziel ID',
+                                    'name'    => 'TileVisualisationNotificationTargetID',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'SelectObject'
                                     ]
                                 ],
                                 [
@@ -10536,12 +13052,160 @@ trait AZ_ConfigurationForm
                                     ]
                                 ],
                                 [
-                                    'caption' => 'Zielscript',
+                                    'caption' => 'Ziel ID',
                                     'name'    => 'WebFrontPushNotificationTargetID',
                                     'width'   => '200px',
                                     'visible' => false,
                                     'edit'    => [
-                                        'type' => 'SelectScript'
+                                        'type' => 'SelectObject'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerTileVisualisationNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Post-Nachricht:',
+                                    'name'    => 'LabelTileVisualisationNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Kachel Visualisierung',
+                                    'name'    => 'UseTileVisualisationNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
+                                    'name'    => 'TileVisualisationNotificationTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Icon',
+                                    'name'    => 'TileVisualisationNotificationIcon',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'SelectIcon'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Sound',
+                                    'name'    => 'TileVisualisationNotificationSound',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type'    => 'Select',
+                                        'options' => [
+                                            [
+                                                'caption' => 'Standard',
+                                                'value'   => ''
+                                            ],
+                                            [
+                                                'caption' => 'Alarm',
+                                                'value'   => 'alarm'
+                                            ],
+                                            [
+                                                'caption' => 'Bell',
+                                                'value'   => 'bell'
+                                            ],
+                                            [
+                                                'caption' => 'Boom',
+                                                'value'   => 'boom'
+                                            ],
+                                            [
+                                                'caption' => 'Buzzer',
+                                                'value'   => 'buzzer'
+                                            ],
+                                            [
+                                                'caption' => 'Connected',
+                                                'value'   => 'connected'
+                                            ],
+                                            [
+                                                'caption' => 'Dark',
+                                                'value'   => 'dark'
+                                            ],
+                                            [
+                                                'caption' => 'Digital',
+                                                'value'   => 'digital'
+                                            ],
+                                            [
+                                                'caption' => 'Drums',
+                                                'value'   => 'drums'
+                                            ],
+                                            [
+                                                'caption' => 'Duck',
+                                                'value'   => 'duck'
+                                            ],
+                                            [
+                                                'caption' => 'Full',
+                                                'value'   => 'full'
+                                            ],
+                                            [
+                                                'caption' => 'Happy',
+                                                'value'   => 'happy'
+                                            ],
+                                            [
+                                                'caption' => 'Horn',
+                                                'value'   => 'horn'
+                                            ],
+                                            [
+                                                'caption' => 'Inception',
+                                                'value'   => 'inception'
+                                            ],
+                                            [
+                                                'caption' => 'Kazoo',
+                                                'value'   => 'kazoo'
+                                            ],
+                                            [
+                                                'caption' => 'Roll',
+                                                'value'   => 'roll'
+                                            ],
+                                            [
+                                                'caption' => 'Siren',
+                                                'value'   => 'siren'
+                                            ],
+                                            [
+                                                'caption' => 'Space',
+                                                'value'   => 'space'
+                                            ],
+                                            [
+                                                'caption' => 'Trickling',
+                                                'value'   => 'trickling'
+                                            ],
+                                            [
+                                                'caption' => 'Turn',
+                                                'value'   => 'turn'
+                                            ]
+                                        ]
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Ziel ID',
+                                    'name'    => 'TileVisualisationNotificationTargetID',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'SelectObject'
                                     ]
                                 ],
                                 [
@@ -10916,12 +13580,160 @@ trait AZ_ConfigurationForm
                                     ]
                                 ],
                                 [
-                                    'caption' => 'Zielscript',
+                                    'caption' => 'Ziel ID',
                                     'name'    => 'WebFrontPushNotificationTargetID',
                                     'width'   => '200px',
                                     'visible' => false,
                                     'edit'    => [
-                                        'type' => 'SelectScript'
+                                        'type' => 'SelectObject'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerTileVisualisationNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Post-Nachricht:',
+                                    'name'    => 'LabelTileVisualisationNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Kachel Visualisierung',
+                                    'name'    => 'UseTileVisualisationNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
+                                    'name'    => 'TileVisualisationNotificationTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Icon',
+                                    'name'    => 'TileVisualisationNotificationIcon',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'SelectIcon'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Sound',
+                                    'name'    => 'TileVisualisationNotificationSound',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type'    => 'Select',
+                                        'options' => [
+                                            [
+                                                'caption' => 'Standard',
+                                                'value'   => ''
+                                            ],
+                                            [
+                                                'caption' => 'Alarm',
+                                                'value'   => 'alarm'
+                                            ],
+                                            [
+                                                'caption' => 'Bell',
+                                                'value'   => 'bell'
+                                            ],
+                                            [
+                                                'caption' => 'Boom',
+                                                'value'   => 'boom'
+                                            ],
+                                            [
+                                                'caption' => 'Buzzer',
+                                                'value'   => 'buzzer'
+                                            ],
+                                            [
+                                                'caption' => 'Connected',
+                                                'value'   => 'connected'
+                                            ],
+                                            [
+                                                'caption' => 'Dark',
+                                                'value'   => 'dark'
+                                            ],
+                                            [
+                                                'caption' => 'Digital',
+                                                'value'   => 'digital'
+                                            ],
+                                            [
+                                                'caption' => 'Drums',
+                                                'value'   => 'drums'
+                                            ],
+                                            [
+                                                'caption' => 'Duck',
+                                                'value'   => 'duck'
+                                            ],
+                                            [
+                                                'caption' => 'Full',
+                                                'value'   => 'full'
+                                            ],
+                                            [
+                                                'caption' => 'Happy',
+                                                'value'   => 'happy'
+                                            ],
+                                            [
+                                                'caption' => 'Horn',
+                                                'value'   => 'horn'
+                                            ],
+                                            [
+                                                'caption' => 'Inception',
+                                                'value'   => 'inception'
+                                            ],
+                                            [
+                                                'caption' => 'Kazoo',
+                                                'value'   => 'kazoo'
+                                            ],
+                                            [
+                                                'caption' => 'Roll',
+                                                'value'   => 'roll'
+                                            ],
+                                            [
+                                                'caption' => 'Siren',
+                                                'value'   => 'siren'
+                                            ],
+                                            [
+                                                'caption' => 'Space',
+                                                'value'   => 'space'
+                                            ],
+                                            [
+                                                'caption' => 'Trickling',
+                                                'value'   => 'trickling'
+                                            ],
+                                            [
+                                                'caption' => 'Turn',
+                                                'value'   => 'turn'
+                                            ]
+                                        ]
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Ziel ID',
+                                    'name'    => 'TileVisualisationNotificationTargetID',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'SelectObject'
                                     ]
                                 ],
                                 [
@@ -11296,12 +14108,160 @@ trait AZ_ConfigurationForm
                                     ]
                                 ],
                                 [
-                                    'caption' => 'Zielscript',
+                                    'caption' => 'Ziel ID',
                                     'name'    => 'WebFrontPushNotificationTargetID',
                                     'width'   => '200px',
                                     'visible' => false,
                                     'edit'    => [
-                                        'type' => 'SelectScript'
+                                        'type' => 'SelectObject'
+                                    ]
+                                ],
+                                [
+                                    'caption' => ' ',
+                                    'name'    => 'SpacerTileVisualisationNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Post-Nachricht:',
+                                    'name'    => 'LabelTileVisualisationNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'save'    => false,
+                                    'edit'    => [
+                                        'type' => 'Label',
+                                        'bold' => true
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Kachel Visualisierung',
+                                    'name'    => 'UseTileVisualisationNotification',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Titel der Meldung (maximal 32 Zeichen)',
+                                    'name'    => 'TileVisualisationNotificationTitle',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Icon',
+                                    'name'    => 'TileVisualisationNotificationIcon',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'SelectIcon'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Sound',
+                                    'name'    => 'TileVisualisationNotificationSound',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type'    => 'Select',
+                                        'options' => [
+                                            [
+                                                'caption' => 'Standard',
+                                                'value'   => ''
+                                            ],
+                                            [
+                                                'caption' => 'Alarm',
+                                                'value'   => 'alarm'
+                                            ],
+                                            [
+                                                'caption' => 'Bell',
+                                                'value'   => 'bell'
+                                            ],
+                                            [
+                                                'caption' => 'Boom',
+                                                'value'   => 'boom'
+                                            ],
+                                            [
+                                                'caption' => 'Buzzer',
+                                                'value'   => 'buzzer'
+                                            ],
+                                            [
+                                                'caption' => 'Connected',
+                                                'value'   => 'connected'
+                                            ],
+                                            [
+                                                'caption' => 'Dark',
+                                                'value'   => 'dark'
+                                            ],
+                                            [
+                                                'caption' => 'Digital',
+                                                'value'   => 'digital'
+                                            ],
+                                            [
+                                                'caption' => 'Drums',
+                                                'value'   => 'drums'
+                                            ],
+                                            [
+                                                'caption' => 'Duck',
+                                                'value'   => 'duck'
+                                            ],
+                                            [
+                                                'caption' => 'Full',
+                                                'value'   => 'full'
+                                            ],
+                                            [
+                                                'caption' => 'Happy',
+                                                'value'   => 'happy'
+                                            ],
+                                            [
+                                                'caption' => 'Horn',
+                                                'value'   => 'horn'
+                                            ],
+                                            [
+                                                'caption' => 'Inception',
+                                                'value'   => 'inception'
+                                            ],
+                                            [
+                                                'caption' => 'Kazoo',
+                                                'value'   => 'kazoo'
+                                            ],
+                                            [
+                                                'caption' => 'Roll',
+                                                'value'   => 'roll'
+                                            ],
+                                            [
+                                                'caption' => 'Siren',
+                                                'value'   => 'siren'
+                                            ],
+                                            [
+                                                'caption' => 'Space',
+                                                'value'   => 'space'
+                                            ],
+                                            [
+                                                'caption' => 'Trickling',
+                                                'value'   => 'trickling'
+                                            ],
+                                            [
+                                                'caption' => 'Turn',
+                                                'value'   => 'turn'
+                                            ]
+                                        ]
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Ziel ID',
+                                    'name'    => 'TileVisualisationNotificationTargetID',
+                                    'width'   => '200px',
+                                    'visible' => false,
+                                    'edit'    => [
+                                        'type' => 'SelectObject'
                                     ]
                                 ],
                                 [

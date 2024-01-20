@@ -277,6 +277,32 @@ trait AZST_Notification
                 $text = substr($messageText, 0, 256);
                 @BN_SendWebFrontPushNotification($id, $title, "\n" . $text, $notification[0]['WebFrontPushNotificationSound'], $notification[0]['WebFrontPushNotificationTargetID']);
             }
+            //Tile visualisation notification
+            if (array_key_exists('UseTileVisualisationNotification', $notification[0])) {
+                if ($notification[0]['UseTileVisualisationNotification']) {
+                    if (array_key_exists('TileVisualisationNotificationTitle', $notification[0])) {
+                        //Title length max 32 characters
+                        $title = substr($notification[0]['TileVisualisationNotificationTitle'], 0, 32);
+                    }
+                    //Text length max 256 characters
+                    $text = substr($messageText, 0, 256);
+                    //Icon
+                    if (array_key_exists('TileVisualisationNotificationIcon', $notification[0])) {
+                        $icon = $notification[0]['TileVisualisationNotificationIcon'];
+                    }
+                    //Sound
+                    if (array_key_exists('TileVisualisationNotificationSound', $notification[0])) {
+                        $sound = $notification[0]['TileVisualisationNotificationSound'];
+                    }
+                    //Target
+                    if (array_key_exists('TileVisualisationNotificationTargetID', $notification[0])) {
+                        $target = $notification[0]['TileVisualisationNotificationTargetID'];
+                    }
+                    if (isset($title) && isset($icon) && isset($sound) && isset($target)) {
+                        @BN_PostNotification($id, $title, "\n" . $text, $icon, $sound, $target);
+                    }
+                }
+            }
             //E-Mail
             if ($notification[0]['UseMailer']) {
                 @BN_SendMailNotification($id, $notification[0]['Subject'], "\n\n" . $messageText);
