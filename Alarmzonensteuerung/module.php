@@ -764,6 +764,99 @@ class Alarmzonensteuerung extends IPSModule
         IPS_SetPosition($this->GetIDForIdent('PanicAlarm'), 220);
     }
 
+    public function ShowNotificationTargetIDs(): void
+    {
+        $id = $this->InstanceID;
+        $notifications = [
+            'DeactivationNotification',
+            'FullProtectionAbortActivationNotification',
+            'FullProtectionDelayedActivationNotification',
+            'FullProtectionActivationWithOpenDoorWindowNotification',
+            'FullProtectionActivationNotification',
+            'HullProtectionAbortActivationNotification',
+            'HullProtectionDelayedActivationNotification',
+            'HullProtectionActivationWithOpenDoorWindowNotification',
+            'HullProtectionActivationNotification',
+            'PartialProtectionProtectionAbortActivationNotification',
+            'PartialProtectionProtectionDelayedActivationNotification',
+            'PartialProtectionActivationWithOpenDoorWindowNotification',
+            'PartialProtectionActivationNotification',
+            'IndividualProtectionActivationWithOpenDoorWindowNotification',
+            'IndividualProtectionActivationNotification',
+            'OpenDoorWindowNotification',
+            'DoorWindowAlarmNotification',
+            'MotionDetectorAlarmNotification',
+            'GlassBreakageDetectorAlarmNotification',
+            'SmokeDetectorAlarmNotification',
+            'WaterDetectorAlarmNotification',
+            'PanicAlarmNotification'
+        ];
+        foreach ($notifications as $notification) {
+            $config = json_decode(IPS_GetConfiguration($id), true);
+            if (array_key_exists($notification, $config)) {
+                $elements = json_decode($config[$notification], true);
+                if (array_key_exists('WebFrontPushNotificationTargetID', $elements[0])) {
+                    $targetID = $elements[0]['WebFrontPushNotificationTargetID'];
+                    echo $notification . " Push:\n";
+                    var_dump($targetID);
+                    echo "\n";
+                }
+                if (array_key_exists('TileVisualisationNotificationTargetID', $elements[0])) {
+                    $targetID = $elements[0]['TileVisualisationNotificationTargetID'];
+                    echo $notification . " Post:\n";
+                    var_dump($targetID);
+                    echo "\n";
+                }
+            }
+        }
+    }
+
+    public function ResetNotificationTargetIDs(): void
+    {
+        $id = $this->InstanceID;
+        $notifications = [
+            'DeactivationNotification',
+            'FullProtectionAbortActivationNotification',
+            'FullProtectionDelayedActivationNotification',
+            'FullProtectionActivationWithOpenDoorWindowNotification',
+            'FullProtectionActivationNotification',
+            'HullProtectionAbortActivationNotification',
+            'HullProtectionDelayedActivationNotification',
+            'HullProtectionActivationWithOpenDoorWindowNotification',
+            'HullProtectionActivationNotification',
+            'PartialProtectionProtectionAbortActivationNotification',
+            'PartialProtectionProtectionDelayedActivationNotification',
+            'PartialProtectionActivationWithOpenDoorWindowNotification',
+            'PartialProtectionActivationNotification',
+            'IndividualProtectionActivationWithOpenDoorWindowNotification',
+            'IndividualProtectionActivationNotification',
+            'OpenDoorWindowNotification',
+            'DoorWindowAlarmNotification',
+            'MotionDetectorAlarmNotification',
+            'GlassBreakageDetectorAlarmNotification',
+            'SmokeDetectorAlarmNotification',
+            'WaterDetectorAlarmNotification',
+            'PanicAlarmNotification'
+        ];
+        foreach ($notifications as $notification) {
+            $config = json_decode(IPS_GetConfiguration($id), true);
+            if (array_key_exists($notification, $config)) {
+                $elements = json_decode($config[$notification], true);
+                if (array_key_exists('WebFrontPushNotificationTargetID', $elements[0])) {
+                    $elements[0]['WebFrontPushNotificationTargetID'] = 1;
+                    IPS_SetProperty($id, $notification, json_encode($elements));
+                }
+                if (array_key_exists('TileVisualisationNotificationTargetID', $elements[0])) {
+                    $elements[0]['TileVisualisationNotificationTargetID'] = 1;
+                    IPS_SetProperty($id, $notification, json_encode($elements));
+                }
+            }
+        }
+        if (IPS_HasChanges($id)) {
+            IPS_ApplyChanges($id);
+        }
+    }
+
     #################### Request Action
 
     public function RequestAction($Ident, $Value)

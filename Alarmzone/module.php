@@ -40,7 +40,7 @@ class Alarmzone extends IPSModule
     private const MODULE_PREFIX = 'AZ';
     private const ALARMPROTOCOL_MODULE_GUID = '{66BDB59B-E80F-E837-6640-005C32D5FC24}';
     private const NOTIFICATION_MODULE_GUID = '{BDAB70AA-B45D-4CB4-3D65-509CFF0969F9}';
-    private const ACKNOWLEDGEMENT_TONE_MODULE_GUID = '{C2E1BF4E-FB45-9023-85F0-5C80BCE99D45}'; //'[{90C71DCF-603A-A5C8-7955-CB3FFC4FF58C}, {C2E1BF4E-FB45-9023-85F0-5C80BCE99D45}]';
+    private const ACKNOWLEDGEMENT_TONE_MODULE_GUID = '{C2E1BF4E-FB45-9023-85F0-5C80BCE99D45}';
     private const SLEEP_DELAY = 100;
 
     public function Create()
@@ -1115,6 +1115,99 @@ class Alarmzone extends IPSModule
         IPS_SetPosition($this->GetIDForIdent('AlarmLight'), 200);
         IPS_SetPosition($this->GetIDForIdent('AlarmCall'), 210);
         IPS_SetPosition($this->GetIDForIdent('PanicAlarm'), 220);
+    }
+
+    public function ShowNotificationTargetIDs(): void
+    {
+        $id = $this->InstanceID;
+        $notifications = [
+            'DeactivationNotification',
+            'FullProtectionAbortActivationNotification',
+            'FullProtectionDelayedActivationNotification',
+            'FullProtectionActivationWithOpenDoorWindowNotification',
+            'FullProtectionActivationNotification',
+            'HullProtectionAbortActivationNotification',
+            'HullProtectionDelayedActivationNotification',
+            'HullProtectionActivationWithOpenDoorWindowNotification',
+            'HullProtectionActivationNotification',
+            'PartialProtectionProtectionAbortActivationNotification',
+            'PartialProtectionProtectionDelayedActivationNotification',
+            'PartialProtectionActivationWithOpenDoorWindowNotification',
+            'PartialProtectionActivationNotification',
+            'IndividualProtectionActivationWithOpenDoorWindowNotification',
+            'IndividualProtectionActivationNotification',
+            'OpenDoorWindowNotification',
+            'DoorWindowAlarmNotification',
+            'MotionDetectorAlarmNotification',
+            'GlassBreakageDetectorAlarmNotification',
+            'SmokeDetectorAlarmNotification',
+            'WaterDetectorAlarmNotification',
+            'PanicAlarmNotification'
+        ];
+        foreach ($notifications as $notification) {
+            $config = json_decode(IPS_GetConfiguration($id), true);
+            if (array_key_exists($notification, $config)) {
+                $elements = json_decode($config[$notification], true);
+                if (array_key_exists('WebFrontPushNotificationTargetID', $elements[0])) {
+                    $targetID = $elements[0]['WebFrontPushNotificationTargetID'];
+                    echo $notification . " Push:\n";
+                    var_dump($targetID);
+                    echo "\n";
+                }
+                if (array_key_exists('TileVisualisationNotificationTargetID', $elements[0])) {
+                    $targetID = $elements[0]['TileVisualisationNotificationTargetID'];
+                    echo $notification . " Post:\n";
+                    var_dump($targetID);
+                    echo "\n";
+                }
+            }
+        }
+    }
+
+    public function ResetNotificationTargetIDs(): void
+    {
+        $id = $this->InstanceID;
+        $notifications = [
+            'DeactivationNotification',
+            'FullProtectionAbortActivationNotification',
+            'FullProtectionDelayedActivationNotification',
+            'FullProtectionActivationWithOpenDoorWindowNotification',
+            'FullProtectionActivationNotification',
+            'HullProtectionAbortActivationNotification',
+            'HullProtectionDelayedActivationNotification',
+            'HullProtectionActivationWithOpenDoorWindowNotification',
+            'HullProtectionActivationNotification',
+            'PartialProtectionProtectionAbortActivationNotification',
+            'PartialProtectionProtectionDelayedActivationNotification',
+            'PartialProtectionActivationWithOpenDoorWindowNotification',
+            'PartialProtectionActivationNotification',
+            'IndividualProtectionActivationWithOpenDoorWindowNotification',
+            'IndividualProtectionActivationNotification',
+            'OpenDoorWindowNotification',
+            'DoorWindowAlarmNotification',
+            'MotionDetectorAlarmNotification',
+            'GlassBreakageDetectorAlarmNotification',
+            'SmokeDetectorAlarmNotification',
+            'WaterDetectorAlarmNotification',
+            'PanicAlarmNotification'
+        ];
+        foreach ($notifications as $notification) {
+            $config = json_decode(IPS_GetConfiguration($id), true);
+            if (array_key_exists($notification, $config)) {
+                $elements = json_decode($config[$notification], true);
+                if (array_key_exists('WebFrontPushNotificationTargetID', $elements[0])) {
+                    $elements[0]['WebFrontPushNotificationTargetID'] = 1;
+                    IPS_SetProperty($id, $notification, json_encode($elements));
+                }
+                if (array_key_exists('TileVisualisationNotificationTargetID', $elements[0])) {
+                    $elements[0]['TileVisualisationNotificationTargetID'] = 1;
+                    IPS_SetProperty($id, $notification, json_encode($elements));
+                }
+            }
+        }
+        if (IPS_HasChanges($id)) {
+            IPS_ApplyChanges($id);
+        }
     }
 
     /**

@@ -1991,8 +1991,8 @@ trait AZST_ConfigurationForm
                                 [
                                     'caption' => 'WebFront Nachricht',
                                     'name'    => 'UseWebFrontNotification',
-                                    'width'   => '200px',
-                                    'visible' => false,
+                                    'width'   => '220px',
+                                    'visible' => true,
                                     'edit'    => [
                                         'type' => 'CheckBox'
                                     ]
@@ -2049,8 +2049,8 @@ trait AZST_ConfigurationForm
                                 [
                                     'caption' => 'WebFront Push-Nachricht',
                                     'name'    => 'UseWebFrontPushNotification',
-                                    'width'   => '200px',
-                                    'visible' => false,
+                                    'width'   => '220px',
+                                    'visible' => true,
                                     'edit'    => [
                                         'type' => 'CheckBox'
                                     ]
@@ -2188,8 +2188,8 @@ trait AZST_ConfigurationForm
                                 [
                                     'caption' => 'Kachel Visualisierung',
                                     'name'    => 'UseTileVisualisationNotification',
-                                    'width'   => '200px',
-                                    'visible' => false,
+                                    'width'   => '220px',
+                                    'visible' => true,
                                     'edit'    => [
                                         'type' => 'CheckBox'
                                     ]
@@ -2336,8 +2336,8 @@ trait AZST_ConfigurationForm
                                 [
                                     'caption' => 'E-Mail',
                                     'name'    => 'UseMailer',
-                                    'width'   => '200px',
-                                    'visible' => false,
+                                    'width'   => '220px',
+                                    'visible' => true,
                                     'edit'    => [
                                         'type' => 'CheckBox'
                                     ]
@@ -2375,8 +2375,8 @@ trait AZST_ConfigurationForm
                                 [
                                     'caption' => 'SMS',
                                     'name'    => 'UseSMS',
-                                    'width'   => '200px',
-                                    'visible' => false,
+                                    'width'   => '220px',
+                                    'visible' => true,
                                     'edit'    => [
                                         'type' => 'CheckBox'
                                     ]
@@ -2414,8 +2414,8 @@ trait AZST_ConfigurationForm
                                 [
                                     'caption' => 'Telegram',
                                     'name'    => 'UseTelegram',
-                                    'width'   => '200px',
-                                    'visible' => false,
+                                    'width'   => '220px',
+                                    'visible' => true,
                                     'edit'    => [
                                         'type' => 'CheckBox'
                                     ]
@@ -2527,8 +2527,8 @@ trait AZST_ConfigurationForm
                                 [
                                     'caption' => 'WebFront Nachricht',
                                     'name'    => 'UseWebFrontNotification',
-                                    'width'   => '200px',
-                                    'visible' => false,
+                                    'width'   => '220px',
+                                    'visible' => true,
                                     'edit'    => [
                                         'type' => 'CheckBox'
                                     ]
@@ -2585,8 +2585,8 @@ trait AZST_ConfigurationForm
                                 [
                                     'caption' => 'WebFront Push-Nachricht',
                                     'name'    => 'UseWebFrontPushNotification',
-                                    'width'   => '200px',
-                                    'visible' => false,
+                                    'width'   => '220px',
+                                    'visible' => true,
                                     'edit'    => [
                                         'type' => 'CheckBox'
                                     ]
@@ -2724,8 +2724,8 @@ trait AZST_ConfigurationForm
                                 [
                                     'caption' => 'Kachel Visualisierung',
                                     'name'    => 'UseTileVisualisationNotification',
-                                    'width'   => '200px',
-                                    'visible' => false,
+                                    'width'   => '220px',
+                                    'visible' => true,
                                     'edit'    => [
                                         'type' => 'CheckBox'
                                     ]
@@ -2872,8 +2872,8 @@ trait AZST_ConfigurationForm
                                 [
                                     'caption' => 'E-Mail',
                                     'name'    => 'UseMailer',
-                                    'width'   => '200px',
-                                    'visible' => false,
+                                    'width'   => '220px',
+                                    'visible' => true,
                                     'edit'    => [
                                         'type' => 'CheckBox'
                                     ]
@@ -2911,8 +2911,8 @@ trait AZST_ConfigurationForm
                                 [
                                     'caption' => 'SMS',
                                     'name'    => 'UseSMS',
-                                    'width'   => '200px',
-                                    'visible' => false,
+                                    'width'   => '220px',
+                                    'visible' => true,
                                     'edit'    => [
                                         'type' => 'CheckBox'
                                     ]
@@ -2950,8 +2950,8 @@ trait AZST_ConfigurationForm
                                 [
                                     'caption' => 'Telegram',
                                     'name'    => 'UseTelegram',
-                                    'width'   => '200px',
-                                    'visible' => false,
+                                    'width'   => '220px',
+                                    'visible' => true,
                                     'edit'    => [
                                         'type' => 'CheckBox'
                                     ]
@@ -3059,8 +3059,8 @@ trait AZST_ConfigurationForm
                                 [
                                     'caption' => 'WebFront Nachricht',
                                     'name'    => 'UseWebFrontNotification',
-                                    'width'   => '200px',
-                                    'visible' => false,
+                                    'width'   => '220px',
+                                    'visible' => true,
                                     'edit'    => [
                                         'type' => 'CheckBox'
                                     ]
@@ -3117,8 +3117,8 @@ trait AZST_ConfigurationForm
                                 [
                                     'caption' => 'WebFront Push-Nachricht',
                                     'name'    => 'UseWebFrontPushNotification',
-                                    'width'   => '200px',
-                                    'visible' => false,
+                                    'width'   => '220px',
+                                    'visible' => true,
                                     'edit'    => [
                                         'type' => 'CheckBox'
                                     ]
@@ -3256,8 +3256,8 @@ trait AZST_ConfigurationForm
                                 [
                                     'caption' => 'Kachel Visualisierung',
                                     'name'    => 'UseTileVisualisationNotification',
-                                    'width'   => '200px',
-                                    'visible' => false,
+                                    'width'   => '220px',
+                                    'visible' => true,
                                     'edit'    => [
                                         'type' => 'CheckBox'
                                     ]
@@ -3404,8 +3404,8 @@ trait AZST_ConfigurationForm
                                 [
                                     'caption' => 'E-Mail',
                                     'name'    => 'UseMailer',
-                                    'width'   => '200px',
-                                    'visible' => false,
+                                    'width'   => '220px',
+                                    'visible' => true,
                                     'edit'    => [
                                         'type' => 'CheckBox'
                                     ]
@@ -3443,8 +3443,8 @@ trait AZST_ConfigurationForm
                                 [
                                     'caption' => 'SMS',
                                     'name'    => 'UseSMS',
-                                    'width'   => '200px',
-                                    'visible' => false,
+                                    'width'   => '220px',
+                                    'visible' => true,
                                     'edit'    => [
                                         'type' => 'CheckBox'
                                     ]
@@ -3482,8 +3482,8 @@ trait AZST_ConfigurationForm
                                 [
                                     'caption' => 'Telegram',
                                     'name'    => 'UseTelegram',
-                                    'width'   => '200px',
-                                    'visible' => false,
+                                    'width'   => '220px',
+                                    'visible' => true,
                                     'edit'    => [
                                         'type' => 'CheckBox'
                                     ]
@@ -3595,8 +3595,8 @@ trait AZST_ConfigurationForm
                                 [
                                     'caption' => 'WebFront Nachricht',
                                     'name'    => 'UseWebFrontNotification',
-                                    'width'   => '200px',
-                                    'visible' => false,
+                                    'width'   => '220px',
+                                    'visible' => true,
                                     'edit'    => [
                                         'type' => 'CheckBox'
                                     ]
@@ -3653,8 +3653,8 @@ trait AZST_ConfigurationForm
                                 [
                                     'caption' => 'WebFront Push-Nachricht',
                                     'name'    => 'UseWebFrontPushNotification',
-                                    'width'   => '200px',
-                                    'visible' => false,
+                                    'width'   => '220px',
+                                    'visible' => true,
                                     'edit'    => [
                                         'type' => 'CheckBox'
                                     ]
@@ -3792,8 +3792,8 @@ trait AZST_ConfigurationForm
                                 [
                                     'caption' => 'Kachel Visualisierung',
                                     'name'    => 'UseTileVisualisationNotification',
-                                    'width'   => '200px',
-                                    'visible' => false,
+                                    'width'   => '220px',
+                                    'visible' => true,
                                     'edit'    => [
                                         'type' => 'CheckBox'
                                     ]
@@ -3940,8 +3940,8 @@ trait AZST_ConfigurationForm
                                 [
                                     'caption' => 'E-Mail',
                                     'name'    => 'UseMailer',
-                                    'width'   => '200px',
-                                    'visible' => false,
+                                    'width'   => '220px',
+                                    'visible' => true,
                                     'edit'    => [
                                         'type' => 'CheckBox'
                                     ]
@@ -3979,8 +3979,8 @@ trait AZST_ConfigurationForm
                                 [
                                     'caption' => 'SMS',
                                     'name'    => 'UseSMS',
-                                    'width'   => '200px',
-                                    'visible' => false,
+                                    'width'   => '220px',
+                                    'visible' => true,
                                     'edit'    => [
                                         'type' => 'CheckBox'
                                     ]
@@ -4018,8 +4018,8 @@ trait AZST_ConfigurationForm
                                 [
                                     'caption' => 'Telegram',
                                     'name'    => 'UseTelegram',
-                                    'width'   => '200px',
-                                    'visible' => false,
+                                    'width'   => '220px',
+                                    'visible' => true,
                                     'edit'    => [
                                         'type' => 'CheckBox'
                                     ]
@@ -4127,8 +4127,8 @@ trait AZST_ConfigurationForm
                                 [
                                     'caption' => 'WebFront Nachricht',
                                     'name'    => 'UseWebFrontNotification',
-                                    'width'   => '200px',
-                                    'visible' => false,
+                                    'width'   => '220px',
+                                    'visible' => true,
                                     'edit'    => [
                                         'type' => 'CheckBox'
                                     ]
@@ -4185,8 +4185,8 @@ trait AZST_ConfigurationForm
                                 [
                                     'caption' => 'WebFront Push-Nachricht',
                                     'name'    => 'UseWebFrontPushNotification',
-                                    'width'   => '200px',
-                                    'visible' => false,
+                                    'width'   => '220px',
+                                    'visible' => true,
                                     'edit'    => [
                                         'type' => 'CheckBox'
                                     ]
@@ -4324,8 +4324,8 @@ trait AZST_ConfigurationForm
                                 [
                                     'caption' => 'Kachel Visualisierung',
                                     'name'    => 'UseTileVisualisationNotification',
-                                    'width'   => '200px',
-                                    'visible' => false,
+                                    'width'   => '220px',
+                                    'visible' => true,
                                     'edit'    => [
                                         'type' => 'CheckBox'
                                     ]
@@ -4472,8 +4472,8 @@ trait AZST_ConfigurationForm
                                 [
                                     'caption' => 'E-Mail',
                                     'name'    => 'UseMailer',
-                                    'width'   => '200px',
-                                    'visible' => false,
+                                    'width'   => '220px',
+                                    'visible' => true,
                                     'edit'    => [
                                         'type' => 'CheckBox'
                                     ]
@@ -4511,8 +4511,8 @@ trait AZST_ConfigurationForm
                                 [
                                     'caption' => 'SMS',
                                     'name'    => 'UseSMS',
-                                    'width'   => '200px',
-                                    'visible' => false,
+                                    'width'   => '220px',
+                                    'visible' => true,
                                     'edit'    => [
                                         'type' => 'CheckBox'
                                     ]
@@ -4550,8 +4550,8 @@ trait AZST_ConfigurationForm
                                 [
                                     'caption' => 'Telegram',
                                     'name'    => 'UseTelegram',
-                                    'width'   => '200px',
-                                    'visible' => false,
+                                    'width'   => '220px',
+                                    'visible' => true,
                                     'edit'    => [
                                         'type' => 'CheckBox'
                                     ]
@@ -4663,8 +4663,8 @@ trait AZST_ConfigurationForm
                                 [
                                     'caption' => 'WebFront Nachricht',
                                     'name'    => 'UseWebFrontNotification',
-                                    'width'   => '200px',
-                                    'visible' => false,
+                                    'width'   => '220px',
+                                    'visible' => true,
                                     'edit'    => [
                                         'type' => 'CheckBox'
                                     ]
@@ -4721,8 +4721,8 @@ trait AZST_ConfigurationForm
                                 [
                                     'caption' => 'WebFront Push-Nachricht',
                                     'name'    => 'UseWebFrontPushNotification',
-                                    'width'   => '200px',
-                                    'visible' => false,
+                                    'width'   => '220px',
+                                    'visible' => true,
                                     'edit'    => [
                                         'type' => 'CheckBox'
                                     ]
@@ -4860,8 +4860,8 @@ trait AZST_ConfigurationForm
                                 [
                                     'caption' => 'Kachel Visualisierung',
                                     'name'    => 'UseTileVisualisationNotification',
-                                    'width'   => '200px',
-                                    'visible' => false,
+                                    'width'   => '220px',
+                                    'visible' => true,
                                     'edit'    => [
                                         'type' => 'CheckBox'
                                     ]
@@ -5008,8 +5008,8 @@ trait AZST_ConfigurationForm
                                 [
                                     'caption' => 'E-Mail',
                                     'name'    => 'UseMailer',
-                                    'width'   => '200px',
-                                    'visible' => false,
+                                    'width'   => '220px',
+                                    'visible' => true,
                                     'edit'    => [
                                         'type' => 'CheckBox'
                                     ]
@@ -5047,8 +5047,8 @@ trait AZST_ConfigurationForm
                                 [
                                     'caption' => 'SMS',
                                     'name'    => 'UseSMS',
-                                    'width'   => '200px',
-                                    'visible' => false,
+                                    'width'   => '220px',
+                                    'visible' => true,
                                     'edit'    => [
                                         'type' => 'CheckBox'
                                     ]
@@ -5086,8 +5086,8 @@ trait AZST_ConfigurationForm
                                 [
                                     'caption' => 'Telegram',
                                     'name'    => 'UseTelegram',
-                                    'width'   => '200px',
-                                    'visible' => false,
+                                    'width'   => '220px',
+                                    'visible' => true,
                                     'edit'    => [
                                         'type' => 'CheckBox'
                                     ]
@@ -5195,8 +5195,8 @@ trait AZST_ConfigurationForm
                                 [
                                     'caption' => 'WebFront Nachricht',
                                     'name'    => 'UseWebFrontNotification',
-                                    'width'   => '200px',
-                                    'visible' => false,
+                                    'width'   => '220px',
+                                    'visible' => true,
                                     'edit'    => [
                                         'type' => 'CheckBox'
                                     ]
@@ -5253,8 +5253,8 @@ trait AZST_ConfigurationForm
                                 [
                                     'caption' => 'WebFront Push-Nachricht',
                                     'name'    => 'UseWebFrontPushNotification',
-                                    'width'   => '200px',
-                                    'visible' => false,
+                                    'width'   => '220px',
+                                    'visible' => true,
                                     'edit'    => [
                                         'type' => 'CheckBox'
                                     ]
@@ -5392,8 +5392,8 @@ trait AZST_ConfigurationForm
                                 [
                                     'caption' => 'Kachel Visualisierung',
                                     'name'    => 'UseTileVisualisationNotification',
-                                    'width'   => '200px',
-                                    'visible' => false,
+                                    'width'   => '220px',
+                                    'visible' => true,
                                     'edit'    => [
                                         'type' => 'CheckBox'
                                     ]
@@ -5540,8 +5540,8 @@ trait AZST_ConfigurationForm
                                 [
                                     'caption' => 'E-Mail',
                                     'name'    => 'UseMailer',
-                                    'width'   => '200px',
-                                    'visible' => false,
+                                    'width'   => '220px',
+                                    'visible' => true,
                                     'edit'    => [
                                         'type' => 'CheckBox'
                                     ]
@@ -5579,8 +5579,8 @@ trait AZST_ConfigurationForm
                                 [
                                     'caption' => 'SMS',
                                     'name'    => 'UseSMS',
-                                    'width'   => '200px',
-                                    'visible' => false,
+                                    'width'   => '220px',
+                                    'visible' => true,
                                     'edit'    => [
                                         'type' => 'CheckBox'
                                     ]
@@ -5618,8 +5618,8 @@ trait AZST_ConfigurationForm
                                 [
                                     'caption' => 'Telegram',
                                     'name'    => 'UseTelegram',
-                                    'width'   => '200px',
-                                    'visible' => false,
+                                    'width'   => '220px',
+                                    'visible' => true,
                                     'edit'    => [
                                         'type' => 'CheckBox'
                                     ]
@@ -5731,8 +5731,8 @@ trait AZST_ConfigurationForm
                                 [
                                     'caption' => 'WebFront Nachricht',
                                     'name'    => 'UseWebFrontNotification',
-                                    'width'   => '200px',
-                                    'visible' => false,
+                                    'width'   => '220px',
+                                    'visible' => true,
                                     'edit'    => [
                                         'type' => 'CheckBox'
                                     ]
@@ -5789,8 +5789,8 @@ trait AZST_ConfigurationForm
                                 [
                                     'caption' => 'WebFront Push-Nachricht',
                                     'name'    => 'UseWebFrontPushNotification',
-                                    'width'   => '200px',
-                                    'visible' => false,
+                                    'width'   => '220px',
+                                    'visible' => true,
                                     'edit'    => [
                                         'type' => 'CheckBox'
                                     ]
@@ -5928,8 +5928,8 @@ trait AZST_ConfigurationForm
                                 [
                                     'caption' => 'Kachel Visualisierung',
                                     'name'    => 'UseTileVisualisationNotification',
-                                    'width'   => '200px',
-                                    'visible' => false,
+                                    'width'   => '220px',
+                                    'visible' => true,
                                     'edit'    => [
                                         'type' => 'CheckBox'
                                     ]
@@ -6076,8 +6076,8 @@ trait AZST_ConfigurationForm
                                 [
                                     'caption' => 'E-Mail',
                                     'name'    => 'UseMailer',
-                                    'width'   => '200px',
-                                    'visible' => false,
+                                    'width'   => '220px',
+                                    'visible' => true,
                                     'edit'    => [
                                         'type' => 'CheckBox'
                                     ]
@@ -6115,8 +6115,8 @@ trait AZST_ConfigurationForm
                                 [
                                     'caption' => 'SMS',
                                     'name'    => 'UseSMS',
-                                    'width'   => '200px',
-                                    'visible' => false,
+                                    'width'   => '220px',
+                                    'visible' => true,
                                     'edit'    => [
                                         'type' => 'CheckBox'
                                     ]
@@ -6154,8 +6154,8 @@ trait AZST_ConfigurationForm
                                 [
                                     'caption' => 'Telegram',
                                     'name'    => 'UseTelegram',
-                                    'width'   => '200px',
-                                    'visible' => false,
+                                    'width'   => '220px',
+                                    'visible' => true,
                                     'edit'    => [
                                         'type' => 'CheckBox'
                                     ]
@@ -6263,8 +6263,8 @@ trait AZST_ConfigurationForm
                                 [
                                     'caption' => 'WebFront Nachricht',
                                     'name'    => 'UseWebFrontNotification',
-                                    'width'   => '200px',
-                                    'visible' => false,
+                                    'width'   => '220px',
+                                    'visible' => true,
                                     'edit'    => [
                                         'type' => 'CheckBox'
                                     ]
@@ -6321,8 +6321,8 @@ trait AZST_ConfigurationForm
                                 [
                                     'caption' => 'WebFront Push-Nachricht',
                                     'name'    => 'UseWebFrontPushNotification',
-                                    'width'   => '200px',
-                                    'visible' => false,
+                                    'width'   => '220px',
+                                    'visible' => true,
                                     'edit'    => [
                                         'type' => 'CheckBox'
                                     ]
@@ -6460,8 +6460,8 @@ trait AZST_ConfigurationForm
                                 [
                                     'caption' => 'Kachel Visualisierung',
                                     'name'    => 'UseTileVisualisationNotification',
-                                    'width'   => '200px',
-                                    'visible' => false,
+                                    'width'   => '220px',
+                                    'visible' => true,
                                     'edit'    => [
                                         'type' => 'CheckBox'
                                     ]
@@ -6608,8 +6608,8 @@ trait AZST_ConfigurationForm
                                 [
                                     'caption' => 'E-Mail',
                                     'name'    => 'UseMailer',
-                                    'width'   => '200px',
-                                    'visible' => false,
+                                    'width'   => '220px',
+                                    'visible' => true,
                                     'edit'    => [
                                         'type' => 'CheckBox'
                                     ]
@@ -6647,8 +6647,8 @@ trait AZST_ConfigurationForm
                                 [
                                     'caption' => 'SMS',
                                     'name'    => 'UseSMS',
-                                    'width'   => '200px',
-                                    'visible' => false,
+                                    'width'   => '220px',
+                                    'visible' => true,
                                     'edit'    => [
                                         'type' => 'CheckBox'
                                     ]
@@ -6686,8 +6686,8 @@ trait AZST_ConfigurationForm
                                 [
                                     'caption' => 'Telegram',
                                     'name'    => 'UseTelegram',
-                                    'width'   => '200px',
-                                    'visible' => false,
+                                    'width'   => '220px',
+                                    'visible' => true,
                                     'edit'    => [
                                         'type' => 'CheckBox'
                                     ]
@@ -6799,8 +6799,8 @@ trait AZST_ConfigurationForm
                                 [
                                     'caption' => 'WebFront Nachricht',
                                     'name'    => 'UseWebFrontNotification',
-                                    'width'   => '200px',
-                                    'visible' => false,
+                                    'width'   => '220px',
+                                    'visible' => true,
                                     'edit'    => [
                                         'type' => 'CheckBox'
                                     ]
@@ -6857,8 +6857,8 @@ trait AZST_ConfigurationForm
                                 [
                                     'caption' => 'WebFront Push-Nachricht',
                                     'name'    => 'UseWebFrontPushNotification',
-                                    'width'   => '200px',
-                                    'visible' => false,
+                                    'width'   => '220px',
+                                    'visible' => true,
                                     'edit'    => [
                                         'type' => 'CheckBox'
                                     ]
@@ -6996,8 +6996,8 @@ trait AZST_ConfigurationForm
                                 [
                                     'caption' => 'Kachel Visualisierung',
                                     'name'    => 'UseTileVisualisationNotification',
-                                    'width'   => '200px',
-                                    'visible' => false,
+                                    'width'   => '220px',
+                                    'visible' => true,
                                     'edit'    => [
                                         'type' => 'CheckBox'
                                     ]
@@ -7144,8 +7144,8 @@ trait AZST_ConfigurationForm
                                 [
                                     'caption' => 'E-Mail',
                                     'name'    => 'UseMailer',
-                                    'width'   => '200px',
-                                    'visible' => false,
+                                    'width'   => '220px',
+                                    'visible' => true,
                                     'edit'    => [
                                         'type' => 'CheckBox'
                                     ]
@@ -7183,8 +7183,8 @@ trait AZST_ConfigurationForm
                                 [
                                     'caption' => 'SMS',
                                     'name'    => 'UseSMS',
-                                    'width'   => '200px',
-                                    'visible' => false,
+                                    'width'   => '220px',
+                                    'visible' => true,
                                     'edit'    => [
                                         'type' => 'CheckBox'
                                     ]
@@ -7222,8 +7222,8 @@ trait AZST_ConfigurationForm
                                 [
                                     'caption' => 'Telegram',
                                     'name'    => 'UseTelegram',
-                                    'width'   => '200px',
-                                    'visible' => false,
+                                    'width'   => '220px',
+                                    'visible' => true,
                                     'edit'    => [
                                         'type' => 'CheckBox'
                                     ]
@@ -7720,8 +7720,14 @@ trait AZST_ConfigurationForm
             'expanded' => false,
             'items'    => [
                 [
+                    'type'    => 'Label',
+                    'caption' => 'Variablen',
+                    'bold'    => true,
+                    'italic'  => true
+                ],
+                [
                     'type'    => 'PopupButton',
-                    'caption' => 'Variablen neu anordnen',
+                    'caption' => 'Neu anordnen',
                     'popup'   => [
                         'caption' => 'Variablen wirklich neu anordnen?',
                         'items'   => [
@@ -7729,6 +7735,36 @@ trait AZST_ConfigurationForm
                                 'type'    => 'Button',
                                 'caption' => 'Neu anordnen',
                                 'onClick' => self::MODULE_PREFIX . '_ReorderVariables($id);' . self::MODULE_PREFIX . '_UIShowMessage($id, "Variablen wurden neu angeordnet!");'
+                            ]
+                        ]
+                    ]
+                ],
+                [
+                    'type'    => 'Label',
+                    'caption' => 'Benachrichtigungen',
+                    'bold'    => true,
+                    'italic'  => true
+                ],
+                [
+                    'type'  => 'RowLayout',
+                    'items' => [
+                        [
+                            'type'    => 'Button',
+                            'caption' => 'Ziel IDs anzeigen',
+                            'onClick' => self::MODULE_PREFIX . '_ShowNotificationTargetIDs($id);'
+                        ],
+                        [
+                            'type'    => 'PopupButton',
+                            'caption' => 'Ziel IDs zurücksetzen',
+                            'popup'   => [
+                                'caption' => 'Ziel IDs wirklich zurücksetzen?',
+                                'items'   => [
+                                    [
+                                        'type'    => 'Button',
+                                        'caption' => 'Zurücksetzen',
+                                        'onClick' => self::MODULE_PREFIX . '_ResetNotificationTargetIDs($id);'
+                                    ]
+                                ]
                             ]
                         ]
                     ]
