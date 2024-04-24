@@ -393,6 +393,8 @@ trait AZST_States
         }
         $result = false;
         $state = 0;
+        $alarm = false;
+        $panicAlarm = false;
         foreach ($variables as $variable) {
             if ($variable['Use']) {
                 $id = $variable['ID'];
@@ -400,18 +402,30 @@ trait AZST_States
                     $result = true;
                     $actualValue = GetValueInteger($variable['ID']);
                     if ($actualValue == 1) {
-                        $state = 1; //alarm
+                        $alarm = true;
+                    }
+                    if ($actualValue == 2) {
+                        $panicAlarm = true;
                     }
                 }
             }
         }
+        //Panic alarm
+        if ($panicAlarm) {
+            $state = 2;
+        }
+        //Alarm
+        if ($alarm && !$panicAlarm) {
+            $state = 1;
+        }
+        //Alarm state
         $this->SetValue('AlarmState', $state);
-        if ($state == 0) {
-            $this->SetValue('AlarmSwitch', false);
+        //Alarm switch
+        $alarmSwitchState = false;
+        if ($state > 0) {
+            $alarmSwitchState = true;
         }
-        if ($state == 1) {
-            $this->SetValue('AlarmSwitch', true);
-        }
+        $this->SetValue('AlarmSwitch', $alarmSwitchState);
         return $result;
     }
 

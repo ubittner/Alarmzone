@@ -449,7 +449,7 @@ trait AZ_WaterDetectors
                 continue;
             }
             $passedVariables++;
-            $this->UpdateFormField('AssignWaterDetectorriableProfileProgress', 'visible', true);
+            $this->UpdateFormField('AssignWaterDetectorVariableProfileProgress', 'visible', true);
             $this->UpdateFormField('AssignWaterDetectorVariableProfileProgress', 'current', $passedVariables);
             $this->UpdateFormField('AssignWaterDetectorVariableProfileProgressInfo', 'visible', true);
             $this->UpdateFormField('AssignWaterDetectorVariableProfileProgressInfo', 'caption', $passedVariables . '/' . $maximumVariables);
@@ -605,8 +605,15 @@ trait AZ_WaterDetectors
                                     $result = true;
                                     //Alarm state
                                     $this->SetValue('AlarmSwitch', true);
-                                    $this->SetValue('AlarmState', 1);
                                     $this->SetValue('AlertingSensor', $variable['Designation']);
+                                    //Check if we have this property already configured!
+                                    if (array_key_exists('UsePanicAlarm', $variable)) {
+                                        if (!$variable['UsePanicAlarm']) {
+                                            $this->SetValue('AlarmState', 1);
+                                        }
+                                    } else {
+                                        $this->SetValue('AlarmState', 1);
+                                    }
                                     //Protocol
                                     if ($variable['UseAlarmProtocol']) {
                                         $text = ' hat Wasser erkannt und einen Alarm ausgelöst. (ID ' . $SenderID . ')';
@@ -630,6 +637,7 @@ trait AZ_WaterDetectors
                                     //Check if we have this property already configured!
                                     if (array_key_exists('UsePanicAlarm', $variable)) {
                                         if ($variable['UsePanicAlarm']) {
+                                            $this->SetValue('AlarmState', 2);
                                             $this->SetValue('PanicAlarm', true);
                                         }
                                     }
@@ -725,8 +733,15 @@ trait AZ_WaterDetectors
                                 if ($alerting) { //open is verified
                                     //Alarm state
                                     $this->SetValue('AlarmSwitch', true);
-                                    $this->SetValue('AlarmState', 1);
                                     $this->SetValue('AlertingSensor', $variable['Designation']);
+                                    //Check if we have this property already configured!
+                                    if (array_key_exists('UsePanicAlarm', $variable)) {
+                                        if (!$variable['UsePanicAlarm']) {
+                                            $this->SetValue('AlarmState', 1);
+                                        }
+                                    } else {
+                                        $this->SetValue('AlarmState', 1);
+                                    }
                                     //Protocol
                                     if ($variable['UseAlarmProtocol']) {
                                         $TimeStamp = time();
@@ -747,6 +762,13 @@ trait AZ_WaterDetectors
                                     }
                                     if ($variable['UseAlarmCall']) {
                                         $this->SetValue('AlarmCall', true);
+                                    }
+                                    //Check if we have this property already configured!
+                                    if (array_key_exists('UsePanicAlarm', $variable)) {
+                                        if ($variable['UsePanicAlarm']) {
+                                            $this->SetValue('AlarmState', 2);
+                                            $this->SetValue('PanicAlarm', true);
+                                        }
                                     }
                                     if ($variable['UseAlertingAction']) {
                                         $action = json_decode($variable['AlertingAction'], true);

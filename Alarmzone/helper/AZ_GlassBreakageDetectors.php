@@ -607,8 +607,15 @@ trait AZ_GlassBreakageDetectors
                                     $result = true;
                                     //Alarm state
                                     $this->SetValue('AlarmSwitch', true);
-                                    $this->SetValue('AlarmState', 1);
                                     $this->SetValue('AlertingSensor', $variable['Designation']);
+                                    //Check if we have this property already configured!
+                                    if (array_key_exists('UsePanicAlarm', $variable)) {
+                                        if (!$variable['UsePanicAlarm']) {
+                                            $this->SetValue('AlarmState', 1);
+                                        }
+                                    } else {
+                                        $this->SetValue('AlarmState', 1);
+                                    }
                                     //Protocol
                                     if ($variable['UseAlarmProtocol']) {
                                         $text = ' hat einen Glasbruch erkannt und einen Alarm ausgelöst. (ID ' . $SenderID . ')';
@@ -632,6 +639,7 @@ trait AZ_GlassBreakageDetectors
                                     //Check if we have this property already configured!
                                     if (array_key_exists('UsePanicAlarm', $variable)) {
                                         if ($variable['UsePanicAlarm']) {
+                                            $this->SetValue('AlarmState', 2);
                                             $this->SetValue('PanicAlarm', true);
                                         }
                                     }
@@ -727,8 +735,15 @@ trait AZ_GlassBreakageDetectors
                                 if ($alerting) { //open is verified
                                     //Alarm state
                                     $this->SetValue('AlarmSwitch', true);
-                                    $this->SetValue('AlarmState', 1);
                                     $this->SetValue('AlertingSensor', $variable['Designation']);
+                                    //Check if we have this property already configured!
+                                    if (array_key_exists('UsePanicAlarm', $variable)) {
+                                        if (!$variable['UsePanicAlarm']) {
+                                            $this->SetValue('AlarmState', 1);
+                                        }
+                                    } else {
+                                        $this->SetValue('AlarmState', 1);
+                                    }
                                     //Protocol
                                     if ($variable['UseAlarmProtocol']) {
                                         $TimeStamp = time();
@@ -749,6 +764,13 @@ trait AZ_GlassBreakageDetectors
                                     }
                                     if ($variable['UseAlarmCall']) {
                                         $this->SetValue('AlarmCall', true);
+                                    }
+                                    //Check if we have this property already configured!
+                                    if (array_key_exists('UsePanicAlarm', $variable)) {
+                                        if ($variable['UsePanicAlarm']) {
+                                            $this->SetValue('AlarmState', 2);
+                                            $this->SetValue('PanicAlarm', true);
+                                        }
                                     }
                                     if ($variable['UseAlertingAction']) {
                                         $action = json_decode($variable['AlertingAction'], true);
