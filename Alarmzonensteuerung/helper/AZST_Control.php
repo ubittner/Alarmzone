@@ -293,72 +293,69 @@ trait AZST_Control
      * Sets an alarm.
      *
      * @param bool $State
-     * false =  no alarm,
-     * true =   alarm
+     * false =  alarm off
+     * true =   panic alarm on
+     *
+     * @param int $SenderID
      *
      * @return void
      * @throws Exception
      */
-    public function SetAlarm(bool $State): void
+    public function SetAlarm(bool $State, int $SenderID): void
     {
+        //Alarm off
         if (!$State) {
-            $this->SetValue('AlarmSwitch', false);
-            $this->SetValue('PanicAlarm', false);
             //Protocol
-            $text = 'Der Alarm wurde deaktiviert. (ID ' . $this->GetIDForIdent('AlarmSwitch') . ')';
+            $text = 'Der Alarm wurde deaktiviert. (ID ' . $SenderID . ')';
             $logText = date('d.m.Y, H:i:s') . ', ' . $this->ReadPropertyString('Location') . ', ' . $this->ReadPropertyString('SystemName') . ', ' . $text;
             $this->UpdateAlarmProtocol($logText, 1);
-            //Alarm zones
-            $alarmZones = json_decode($this->ReadPropertyString('AlarmZones'), true);
-            if (empty($alarmZones)) {
-                return;
+            //Reset
+            $this->WriteAttributeBoolean('DisableUpdateMode', true);
+            if (!$this->ReadPropertyBoolean('AlarmSwitchDisarmAlarmZones')) {
+                $this->SetValue('AlarmSwitch', false);
+                $this->SetValue('AlertingSensor', '');
+                $this->SetValue('AlarmState', 0);
+                $this->SetValue('AlarmCall', false);
+                $this->SetValue('PanicAlarm', false);
+                if ($this->ReadPropertyBoolean('AlarmSwitchAlarmSirenOff')) {
+                    $this->SetValue('AlarmSiren', false);
+                }
+                if ($this->ReadPropertyBoolean('AlarmSwitchAlarmLightOff')) {
+                    $this->SetValue('AlarmLight', false);
+                }
+            } else {
+                $this->SelectProtectionMode(0, (string) $SenderID);
             }
-            foreach ($alarmZones as $alarmZone) {
-                if (!$alarmZone['Use']) {
-                    continue;
-                }
-                $id = $alarmZone['ID'];
-                if ($id == 0 || @!IPS_ObjectExists($id)) {
-                    continue;
-                }
-                if ($this->ReadPropertyBoolean('UseDisarmAlarmZonesWhenAlarmSwitchIsOff')) {
-                    $this->SelectProtectionMode(0, (string) $this->GetIDForIdent('AlarmSwitch'));
-                } else {
-                    @AZ_SetAlarm($id, false);
-                }
+            $this->WriteAttributeBoolean('DisableUpdateMode', false);
+            //Update
+            $this->UpdateStates();
+            //Notification
+            if (!$this->ReadPropertyBoolean('AlarmSwitchDisarmAlarmZones') && !$this->GetValue('AlarmSwitch')) {
+                $this->ExecuteAlarmZoneControllerNotification(910);
             }
-        } else {
-            $alarm = false;
-            $useAlarmSiren = $this->ReadPropertyBoolean('UseAlarmSirenWhenAlarmSwitchIsOn');
-            $useAlarmLight = $this->ReadPropertyBoolean('UseAlarmLightWhenAlarmSwitchIsOn');
-            $useAlarmCall = $this->ReadPropertyBoolean('UseAlarmCallWhenAlarmSwitchIsOn');
-            $usePanicAlarm = $this->ReadPropertyBoolean('UsePanicAlarmWhenAlarmSwitchIsOn');
-            if ($useAlarmSiren || $useAlarmLight || $useAlarmCall || $usePanicAlarm) {
-                $alarm = true;
+        }
+        //Panic alarm
+        if ($State) {
+            //Protocol
+            $text = 'Der Panikalarm wurde ausgelöst. (ID ' . $SenderID . ')';
+            $logText = date('d.m.Y, H:i:s') . ', ' . $this->ReadPropertyString('Location') . ', ' . $this->ReadPropertyString('SystemName') . ', ' . $text;
+            $this->UpdateAlarmProtocol($logText, 1);
+            //States
+            $this->SetValue('AlarmSwitch', true);
+            $this->SetValue('AlertingSensor', 'Panikalarm');
+            $this->SetValue('AlarmState', 2);
+            $this->SetValue('PanicAlarm', true);
+            if ($this->ReadPropertyBoolean('PanicAlarmUseAlarmSiren')) {
+                $this->SetValue('AlarmSiren', true);
             }
-            if ($alarm) {
-                $this->SetValue('AlarmSwitch', true);
-                $this->SetValue('AlarmState', 1);
-                $this->SetValue('AlertingSensor', $this->ReadPropertyString('AlertingSensorNameWhenAlarmSwitchIsOn'));
-                if ($useAlarmSiren) {
-                    $this->SetValue('AlarmSiren', true);
-                }
-                if ($useAlarmLight) {
-                    $this->SetValue('AlarmLight', true);
-                }
-                if ($useAlarmCall) {
-                    $this->SetValue('AlarmCall', true);
-                }
-                if ($usePanicAlarm) {
-                    $this->SetValue('PanicAlarm', true);
-                }
-                //Protocol
-                $text = 'Der Panikalarm wurde ausgelöst. (ID ' . $this->GetIDForIdent('AlarmSwitch') . ')';
-                $logText = date('d.m.Y, H:i:s') . ', ' . $this->ReadPropertyString('Location') . ', ' . $this->ReadPropertyString('SystemName') . ', ' . $text;
-                $this->UpdateAlarmProtocol($logText, 1);
-                //Notification
-                $this->ExecuteAlarmZoneControllerNotification(911);
+            if ($this->ReadPropertyBoolean('PanicAlarmUseAlarmLight')) {
+                $this->SetValue('AlarmLight', true);
             }
+            if ($this->ReadPropertyBoolean('PanicAlarmUseAlarmCall')) {
+                $this->SetValue('AlarmCall', true);
+            }
+            //Notification
+            $this->ExecuteAlarmZoneControllerNotification(911);
         }
     }
 
@@ -512,7 +509,6 @@ trait AZST_Control
         $this->UpdateProtectionMode();
         $this->UpdateSystemState();
         $this->UpdateSystemDetailedState();
-
         //Notification
         $this->ExecuteAlarmZoneControllerNotification($Mode);
 
