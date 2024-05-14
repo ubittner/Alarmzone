@@ -109,6 +109,7 @@ trait AZST_Control
         $smokeDetectorState = [];
         $waterDetectorState = [];
         $alarmSiren = [];
+        $internalAlarmSiren = [];
         $alarmLight = [];
         $alarmCall = [];
         $panicAlarm = [];
@@ -153,7 +154,7 @@ trait AZST_Control
             return;
         }
         $this->UpdateFormField('ApplyNewConfigurationProgress', 'minimum', 0);
-        $maximumConfiguration = 16 * count($listedVariables);
+        $maximumConfiguration = 19 * count($listedVariables);
         $this->UpdateFormField('ApplyNewConfigurationProgress', 'maximum', $maximumConfiguration);
         $passedConfiguration = 0;
         foreach ($listedVariables as $listedVariable) {
@@ -245,6 +246,12 @@ trait AZST_Control
                         $alarmSiren[] = ['Use' => true, 'ID' => $child, 'Designation' => $description];
                         break;
 
+                    case 'InternalAlarmSiren':
+                        $passedConfiguration++;
+                        $this->ApplyNewConfigurationUpdateProgressState($passedConfiguration, $maximumConfiguration);
+                        $internalAlarmSiren[] = ['Use' => true, 'ID' => $child, 'Designation' => $description];
+                        break;
+
                     case 'AlarmLight':
                         $passedConfiguration++;
                         $this->ApplyNewConfigurationUpdateProgressState($passedConfiguration, $maximumConfiguration);
@@ -281,6 +288,7 @@ trait AZST_Control
         @IPS_SetProperty($this->InstanceID, 'SmokeDetectorState', json_encode($smokeDetectorState));
         @IPS_SetProperty($this->InstanceID, 'WaterDetectorState', json_encode($waterDetectorState));
         @IPS_SetProperty($this->InstanceID, 'AlarmSiren', json_encode($alarmSiren));
+        @IPS_SetProperty($this->InstanceID, 'InternalAlarmSiren', json_encode($internalAlarmSiren));
         @IPS_SetProperty($this->InstanceID, 'AlarmLight', json_encode($alarmLight));
         @IPS_SetProperty($this->InstanceID, 'AlarmCall', json_encode($alarmCall));
         @IPS_SetProperty($this->InstanceID, 'PanicAlarm', json_encode($panicAlarm));
@@ -319,6 +327,7 @@ trait AZST_Control
                 $this->SetValue('PanicAlarm', false);
                 if ($this->ReadPropertyBoolean('AlarmSwitchAlarmSirenOff')) {
                     $this->SetValue('AlarmSiren', false);
+                    $this->SetValue('InternalAlarmSiren', false);
                 }
                 if ($this->ReadPropertyBoolean('AlarmSwitchAlarmLightOff')) {
                     $this->SetValue('AlarmLight', false);
@@ -347,6 +356,9 @@ trait AZST_Control
             $this->SetValue('PanicAlarm', true);
             if ($this->ReadPropertyBoolean('PanicAlarmUseAlarmSiren')) {
                 $this->SetValue('AlarmSiren', true);
+            }
+            if ($this->ReadPropertyBoolean('PanicAlarmUseInternalAlarmSiren')) {
+                $this->SetValue('InternalAlarmSiren', true);
             }
             if ($this->ReadPropertyBoolean('PanicAlarmUseAlarmLight')) {
                 $this->SetValue('AlarmLight', true);

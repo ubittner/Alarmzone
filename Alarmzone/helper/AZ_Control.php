@@ -164,6 +164,7 @@ trait AZ_Control
                 $this->SetValue('PanicAlarm', false);
                 if ($this->ReadPropertyBoolean('AlarmSwitchAlarmSirenOff')) {
                     $this->SetValue('AlarmSiren', false);
+                    $this->SetValue('InternalAlarmSiren', false);
                 }
                 if ($this->ReadPropertyBoolean('AlarmSwitchAlarmLightOff')) {
                     $this->SetValue('AlarmLight', false);
@@ -189,6 +190,9 @@ trait AZ_Control
             $this->SetValue('PanicAlarm', true);
             if ($this->ReadPropertyBoolean('PanicAlarmUseAlarmSiren')) {
                 $this->SetValue('AlarmSiren', true);
+            }
+            if ($this->ReadPropertyBoolean('PanicAlarmUseInternalAlarmSiren')) {
+                $this->SetValue('InternalAlarmSiren', true);
             }
             if ($this->ReadPropertyBoolean('PanicAlarmUseAlarmLight')) {
                 $this->SetValue('AlarmLight', true);
@@ -335,6 +339,7 @@ trait AZ_Control
         $this->SetValue('AlarmState', 0);
         $this->SetValue('AlertingSensor', '');
         $this->SetValue('AlarmSiren', false);
+        $this->SetValue('InternalAlarmSiren', false);
         $this->SetValue('AlarmLight', false);
         $this->SetValue('AlarmCall', false);
         $this->SetValue('PanicAlarm', false);
@@ -504,6 +509,7 @@ trait AZ_Control
         $this->SetValue('AlarmZoneDetailedState', 0);
         $this->SetValue('AlarmState', 0);
         $this->SetValue('AlarmSiren', false);
+        $this->SetValue('InternalAlarmSiren', false);
         $this->SetValue('AlarmLight', false);
         $this->SetValue('AlarmCall', false);
         $this->SetValue('PanicAlarm', false);

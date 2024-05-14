@@ -97,6 +97,7 @@ class Alarmzonensteuerung extends IPSModule
         $this->RegisterPropertyBoolean('AlarmSwitchAlarmSirenOff', true);
         $this->RegisterPropertyBoolean('AlarmSwitchAlarmLightOff', true);
         $this->RegisterPropertyBoolean('PanicAlarmUseAlarmSiren', false);
+        $this->RegisterPropertyBoolean('PanicAlarmUseInternalAlarmSiren', false);
         $this->RegisterPropertyBoolean('PanicAlarmUseAlarmLight', false);
         $this->RegisterPropertyBoolean('PanicAlarmUseAlarmCall', false);
 
@@ -115,6 +116,7 @@ class Alarmzonensteuerung extends IPSModule
         $this->RegisterPropertyString('SmokeDetectorState', '[]');
         $this->RegisterPropertyString('WaterDetectorState', '[]');
         $this->RegisterPropertyString('AlarmSiren', '[]');
+        $this->RegisterPropertyString('InternalAlarmSiren', '[]');
         $this->RegisterPropertyString('AlarmLight', '[]');
         $this->RegisterPropertyString('AlarmCall', '[]');
         $this->RegisterPropertyString('PanicAlarm', '[]');
@@ -210,6 +212,7 @@ class Alarmzonensteuerung extends IPSModule
         $this->RegisterPropertyBoolean('EnableWaterDetectorState', false);
         $this->RegisterPropertyBoolean('EnableAlarmState', true);
         $this->RegisterPropertyBoolean('EnableAlarmSirenState', false);
+        $this->RegisterPropertyBoolean('EnableInternalAlarmSirenState', false);
         $this->RegisterPropertyBoolean('EnableAlarmLightState', false);
         $this->RegisterPropertyBoolean('EnableAlarmCallState', false);
         $this->RegisterPropertyBoolean('EnablePanicAlarmState', false);
@@ -385,7 +388,17 @@ class Alarmzonensteuerung extends IPSModule
         IPS_SetVariableProfileIcon($profile, 'Alert');
         IPS_SetVariableProfileAssociation($profile, 0, 'Aus', '', 0x00FF00);
         IPS_SetVariableProfileAssociation($profile, 1, 'An', '', 0xFF0000);
-        $this->RegisterVariableBoolean('AlarmSiren', 'Alarmsirene', $profile, 190);
+        $this->RegisterVariableBoolean('AlarmSiren', 'Außensirene', $profile, 190);
+
+        //Internal alarm siren status
+        $profile = self::MODULE_PREFIX . '.' . $this->InstanceID . '.InternalAlarmSirenStatus';
+        if (!IPS_VariableProfileExists($profile)) {
+            IPS_CreateVariableProfile($profile, 0);
+        }
+        IPS_SetVariableProfileIcon($profile, 'Alert');
+        IPS_SetVariableProfileAssociation($profile, 0, 'Aus', '', 0x00FF00);
+        IPS_SetVariableProfileAssociation($profile, 1, 'An', '', 0xFF0000);
+        $this->RegisterVariableBoolean('InternalAlarmSiren', 'Innensirene', $profile, 200);
 
         //Alarm light status
         $profile = self::MODULE_PREFIX . '.' . $this->InstanceID . '.AlarmLightStatus';
@@ -395,7 +408,7 @@ class Alarmzonensteuerung extends IPSModule
         IPS_SetVariableProfileIcon($profile, 'Bulb');
         IPS_SetVariableProfileAssociation($profile, 0, 'Aus', '', 0x00FF00);
         IPS_SetVariableProfileAssociation($profile, 1, 'An', '', 0xFF0000);
-        $this->RegisterVariableBoolean('AlarmLight', 'Alarmbeleuchtung', $profile, 200);
+        $this->RegisterVariableBoolean('AlarmLight', 'Alarmbeleuchtung', $profile, 210);
 
         //Alarm call status
         $profile = self::MODULE_PREFIX . '.' . $this->InstanceID . '.AlarmCallStatus';
@@ -405,7 +418,7 @@ class Alarmzonensteuerung extends IPSModule
         IPS_SetVariableProfileIcon($profile, 'Mobile');
         IPS_SetVariableProfileAssociation($profile, 0, 'Aus', '', 0x00FF00);
         IPS_SetVariableProfileAssociation($profile, 1, 'An', '', 0xFF0000);
-        $this->RegisterVariableBoolean('AlarmCall', 'Alarmanruf', $profile, 210);
+        $this->RegisterVariableBoolean('AlarmCall', 'Alarmanruf', $profile, 220);
 
         //Panic alarm status
         $profile = self::MODULE_PREFIX . '.' . $this->InstanceID . '.PanicAlarmStatus';
@@ -415,7 +428,7 @@ class Alarmzonensteuerung extends IPSModule
         IPS_SetVariableProfileIcon($profile, 'Warning');
         IPS_SetVariableProfileAssociation($profile, 0, 'Aus', '', 0x00FF00);
         IPS_SetVariableProfileAssociation($profile, 1, 'An', '', 0xFF0000);
-        $this->RegisterVariableBoolean('PanicAlarm', 'Panikalarm', $profile, 220);
+        $this->RegisterVariableBoolean('PanicAlarm', 'Panikalarm', $profile, 230);
 
         ########## Attribute
 
@@ -517,6 +530,9 @@ class Alarmzonensteuerung extends IPSModule
         //Alarm siren state
         IPS_SetHidden($this->GetIDForIdent('AlarmSiren'), !$this->ReadPropertyBoolean('EnableAlarmSirenState'));
 
+        //Internal alarm siren state
+        IPS_SetHidden($this->GetIDForIdent('InternalAlarmSiren'), !$this->ReadPropertyBoolean('EnableInternalAlarmSirenState'));
+
         //Alarm light state
         IPS_SetHidden($this->GetIDForIdent('AlarmLight'), !$this->ReadPropertyBoolean('EnableAlarmLightState'));
 
@@ -569,6 +585,7 @@ class Alarmzonensteuerung extends IPSModule
             'SmokeDetectorState',
             'WaterDetectorState',
             'AlarmSiren',
+            'InternalAlarmSiren',
             'AlarmLight',
             'AlarmCall',
             'PanicAlarm'];
@@ -617,6 +634,7 @@ class Alarmzonensteuerung extends IPSModule
             'SmokeDetectorState',
             'WaterDetectorState',
             'AlarmSirenStatus',
+            'InternalAlarmSirenStatus',
             'AlarmLightStatus',
             'AlarmCallStatus',
             'PanicAlarmStatus'];
@@ -663,6 +681,7 @@ class Alarmzonensteuerung extends IPSModule
                     'SmokeDetectorState',
                     'WaterDetectorState',
                     'AlarmSiren',
+                    'InternalAlarmSiren',
                     'AlarmLight',
                     'AlarmCall',
                     'PanicAlarm'];
@@ -762,9 +781,10 @@ class Alarmzonensteuerung extends IPSModule
         IPS_SetPosition($this->GetIDForIdent('WaterDetectorState'), 170);
         IPS_SetPosition($this->GetIDForIdent('AlarmState'), 180);
         IPS_SetPosition($this->GetIDForIdent('AlarmSiren'), 190);
-        IPS_SetPosition($this->GetIDForIdent('AlarmLight'), 200);
-        IPS_SetPosition($this->GetIDForIdent('AlarmCall'), 210);
-        IPS_SetPosition($this->GetIDForIdent('PanicAlarm'), 220);
+        IPS_SetPosition($this->GetIDForIdent('InternalAlarmSiren'), 200);
+        IPS_SetPosition($this->GetIDForIdent('AlarmLight'), 210);
+        IPS_SetPosition($this->GetIDForIdent('AlarmCall'), 220);
+        IPS_SetPosition($this->GetIDForIdent('PanicAlarm'), 230);
     }
 
     public function ShowNotificationTargetIDs(): void
