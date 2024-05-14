@@ -429,7 +429,7 @@ trait AZST_ConfigurationForm
                         [
                             'type'    => 'CheckBox',
                             'name'    => 'AlarmSwitchAlarmSirenOff',
-                            'caption' => 'Alarmsirene ausschalten'
+                            'caption' => 'Alarmsirenen ausschalten'
                         ],
                         [
                             'type'    => 'CheckBox',
@@ -449,7 +449,12 @@ trait AZST_ConfigurationForm
                         [
                             'type'    => 'CheckBox',
                             'name'    => 'PanicAlarmUseAlarmSiren',
-                            'caption' => 'Alarmsirene einschalten'
+                            'caption' => 'Außensirene einschalten'
+                        ],
+                        [
+                            'type'    => 'CheckBox',
+                            'name'    => 'PanicAlarmUseInternalAlarmSiren',
+                            'caption' => 'Innensirene einschalten'
                         ],
                         [
                             'type'    => 'CheckBox',
@@ -711,6 +716,25 @@ trait AZST_ConfigurationForm
                 }
             }
             $alarmSirenValues[] = ['VariableID' => $id, 'rowColor' => $rowColor];
+        }
+
+        //Internal alarm sirens
+        $internalAlarmSirenValues = [];
+        $variables = json_decode($this->ReadPropertyString('InternalAlarmSiren'), true);
+        $amountInternalAlarmSirens = count($variables) + 1;
+        if ($amountInternalAlarmSirens == 1) {
+            $amountInternalAlarmSirens = 3;
+        }
+        foreach ($variables as $variable) {
+            $rowColor = '#FFC0C0'; //red
+            $id = $variable['ID'];
+            if ($id > 1 && @IPS_ObjectExists($id)) {
+                $rowColor = '#DFDFDF'; # grey
+                if ($variable['Use']) {
+                    $rowColor = '#C0FFC0'; //light green
+                }
+            }
+            $internalAlarmSirenValues[] = ['VariableID' => $id, 'rowColor' => $rowColor];
         }
 
         //Alarm lights
@@ -1590,7 +1614,7 @@ trait AZST_ConfigurationForm
                         [
                             'type'     => 'List',
                             'name'     => 'AlarmSiren',
-                            'caption'  => 'Alarmsirene',
+                            'caption'  => 'Außensirene',
                             'rowCount' => $amountAlarmSirens,
                             'add'      => true,
                             'delete'   => true,
@@ -1637,6 +1661,64 @@ trait AZST_ConfigurationForm
                             'type'     => 'OpenObjectButton',
                             'caption'  => 'Bearbeiten',
                             'name'     => 'AlarmSirenConfigurationButton',
+                            'visible'  => false,
+                            'objectID' => 0
+                        ],
+                        //Internal alarm siren
+                        [
+                            'type'    => 'Label',
+                            'caption' => ' '
+                        ],
+                        [
+                            'type'     => 'List',
+                            'name'     => 'InternalAlarmSiren',
+                            'caption'  => 'Innensirene',
+                            'rowCount' => $amountInternalAlarmSirens,
+                            'add'      => true,
+                            'delete'   => true,
+                            'columns'  => [
+                                [
+                                    'name'    => 'Use',
+                                    'caption' => 'Aktiviert',
+                                    'width'   => '100px',
+                                    'add'     => true,
+                                    'edit'    => [
+                                        'type' => 'CheckBox'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'ID',
+                                    'name'    => 'VariableID',
+                                    'width'   => '100px',
+                                    'add'     => 0,
+                                    'save'    => false,
+                                    'onClick' => self::MODULE_PREFIX . '_ModifyButton($id, "InternalAlarmSirenConfigurationButton", "ID " . $InternalAlarmSiren["ID"] . " bearbeiten", $InternalAlarmSiren["ID"]);',
+                                ],
+                                [
+                                    'name'    => 'ID',
+                                    'caption' => 'Variable',
+                                    'width'   => '650px',
+                                    'add'     => 0,
+                                    'edit'    => [
+                                        'type' => 'SelectVariable'
+                                    ]
+                                ],
+                                [
+                                    'caption' => 'Bezeichnung',
+                                    'name'    => 'Designation',
+                                    'width'   => '400px',
+                                    'add'     => '',
+                                    'edit'    => [
+                                        'type' => 'ValidationTextBox'
+                                    ]
+                                ]
+                            ],
+                            'values' => $internalAlarmSirenValues,
+                        ],
+                        [
+                            'type'     => 'OpenObjectButton',
+                            'caption'  => 'Bearbeiten',
+                            'name'     => 'InternalAlarmSirenConfigurationButton',
                             'visible'  => false,
                             'objectID' => 0
                         ],
@@ -8140,7 +8222,12 @@ trait AZST_ConfigurationForm
                 [
                     'type'    => 'CheckBox',
                     'name'    => 'EnableAlarmSirenState',
-                    'caption' => 'Alarmsirene'
+                    'caption' => 'Außensirene'
+                ],
+                [
+                    'type'    => 'CheckBox',
+                    'name'    => 'EnableInternalAlarmSirenState',
+                    'caption' => 'Innensirene'
                 ],
                 [
                     'type'    => 'CheckBox',

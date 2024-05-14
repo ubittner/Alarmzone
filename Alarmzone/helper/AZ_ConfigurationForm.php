@@ -4,7 +4,7 @@
  * @project       Alarmzone/Alarmzone/helper/
  * @file          AZ_ConfigurationForm.php
  * @author        Ulrich Bittner
- * @copyright     2023 Ulrich Bittner
+ * @copyright     2023, 2024 Ulrich Bittner
  * @license       https://creativecommons.org/licenses/by-nc-sa/4.0/ CC BY-NC-SA 4.0
  */
 
@@ -437,7 +437,7 @@ trait AZ_ConfigurationForm
                         [
                             'type'    => 'CheckBox',
                             'name'    => 'AlarmSwitchAlarmSirenOff',
-                            'caption' => 'Alarmsirene ausschalten'
+                            'caption' => 'Alarmsirenen ausschalten'
                         ],
                         [
                             'type'    => 'CheckBox',
@@ -457,7 +457,12 @@ trait AZ_ConfigurationForm
                         [
                             'type'    => 'CheckBox',
                             'name'    => 'PanicAlarmUseAlarmSiren',
-                            'caption' => 'Alarmsirene einschalten'
+                            'caption' => 'Außensirene einschalten'
+                        ],
+                        [
+                            'type'    => 'CheckBox',
+                            'name'    => 'PanicAlarmUseInternalAlarmSiren',
+                            'caption' => 'Innensirene einschalten'
                         ],
                         [
                             'type'    => 'CheckBox',
@@ -885,8 +890,17 @@ trait AZ_ConfigurationForm
                                 ]
                             ],
                             [
-                                'caption' => 'Alarmsirene',
+                                'caption' => 'Außensirene',
                                 'name'    => 'UseAlarmSiren',
+                                'width'   => '120px',
+                                'add'     => true,
+                                'edit'    => [
+                                    'type' => 'CheckBox'
+                                ]
+                            ],
+                            [
+                                'caption' => 'Innensirene',
+                                'name'    => 'UseInternalAlarmSiren',
                                 'width'   => '120px',
                                 'add'     => true,
                                 'edit'    => [
@@ -1439,8 +1453,17 @@ trait AZ_ConfigurationForm
                                 ]
                             ],
                             [
-                                'caption' => 'Alarmsirene',
+                                'caption' => 'Außensirene',
                                 'name'    => 'UseAlarmSiren',
+                                'width'   => '120px',
+                                'add'     => true,
+                                'edit'    => [
+                                    'type' => 'CheckBox'
+                                ]
+                            ],
+                            [
+                                'caption' => 'Innensirene',
+                                'name'    => 'UseInternalAlarmSiren',
                                 'width'   => '120px',
                                 'add'     => true,
                                 'edit'    => [
@@ -1999,8 +2022,17 @@ trait AZ_ConfigurationForm
                                 ]
                             ],
                             [
-                                'caption' => 'Alarmsirene',
+                                'caption' => 'Außensirene',
                                 'name'    => 'UseAlarmSiren',
+                                'width'   => '120px',
+                                'add'     => true,
+                                'edit'    => [
+                                    'type' => 'CheckBox'
+                                ]
+                            ],
+                            [
+                                'caption' => 'Innensirene',
+                                'name'    => 'UseInternalAlarmSiren',
                                 'width'   => '120px',
                                 'add'     => true,
                                 'edit'    => [
@@ -2558,8 +2590,17 @@ trait AZ_ConfigurationForm
                                 ]
                             ],
                             [
-                                'caption' => 'Alarmsirene',
+                                'caption' => 'Außensirene',
                                 'name'    => 'UseAlarmSiren',
+                                'width'   => '120px',
+                                'add'     => true,
+                                'edit'    => [
+                                    'type' => 'CheckBox'
+                                ]
+                            ],
+                            [
+                                'caption' => 'Innensirene',
+                                'name'    => 'UseInternalAlarmSiren',
                                 'width'   => '120px',
                                 'add'     => true,
                                 'edit'    => [
@@ -3117,8 +3158,17 @@ trait AZ_ConfigurationForm
                                 ]
                             ],
                             [
-                                'caption' => 'Alarmsirene',
+                                'caption' => 'Außensirene',
                                 'name'    => 'UseAlarmSiren',
+                                'width'   => '120px',
+                                'add'     => true,
+                                'edit'    => [
+                                    'type' => 'CheckBox'
+                                ]
+                            ],
+                            [
+                                'caption' => 'Innensirene',
+                                'name'    => 'UseInternalAlarmSiren',
                                 'width'   => '120px',
                                 'add'     => true,
                                 'edit'    => [
@@ -15266,7 +15316,12 @@ trait AZ_ConfigurationForm
                 [
                     'type'    => 'CheckBox',
                     'name'    => 'EnableAlarmSirenState',
-                    'caption' => 'Alarmsirene'
+                    'caption' => 'Außensirene'
+                ],
+                [
+                    'type'    => 'CheckBox',
+                    'name'    => 'EnableInternalAlarmSirenState',
+                    'caption' => 'Innensirene'
                 ],
                 [
                     'type'    => 'CheckBox',

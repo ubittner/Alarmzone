@@ -4,7 +4,7 @@
  * @project       Alarmzone/Alarmzone/helper/
  * @file          AZ_MotionDetectors.php
  * @author        Ulrich Bittner
- * @copyright     2023 Ulrich Bittner
+ * @copyright     2023, 2024 Ulrich Bittner
  * @license       https://creativecommons.org/licenses/by-nc-sa/4.0/ CC BY-NC-SA 4.0
  */
 
@@ -606,6 +606,11 @@ trait AZ_MotionDetectors
                                                 if ($variable['UseAlarmSiren']) {
                                                     $this->SetValue('AlarmSiren', true);
                                                 }
+                                                if (array_key_exists('UseInternalAlarmSiren', $variable)) {
+                                                    if ($variable['UseInternalAlarmSiren']) {
+                                                        $this->SetValue('InternalAlarmSiren', true);
+                                                    }
+                                                }
                                                 if ($variable['UseAlarmLight']) {
                                                     $this->SetValue('AlarmLight', true);
                                                 }
@@ -733,6 +738,11 @@ trait AZ_MotionDetectors
                                     //Options
                                     if ($variable['UseAlarmSiren']) {
                                         $this->SetValue('AlarmSiren', true);
+                                    }
+                                    if (array_key_exists('UseInternalAlarmSiren', $variable)) {
+                                        if ($variable['UseInternalAlarmSiren']) {
+                                            $this->SetValue('InternalAlarmSiren', true);
+                                        }
                                     }
                                     if ($variable['UseAlarmLight']) {
                                         $this->SetValue('AlarmLight', true);
