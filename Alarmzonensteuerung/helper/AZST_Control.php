@@ -320,6 +320,22 @@ trait AZST_Control
             //Reset
             $this->WriteAttributeBoolean('DisableUpdateMode', true);
             if (!$this->ReadPropertyBoolean('AlarmSwitchDisarmAlarmZones')) {
+                //Kill alarm for each alarm zone
+                $alarmZones = json_decode($this->ReadPropertyString('AlarmZones'), true);
+                if (empty($alarmZones)) {
+                    return;
+                }
+                foreach ($alarmZones as $alarmZone) {
+                    if (!$alarmZone['Use']) {
+                        continue;
+                    }
+                    $id = $alarmZone['ID'];
+                    if ($id == 0 || @!IPS_ObjectExists($id)) {
+                        continue;
+                    }
+                    @AZ_SetAlarm($id, false, $SenderID, false, false);
+                }
+                //Kill alarm for allarm zone control
                 $this->SetValue('AlarmSwitch', false);
                 $this->SetValue('AlertingSensor', '');
                 $this->SetValue('AlarmState', 0);
