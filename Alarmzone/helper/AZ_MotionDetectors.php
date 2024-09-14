@@ -544,6 +544,7 @@ trait AZ_MotionDetectors
                                 }
                                 if (IPS_IsConditionPassing($variable['PrimaryCondition']) && IPS_IsConditionPassing($variable['SecondaryCondition'])) {
                                     $this->SendDebug(__FUNCTION__, 'Die Bedingungen wurden erfüllt. Es wurde eine Bewegung erkannt!', 0);
+                                    $timeStamp = time();
                                     $alerting = false;
                                     switch ($this->GetValue('AlarmZoneDetailedState')) {
                                         case 1: //armed
@@ -572,7 +573,6 @@ trait AZ_MotionDetectors
                                                     break;
                                             }
                                             //Alerting
-                                            $timeStamp = time();
                                             if ($alerting) {
                                                 //Status verification
                                                 if ($variable['MotionDetectorStatusVerificationDelay'] > 0) {
@@ -629,18 +629,19 @@ trait AZ_MotionDetectors
                                                     $action = json_decode($variable['AlertingAction'], true);
                                                     @IPS_RunAction($action['actionID'], $action['parameters']);
                                                 }
-                                            } else {
-                                                //Event protocol
-                                                if (array_key_exists('UseEventProtocol', $variable)) {
-                                                    if ($variable['UseEventProtocol']) {
-                                                        $text = $variable['Designation'] . ' hat eine Bewegung erkannt. (ID ' . $SenderID . ')';
-                                                        $logText = date('d.m.Y, H:i:s', $timeStamp) . ', ' . $this->ReadPropertyString('Location') . ', ' . $this->ReadPropertyString('AlarmZoneName') . ', ' . $text;
-                                                        $this->UpdateAlarmProtocol($logText, 0);
-                                                    }
-                                                }
                                             }
                                             break;
 
+                                    }
+                                    if (!$alerting) {
+                                        //Event protocol
+                                        if (array_key_exists('UseEventProtocol', $variable)) {
+                                            if ($variable['UseEventProtocol']) {
+                                                $text = $variable['Designation'] . ' hat eine Bewegung erkannt. (ID ' . $SenderID . ')';
+                                                $logText = date('d.m.Y, H:i:s', $timeStamp) . ', ' . $this->ReadPropertyString('Location') . ', ' . $this->ReadPropertyString('AlarmZoneName') . ', ' . $text;
+                                                $this->UpdateAlarmProtocol($logText, 0);
+                                            }
+                                        }
                                     }
                                 }
                             }
