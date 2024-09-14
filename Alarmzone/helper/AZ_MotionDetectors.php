@@ -8,6 +8,7 @@
  * @license       https://creativecommons.org/licenses/by-nc-sa/4.0/ CC BY-NC-SA 4.0
  */
 
+/** @noinspection PhpExpressionResultUnusedInspection */
 /** @noinspection PhpUnhandledExceptionInspection */
 /** @noinspection PhpUndefinedFunctionInspection */
 /** @noinspection SpellCheckingInspection */
@@ -571,8 +572,8 @@ trait AZ_MotionDetectors
                                                     break;
                                             }
                                             //Alerting
+                                            $timeStamp = time();
                                             if ($alerting) {
-                                                $timeStamp = time();
                                                 //Status verification
                                                 if ($variable['MotionDetectorStatusVerificationDelay'] > 0) {
                                                     $this->SendDebug(__FUNCTION__, 'Status wird in ' . $variable['MotionDetectorStatusVerificationDelay'] . ' Millisekunden erneut geprüft!', 0);
@@ -627,6 +628,15 @@ trait AZ_MotionDetectors
                                                 if ($variable['UseAlertingAction']) {
                                                     $action = json_decode($variable['AlertingAction'], true);
                                                     @IPS_RunAction($action['actionID'], $action['parameters']);
+                                                }
+                                            } else {
+                                                //Event protocol
+                                                if (array_key_exists('UseEventProtocol', $variable)) {
+                                                    if ($variable['UseEventProtocol']) {
+                                                        $text = $variable['Designation'] . ' hat eine Bewegung erkannt. (ID ' . $SenderID . ')';
+                                                        $logText = date('d.m.Y, H:i:s', $timeStamp) . ', ' . $this->ReadPropertyString('Location') . ', ' . $this->ReadPropertyString('AlarmZoneName') . ', ' . $text;
+                                                        $this->UpdateAlarmProtocol($logText, 0);
+                                                    }
                                                 }
                                             }
                                             break;
