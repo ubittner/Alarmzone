@@ -299,6 +299,7 @@ trait AZ_MotionDetectors
                 'UsePanicAlarm'                         => false,
                 'UseAlertingAction'                     => false,
                 'AlertingAction'                        => '{"actionID":"{346AA8C1-30E0-1663-78EF-93EFADFAC650}","parameters":{"SCRIPT":"<?php\n\n//Skript hier einfügen","ENVIRONMENT":"Default","PARENT":' . $this->InstanceID . ',"TARGET":0}}',
+                'UseEventProtocol'                      => false,
                 'UseAlarmProtocol'                      => true];
         }
         //Get already listed variables
