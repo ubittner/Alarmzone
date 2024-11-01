@@ -578,16 +578,6 @@ trait AZ_DoorWindowSensors
                                                 $this->UpdateAlarmProtocol($logText, 0);
                                             }
                                         }
-                                        /* old version
-                                        if ($variable['UseAlarmProtocol']) {
-                                            $text = ' wurde geschlossen. (ID ' . $SenderID . ')';
-                                            if ($open) {
-                                                $text = ' wurde geöffnet. (ID ' . $SenderID . ')';
-                                            }
-                                            $logText = date('d.m.Y, H:i:s') . ', ' . $this->ReadPropertyString('Location') . ', ' . $this->ReadPropertyString('AlarmZoneName') . ', ' . $variable['Designation'] . $text;
-                                            $this->UpdateAlarmProtocol($logText, 0);
-                                        }
-                                         */
                                         break;
 
                                     case 1: //armed
@@ -606,16 +596,6 @@ trait AZ_DoorWindowSensors
                                                     $this->UpdateAlarmProtocol($logText, 0);
                                                 }
                                             }
-                                        /* old version
-                                        if ($variable['UseEventProtocol']) {
-                                            $text = ' wurde geschlossen. (ID ' . $SenderID . ')';
-                                            if ($open) {
-                                                $text = ' wurde ohne Alarmauslösung geöffnet. (ID ' . $SenderID . ')';
-                                            }
-                                            $logText = date('d.m.Y, H:i:s') . ', ' . $this->ReadPropertyString('Location') . ', ' . $this->ReadPropertyString('AlarmZoneName') . ', ' . $variable['Designation'] . $text;
-                                            $this->UpdateAlarmProtocol($logText, 0);
-                                        }
-                                         */
                                         } //Variable is not blacklisted
                                         else {
                                             $alerting = false;
@@ -713,16 +693,6 @@ trait AZ_DoorWindowSensors
                                                         $this->UpdateAlarmProtocol($logText, 0);
                                                     }
                                                 }
-                                                /* old version
-                                                if ($variable['UseAlarmProtocol']) {
-                                                    $text = ' wurde geschlossen. (ID ' . $SenderID . ')';
-                                                    if ($open) {
-                                                        $text = ' wurde ohne Alarmauslösung geöffnet. (ID ' . $SenderID . ')';
-                                                    }
-                                                    $logText = date('d.m.Y, H:i:s') . ', ' . $this->ReadPropertyString('Location') . ', ' . $this->ReadPropertyString('AlarmZoneName') . ', ' . $variable['Designation'] . $text;
-                                                    $this->UpdateAlarmProtocol($logText, 0);
-                                                }
-                                                 */
                                             }
                                         }
                                         break;
