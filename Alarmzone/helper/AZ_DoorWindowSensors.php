@@ -301,6 +301,7 @@ trait AZ_DoorWindowSensors
                 'UsePanicAlarm'                         => false,
                 'UseAlertingAction'                     => false,
                 'AlertingAction'                        => '{"actionID":"{346AA8C1-30E0-1663-78EF-93EFADFAC650}","parameters":{"SCRIPT":"<?php\n\n//Skript hier einfügen","ENVIRONMENT":"Default","PARENT":' . $this->InstanceID . ',"TARGET":0}}',
+                'UseEventProtocol'                      => true,
                 'UseAlarmProtocol'                      => true];
         }
         //Get already listed variables
@@ -567,29 +568,33 @@ trait AZ_DoorWindowSensors
                                     case 0: //disarmed
                                         $this->CheckDoorWindowState($mode, false, false, false);
                                         //Protocol
-                                        if ($variable['UseAlarmProtocol']) {
-                                            $text = ' wurde geschlossen. (ID ' . $SenderID . ')';
-                                            if ($open) {
-                                                $text = ' wurde geöffnet. (ID ' . $SenderID . ')';
+                                        if (array_key_exists('UseEventProtocol', $variable)) {
+                                            if ($variable['UseEventProtocol']) {
+                                                $text = ' wurde geschlossen. (ID ' . $SenderID . ')';
+                                                if ($open) {
+                                                    $text = ' wurde geöffnet. (ID ' . $SenderID . ')';
+                                                }
+                                                $logText = date('d.m.Y, H:i:s') . ', ' . $this->ReadPropertyString('Location') . ', ' . $this->ReadPropertyString('AlarmZoneName') . ', ' . $variable['Designation'] . $text;
+                                                $this->UpdateAlarmProtocol($logText, 0);
                                             }
-                                            $logText = date('d.m.Y, H:i:s') . ', ' . $this->ReadPropertyString('Location') . ', ' . $this->ReadPropertyString('AlarmZoneName') . ', ' . $variable['Designation'] . $text;
-                                            $this->UpdateAlarmProtocol($logText, 0);
                                         }
                                         break;
 
                                     case 1: //armed
                                     case 3: //partial armed
                                         $this->CheckDoorWindowState($mode, false, false, false);
-                                        //Variable is blacklisted
+                                        //Variable is blacklisted !
                                         if ($this->CheckSensorBlacklist($SenderID)) {
-                                            //Protocol
-                                            if ($variable['UseAlarmProtocol']) {
-                                                $text = ' wurde geschlossen. (ID ' . $SenderID . ')';
-                                                if ($open) {
-                                                    $text = ' wurde ohne Alarmauslösung geöffnet. (ID ' . $SenderID . ')';
+                                            //Event protocol
+                                            if (array_key_exists('UseEventProtocol', $variable)) {
+                                                if ($variable['UseEventProtocol']) {
+                                                    $text = ' wurde geschlossen. (ID ' . $SenderID . ')';
+                                                    if ($open) {
+                                                        $text = ' wurde ohne Alarmauslösung geöffnet. (ID ' . $SenderID . ')';
+                                                    }
+                                                    $logText = date('d.m.Y, H:i:s') . ', ' . $this->ReadPropertyString('Location') . ', ' . $this->ReadPropertyString('AlarmZoneName') . ', ' . $variable['Designation'] . $text;
+                                                    $this->UpdateAlarmProtocol($logText, 0);
                                                 }
-                                                $logText = date('d.m.Y, H:i:s') . ', ' . $this->ReadPropertyString('Location') . ', ' . $this->ReadPropertyString('AlarmZoneName') . ', ' . $variable['Designation'] . $text;
-                                                $this->UpdateAlarmProtocol($logText, 0);
                                             }
                                         } //Variable is not blacklisted
                                         else {
@@ -677,14 +682,16 @@ trait AZ_DoorWindowSensors
                                                 }
                                             } //No alerting
                                             else {
-                                                //Protocol
-                                                if ($variable['UseAlarmProtocol']) {
-                                                    $text = ' wurde geschlossen. (ID ' . $SenderID . ')';
-                                                    if ($open) {
-                                                        $text = ' wurde ohne Alarmauslösung geöffnet. (ID ' . $SenderID . ')';
+                                                //Event protocol
+                                                if (array_key_exists('UseEventProtocol', $variable)) {
+                                                    if ($variable['UseEventProtocol']) {
+                                                        $text = ' wurde geschlossen. (ID ' . $SenderID . ')';
+                                                        if ($open) {
+                                                            $text = ' wurde ohne Alarmauslösung geöffnet. (ID ' . $SenderID . ')';
+                                                        }
+                                                        $logText = date('d.m.Y, H:i:s') . ', ' . $this->ReadPropertyString('Location') . ', ' . $this->ReadPropertyString('AlarmZoneName') . ', ' . $variable['Designation'] . $text;
+                                                        $this->UpdateAlarmProtocol($logText, 0);
                                                     }
-                                                    $logText = date('d.m.Y, H:i:s') . ', ' . $this->ReadPropertyString('Location') . ', ' . $this->ReadPropertyString('AlarmZoneName') . ', ' . $variable['Designation'] . $text;
-                                                    $this->UpdateAlarmProtocol($logText, 0);
                                                 }
                                             }
                                         }

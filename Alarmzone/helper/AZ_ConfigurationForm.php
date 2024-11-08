@@ -872,6 +872,15 @@ trait AZ_ConfigurationForm
                                 ]
                             ],
                             [
+                                'caption' => 'Ereignisprotokoll',
+                                'name'    => 'UseEventProtocol',
+                                'width'   => '140px',
+                                'add'     => false,
+                                'edit'    => [
+                                    'type' => 'CheckBox'
+                                ]
+                            ],
+                            [
                                 'caption' => 'Alarmprotokoll',
                                 'name'    => 'UseAlarmProtocol',
                                 'width'   => '140px',
